@@ -1,0 +1,19 @@
+{
+  "name": "banking-application",
+  "version": "1.0.0",
+  "description": "Educational banking application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.eecis.udel.edu:cisc-capstone-teams/cisc498-22f/team-21/banking-application.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^9.10.0",
+    "react": "^18.2.0"
+  }
+}
