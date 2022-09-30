@@ -10,13 +10,14 @@ function Reg(){
     let database_reference = ref(getDatabase());
     let users=child(database_reference,"users");
 
-
+    //All information needed from user to register
     const [email, setEmail] = useState<string>('')
     const [username, setUser] = useState<string>('')
     const [id, setId] = useState<string>('')
     const [p1, setP1] = useState<string>('')
     const [p2, setP2] = useState<string>('')
 
+    //Setters for textbox values
     function updateEmail(event: React.ChangeEvent<HTMLInputElement>){
         setEmail(event.target.value)
     }
@@ -36,13 +37,14 @@ function Reg(){
     function updateP2(event: React.ChangeEvent<HTMLInputElement>){
         setP2(event.target.value)
     }
-
+    
+    //Allows user to register account if information is inputted correctly and email does not already have an account
     function register(){
-        if (p1!=p2){
+        if (p1!==p2){
             alert("Passwords don't match");
             return;
         }
-        if (username=='' || email=='' || id=='' ||p1==''||p2==''){
+        if (username==='' || email==='' || id==='' ||p1===''||p2===''){
             alert("Please fill out empty textboxes");
             return;
         }
@@ -61,6 +63,7 @@ function Reg(){
         console.log(email,username,id)
     };
 
+    //HTML for registration textboxes and button
     return (<div>
         <Form.Group controlId="registration">
             <Form.Label>Enter Your Email</Form.Label>
