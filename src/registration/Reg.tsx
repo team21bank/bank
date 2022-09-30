@@ -56,7 +56,7 @@ function Reg(){
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log(errorCode);
-            console.log(errorMessage);
+            alert(errorMessage);
         });
         console.log(email,username,id)
     };
@@ -80,11 +80,13 @@ function Reg(){
             <br/>
             <Form.Label>Enter Your Password</Form.Label>
             <Form.Control
+                type="password"
                 value={p1}
                 onChange={updateP1}/>
             <br/>
             <Form.Label>Confirm Your Password</Form.Label>
             <Form.Control
+                type="password"
                 value={p2}
                 onChange={updateP2}/>
             <br/>
