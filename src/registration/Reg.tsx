@@ -6,7 +6,7 @@ import "../firebase";
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-function Reg(){
+export function RegistrationForm(){
     let database_reference = ref(getDatabase());
     let users=child(database_reference,"users");
 
@@ -98,5 +98,3 @@ function Reg(){
     </div>);
 
 }
-
-export default Reg;
