@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
 import './Reg.css'
+import { ref, getDatabase, push, child, update  } from '@firebase/database';
+import "../firebase";
+import { auth } from '../firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 function Reg(){
+    let database_reference = ref(getDatabase());
+    let users=child(database_reference,"users");
+
+
     const [email, setEmail] = useState<string>('')
     const [username, setUser] = useState<string>('')
     const [id, setId] = useState<string>('')
@@ -29,9 +37,29 @@ function Reg(){
         setP2(event.target.value)
     }
 
-    function log(){
+    function register(){
+        if (p1!=p2){
+            alert("Passwords don't match");
+            return;
+        }
+        if (username=='' || email=='' || id=='' ||p1==''||p2==''){
+            alert("Please fill out empty textboxes");
+            return;
+        }
+        createUserWithEmailAndPassword(auth,email,p1).then(somedata=>{
+            let uid=somedata.user.uid;
+            let userRef=ref(getDatabase(),'/users/'+uid)
+            update(userRef,{username:username});
+            update(userRef,{id:id});
+            update(userRef,{email:email});
+        }).catch(function(error){
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode);
+            console.log(errorMessage);
+        });
         console.log(email,username,id)
-    }
+    };
 
     return (<div>
         <Form.Group controlId="registration">
@@ -60,7 +88,7 @@ function Reg(){
                 value={p2}
                 onChange={updateP2}/>
             <br/>
-            <Button onClick={log}>Register</Button>
+            <Button onClick={register}>Register</Button>
         </Form.Group>
     </div>);
 
