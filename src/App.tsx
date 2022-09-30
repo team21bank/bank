@@ -4,7 +4,8 @@ import './App.css';
 import "./firebase";
 
 function App() {
-    let database_reference = ref(getDatabase());
+    //Example of creating a node in the database and inserting string data under it
+    //let database_reference = ref(getDatabase());
     //let c = child(database_reference, "test");
     //push(c, "Hello!");
 
