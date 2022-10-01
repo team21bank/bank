@@ -4,6 +4,7 @@ import './App.css';
 import "./firebase";
 import { RegistrationForm } from './registration/Reg';
 import {LoginForm} from './Login/Login'
+import {LogoutButton} from './Logout/Logout'
 
 function App() {
     let database_reference = ref(getDatabase());
@@ -18,6 +19,7 @@ function App() {
         <h5>{"(WIP)"}</h5>
       </header>
       <LoginForm></LoginForm>
+      <LogoutButton></LogoutButton>
       <RegistrationForm></RegistrationForm>
     </div>
   );

@@ -7,9 +7,11 @@ import {signInWithEmailAndPassword } from 'firebase/auth';
 import './Login.css'
 
 export function LoginForm(){
+    //Email and password variable holding log in information
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
 
+    //Setters for email and pass
     function updateEmail(event: React.ChangeEvent<HTMLInputElement>){
         setEmail(event.target.value)
     }
@@ -18,6 +20,7 @@ export function LoginForm(){
         setPass(event.target.value)
     }
 
+    //Function allowing user to login after clicking the login button
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/username')
@@ -32,6 +35,7 @@ export function LoginForm(){
         })
     }
 
+    //HTML containing log in button and text boxes for email and pass
     return (<div>
         <Form.Group controlId="login">
             <Form.Label>Enter Your Email</Form.Label>
