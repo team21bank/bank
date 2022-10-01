@@ -3,6 +3,7 @@ import React from 'react';
 import './App.css';
 import "./firebase";
 import { RegistrationForm } from './registration/Reg';
+import {LoginForm} from './Login/Login'
 
 function App() {
     let database_reference = ref(getDatabase());
@@ -16,6 +17,7 @@ function App() {
         <h1>Banking Application</h1>
         <h5>{"(WIP)"}</h5>
       </header>
+      <LoginForm></LoginForm>
       <RegistrationForm></RegistrationForm>
     </div>
   );
