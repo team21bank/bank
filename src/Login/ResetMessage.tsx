@@ -18,7 +18,7 @@ export default function ResetMessage(){
     const [showResults, setShowResults] = React.useState(false)
     const Results = () => (
         <div id="results">
-        If email is valid, we will send a link to reset your password. It may be in your spam/junk mail
+        Please check your email for link to reset your password. Be sure to check your spam/junk if link does not appear
         </div>
     )
 
