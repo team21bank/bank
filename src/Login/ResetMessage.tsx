@@ -7,23 +7,7 @@ import { auth } from '../firebase';
 import {signInWithEmailAndPassword } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css';
-  
-/*const ResetMessage = () => {
-  return (
-    <h1>Enter your email(username=email)</h1>
-  );
-};
-function changePass(){
-        const auth = getAuth();
-        navigate('/resetpassword');
-        /*const triggerResetEmail = async () => {
-            await sendPasswordResetEmail(auth,email)
-            console.log("Password reset email sent")
-        }
-        triggerResetEmail();
-    }
-  
-export default ResetMessage;*/
+import { FirebaseError } from '@firebase/util';
 
 export default function ResetMessage(){
 
@@ -38,12 +22,39 @@ export default function ResetMessage(){
         </div>
     )
 
+    const [showEmailError, setShowEmailError] = React.useState(false)
+    const EmailError = () => (
+        <div id="emailError">
+        Invalid email, try again
+        </div>
+    )
+
     function resetPassword(){
         const auth = getAuth()
         const triggerResetEmail = async () => {
-            await sendPasswordResetEmail(auth,email)
-            setShowResults(true)
-            console.log("Password reset email sent")
+            try{
+                await sendPasswordResetEmail(auth,email)
+                setShowResults(true)
+                setShowEmailError(false)
+                console.log("Password reset email sent")
+            }
+            catch (e:unknown) {
+                setShowResults(false)
+                if(e instanceof FirebaseError){
+                    if(e.code==='auth/invalid-email'){
+                        console.error(e.code)
+                        setShowEmailError(true)
+                    }
+                    else if(e.code==='auth/user-not-found'){
+                        console.error(e.code)
+                        setShowEmailError(true)
+                    }
+                    else{
+                        console.error(e.code)
+                    }
+                }
+
+            }
         }
         triggerResetEmail();
     }
@@ -51,13 +62,15 @@ export default function ResetMessage(){
         setEmail(event.target.value)
     }
     return (<div>
+        <h1>RESET PASSWORD PAGE</h1>
         <Form.Group controlId="resetpassword">
-            <Form.Label>Enter Your Email</Form.Label>
+            <Form.Label>Enter Your Email For Link to Reset Password</Form.Label>
             <Form.Control
                 value={email}
                 onChange={updateEmail}
                 />
             <br/>
+            { showEmailError ? <EmailError /> : null }
             { showResults ? <Results /> : null }
             <Button onClick={resetPassword}>Reset Password</Button>
             </Form.Group>
