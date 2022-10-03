@@ -25,7 +25,7 @@ export function LoginForm(){
 
     function changePass(){
         const auth = getAuth();
-        navigate('/resetpassword');
+        navigate('/login/resetpassword');
         /*const triggerResetEmail = async () => {
             await sendPasswordResetEmail(auth,email)
             console.log("Password reset email sent")
