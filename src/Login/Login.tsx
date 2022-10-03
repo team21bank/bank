@@ -23,6 +23,8 @@ export function LoginForm(){
     //Function allowing user to login after clicking the login button
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
+            setEmail('')
+            setPass('')
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/username')
             get(userRef).then(ss=>{
                 alert(ss.val()+" just logged in")
