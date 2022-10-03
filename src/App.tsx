@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { ref, getDatabase, push, child } from '@firebase/database';
 import React from 'react';
 import './App.css';
@@ -10,7 +11,6 @@ function App() {
     let database_reference = ref(getDatabase());
     //let c = child(database_reference, "test");
     //push(c, "Hello!");
-
 
     return (
     <div className="App">
