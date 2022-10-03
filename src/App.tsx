@@ -3,6 +3,8 @@ import React from 'react';
 import './App.css';
 import "./firebase";
 import { RegistrationForm } from './registration/Reg';
+import {LoginForm} from './Login/Login'
+import {LogoutButton} from './Logout/Logout'
 
 function App() {
   //Example of creating a node in the database and inserting string data under it
@@ -17,6 +19,8 @@ function App() {
         <h1>Banking Application</h1>
         <h5>{"(WIP)"}</h5>
       </header>
+      <LoginForm></LoginForm>
+      <LogoutButton></LogoutButton>
       <RegistrationForm></RegistrationForm>
     </div>
   );
