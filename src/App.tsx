@@ -2,6 +2,7 @@ import { ref, getDatabase, push, child } from '@firebase/database';
 import React from 'react';
 import './App.css';
 import "./firebase";
+import { RegistrationForm } from './registration/Reg';
 
 function App() {
   //Example of creating a node in the database and inserting string data under it
@@ -16,6 +17,7 @@ function App() {
         <h1>Banking Application</h1>
         <h5>{"(WIP)"}</h5>
       </header>
+      <RegistrationForm></RegistrationForm>
     </div>
   );
 }
