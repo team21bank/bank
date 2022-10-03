@@ -4,6 +4,7 @@ import { ref, getDatabase, push, child, update,get  } from '@firebase/database';
 import "../firebase";
 import { auth } from '../firebase';
 import {signInWithEmailAndPassword } from 'firebase/auth';
+import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css'
 
 export function LoginForm(){
@@ -20,6 +21,14 @@ export function LoginForm(){
         setPass(event.target.value)
     }
 
+    function changePass(){
+        const auth = getAuth();
+        const triggerResetEmail = async () => {
+            await sendPasswordResetEmail(auth,email)
+            console.log("Password reset email sent")
+        }
+        triggerResetEmail();
+    }
     //Function allowing user to login after clicking the login button
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
@@ -35,6 +44,7 @@ export function LoginForm(){
         })
     }
 
+
     //HTML containing log in button and text boxes for email and pass
     return (<div>
         <Form.Group controlId="login">
@@ -47,6 +57,7 @@ export function LoginForm(){
                 type="password"
                 value={pass}
                 onChange={updatePass}/>
+                <Button className="button_reset" onClick={changePass}>Forgot Password?</Button>
             <br/>
             <Button onClick={login}>Login</Button>
             </Form.Group>
