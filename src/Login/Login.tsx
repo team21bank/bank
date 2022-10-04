@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
-import { ref, getDatabase, push, child, update,get  } from '@firebase/database';
+import { ref, getDatabase, push, child, update, get } from '@firebase/database';
 import "../firebase";
 import { auth } from '../firebase';
 import {signInWithEmailAndPassword } from 'firebase/auth';
@@ -8,7 +8,8 @@ import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 
-export function LoginForm(){
+export function LoginForm( {accountPasser}:
+        {accountPasser: (newName: string) => void} ){
     //Email and password variable holding log in information
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
@@ -39,25 +40,28 @@ export function LoginForm(){
             setPass('')
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/username')
             get(userRef).then(ss=>{
+                accountPasser(ss.val());
                 alert(ss.val()+" just logged in")
+                navigate("/");
             })
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
-        })
+        });
     }
 
 
     //HTML containing log in button and text boxes for email and pass
     return (<div>
         <Form.Group controlId="login">
-            <Form.Label>Enter Your Email</Form.Label>
+            <Form.Label>Enter Your Email:</Form.Label>
             <Form.Control
                 value={email}
                 onChange={updateEmail}/>
             <br/>
+            <Form.Label>Enter Your Password:</Form.Label>
             <Form.Control
                 type="password"
                 value={pass}
@@ -65,6 +69,6 @@ export function LoginForm(){
                 <Button className="button_reset" onClick={changePass}>Forgot Password?</Button>
             <br/>
             <Button onClick={login}>Login</Button>
-            </Form.Group>
+        </Form.Group>
     </div>)
 }

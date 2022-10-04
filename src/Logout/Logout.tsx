@@ -5,11 +5,14 @@ import "../firebase";
 import { auth } from '../firebase';
 import {signOut } from 'firebase/auth';
 
-export function LogoutButton(){
+export function LogoutButton( {accountPasser}:
+        {accountPasser: (newName: string) => void;} ){
 
     //Function for button click logging out current user
     function logout(){
-        signOut(auth)
+        signOut(auth);
+        accountPasser("");
+        alert("Successfully logged out!");
     }
 
     //HTML holding logout button
