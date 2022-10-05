@@ -24,9 +24,8 @@ function App() {
         <Route path="/" element={<NavigationLayout />}>
           <Route index element={<HomePage />} />
           <Route path="register" element={<RegistrationForm />} />
-          <Route path="login" element={<LoginForm />}>
-            <Route path="resetpassword" element={<ResetMessage />} />
-          </Route>
+          <Route path="login" element={<LoginForm />}/>
+          <Route path="login/resetpassword" element={<ResetMessage />} />
         </Route>
       </Routes>
     </BrowserRouter>
