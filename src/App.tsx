@@ -6,7 +6,7 @@ import "./firebase";
 import { RegistrationForm } from './registration/Reg';
 import {LoginForm} from './Login/Login';
 import {LogoutButton} from './Logout/Logout';
-import {ResetMessage} from './Login/ResetMessage';
+import ResetMessage from './Login/ResetMessage';
 import {Route, BrowserRouter, Link, Routes, Outlet}
     from 'react-router-dom';
 import { NavigationLayout } from './Navigation/NavigationLayout';
@@ -24,10 +24,10 @@ function App() {
         <Route path="/" element={<NavigationLayout />}>
           <Route index element={<HomePage />} />
           <Route path="register" element={<RegistrationForm />} />
-          <Route path="login" element={<LoginForm />}/>
-          <Route path="login/resetpassword" element={<ResetMessage />} />
+          <Route path="login" element={<LoginForm />}>
+            <Route path="resetpassword" element={<ResetMessage />} />
           </Route>
-
+        </Route>
       </Routes>
     </BrowserRouter>
     </div>

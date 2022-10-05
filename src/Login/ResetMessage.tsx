@@ -9,7 +9,7 @@ import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css';
 import { FirebaseError } from '@firebase/util';
 
-export function ResetMessage(){
+export default function ResetMessage(){
 
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
