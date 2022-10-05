@@ -4,8 +4,9 @@
     "\\public",
     "\\src",
     "\\src\\Login",
-    "\\src\\Logout"
+    "\\src\\Logout",
+    "\\src\\registration"
   ],
-  "SelectedNode": "\\src\\App.tsx",
+  "SelectedNode": "\\package-lock.json",
   "PreviewInSolutionExplorer": false
 }
