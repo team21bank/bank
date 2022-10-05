@@ -3,16 +3,18 @@ import {Button, Form} from 'react-bootstrap'
 import { ref, getDatabase, push, child, update,get  } from '@firebase/database';
 import "../firebase";
 import { auth } from '../firebase';
-import {signInWithEmailAndPassword } from 'firebase/auth';
+import {signInWithEmailAndPassword, Auth } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 
-export function UserView(){
-    const user = auth.currentUser;
-    let test;
+export function UserView({userAuth}: {userAuth: Auth}){
+    const user = userAuth.currentUser;
+    const [test, updateTest] = useState<string>("");
     if(user){
-        console.log();
-        test = user.uid;
+        let userRef=ref(getDatabase(),'/users/'+user.uid+'/username')
+        get(userRef).then(ss=>{
+            updateTest(ss.val());
+        })
     }
 
     return (<div>{test}</div>)

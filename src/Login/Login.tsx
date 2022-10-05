@@ -3,13 +3,13 @@ import {Button, Form} from 'react-bootstrap'
 import { ref, getDatabase, push, child, update, get } from '@firebase/database';
 import "../firebase";
 import { auth } from '../firebase';
-import {signInWithEmailAndPassword } from 'firebase/auth';
+import {signInWithEmailAndPassword, Auth } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 
-export function LoginForm( {accountPasser}:
-        {accountPasser: (newName: string) => void} ){
+export function LoginForm( {passAuth}:
+        {passAuth: (theAuth: Auth) => void }){
     //Email and password variable holding log in information
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
@@ -38,9 +38,9 @@ export function LoginForm( {accountPasser}:
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
             setEmail('')
             setPass('')
+            passAuth(auth);
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/username')
             get(userRef).then(ss=>{
-                accountPasser(ss.val());
                 alert(ss.val()+" just logged in")
                 navigate("/");
             })

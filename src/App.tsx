@@ -10,15 +10,11 @@ import ResetMessage from './Login/ResetMessage';
 import {Route, BrowserRouter, Link, Routes, Outlet}
     from 'react-router-dom';
 import { NavigationLayout } from './Navigation/NavigationLayout';
-import { Auth } from 'firebase/auth';
+import { getAuth, Auth } from 'firebase/auth';
 import { UserView } from './UserView/UserView';
 
 function App() {
-  const [accountName, setAccount] = useState<string>("");
-  function accountPasser(newName: string){
-    setAccount(newName);
-  }
-  const [userAuth, setAuth] = useState<Auth>();
+  const [userAuth, setAuth] = useState<Auth>(getAuth());
   function passAuth(theAuth: Auth){
     setAuth(theAuth);
   }
@@ -34,7 +30,8 @@ function App() {
         <h1>Banking Application</h1>
         <h5>{"(WIP)"}</h5>
       </header>
-      <LogoutButton accountPasser={accountPasser}></LogoutButton>
+      <UserView userAuth={userAuth}></UserView>
+      <LogoutButton passAuth={passAuth}></LogoutButton>
     </div>)
   }
 
@@ -42,10 +39,10 @@ function App() {
     <div> 
       <BrowserRouter>
         <Routes>
-            <Route path="/" element={<NavigationLayout accountName={accountName} />}>
+            <Route path="/" element={<NavigationLayout userAuth={userAuth} />}>
               <Route index element={<HomePage />} />
               <Route path="register" element={<RegistrationForm />} />
-              <Route path="login" element={<LoginForm accountPasser={accountPasser}/>}>
+              <Route path="login" element={<LoginForm passAuth={passAuth}/>}>
               <Route path="resetpassword" element={<ResetMessage />} />
             </Route>
           </Route>

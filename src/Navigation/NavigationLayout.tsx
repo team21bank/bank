@@ -1,11 +1,22 @@
-import React from 'react';
+import { Auth } from 'firebase/auth';
+import React, { useState } from 'react';
 import { ListGroup, Button } from 'react-bootstrap';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { ref, getDatabase, push, child, update, get } from '@firebase/database';
+import "../firebase";
 import "./NavigationLayout.css";
 
 
-export function NavigationLayout({accountName}: {accountName: string;}): JSX.Element {
+export function NavigationLayout({userAuth}: {userAuth: Auth;}): JSX.Element {
     const navigate = useNavigate();
+    const user = userAuth.currentUser;
+    const [test, updateTest] = useState<string>("");
+    if(user){
+        let userRef=ref(getDatabase(),'/users/'+user.uid+'/username')
+        get(userRef).then(ss=>{
+            updateTest(ss.val());
+        })
+    }
 
     return (
     <div className='navigation-bar'>
@@ -25,8 +36,8 @@ export function NavigationLayout({accountName}: {accountName: string;}): JSX.Ele
           <Outlet></Outlet>
           </td>
         <td width ="50%">
-          <div>{accountName !== "" ? 
-            <div>Welcome, {accountName.replace(".", " ")}!</div> : 
+          <div>{test !== "" ? 
+            <div>Welcome, {test}!</div> : 
             <div>Please Log In</div>}
           </div>
         </td>

@@ -3,15 +3,14 @@ import {Button, Form} from 'react-bootstrap'
 import { ref, getDatabase, push, child, update,get  } from '@firebase/database';
 import "../firebase";
 import { auth } from '../firebase';
-import {signOut } from 'firebase/auth';
+import {signOut, Auth, getAuth} from 'firebase/auth';
 
-export function LogoutButton( {accountPasser}:
-        {accountPasser: (newName: string) => void;} ){
+export function LogoutButton( {passAuth}:
+        {passAuth: (theAuth: Auth) => void} ){
 
     //Function for button click logging out current user
     function logout(){
         signOut(auth);
-        accountPasser("");
         alert("Successfully logged out!");
     }
 
