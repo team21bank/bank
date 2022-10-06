@@ -10,6 +10,7 @@ import ResetMessage from './Login/ResetMessage';
 import {Route, BrowserRouter, Link, Routes, Outlet}
     from 'react-router-dom';
 import { NavigationLayout } from './Navigation/NavigationLayout';
+import {ClassCodeForm} from './ClassCode/ClassCodes'
 
 function App() {
   //Example of creating a node in the database and inserting string data under it
@@ -42,6 +43,7 @@ function HomePage(): JSX.Element {
       <h5>{"(WIP)"}</h5>
     </header>
     <LogoutButton></LogoutButton>
+    <ClassCodeForm></ClassCodeForm>
   </div>)
 }
 
