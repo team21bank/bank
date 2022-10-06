@@ -5,6 +5,7 @@ import { ref, getDatabase, push, child, update  } from '@firebase/database';
 import "../firebase";
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {Students} from "../Students/Students"
 
 export function RegistrationForm(){
     let database_reference = ref(getDatabase());
@@ -51,9 +52,14 @@ export function RegistrationForm(){
         createUserWithEmailAndPassword(auth,email,p1).then(somedata=>{
             let uid=somedata.user.uid;
             let userRef=ref(getDatabase(),'/users/'+uid)
-            update(userRef,{username:username});
-            update(userRef,{id:id});
-            update(userRef,{email:email});
+            let newUser={
+                username:username,
+                email:email,
+                id:id,
+                avatar:'',
+                groups:[]
+            }
+            update(userRef,{userObj:newUser});
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
