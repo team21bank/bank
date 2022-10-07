@@ -5,6 +5,7 @@ import "../firebase";
 import { auth } from '../firebase';
 import {signInWithEmailAndPassword } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
+import {Bank} from "../BankTest/BankObject"
 
 import {Routes, Route, useNavigate} from 'react-router-dom';
 
