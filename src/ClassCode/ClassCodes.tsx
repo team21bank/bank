@@ -31,7 +31,12 @@ export function ClassCodeForm(){
                 }
             })
         alert(code)
-        push(ref(getDatabase(),"/groups/"+code),code);
+        let newBank: Bank={
+            bankId:code,
+            teacherID:"",
+            studentBals:[],
+        }
+        update(ref(getDatabase(),"/groups/"+code),{bankObj:newBank});
     }
 
     return (<div>
