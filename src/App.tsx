@@ -12,6 +12,7 @@ import {Route, BrowserRouter, Link, Routes, Outlet}
 import { NavigationLayout } from './Navigation/NavigationLayout';
 import { getAuth, Auth } from 'firebase/auth';
 import { UserView } from './UserView/UserView';
+import {ClassCodeForm} from './ClassCode/ClassCodes'
 
 function App() {
   const [userAuth, setAuth] = useState<Auth>(getAuth());
