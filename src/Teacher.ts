@@ -1,6 +1,6 @@
 
 export interface Teacher {
-    uid: string,
+    id: string,
     email: string,
     username: string,
     avatar: string,

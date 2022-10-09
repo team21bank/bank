@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
 import { ref, getDatabase, push, child, update,get  } from '@firebase/database';
 import "../firebase";
-import { auth } from '../firebase';
+import { auth, app } from '../firebase';
 import {signOut, Auth, getAuth} from 'firebase/auth';
 
 export function LogoutButton( {passAuth}:
@@ -10,7 +10,11 @@ export function LogoutButton( {passAuth}:
 
     //Function for button click logging out current user
     function logout(){
-        signOut(auth);
+        signOut(auth).then(
+            function() {
+                passAuth(auth)
+            }
+        );
         alert("Successfully logged out!");
     }
 
