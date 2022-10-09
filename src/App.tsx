@@ -10,6 +10,7 @@ import ResetMessage from './Login/ResetMessage';
 import {Route, BrowserRouter, Link, Routes, Outlet}
     from 'react-router-dom';
 import { NavigationLayout } from './Navigation/NavigationLayout';
+import { UsernameForm } from './ChangeUsername/ChangeUsername';
 
 function App() {
   //Example of creating a node in the database and inserting string data under it
@@ -24,6 +25,7 @@ function App() {
         <Route path="/" element={<NavigationLayout />}>
           <Route index element={<HomePage />} />
           <Route path="register" element={<RegistrationForm />} />
+          <Route path="changeusername" element={<UsernameForm />} />
           <Route path="login" element={<LoginForm />}>
             <Route path="resetpassword" element={<ResetMessage />} />
           </Route>

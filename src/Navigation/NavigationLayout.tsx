@@ -19,6 +19,9 @@ export function NavigationLayout(): JSX.Element {
         <ListGroup.Item>
             <Button onClick={()=>navigate("/login")}>Login</Button>
         </ListGroup.Item>
+        <ListGroup.Item>
+          <Button onClick={()=>navigate("/changeUsername")}>Change Username</Button>
+        </ListGroup.Item>
       </ListGroup>
       <Outlet></Outlet>
     </div>
