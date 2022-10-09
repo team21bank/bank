@@ -9,7 +9,7 @@ export function LogoutButton(){
 
     //Function for button click logging out current user
     function logout(){
-        signOut(auth);
+        signOut(auth)
     }
 
     //HTML holding logout button
