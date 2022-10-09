@@ -9,4 +9,6 @@ export interface Students{
     avatar: string
 
     groups: Array<string>
+
+    isTeacher: boolean
 }

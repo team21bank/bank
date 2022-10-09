@@ -5,7 +5,7 @@ import { ref, getDatabase, push, child, update  } from '@firebase/database';
 import "../firebase";
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import {Students} from "../Students/Students"
+import {Students} from "../UserInterfaces/Students";
 
 export function RegistrationForm(){
     let database_reference = ref(getDatabase());
@@ -17,6 +17,7 @@ export function RegistrationForm(){
     const [id, setId] = useState<string>('')
     const [p1, setP1] = useState<string>('')
     const [p2, setP2] = useState<string>('')
+    const [isTeacher, setIsTeacher] = useState<boolean>(false);
 
     //Setters for textbox values
     function updateEmail(event: React.ChangeEvent<HTMLInputElement>){
@@ -52,12 +53,13 @@ export function RegistrationForm(){
         createUserWithEmailAndPassword(auth,email,p1).then(somedata=>{
             let uid=somedata.user.uid;
             let userRef=ref(getDatabase(),'/users/'+uid)
-            let newUser={
+            let newUser = {
                 username:username,
                 email:email,
                 id:id,
                 avatar:'',
-                groups:[]
+                groups:[],
+                isTeacher: isTeacher
             }
             update(userRef,{userObj:newUser});
         }).catch(function(error){
@@ -98,6 +100,14 @@ export function RegistrationForm(){
                 type="password"
                 value={p2}
                 onChange={updateP2}/>
+            <br/>
+            <Form.Label>Select your role</Form.Label>
+            <Form.Select onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                setIsTeacher((e.target.value=="teacher")? true : false);
+            }}>
+                <option value="student">student</option>
+                <option value="teacher">teacher</option>
+            </Form.Select>
             <br/>
             <Button onClick={register}>Register</Button>
         </Form.Group>
