@@ -7,7 +7,6 @@ import {signInWithEmailAndPassword } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css';
 import {Routes, Route, useNavigate} from 'react-router-dom';
-import { AvatarForm } from '../Avatar/Avatar';
 
 export function LoginForm(){
     //Email and password variable holding log in information
@@ -36,6 +35,8 @@ export function LoginForm(){
     //Function allowing user to login after clicking the login button
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
+            setEmail('')
+            setPass('')
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/username')
             get(userRef).then(ss=>{
                 alert(ss.val()+" just logged in")
@@ -63,8 +64,9 @@ export function LoginForm(){
                 onChange={updatePass}/>
                 <Button className="button_reset" onClick={changePass}>Forgot Password?</Button>
             <br/>
-            <Button onClick={login}>Login</Button>
-            <AvatarForm></AvatarForm>
+            <Button onClick={()=>{
+                login
+                navigate('/studenthome')}}>Login</Button>
             </Form.Group>
     </div>)
 }
