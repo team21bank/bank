@@ -12,6 +12,7 @@ import {Route, BrowserRouter, Link, Routes, Outlet}
 import { NavigationLayout } from './Navigation/NavigationLayout';
 import { getAuth, Auth } from 'firebase/auth';
 import { UserView } from './UserView/UserView';
+import { UsernameForm } from './ChangeUsername/ChangeUsername';
 import {ClassCodeForm} from './ClassCode/ClassCodes'
 
 function App() {
@@ -43,8 +44,9 @@ function App() {
             <Route path="/" element={<NavigationLayout userAuth={userAuth} />}>
               <Route index element={<HomePage />} />
               <Route path="register" element={<RegistrationForm />} />
+              <Route path="changeusername" element={<UsernameForm />} />
               <Route path="login" element={<LoginForm passAuth={passAuth}/>}>
-              <Route path="resetpassword" element={<ResetMessage />} />
+              <Route path="login/resetpassword" element={<ResetMessage />} />
             </Route>
           </Route>
         </Routes>

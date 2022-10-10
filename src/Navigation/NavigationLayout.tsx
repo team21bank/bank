@@ -21,7 +21,7 @@ export function NavigationLayout({userAuth}: {userAuth: Auth;}): JSX.Element {
     return (
     <div className='navigation-bar'>
       <table width="30%">
-        <td width="50%">
+        <td width="60%">
           <ListGroup horizontal>
             <ListGroup.Item>
               <Button onClick={()=>navigate("/")}>Home</Button>
@@ -32,10 +32,13 @@ export function NavigationLayout({userAuth}: {userAuth: Auth;}): JSX.Element {
             <ListGroup.Item>
               <Button onClick={()=>navigate("/login")}>Login</Button>
             </ListGroup.Item>
+            <ListGroup.Item>
+              <Button onClick={()=>navigate("/changeUsername")}>Change Username</Button>
+            </ListGroup.Item>
           </ListGroup>
           <Outlet></Outlet>
-          </td>
-        <td width ="50%">
+        </td>
+        <td width ="40%">
           <div>{test !== "" ? 
             <div>Welcome, {test}!</div> : 
             <div>Please Log In</div>}
