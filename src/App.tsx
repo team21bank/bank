@@ -21,9 +21,10 @@ function App() {
 
     return (
     <div>
+      <NavigationLayout></NavigationLayout>
       <BrowserRouter>
       <Routes>
-        <Route path="/" element={<NavigationLayout />}>
+        <Route path="/">
           <Route index element={<HomePage />} />
           <Route path="register" element={<RegistrationForm />} />
           <Route path="login" element={<LoginForm />}/>
