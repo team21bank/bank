@@ -64,7 +64,9 @@ export function LoginForm(){
                 onChange={updatePass}/>
                 <Button className="button_reset" onClick={changePass}>Forgot Password?</Button>
             <br/>
-            <Button onClick={login}>Login</Button>
+            <Button onClick={()=>{
+                login
+                navigate('/studenthome')}}>Login</Button>
             </Form.Group>
     </div>)
 }

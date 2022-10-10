@@ -61,6 +61,11 @@ export function RegistrationForm(){
                 groups:[],
                 isTeacher: isTeacher
             }
+            setEmail('')
+            setP1('')
+            setP2('')
+            setId('')
+            setUser('')
             update(userRef,{userObj:newUser});
         }).catch(function(error){
             var errorCode = error.code;
