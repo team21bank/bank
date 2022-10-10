@@ -2,8 +2,9 @@ import { LogoutButton } from "../Logout/Logout";
 import {useNavigate} from 'react-router-dom';
 import React from 'react';
 
-export function StudentHomePage(){
+export function StudentHomePage( {passID}:
+    {passID: (passID: string) => void}){
     return (<div>
-        <LogoutButton></LogoutButton>
+        <LogoutButton passID={passID}></LogoutButton>
     </div>)
 }

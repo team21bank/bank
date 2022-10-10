@@ -3,9 +3,10 @@ import {useNavigate} from 'react-router-dom';
 import { ClassCodeForm } from "../ClassCode/ClassCodes";
 import React from 'react';
 
-export function TeacherHomePage(){
+export function TeacherHomePage({passID}:
+    {passID: (passID: string) => void}){
     return (<div>
         <ClassCodeForm></ClassCodeForm>
-        <LogoutButton></LogoutButton>
+        <LogoutButton passID={passID}></LogoutButton>
     </div>)
 }
