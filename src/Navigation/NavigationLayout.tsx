@@ -1,10 +1,14 @@
-import React from 'react';
 import { ListGroup, Button, Navbar, Container, Nav, Row } from 'react-bootstrap';
+import { Auth } from 'firebase/auth';
+import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { ref, getDatabase, push, child, update, get } from '@firebase/database';
+import "../firebase";
 import "./NavigationLayout.css";
+import { Students } from '../UserInterfaces/Students';
 
 
-export function NavigationLayout(): JSX.Element {
+export function NavigationLayout({currentUser}: {currentUser: Students}): JSX.Element {
 
     return (
     <div>

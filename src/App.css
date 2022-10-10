@@ -3,6 +3,10 @@
   background-color: #919191;
 }
 
+div {
+  width: 100%
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

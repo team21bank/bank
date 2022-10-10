@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
-import { ref, getDatabase, push, child, update,get  } from '@firebase/database';
+import { ref, getDatabase, push, child, update, get } from '@firebase/database';
 import "../firebase";
 import { auth } from '../firebase';
-import {signInWithEmailAndPassword } from 'firebase/auth';
+import {signInWithEmailAndPassword, Auth } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css';
 import {Routes, Route, useNavigate} from 'react-router-dom';
+import { Students } from '../UserInterfaces/Students';
 
-export function LoginForm(){
+export function LoginForm( {currentUser, passID}:
+        {currentUser: Students; passID: (theID: string) => void }){
     //Email and password variable holding log in information
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
@@ -37,7 +39,8 @@ export function LoginForm(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
             setEmail('')
             setPass('')
-            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/username')
+            passID('/users/'+currUser.user.uid)
+            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/username')
             get(userRef).then(ss=>{
                 alert(ss.val()+" just logged in")
             })
@@ -46,18 +49,19 @@ export function LoginForm(){
             var errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
-        })
+        });
     }
 
 
     //HTML containing log in button and text boxes for email and pass
     return (<div>
         <Form.Group controlId="login">
-            <Form.Label>Enter Your Email</Form.Label>
+            <Form.Label>Enter Your Email:</Form.Label>
             <Form.Control
                 value={email}
                 onChange={updateEmail}/>
             <br/>
+            <Form.Label>Enter Your Password:</Form.Label>
             <Form.Control
                 type="password"
                 value={pass}
@@ -65,8 +69,14 @@ export function LoginForm(){
                 <Button className="button_reset" onClick={changePass}>Forgot Password?</Button>
             <br/>
             <Button onClick={()=>{
-                login
-                navigate('/studenthome')}}>Login</Button>
+                login()
+                if(!currentUser.isTeacher) {
+                    navigate('/studenthome')
+                } else {
+                    navigate('/teacherhome')
+                }
+                }}
+                >Login</Button>
             </Form.Group>
     </div>)
 }

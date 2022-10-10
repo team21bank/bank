@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { ref, getDatabase, push, child } from '@firebase/database';
-import React from 'react';
+import { ref, getDatabase, push, child, get } from '@firebase/database';
+import React, { useState } from 'react';
 import './App.css';
 import "./firebase";
 import { RegistrationForm } from './registration/Reg';
@@ -10,41 +10,91 @@ import ResetMessage from './Login/ResetMessage';
 import {Route, BrowserRouter, Link, Routes, Outlet}
     from 'react-router-dom';
 import { NavigationLayout } from './Navigation/NavigationLayout';
+import { getAuth, Auth } from 'firebase/auth';
+import { UserView } from './UserView/UserView';
+import { UsernameForm } from './ChangeUsername/ChangeUsername';
 import {ClassCodeForm} from './ClassCode/ClassCodes'
+import { Students } from './UserInterfaces/Students';
 import {StudentHomePage} from './StudentHomePage/StudentHomePage'
+import { TeacherHomePage } from './TeacherHomePage/TeacherHomePage';
 
 function App() {
+  const [userID, setID] = useState<string>("");
+  function passID(theID: string){
+    setID(theID);
+    if(theID !== ""){
+      let userRef=ref(getDatabase(),theID+'/userObj')
+      get(userRef).then(ss=>
+        setUser(parseUser(ss.val()))
+      );
+    } else {
+      setUser({
+        email: "",
+        username: "",
+        id: "",
+        avatar: "",
+        groups: [],
+        isTeacher: false
+      })
+    }
+  }
+
+  function parseUser(user: Students): Students{
+    console.log(user)
+    const newUser: Students = {
+      email: user.email,
+      username: user.username,
+      id: user.id,
+      avatar: user.avatar,
+      groups: [],
+      isTeacher: user.isTeacher
+    }
+    console.log(newUser)
+    return newUser
+  }
+
+
+  const [currentUser, setUser] = useState<Students>({
+      email: "",
+      username: "",
+      id: "",
+      avatar: "",
+      groups: [],
+      isTeacher: false
+    });
+
   //Example of creating a node in the database and inserting string data under it
   //let database_reference = ref(getDatabase());
   //let c = child(database_reference, "test");
   //push(c, "Hello!");
 
+  function HomePage(): JSX.Element {
     return (
-    <div>
-      <NavigationLayout></NavigationLayout>
+    <div className="App">
+      <header className="App-header">
+        <h1>Banking Application</h1>
+        <h5>{"(WIP)"}</h5>
+      </header>
+      <UserView currentUser={currentUser}></UserView>
+    </div>)
+  }
+
+    return (
+    <div> 
       <BrowserRouter>
       <Routes>
-        <Route path="/">
+        <Route path="/" element={<NavigationLayout currentUser={currentUser} />}>
           <Route index element={<HomePage />} />
           <Route path="register" element={<RegistrationForm />} />
-          <Route path="login" element={<LoginForm />}/>
+          <Route path="login" element={<LoginForm currentUser={currentUser} passID={passID}/>}/>
           <Route path="login/resetpassword" element={<ResetMessage />} />
-          <Route path="studenthome" element={<StudentHomePage/>}/>
+          <Route path="studenthome" element={<StudentHomePage passID={passID}/>}/>
+          <Route path="teacherhome" element={<TeacherHomePage passID={passID}/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
     </div>
   );
-}
-
-function HomePage(): JSX.Element {
-  return (
-  <div className="App">
-    <header className="App-header">
-      <h1>Banking Application</h1>
-      <h5>{"(WIP)"}</h5>
-    </header>
-  </div>)
 }
 
 export default App;
