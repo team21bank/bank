@@ -7,9 +7,10 @@ import {signInWithEmailAndPassword, Auth } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css';
 import {Routes, Route, useNavigate} from 'react-router-dom';
+import { Students } from '../UserInterfaces/Students';
 
-export function LoginForm( {passID}:
-        {passID: (theID: string) => void }){
+export function LoginForm( {currentUser, passID}:
+        {currentUser: Students; passID: (theID: string) => void }){
     //Email and password variable holding log in information
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
@@ -42,7 +43,6 @@ export function LoginForm( {passID}:
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/username')
             get(userRef).then(ss=>{
                 alert(ss.val()+" just logged in")
-                navigate("/");
             })
         }).catch(function(error){
             var errorCode = error.code;
@@ -68,7 +68,15 @@ export function LoginForm( {passID}:
                 onChange={updatePass}/>
                 <Button className="button_reset" onClick={changePass}>Forgot Password?</Button>
             <br/>
-            <Button onClick={login}>Login</Button>
-        </Form.Group>
+            <Button onClick={()=>{
+                login()
+                if(!currentUser.isTeacher) {
+                    navigate('/studenthome')
+                } else {
+                    navigate('/teacherhome')
+                }
+                }}
+                >Login</Button>
+            </Form.Group>
     </div>)
 }

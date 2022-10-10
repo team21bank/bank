@@ -15,6 +15,8 @@ import { UserView } from './UserView/UserView';
 import { UsernameForm } from './ChangeUsername/ChangeUsername';
 import {ClassCodeForm} from './ClassCode/ClassCodes'
 import { Students } from './UserInterfaces/Students';
+import {StudentHomePage} from './StudentHomePage/StudentHomePage'
+import { TeacherHomePage } from './TeacherHomePage/TeacherHomePage';
 
 function App() {
   const [userID, setID] = useState<string>("");
@@ -25,7 +27,6 @@ function App() {
       get(userRef).then(ss=>
         setUser(parseUser(ss.val()))
       );
-      //setUser(JSONtoStudent(userRef.toJSON));
     } else {
       setUser({
         email: "",
@@ -39,14 +40,17 @@ function App() {
   }
 
   function parseUser(user: Students): Students{
-    return ({
+    console.log(user)
+    const newUser: Students = {
       email: user.email,
       username: user.username,
       id: user.id,
       avatar: user.avatar,
       groups: [],
       isTeacher: user.isTeacher
-    })
+    }
+    console.log(newUser)
+    return newUser
   }
 
   const [currentUser, setUser] = useState<Students>({
@@ -71,24 +75,23 @@ function App() {
         <h5>{"(WIP)"}</h5>
       </header>
       <UserView currentUser={currentUser}></UserView>
-      <LogoutButton passID={passID}></LogoutButton>
     </div>)
   }
 
     return (
     <div> 
       <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<NavigationLayout currentUser={currentUser} />}>
-              <Route index element={<HomePage />} />
-              <Route path="register" element={<RegistrationForm />} />
-              <Route path="changeusername" element={<UsernameForm />} />
-              <Route path="login" element={<LoginForm passID={passID}/>}>
-              <Route path="login/resetpassword" element={<ResetMessage />} />
-            </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<NavigationLayout currentUser={currentUser}/>}>
+          <Route index element={<HomePage />} />
+          <Route path="register" element={<RegistrationForm />} />
+          <Route path="login" element={<LoginForm currentUser={currentUser} passID={passID}/>}/>
+          <Route path="login/resetpassword" element={<ResetMessage />} />
+          <Route path="studenthome" element={<StudentHomePage passID={passID}/>}/>
+          <Route path="teacherhome" element={<TeacherHomePage passID={passID}/>}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
     </div>
   );
 }

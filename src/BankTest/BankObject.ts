@@ -2,7 +2,8 @@ import { idBal } from "./idBalObject";
 export interface Bank {
     /** The ID of the bank*/
     bankId: string;
-    /** The ID of the bank, generated on creation(?). */
-    studentBals: idBal[];
+    /** The ID of the teacher*/
+    teacherID: string;
     /** An array of studentID/balance pairs.*/
+    studentBals: idBal[];
 }
