@@ -1,5 +1,5 @@
 import { Button, Form } from "react-bootstrap";
-import React, { useRef, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 
 export function AvatarForm(){
     /*
@@ -10,12 +10,18 @@ export function AvatarForm(){
 
     const [image, setImage] = useState<string>("");
     */
-  
+
+    const [image, setImage] = useState<[{image: object}]>([{image: {}}])
+    
+    const handleSetImage = (event: ChangeEvent<HTMLInputElement>) => {
+        const { files } = event.target;
+    }
+
     return (
       <div>
         <Form.Group controlId="avatar">
         <Form.Label>Upload Image</Form.Label>
-            <input type="file" id="myFile" name="filename"/>
+            <input type="file" name="image" accept="image/gif, image/jpeg, image/png" onChange={e => handleSetImage(e)}/>
             <input type="submit"></input>
         </Form.Group>
       </div>
