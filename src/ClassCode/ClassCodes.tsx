@@ -5,6 +5,7 @@ import "../firebase";
 import { auth } from '../firebase';
 import {signInWithEmailAndPassword } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
+import {Bank} from "../BankTest/BankObject"
 
 import {Routes, Route, useNavigate} from 'react-router-dom';
 
@@ -30,7 +31,12 @@ export function ClassCodeForm(){
                 }
             })
         alert(code)
-        push(ref(getDatabase(),"/groups/"+code),code);
+        let newBank: Bank={
+            bankId:code,
+            teacherID:"",
+            studentBals:[],
+        }
+        update(ref(getDatabase(),"/groups/"+code),{bankObj:newBank});
     }
 
     return (<div>

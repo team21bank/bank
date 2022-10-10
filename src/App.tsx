@@ -11,6 +11,7 @@ import {Route, BrowserRouter, Link, Routes, Outlet}
     from 'react-router-dom';
 import { NavigationLayout } from './Navigation/NavigationLayout';
 import {ClassCodeForm} from './ClassCode/ClassCodes'
+import {StudentHomePage} from './StudentHomePage/StudentHomePage'
 
 function App() {
   //Example of creating a node in the database and inserting string data under it
@@ -28,6 +29,7 @@ function App() {
           <Route path="register" element={<RegistrationForm />} />
           <Route path="login" element={<LoginForm />}/>
           <Route path="login/resetpassword" element={<ResetMessage />} />
+          <Route path="studenthome" element={<StudentHomePage/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
@@ -42,8 +44,6 @@ function HomePage(): JSX.Element {
       <h1>Banking Application</h1>
       <h5>{"(WIP)"}</h5>
     </header>
-    <LogoutButton></LogoutButton>
-    <ClassCodeForm></ClassCodeForm>
   </div>)
 }
 

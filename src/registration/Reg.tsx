@@ -53,7 +53,7 @@ export function RegistrationForm(){
         createUserWithEmailAndPassword(auth,email,p1).then(somedata=>{
             let uid=somedata.user.uid;
             let userRef=ref(getDatabase(),'/users/'+uid)
-            let newUser = {
+            const newUser: Students={
                 username:username,
                 email:email,
                 id:id,
@@ -61,6 +61,11 @@ export function RegistrationForm(){
                 groups:[],
                 isTeacher: isTeacher
             }
+            setEmail('')
+            setP1('')
+            setP2('')
+            setId('')
+            setUser('')
             update(userRef,{userObj:newUser});
         }).catch(function(error){
             var errorCode = error.code;
