@@ -7,6 +7,7 @@ import {signInWithEmailAndPassword } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css';
 import {Routes, Route, useNavigate} from 'react-router-dom';
+import { AvatarForm } from '../Avatar/Avatar';
 
 export function LoginForm(){
     //Email and password variable holding log in information
@@ -63,6 +64,7 @@ export function LoginForm(){
                 <Button className="button_reset" onClick={changePass}>Forgot Password?</Button>
             <br/>
             <Button onClick={login}>Login</Button>
+            <AvatarForm></AvatarForm>
             </Form.Group>
     </div>)
 }
