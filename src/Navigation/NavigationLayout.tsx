@@ -5,18 +5,10 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { ref, getDatabase, push, child, update, get } from '@firebase/database';
 import "../firebase";
 import "./NavigationLayout.css";
+import { Students } from '../UserInterfaces/Students';
 
-
-export function NavigationLayout({userAuth}: {userAuth: Auth;}): JSX.Element {
+export function NavigationLayout({currentUser}: {currentUser: Students;}): JSX.Element {
     const navigate = useNavigate();
-    const user = userAuth.currentUser;
-    const [test, updateTest] = useState<string>("");
-    if(user){
-        let userRef=ref(getDatabase(),'/users/'+user.uid+'/username')
-        get(userRef).then(ss=>{
-            updateTest(ss.val());
-        })
-    }
 
     return (
     <div className='navigation-bar'>
@@ -39,8 +31,8 @@ export function NavigationLayout({userAuth}: {userAuth: Auth;}): JSX.Element {
           <Outlet></Outlet>
         </td>
         <td width ="40%">
-          <div>{test !== "" ? 
-            <div>Welcome, {test}!</div> : 
+          <div>{currentUser.username !== "" ? 
+            <div>Welcome, {currentUser.username}!</div> : 
             <div>Please Log In</div>}
           </div>
         </td>

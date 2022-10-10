@@ -8,8 +8,8 @@ import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 
-export function LoginForm( {passAuth}:
-        {passAuth: (theAuth: Auth) => void }){
+export function LoginForm( {passID}:
+        {passID: (theID: string) => void }){
     //Email and password variable holding log in information
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
@@ -38,8 +38,8 @@ export function LoginForm( {passAuth}:
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
             setEmail('')
             setPass('')
-            passAuth(auth);
-            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/username')
+            passID('/users/'+currUser.user.uid)
+            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/username')
             get(userRef).then(ss=>{
                 alert(ss.val()+" just logged in")
                 navigate("/");
