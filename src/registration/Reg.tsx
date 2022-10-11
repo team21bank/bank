@@ -5,7 +5,7 @@ import { ref, getDatabase, push, child, update  } from '@firebase/database';
 import "../firebase";
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import {Students} from "../UserInterfaces/Students";
+import {Students} from "../Interfaces/User";
 
 export function RegistrationForm(){
     let database_reference = ref(getDatabase());

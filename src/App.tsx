@@ -4,64 +4,30 @@ import React, { useState } from 'react';
 import './App.css';
 import "./firebase";
 import { RegistrationForm } from './registration/Reg';
-import {LoginForm} from './Login/Login';
 import {LogoutButton} from './Logout/Logout';
-import ResetMessage from './Login/ResetMessage';
+import ResetMessage from './Authentication/ResetMessage';
 import {Route, BrowserRouter, Link, Routes, Outlet}
     from 'react-router-dom';
-import { NavigationLayout } from './Navigation/NavigationLayout';
-import { getAuth, Auth } from 'firebase/auth';
+import { NavigationLayout } from './Navbars/StudentNavbar';
+import { getAuth, Auth, User } from 'firebase/auth';
 import { UserView } from './UserView/UserView';
 import { UsernameForm } from './ChangeUsername/ChangeUsername';
 import {ClassCodeForm} from './ClassCode/ClassCodes'
-import { Students } from './UserInterfaces/Students';
+import { Students } from './Interfaces/User';
 import {StudentHomePage} from './StudentHomePage/StudentHomePage'
 import { TeacherHomePage } from './TeacherHomePage/TeacherHomePage';
+import { LoginForm } from './Authentication/Login';
+import { auth } from "./firebase";
+
+
+
+const AuthContext = React.createContext<number>(0);
+
+
+
 
 function App() {
-  const [userID, setID] = useState<string>("");
-  function passID(theID: string){
-    setID(theID);
-    if(theID !== ""){
-      let userRef=ref(getDatabase(),theID+'/userObj')
-      get(userRef).then(ss=>
-        setUser(parseUser(ss.val()))
-      );
-    } else {
-      setUser({
-        email: "",
-        username: "",
-        id: "",
-        avatar: "",
-        groups: [],
-        isTeacher: false
-      })
-    }
-  }
-
-  function parseUser(user: Students): Students{
-    console.log(user)
-    const newUser: Students = {
-      email: user.email,
-      username: user.username,
-      id: user.id,
-      avatar: user.avatar,
-      groups: [],
-      isTeacher: user.isTeacher
-    }
-    console.log(newUser)
-    return newUser
-  }
-
-
-  const [currentUser, setUser] = useState<Students>({
-      email: "",
-      username: "",
-      id: "",
-      avatar: "",
-      groups: [],
-      isTeacher: false
-    });
+  
 
   //Example of creating a node in the database and inserting string data under it
   //let database_reference = ref(getDatabase());
@@ -75,21 +41,22 @@ function App() {
         <h1>Banking Application</h1>
         <h5>{"(WIP)"}</h5>
       </header>
-      <UserView currentUser={currentUser}></UserView>
+      <UserView></UserView>
     </div>)
   }
 
+
     return (
-    <div> 
+    <div>
       <BrowserRouter>
       <Routes>
-        <Route path="/" element={<NavigationLayout currentUser={currentUser} />}>
-          <Route index element={<HomePage />} />
+      <Route index element={<HomePage />} />
+        <Route path="/" element={<NavigationLayout />}>
           <Route path="register" element={<RegistrationForm />} />
-          <Route path="login" element={<LoginForm currentUser={currentUser} passID={passID}/>}/>
+          <Route path="login" element={<LoginForm/>}/>
           <Route path="login/resetpassword" element={<ResetMessage />} />
-          <Route path="studenthome" element={<StudentHomePage passID={passID}/>}/>
-          <Route path="teacherhome" element={<TeacherHomePage passID={passID}/>}/>
+          <Route path="studenthome" element={<StudentHomePage />}/>
+          <Route path="teacherhome" element={<TeacherHomePage />}/>
         </Route>
       </Routes>
     </BrowserRouter>

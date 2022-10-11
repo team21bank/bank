@@ -4,17 +4,14 @@ import { ref, getDatabase, push, child, update,get  } from '@firebase/database';
 import "../firebase";
 import { auth, app } from '../firebase';
 import {signOut, Auth, getAuth} from 'firebase/auth';
-import { Students } from '../UserInterfaces/Students';
+import { Students } from '../Interfaces/User';
 import { useNavigate } from 'react-router-dom';
 
-export function LogoutButton( {passID}:
-        {passID: (passID: string) => void} ){
+export function LogoutButton(){
     const navigate = useNavigate();
     //Function for button click logging out current user
     function logout(){
-        signOut(auth).then(currUser =>{
-            passID("");
-        });
+        signOut(auth);
         alert("Successfully logged out!");
     }
 

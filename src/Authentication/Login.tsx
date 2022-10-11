@@ -3,18 +3,18 @@ import {Button, Form} from 'react-bootstrap'
 import { ref, getDatabase, push, child, update, get } from '@firebase/database';
 import "../firebase";
 import { auth } from '../firebase';
-import {signInWithEmailAndPassword, Auth } from 'firebase/auth';
+import {signInWithEmailAndPassword, Auth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css';
 import {Routes, Route, useNavigate} from 'react-router-dom';
-import { Students } from '../UserInterfaces/Students';
+import { Students } from '../Interfaces/User';
 
-export function LoginForm( {currentUser, passID}:
-        {currentUser: Students; passID: (theID: string) => void }){
+export function LoginForm(){
     //Email and password variable holding log in information
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
     const navigate = useNavigate();
+    const provider = new GoogleAuthProvider();
 
     //Setters for email and pass
     function updateEmail(event: React.ChangeEvent<HTMLInputElement>){
@@ -25,25 +25,21 @@ export function LoginForm( {currentUser, passID}:
         setPass(event.target.value)
     }
 
-    function changePass(){
-        const auth = getAuth();
-        navigate('/login/resetpassword');
-        /*const triggerResetEmail = async () => {
-            await sendPasswordResetEmail(auth,email)
-            console.log("Password reset email sent")
-        }
-        triggerResetEmail();*/
-    }
+    
     //Function allowing user to login after clicking the login button
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
             setEmail('')
             setPass('')
-            passID('/users/'+currUser.user.uid)
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/username')
             get(userRef).then(ss=>{
                 alert(ss.val()+" just logged in")
             })
+            if(true) {
+                navigate('/studenthome')
+            } else {
+                navigate('/teacherhome')
+            }
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -55,6 +51,8 @@ export function LoginForm( {currentUser, passID}:
 
     //HTML containing log in button and text boxes for email and pass
     return (<div>
+              {auth.currentUser ? <div>logged in</div> : <div>not logged in</div>}
+
         <Form.Group controlId="login">
             <Form.Label>Enter Your Email:</Form.Label>
             <Form.Control
@@ -66,17 +64,11 @@ export function LoginForm( {currentUser, passID}:
                 type="password"
                 value={pass}
                 onChange={updatePass}/>
-                <Button className="button_reset" onClick={changePass}>Forgot Password?</Button>
+                <Button className="button_reset" onClick={()=>navigate("/login/resetpassword")}>Forgot Password?</Button>
             <br/>
-            <Button onClick={()=>{
-                login()
-                if(!currentUser.isTeacher) {
-                    navigate('/studenthome')
-                } else {
-                    navigate('/teacherhome')
-                }
-                }}
-                >Login</Button>
-            </Form.Group>
+            <Button onClick={login}
+            >Login</Button>
+        </Form.Group>
+        <Button onClick={() => signInWithPopup(auth, provider)}>Sign in with Google</Button>
     </div>)
 }
