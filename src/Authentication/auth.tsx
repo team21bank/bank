@@ -18,6 +18,8 @@ export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Elem
     const currUserString = window.sessionStorage.getItem(STORAGE_KEY);
     if(currUserString != null) stateArg = JSON.parse(currUserString);
 
+    //THIS IS THE ACTUAL STATE THAT HOLDS THE CREDENTIALS OF THE CURRENTLY LOGGED IN USER
+    //THIS STATE WILL BE NULL IF NO USER IS CURRENTLY LOGGED IN
     const [CurrentUserCredential, setCurrentUserCredential] = useState<UserCredential | null>(stateArg);
     return (<AuthContext.Provider value={{state: CurrentUserCredential, setState: setCurrentUserCredential}}>{children}</AuthContext.Provider>);
 }
