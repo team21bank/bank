@@ -8,3 +8,25 @@
     text-decoration: underline;
     cursor: pointer;
 }
+.button_reset:hover {
+    color:blue;
+}
+
+.login-page {
+    text-align: center;
+}
+
+.login-field-text {
+    font-size: large;
+}
+
+.login-text-box {
+    max-width: fit-content;
+    min-width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-button {
+    margin-inline: 10px;
+}

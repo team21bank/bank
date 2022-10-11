@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {Button, Form, Row} from 'react-bootstrap'
 import { ref, getDatabase, push, child, update, get } from '@firebase/database';
 import "../../firebase";
 import { auth } from '../../firebase';
-import {signInWithEmailAndPassword, Auth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
+import {signInWithEmailAndPassword, Auth, signInWithPopup, GoogleAuthProvider, UserCredential } from 'firebase/auth';
 import './Login.css';
-import {Routes, Route, useNavigate, Link} from 'react-router-dom';
-import { BankUser } from '../../Interfaces/BankUser';
-import { AuthContext } from '../auth';
+import { useNavigate, Link} from 'react-router-dom';
+import { AuthContext, STORAGE_KEY } from '../auth';
 
 export function LoginForm(){
     //Email and password variable holding log in information
@@ -26,17 +24,18 @@ export function LoginForm(){
         setPass(event.target.value)
     }
 
-    const curUser = React.useContext(AuthContext);
+    const userContext = useContext(AuthContext);
 
     //Function allowing user to login after clicking the login button
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
             setEmail('')
             setPass('')
-            curUser.setState(currUser);
+            window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(currUser)) //Add current user to browser storage
+            userContext.setState(currUser);
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/isTeacher')
             get(userRef).then(ss=>{
-                ss.val() ? navigate('/teachers/teacherhome') : navigate('/students/studenthome')
+                ss.val() ? navigate('/teachers/home') : navigate('/students/home')
             })
         }).catch(function(error){
             var errorCode = error.code;
@@ -47,28 +46,36 @@ export function LoginForm(){
     }
 
 
-    //HTML containing log in button and text boxes for email and pass
-    return (
-    <div>
+    return (<AuthContext.Consumer>{(value) => {
+        return <div className="login-page">
+        <h1>Login</h1>
+        <br/>
         <Form.Group controlId="login">
-            <Form.Label>Enter Your Email:</Form.Label>
-            <Form.Control
-                value={email}
-                onChange={updateEmail}/>
+            <div className="login-field">
+                <Form.Label className="login-field-text">Enter Your Email:</Form.Label>
+                <Form.Control
+                    className="login-text-box"
+                    value={email}
+                    onChange={updateEmail}/>
+            </div>
             <br/>
-            <Form.Label>Enter Your Password:</Form.Label>
-            <Form.Control
-                type="password"
-                value={pass}
-                onChange={updatePass}/>
-                <Button className="button_reset" onClick={()=>navigate("/login/resetpassword")}>Forgot Password?</Button>
+            <div className="login-field">
+                <Form.Label className="login-field-text">Enter Your Password:</Form.Label>
+                <Form.Control
+                    className="login-text-box"
+                    type="password"
+                    value={pass}
+                    onChange={updatePass}/>
+            </div>
+            <Button className="button_reset" onClick={()=>navigate("/login/resetpassword")}>Forgot Password?</Button>
             <br/>
-            
+            <br/>
         </Form.Group>
         <div>
-            <Button onClick={login}>Login</Button>
-            <Button onClick={() => signInWithPopup(auth, provider)}>Sign in with Google</Button>
-            <Link to="/"><Button>Back to home</Button></Link>
+            <Button onClick={() => {login(); value.setState(null)}} className="login-button">Login</Button>
+            <Button onClick={() => signInWithPopup(auth, provider)} className="login-button">Sign in with Google</Button>
+            <Link to="/"><Button className="login-button">Back to home</Button></Link>
         </div>
-    </div>)
+    </div>;
+    }}</AuthContext.Consumer>)
 }

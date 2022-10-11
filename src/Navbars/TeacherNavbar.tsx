@@ -9,9 +9,9 @@ export function TeacherNavbar(): JSX.Element {
     <div>
       <Navbar bg="light" sticky="top" expand="lg" style={{"flexDirection": "column"}}>
         <Container>
-          <Navbar.Brand href="/">Teacher</Navbar.Brand>
+          <Navbar.Brand href="/teachers/home">Teacher</Navbar.Brand>
           <Nav>
-            <Nav.Link href="/">Back to home</Nav.Link>
+            <Nav.Link href="/teachers/home">Back to home</Nav.Link>
           </Nav>
         </Container>
         <Outlet></Outlet>

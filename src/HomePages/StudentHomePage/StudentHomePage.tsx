@@ -1,15 +1,26 @@
 import { LogoutButton } from "../../Authentication/Logout/Logout";
-import React from 'react';
-import { getCurrentUser } from "../../Authentication/auth";
+import React, { useContext, useState } from 'react';
+import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import "./StudentHomePage.css";
+import { BankUser } from "../../Interfaces/BankUser";
+import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 
 export function StudentHomePage(){
-    const currUser = getCurrentUser();
+    const userContext = useContext(AuthContext);
+    if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
 
-    return (
-    <div className="student-home">
-        <h2>Student Home</h2>
-        {currUser ? <div>Hello {currUser.username}</div> : <div> hello</div>}
-        <LogoutButton></LogoutButton>
-    </div>)
+    const [userObj, setUserObj]  = useState<BankUser>();
+    if(!userObj) getCurrentUser(setUserObj);
+
+    
+    return userObj ? (
+        <div className="student-home">
+            <h2>Hello {userObj.username}</h2>
+            <LogoutButton></LogoutButton>
+        </div>
+    ) : (
+        <div className="student-home">
+            <h2>LOADING...</h2>
+        </div>
+    )
 }

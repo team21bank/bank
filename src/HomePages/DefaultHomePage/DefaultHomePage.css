@@ -12,5 +12,11 @@
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
-  }
+}
+
+.start-button {
+    margin-block: 10px;
+    margin-inline: 10px;
+    font-size: x-large;
+}
   

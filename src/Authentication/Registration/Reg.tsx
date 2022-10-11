@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
 import './Reg.css'
-import { ref, getDatabase, push, child, update  } from '@firebase/database';
+import { ref, getDatabase, child, update  } from '@firebase/database';
 import "../../firebase";
 import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import {BankUser} from "../../Interfaces/BankUser";
+import { Link } from 'react-router-dom';
 
 export function RegistrationForm(){
     let database_reference = ref(getDatabase());
@@ -115,6 +116,7 @@ export function RegistrationForm(){
             </Form.Select>
             <br/>
             <Button onClick={register}>Register</Button>
+            <Link to="/"><Button>Back To Home</Button></Link>
         </Form.Group>
     </div>);
 
