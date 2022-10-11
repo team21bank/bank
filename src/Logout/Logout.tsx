@@ -12,15 +12,14 @@ export function LogoutButton( {passID}:
     const navigate = useNavigate();
     //Function for button click logging out current user
     function logout(){
-        signOut(auth).then(currUser =>{
-            passID("");
-        });
+        signOut(auth)
         alert("Successfully logged out!");
     }
 
     //HTML holding logout button
     return (<div>
         <Button onClick={() => {
+            passID("")
             logout()
             navigate("/")}}>Logout</Button>
     </div>)

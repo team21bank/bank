@@ -107,7 +107,7 @@ function App() {
           <Route path="register" element={<RegistrationForm />} />
           <Route path="login" element={<LoginForm currentUser={currentUser} passID={passID}/>}/>
           <Route path="login/resetpassword" element={<ResetMessage />} />
-          <Route path="studenthome" element={<StudentHomePage userID={userID} currentUser={currentUser} passUser={passUser}/>}/>
+          <Route path="studenthome" element={<StudentHomePage userID={userID} currentUser={currentUser} passUser={passUser} passID={passID}/>}/>
           <Route path="teacherhome" element={<TeacherHomePage passID={passID}/>}/>
         </Route>
       </Routes>
