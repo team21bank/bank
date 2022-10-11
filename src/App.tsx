@@ -24,9 +24,9 @@ function App() {
     setID(theID);
     if(theID !== ""){
       let userRef=ref(getDatabase(),theID+'/userObj')
-      get(userRef).then(ss=>
+      get(userRef).then(ss=> {
         setUser(parseUser(ss.val()))
-      );
+      });
     } else {
       setUser({
         email: "",
@@ -40,16 +40,20 @@ function App() {
   }
 
   function parseUser(user: Students): Students{
-    console.log(user)
+    const groupKeys = Object.keys(user.groups);
+    const getValues: string[] = groupKeys.map(function (key: string){
+      console.log(key);
+      return key;
+    }) 
     const newUser: Students = {
       email: user.email,
       username: user.username,
       id: user.id,
       avatar: user.avatar,
-      groups: [],
+      groups: [...getValues],
       isTeacher: user.isTeacher
     }
-    console.log(newUser)
+    console.log(getValues);
     return newUser
   }
 
@@ -60,7 +64,11 @@ function App() {
       avatar: "",
       groups: [],
       isTeacher: false
-    });
+  });
+
+  function passUser(theStudent: Students){
+    setUser(theStudent);
+  }
 
   //Example of creating a node in the database and inserting string data under it
   //let database_reference = ref(getDatabase());
@@ -87,7 +95,7 @@ function App() {
           <Route path="register" element={<RegistrationForm />} />
           <Route path="login" element={<LoginForm currentUser={currentUser} passID={passID}/>}/>
           <Route path="login/resetpassword" element={<ResetMessage />} />
-          <Route path="studenthome" element={<StudentHomePage passID={passID}/>}/>
+          <Route path="studenthome" element={<StudentHomePage userID={userID} currentUser={currentUser} passUser={passUser}/>}/>
           <Route path="teacherhome" element={<TeacherHomePage passID={passID}/>}/>
         </Route>
       </Routes>

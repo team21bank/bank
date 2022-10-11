@@ -69,14 +69,14 @@ export function LoginForm( {currentUser, passID}:
                 <Button className="button_reset" onClick={changePass}>Forgot Password?</Button>
             <br/>
             <Button onClick={()=>{
-                login()
+                const isTeacher = login()
                 if(!currentUser.isTeacher) {
                     navigate('/studenthome')
                 } else {
                     navigate('/teacherhome')
                 }
-                }}
+            }}
                 >Login</Button>
-            </Form.Group>
+        </Form.Group>
     </div>)
 }
