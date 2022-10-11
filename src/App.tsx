@@ -1,36 +1,29 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { ref, getDatabase, push, child, get } from '@firebase/database';
 import React, { useState } from 'react';
 import './App.css';
 import "./firebase";
 import { RegistrationForm } from './registration/Reg';
-import {LogoutButton} from './Logout/Logout';
-import ResetMessage from './Authentication/ResetMessage';
+import ResetMessage from './Authentication/ResetPassword/ResetMessage';
 import {Route, BrowserRouter, Link, Routes, Outlet}
     from 'react-router-dom';
 import { StudentNavbar } from './Navbars/StudentNavbar';
 import { TeacherNavbar } from './Navbars/TeacherNavbar';
-import { getAuth, Auth, User } from 'firebase/auth';
-import { UserView } from './UserView/UserView';
-import { UsernameForm } from './ChangeUsername/ChangeUsername';
-import {ClassCodeForm} from './ClassCode/ClassCodes'
-import { Students } from './Interfaces/User';
+import { BankUser } from './Interfaces/BankUser';
 import {StudentHomePage} from './StudentHomePage/StudentHomePage'
 import { TeacherHomePage } from './TeacherHomePage/TeacherHomePage';
-import { LoginForm } from './Authentication/Login';
+import { LoginForm } from './Authentication/Login/Login';
 import { auth } from "./firebase";
 import { Button } from 'react-bootstrap';
+import { CurrentUserProvider } from './Authentication/auth';
 
 
-
-const IsLoggedIn = React.createContext<number>(0);
 
 
 
 
 function App() {
     return (
-    <div>
+    <CurrentUserProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -45,7 +38,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </div>
+    </CurrentUserProvider>
   );
 }
 
@@ -59,6 +52,7 @@ function HomePage(): JSX.Element {
       <h1>Banking Application</h1>
       <h5>{"(WIP)"}</h5>
     </header>
-    <Link to="/login"><Button>login</Button></Link>
+    <Link to="/login"><Button>Login</Button></Link>
+    <Link to="/register"><Button>Register</Button></Link>
   </div>)
 }

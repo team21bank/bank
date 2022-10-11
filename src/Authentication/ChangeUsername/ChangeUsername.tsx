@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
 import './ChangeUsername.css'
-import { ref, getDatabase, push, child, update  } from '@firebase/database';
-import "../firebase";
 
 export function UsernameForm(){
     //Still needs global variable(?)/way to keep username constant across different pages while logged in?

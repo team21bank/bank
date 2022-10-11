@@ -2,7 +2,6 @@ import { ListGroup, Button, Navbar, Container, Nav, Row, Col } from 'react-boots
 import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import "../firebase";
-import "./NavigationLayout.css";
 
 
 export function StudentNavbar(): JSX.Element {

@@ -1,12 +1,7 @@
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
-import { ref, getDatabase, push, child, update,get  } from '@firebase/database';
-import "../firebase";
-import { auth } from '../firebase';
-import {signInWithEmailAndPassword } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
-import './Login.css';
 import { FirebaseError } from '@firebase/util';
 
 export default function ResetMessage(){

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import {Button, Form, Row} from 'react-bootstrap'
 import { ref, getDatabase, push, child, update, get } from '@firebase/database';
-import "../firebase";
-import { auth } from '../firebase';
+import "../../firebase";
+import { auth } from '../../firebase';
 import {signInWithEmailAndPassword, Auth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css';
 import {Routes, Route, useNavigate, Link} from 'react-router-dom';
-import { Students } from '../Interfaces/User';
+import { BankUser } from '../../Interfaces/BankUser';
+import { AuthContext } from '../auth';
 
 export function LoginForm(){
     //Email and password variable holding log in information
@@ -25,16 +26,17 @@ export function LoginForm(){
         setPass(event.target.value)
     }
 
-    
+    const curUser = React.useContext(AuthContext);
+
     //Function allowing user to login after clicking the login button
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
             setEmail('')
             setPass('')
-            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/username')
+            curUser.setState(currUser);
+            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/isTeacher')
             get(userRef).then(ss=>{
-                alert(ss.val()+" just logged in");
-                ss.val().isTeacher ? navigate('/teachers/teacherhome') : navigate('/students/studenthome')
+                ss.val() ? navigate('/teachers/teacherhome') : navigate('/students/studenthome')
             })
         }).catch(function(error){
             var errorCode = error.code;

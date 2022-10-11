@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
 import { ref, getDatabase, push, child, update,get  } from '@firebase/database';
-import "../firebase";
-import { auth, app } from '../firebase';
+import "../../firebase";
+import { auth, app } from '../../firebase';
 import {signOut, Auth, getAuth} from 'firebase/auth';
-import { Students } from '../Interfaces/User';
+import { BankUser } from '../../Interfaces/BankUser';
 import { useNavigate } from 'react-router-dom';
 
 export function LogoutButton(){
