@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
 import './Reg.css'
 import { ref, getDatabase, push, child, update  } from '@firebase/database';
-import "../firebase";
-import { auth } from '../firebase';
+import "../../firebase";
+import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import {BankUser} from "../Interfaces/BankUser";
+import {BankUser} from "../../Interfaces/BankUser";
 
 export function RegistrationForm(){
     let database_reference = ref(getDatabase());

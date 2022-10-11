@@ -1,7 +1,7 @@
-import { LogoutButton } from "../Authentication/Logout/Logout";
+import { LogoutButton } from "../../Authentication/Logout/Logout";
 import {useNavigate} from 'react-router-dom';
 import React from 'react';
-import { getCurrentUser } from "../Authentication/auth";
+import { getCurrentUser } from "../../Authentication/auth";
 
 export function StudentHomePage(){
     const currUser = getCurrentUser();

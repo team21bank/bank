@@ -1,18 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import "./firebase";
-import { RegistrationForm } from './registration/Reg';
+import { RegistrationForm } from './Authentication/registration/Reg';
 import ResetMessage from './Authentication/ResetPassword/ResetMessage';
-import {Route, BrowserRouter, Link, Routes, Outlet}
-    from 'react-router-dom';
+import {Route, BrowserRouter, Link, Routes} from 'react-router-dom';
 import { StudentNavbar } from './Navbars/StudentNavbar';
 import { TeacherNavbar } from './Navbars/TeacherNavbar';
-import { BankUser } from './Interfaces/BankUser';
-import {StudentHomePage} from './StudentHomePage/StudentHomePage'
-import { TeacherHomePage } from './TeacherHomePage/TeacherHomePage';
+import {StudentHomePage} from './HomePages/StudentHomePage/StudentHomePage'
+import { TeacherHomePage } from './HomePages/TeacherHomePage/TeacherHomePage';
 import { LoginForm } from './Authentication/Login/Login';
-import { auth } from "./firebase";
 import { Button } from 'react-bootstrap';
 import { CurrentUserProvider } from './Authentication/auth';
 
@@ -23,7 +20,7 @@ import { CurrentUserProvider } from './Authentication/auth';
 
 function App() {
     return (
-    <CurrentUserProvider>
+    <CurrentUserProvider> {/*Provider wrapping the entire app to give components access to the current user context */}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
