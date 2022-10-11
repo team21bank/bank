@@ -94,7 +94,6 @@ function App() {
         <h1>Banking Application</h1>
         <h5>{"(WIP)"}</h5>
       </header>
-      <UserView currentUser={currentUser}></UserView>
     </div>)
   }
 
