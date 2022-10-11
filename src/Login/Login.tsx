@@ -34,6 +34,7 @@ export function LoginForm( {currentUser, passID}:
         }
         triggerResetEmail();*/
     }
+
     //Function allowing user to login after clicking the login button
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
@@ -44,6 +45,13 @@ export function LoginForm( {currentUser, passID}:
             get(userRef).then(ss=>{
                 alert(ss.val()+" just logged in")
             })
+            if(!currentUser.isTeacher) {
+                alert("now here")
+                navigate('/studenthome')
+            } else {
+                alert("correct")
+                navigate('/teacherhome')
+            }
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -68,15 +76,7 @@ export function LoginForm( {currentUser, passID}:
                 onChange={updatePass}/>
                 <Button className="button_reset" onClick={changePass}>Forgot Password?</Button>
             <br/>
-            <Button onClick={()=>{
-                login()
-                if(!currentUser.isTeacher) {
-                    navigate('/studenthome')
-                } else {
-                    navigate('/teacherhome')
-                }
-                }}
-                >Login</Button>
+            <Button onClick={login}>Login</Button>
             </Form.Group>
     </div>)
 }

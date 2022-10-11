@@ -20,39 +20,6 @@ import { TeacherHomePage } from './TeacherHomePage/TeacherHomePage';
 
 function App() {
   const [userID, setID] = useState<string>("");
-  function passID(theID: string){
-    setID(theID);
-    if(theID !== ""){
-      let userRef=ref(getDatabase(),theID+'/userObj')
-      get(userRef).then(ss=>
-        setUser(parseUser(ss.val()))
-      );
-    } else {
-      setUser({
-        email: "",
-        username: "",
-        id: "",
-        avatar: "",
-        groups: [],
-        isTeacher: false
-      })
-    }
-  }
-
-  function parseUser(user: Students): Students{
-    console.log(user)
-    const newUser: Students = {
-      email: user.email,
-      username: user.username,
-      id: user.id,
-      avatar: user.avatar,
-      groups: [],
-      isTeacher: user.isTeacher
-    }
-    console.log(newUser)
-    return newUser
-  }
-
   const [currentUser, setUser] = useState<Students>({
       email: "",
       username: "",
@@ -61,6 +28,48 @@ function App() {
       groups: [],
       isTeacher: false
     });
+  function passID(theID: string){
+    setID(theID);
+    if(theID !== ""){
+      let userRef=ref(getDatabase(),theID+'/userObj')
+      get(userRef).then(ss=>{
+        alert(typeof(ss.val()))
+        parseUser(ss.val())
+        alert(currentUser.isTeacher)
+        alert(currentUser.username)
+      }
+      );
+    }/* else {
+      setUser({
+        email: "",
+        username: "",
+        id: "",
+        avatar: "",
+        groups: [],
+        isTeacher: false
+      })
+    }*/
+  }
+
+  function parseUser(user: Students){
+    console.log(user)
+    /*const newUser: Students = {
+      email: user.email,
+      username: user.username,
+      id: user.id,
+      avatar: user.avatar,
+      groups: [],
+      isTeacher: user.isTeacher
+    }*/
+    currentUser.email=user.email
+    currentUser.username=user.username
+    currentUser.id=user.id
+    currentUser.avatar=user.avatar
+    currentUser.groups=user.groups
+    currentUser.isTeacher=user.isTeacher
+  }
+
+  
 
   //Example of creating a node in the database and inserting string data under it
   //let database_reference = ref(getDatabase());
