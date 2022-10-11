@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import {Button, Form} from 'react-bootstrap'
+import {Button, Form, Row} from 'react-bootstrap'
 import { ref, getDatabase, push, child, update, get } from '@firebase/database';
 import "../firebase";
 import { auth } from '../firebase';
 import {signInWithEmailAndPassword, Auth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import './Login.css';
-import {Routes, Route, useNavigate} from 'react-router-dom';
+import {Routes, Route, useNavigate, Link} from 'react-router-dom';
 import { Students } from '../Interfaces/User';
 
 export function LoginForm(){
@@ -33,13 +33,9 @@ export function LoginForm(){
             setPass('')
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/username')
             get(userRef).then(ss=>{
-                alert(ss.val()+" just logged in")
+                alert(ss.val()+" just logged in");
+                ss.val().isTeacher ? navigate('/teacherhome') : navigate('/studenthome')
             })
-            if(true) {
-                navigate('/studenthome')
-            } else {
-                navigate('/teacherhome')
-            }
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -50,9 +46,8 @@ export function LoginForm(){
 
 
     //HTML containing log in button and text boxes for email and pass
-    return (<div>
-              {auth.currentUser ? <div>logged in</div> : <div>not logged in</div>}
-
+    return (
+    <div>
         <Form.Group controlId="login">
             <Form.Label>Enter Your Email:</Form.Label>
             <Form.Control
@@ -66,9 +61,12 @@ export function LoginForm(){
                 onChange={updatePass}/>
                 <Button className="button_reset" onClick={()=>navigate("/login/resetpassword")}>Forgot Password?</Button>
             <br/>
-            <Button onClick={login}
-            >Login</Button>
+            
         </Form.Group>
-        <Button onClick={() => signInWithPopup(auth, provider)}>Sign in with Google</Button>
+        <div>
+            <Button onClick={login}>Login</Button>
+            <Button onClick={() => signInWithPopup(auth, provider)}>Sign in with Google</Button>
+            <Link to="/"><Button>Back to home</Button></Link>
+        </div>
     </div>)
 }

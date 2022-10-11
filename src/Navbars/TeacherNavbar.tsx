@@ -5,7 +5,7 @@ import "../firebase";
 import "./NavigationLayout.css";
 
 
-export function StudentNavbar(): JSX.Element {
+export function TeacherNavbar(): JSX.Element {
     return (
     <div style={{"width": "100%"}}>
       <Navbar bg="white" variant="light" sticky="top">
