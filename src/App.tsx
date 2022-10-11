@@ -23,7 +23,7 @@ function App() {
   function passID(theID: string){
     setID(theID);
     if(theID !== ""){
-      let userRef=ref(getDatabase(),theID+'/userObj')
+      let userRef=ref(getDatabase(),'/users/'+theID+'/userObj')
       get(userRef).then(ss=> {
         setUser(parseUser(ss.val()))
       });
@@ -40,21 +40,33 @@ function App() {
   }
 
   function parseUser(user: Students): Students{
-    const groupKeys = Object.keys(user.groups);
-    const getValues: string[] = groupKeys.map(function (key: string){
-      console.log(key);
-      return key;
-    }) 
-    const newUser: Students = {
-      email: user.email,
-      username: user.username,
-      id: user.id,
-      avatar: user.avatar,
-      groups: [...getValues],
-      isTeacher: user.isTeacher
+    let getValues: string[];
+    let newUser: Students;
+    if(user.groups !== undefined){
+      const groupKeys = Object.keys(user.groups);
+      getValues = groupKeys.map(function (key: string){
+        console.log(key);
+        return key;
+      }) 
+      newUser = {
+        email: user.email,
+        username: user.username,
+        id: user.id,
+        avatar: user.avatar,
+        groups: [...getValues],
+        isTeacher: user.isTeacher
+      }
+    }else{
+      newUser = {
+        email: user.email,
+        username: user.username,
+        id: user.id,
+        avatar: user.avatar,
+        groups: [],
+        isTeacher: user.isTeacher
+      }
     }
-    console.log(getValues);
-    return newUser
+    return newUser;
   }
 
   const [currentUser, setUser] = useState<Students>({

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button, Form } from "react-bootstrap";
 import { Students } from "../UserInterfaces/Students";
 import { ref, getDatabase, push, child, update, get } from '@firebase/database';
+import { idBal } from "../BankTest/idBalObject";
 
 export function StudentHomePage( {userID, currentUser, passUser}:
     {userID: string, currentUser: Students; passUser: (passUser: Students) => void}){
@@ -13,7 +14,8 @@ export function StudentHomePage( {userID, currentUser, passUser}:
     }
     function addCourseCode(){
         let groupRef=ref(getDatabase(),'groups')
-        let userRef=ref(getDatabase(), userID + '/userObj/groups')
+        let userRef=ref(getDatabase(), '/users/'+userID+'/userObj/groups')
+        let newGroupRef=ref(getDatabase(), 'groups/' + courseCode + '/bankObj/studentBals')
         get(groupRef).then(ss=>{
             let newStudent = {...currentUser, groups: [...currentUser.groups]}
             const getGroups = Object.keys(ss.val())
@@ -23,6 +25,8 @@ export function StudentHomePage( {userID, currentUser, passUser}:
                 newStudent = {...newStudent, groups: [...newStudent.groups, courseCode]}
                 update(userRef,{[courseCode]: courseCode});
                 passUser({...currentUser, groups: [...currentUser.groups, courseCode]});
+                const bankStudent: idBal = {studentId: Number(currentUser.id), balance: 0};
+                update(newGroupRef,{[currentUser.id]: bankStudent});
             }
         });
         setCode("");

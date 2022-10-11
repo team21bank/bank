@@ -39,7 +39,7 @@ export function LoginForm( {currentUser, passID}:
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
             setEmail('')
             setPass('')
-            passID('/users/'+currUser.user.uid)
+            passID(currUser.user.uid)
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/username')
             get(userRef).then(ss=>{
                 alert(ss.val()+" just logged in")
