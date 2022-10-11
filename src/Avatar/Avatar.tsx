@@ -29,8 +29,8 @@ export function AvatarForm() {
                     imageList,
                     onImageUpload,
                     onImageRemoveAll,
-                    onImageUpdate,
-                    onImageRemove,
+                    //onImageUpdate,
+                    //onImageRemove,
                     isDragging,
                     dragProps
                 }) => (
@@ -48,10 +48,10 @@ export function AvatarForm() {
                         {imageList.map((image, index) => (
                             <div key={index} className="image-item">
                                 <img src={image.dataURL} alt="" width="100" />
-                                <div className="image-itembtn-wrapper">
+                                {/* <div className="image-itembtn-wrapper">
                                     <Button onClick={() => onImageUpdate(index)}>Update</Button>
                                     <Button onClick={() => onImageRemove(index)}>Remove</Button>
-                                </div>
+                                </div> */}
                             </div>
                         ))}
                     </div>

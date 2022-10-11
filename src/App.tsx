@@ -12,6 +12,7 @@ import {Route, BrowserRouter, Link, Routes, Outlet}
 import { NavigationLayout } from './Navigation/NavigationLayout';
 import {ClassCodeForm} from './ClassCode/ClassCodes'
 import {StudentHomePage} from './StudentHomePage/StudentHomePage'
+import { TeacherHomePage } from './TeacherHomePage/TeacherHomePage';
 
 function App() {
   //Example of creating a node in the database and inserting string data under it
