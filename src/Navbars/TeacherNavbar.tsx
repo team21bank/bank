@@ -7,8 +7,8 @@ import "../firebase";
 export function TeacherNavbar(): JSX.Element {
     return (
     <div>
-      <Navbar bg="white" variant="light" sticky="top">
-        <Container style={{"width": "100%"}}>
+      <Navbar bg="light" sticky="top" expand="lg" style={{"flexDirection": "column"}}>
+        <Container>
           <Navbar.Brand href="/">Teacher</Navbar.Brand>
           <Nav>
             <Nav.Link href="/">Back to home</Nav.Link>

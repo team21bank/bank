@@ -7,15 +7,11 @@ import ResetMessage from './Authentication/ResetPassword/ResetMessage';
 import {Route, BrowserRouter, Link, Routes} from 'react-router-dom';
 import { StudentNavbar } from './Navbars/StudentNavbar';
 import { TeacherNavbar } from './Navbars/TeacherNavbar';
-import {StudentHomePage} from './HomePages/StudentHomePage/StudentHomePage'
+import { StudentHomePage } from './HomePages/StudentHomePage/StudentHomePage'
 import { TeacherHomePage } from './HomePages/TeacherHomePage/TeacherHomePage';
 import { LoginForm } from './Authentication/Login/Login';
-import { Button } from 'react-bootstrap';
 import { CurrentUserProvider } from './Authentication/auth';
-
-
-
-
+import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 
 
 function App() {
@@ -23,7 +19,7 @@ function App() {
     <CurrentUserProvider> {/*Provider wrapping the entire app to give components access to the current user context */}
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<DefaultHomePage />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginForm/>}/>
           <Route path="/login/resetpassword" element={<ResetMessage />} />
@@ -40,16 +36,3 @@ function App() {
 }
 
 export default App;
-
-
-function HomePage(): JSX.Element {
-  return (
-  <div className="App">
-    <header className="App-header">
-      <h1>Banking Application</h1>
-      <h5>{"(WIP)"}</h5>
-    </header>
-    <Link to="/login"><Button>Login</Button></Link>
-    <Link to="/register"><Button>Register</Button></Link>
-  </div>)
-}

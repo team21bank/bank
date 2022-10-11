@@ -1,10 +1,12 @@
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import React from "react";
+import "./DefaultHomePage.css";
 
-export function HomePage(): JSX.Element {
+export function DefaultHomePage(): JSX.Element {
     return (
-    <div className="App">
-      <header className="App-header">
+    <div className="home-page">
+      <header className="home-page-header">
         <h1>Banking Application</h1>
         <h5>{"(WIP)"}</h5>
       </header>
