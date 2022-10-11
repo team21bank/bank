@@ -7,9 +7,10 @@ import { ref, getDatabase, push, child, update, get } from '@firebase/database';
 import { idBal } from "../BankTest/idBalObject";
 import { AddGroup } from "../AddGroup/AddGroup";
 
-export function StudentHomePage( {userID, currentUser, passUser}:
-    {userID: string, currentUser: Students; passUser: (passUser: Students) => void}){
+export function StudentHomePage( {userID, currentUser, passUser, passID}:
+    {userID: string, currentUser: Students; passUser: (passUser: Students) => void; passID: (passID: string) => void}){
     return (<div>
         <AddGroup userID={userID} currentUser={currentUser} passUser={passUser}></AddGroup>
+        <LogoutButton passID={passID}></LogoutButton>
     </div>)
 }
