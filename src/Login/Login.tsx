@@ -39,7 +39,7 @@ export function LoginForm( {currentUser, passID}:
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
             setEmail('')
             setPass('')
-            passID('/users/'+currUser.user.uid)
+            passID(currUser.user.uid)
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/username')
             get(userRef).then(ss=>{
                 alert(ss.val()+" just logged in")
@@ -69,14 +69,14 @@ export function LoginForm( {currentUser, passID}:
                 <Button className="button_reset" onClick={changePass}>Forgot Password?</Button>
             <br/>
             <Button onClick={()=>{
-                login()
+                const isTeacher = login()
                 if(!currentUser.isTeacher) {
                     navigate('/studenthome')
                 } else {
                     navigate('/teacherhome')
                 }
-                }}
+            }}
                 >Login</Button>
-            </Form.Group>
+        </Form.Group>
     </div>)
 }

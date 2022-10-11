@@ -23,10 +23,10 @@ function App() {
   function passID(theID: string){
     setID(theID);
     if(theID !== ""){
-      let userRef=ref(getDatabase(),theID+'/userObj')
-      get(userRef).then(ss=>
+      let userRef=ref(getDatabase(),'/users/'+theID+'/userObj')
+      get(userRef).then(ss=> {
         setUser(parseUser(ss.val()))
-      );
+      });
     } else {
       setUser({
         email: "",
@@ -40,17 +40,33 @@ function App() {
   }
 
   function parseUser(user: Students): Students{
-    console.log(user)
-    const newUser: Students = {
-      email: user.email,
-      username: user.username,
-      id: user.id,
-      avatar: user.avatar,
-      groups: [],
-      isTeacher: user.isTeacher
+    let getValues: string[];
+    let newUser: Students;
+    if(user.groups !== undefined){
+      const groupKeys = Object.keys(user.groups);
+      getValues = groupKeys.map(function (key: string){
+        console.log(key);
+        return key;
+      }) 
+      newUser = {
+        email: user.email,
+        username: user.username,
+        id: user.id,
+        avatar: user.avatar,
+        groups: [...getValues],
+        isTeacher: user.isTeacher
+      }
+    }else{
+      newUser = {
+        email: user.email,
+        username: user.username,
+        id: user.id,
+        avatar: user.avatar,
+        groups: [],
+        isTeacher: user.isTeacher
+      }
     }
-    console.log(newUser)
-    return newUser
+    return newUser;
   }
 
   const [currentUser, setUser] = useState<Students>({
@@ -60,7 +76,11 @@ function App() {
       avatar: "",
       groups: [],
       isTeacher: false
-    });
+  });
+
+  function passUser(theStudent: Students){
+    setUser(theStudent);
+  }
 
   //Example of creating a node in the database and inserting string data under it
   //let database_reference = ref(getDatabase());
@@ -87,7 +107,7 @@ function App() {
           <Route path="register" element={<RegistrationForm />} />
           <Route path="login" element={<LoginForm currentUser={currentUser} passID={passID}/>}/>
           <Route path="login/resetpassword" element={<ResetMessage />} />
-          <Route path="studenthome" element={<StudentHomePage passID={passID}/>}/>
+          <Route path="studenthome" element={<StudentHomePage userID={userID} currentUser={currentUser} passUser={passUser}/>}/>
           <Route path="teacherhome" element={<TeacherHomePage passID={passID}/>}/>
         </Route>
       </Routes>
