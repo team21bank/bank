@@ -7,7 +7,7 @@ import "./NavigationLayout.css";
 
 export function StudentNavbar(): JSX.Element {
     return (
-    <div style={{"width": "100%"}}>
+    <div>
       <Navbar bg="white" variant="light" sticky="top">
         <Container style={{"width": "100%"}}>
           <Navbar.Brand href="/">Student</Navbar.Brand>

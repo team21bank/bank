@@ -34,7 +34,7 @@ export function LoginForm(){
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/username')
             get(userRef).then(ss=>{
                 alert(ss.val()+" just logged in");
-                ss.val().isTeacher ? navigate('/teacherhome') : navigate('/studenthome')
+                ss.val().isTeacher ? navigate('/teachers/teacherhome') : navigate('/students/studenthome')
             })
         }).catch(function(error){
             var errorCode = error.code;

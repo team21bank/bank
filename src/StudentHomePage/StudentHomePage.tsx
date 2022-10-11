@@ -4,7 +4,7 @@ import React from 'react';
 
 export function StudentHomePage(){
     return (<div>
-        <div>Loggen in</div>
+        <div>Logged in</div>
         <LogoutButton></LogoutButton>
     </div>)
 }

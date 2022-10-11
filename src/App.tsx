@@ -23,7 +23,7 @@ import { Button } from 'react-bootstrap';
 
 
 
-const AuthContext = React.createContext<number>(0);
+const IsLoggedIn = React.createContext<number>(0);
 
 
 
@@ -32,17 +32,19 @@ function App() {
     return (
     <div>
       <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/register" element={<RegistrationForm />} />
-        <Route path="/login" element={<LoginForm/>}/>
-        <Route path="/login/resetpassword" element={<ResetMessage />} />
-        <Route element={<TeacherNavbar />}>
-          <Route path="teacherhome" element={<TeacherHomePage />}/>
-        </Route>
-        <Route path="studenthome" element={<StudentHomePage />}/>
-      </Routes>
-    </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/register" element={<RegistrationForm />} />
+          <Route path="/login" element={<LoginForm/>}/>
+          <Route path="/login/resetpassword" element={<ResetMessage />} />
+          <Route path="/teachers" element={<TeacherNavbar />}>
+            <Route path="teacherhome" element={<TeacherHomePage />}/>
+          </Route>
+          <Route path="/students" element={<StudentNavbar />}>
+            <Route path="studenthome" element={<StudentHomePage />}/>
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
