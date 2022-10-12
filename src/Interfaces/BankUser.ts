@@ -1,4 +1,4 @@
-export interface Students{
+export interface BankUser{
     
     email: string
 
@@ -12,3 +12,4 @@ export interface Students{
 
     isTeacher: boolean
 }
+
