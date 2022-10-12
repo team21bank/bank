@@ -1,0 +1,32 @@
+
+.button_reset {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    font-family: arial, sans-serif;
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.button_reset:hover {
+    color:blue;
+}
+
+.login-page {
+    text-align: center;
+}
+
+.login-field-text {
+    font-size: large;
+}
+
+.login-text-box {
+    max-width: fit-content;
+    min-width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-button {
+    margin-inline: 10px;
+}
