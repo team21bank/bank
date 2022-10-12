@@ -1,11 +1,14 @@
 import { Button, Form } from "react-bootstrap";
 import React, { ChangeEvent, useRef, useState } from "react";
 import ImageUploading, { ImageListType } from "react-images-uploading";
+//import myImageList which is a list of appropriate images that users can pick from
+//for their avatar profile
 
 
 export function AvatarForm() {
 
     const [images, setImages] = React.useState([]);
+    //teacher uploads her pool of images into the class... students pick from that pool
     const maxNumber = 69;
 
     const onChange = (
@@ -16,6 +19,8 @@ export function AvatarForm() {
         console.log(imageList, addUpdateIndex);
         setImages(imageList as never[]);
     };
+
+    //use CSS to force an image into a specific size
 
     return (
         <div className="App">
