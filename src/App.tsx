@@ -42,6 +42,8 @@ function AppBody(): JSX.Element {
         <Route path="/login/resetpassword" element={<ResetMessage />} />
         <Route path="/teachers" element={<TeacherNavbar />}>
           <Route path="home" element={<TeacherHomePage />}/>
+          <Route path="classes" element={<TeacherHomePage/>}/>
+          <Route path="account" element={<TeacherHomePage/>}/>
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
