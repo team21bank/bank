@@ -59,7 +59,7 @@ export function RegistrationForm(){
                 email:email,
                 id:id,
                 avatar:'',
-                groups:[],
+                groups:['placeholder'],
                 isTeacher: isTeacher
             }
             setEmail('')
