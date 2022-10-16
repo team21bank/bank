@@ -5,7 +5,7 @@ import { AuthContext, getCurrentUser } from '../auth';
 import { NoUserPage } from '../NoUserPage/NoUserPage';
 import './ChangeUsername.css'
 
-export function UsernameForm(){
+export function ChangeUsernameButton(){
     const userContext = useContext(AuthContext);
     if(userContext == null) return <NoUserPage />;
 
@@ -26,17 +26,18 @@ export function UsernameForm(){
     }
 
     return userObj ? (
-        <div>
-            <h1>Reset Username</h1>
+        <div className="change-username" >
+            <h1>Change Username</h1>
             <Form.Group controlId="changename">
                 <Form.Label>Enter Your New Username</Form.Label>
                 <Form.Control
+                    className="username-text-box"
                     value={username}
                     onChange={updateLocalUsername}/>
                 <br/>
                 <Button onClick={confirm}>Confirm</Button>
             </Form.Group>
-            Hello, {username}!
+            Hello, {userObj.username}!
         </div>
     ) : (
         <h2>LOADING...</h2>
