@@ -4,6 +4,7 @@ import React, { useContext, useState } from 'react';
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
+import { Await } from 'react-router-dom';
 
 export function JoinClassButton(){
     const userContext = useContext(AuthContext);
@@ -20,14 +21,20 @@ export function JoinClassButton(){
 
     function addClass(){
         let classId=bank;
-        let classExists=false;
+        let classExists=null;
+        let className='';
         onValue(ref(getDatabase(),"/groups/"+classId),ss=>{
             if (ss.val()!==null){
                 classExists=true;
             }
         })
+        Await
         if (classExists){
-            userObj? userObj.groups.push(classId): classId='';
+            onValue(ref(getDatabase(),"/groups/"+classId+"/bankObj/classTitle"),ss=>{
+                alert(ss.val())
+                className=ss.val()
+            })
+            userObj? userObj.groups.push(classId+className): classId='';
             userObj? userContext.state? set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups):null:null;
             setBank('')
             alert("Class Added")
