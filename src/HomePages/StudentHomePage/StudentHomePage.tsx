@@ -4,6 +4,7 @@ import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import "./StudentHomePage.css";
 import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
+import { AvatarForm } from "../../Avatar/Avatar";
 
 export function StudentHomePage(){
     const userContext = useContext(AuthContext);
@@ -17,6 +18,7 @@ export function StudentHomePage(){
         <div className="student-home">
             <h2>Hello {userObj.username}</h2>
             <LogoutButton></LogoutButton>
+            <AvatarForm></AvatarForm>
         </div>
     ) : (
         <div className="student-home">
