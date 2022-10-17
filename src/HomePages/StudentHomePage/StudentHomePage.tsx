@@ -1,10 +1,10 @@
-import { LogoutButton } from "../../Authentication/Logout/Logout";
 import React, { useContext, useState } from 'react';
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import "./StudentHomePage.css";
 import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import {JoinClassButton} from "../../ClassCode/JoinClass/JoinClass"
+import {Button} from "react-bootstrap"
 
 export function StudentHomePage(){
     const userContext = useContext(AuthContext);
@@ -13,12 +13,20 @@ export function StudentHomePage(){
     const [userObj, setUserObj]  = useState<BankUser>();
     if(!userObj) getCurrentUser(setUserObj);
 
-    
+    function goToClass(classID){
+        
+    }
+
     return userObj ? (
         <div className="student-home">
             <h2>Hello {userObj.username}</h2>
             <JoinClassButton></JoinClassButton>
-            <LogoutButton></LogoutButton>
+            <br></br>
+            <div className="classes">
+                {userObj.groups.map((classButton:string)=>(
+                    classButton !== "placeholder" ? <Button id={classButton} onClick={()=>goToClass(classButton)}>{classButton}</Button> : <br></br>
+                ))}
+            </div>
         </div>
     ) : (
         <div className="student-home">
