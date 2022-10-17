@@ -60,6 +60,7 @@ export function ClassCodeForm(){
         userObj? userObj.groups.push(code+className): code='';
         update(ref(getDatabase(),"/groups/"+code),{bankObj:newBank});
         userObj? userContext.state? set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups):null:null;
+        window.location.reload()
     }
 
     return (<div>
