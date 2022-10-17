@@ -13,8 +13,8 @@ export function StudentHomePage(){
     const [userObj, setUserObj]  = useState<BankUser>();
     if(!userObj) getCurrentUser(setUserObj);
 
-    function goToClass(classID){
-        
+    function goToClass(classID:string){
+        return classID
     }
 
     return userObj ? (

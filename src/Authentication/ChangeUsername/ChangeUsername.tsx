@@ -23,7 +23,7 @@ export function ChangeUsernameButton(){
     }
 
     function confirm() {
-        if(userObj) setUserObj({...userObj, username: username});
+        if(userObj) userObj.username=username;
         if (userObj!==undefined){
             if (userContext.state!==null){
                 set(ref(getDatabase(),"users/"+userContext.state.user.uid+"/userObj/username"),userObj.username)
