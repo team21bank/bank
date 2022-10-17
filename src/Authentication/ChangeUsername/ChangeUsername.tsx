@@ -4,8 +4,11 @@ import { BankUser } from '../../Interfaces/BankUser';
 import { AuthContext, getCurrentUser } from '../auth';
 import { NoUserPage } from '../NoUserPage/NoUserPage';
 import './ChangeUsername.css'
+import { ref, getDatabase, set, update  } from '@firebase/database';
+import "../../firebase";
 
 export function ChangeUsernameButton(){
+    let database_reference = ref(getDatabase());
     const userContext = useContext(AuthContext);
     if(userContext == null) return <NoUserPage />;
 
@@ -21,6 +24,11 @@ export function ChangeUsernameButton(){
 
     function confirm() {
         if(userObj) setUserObj({...userObj, username: username});
+        if (userObj!==undefined){
+            if (userContext.state!==null){
+                set(ref(getDatabase(),"users/"+userContext.state.user.uid+"/userObj/username"),userObj.username)
+            }
+        }
         //THIS NEW USER OBJECT MUST BE PUSHED TO THE DATABASE TO SAVE CHANGES
         alert("Username updated!")
     }
