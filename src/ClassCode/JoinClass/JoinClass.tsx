@@ -1,4 +1,4 @@
-import {Button,Form} from 'react-bootstrap'
+import {Button,Form, useAccordionButton} from 'react-bootstrap'
 import { ref, getDatabase, update, onValue, set} from '@firebase/database';
 import React, { useContext, useState } from 'react';
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
@@ -28,7 +28,6 @@ export function JoinClassButton(){
                 classExists=true;
             }
         })
-        Await
         if (classExists){
             onValue(ref(getDatabase(),"/groups/"+classId+"/bankObj/classTitle"),ss=>{
                 alert(ss.val())
@@ -37,7 +36,7 @@ export function JoinClassButton(){
             userObj? userObj.groups.push(classId+className): classId='';
             userObj? userContext.state? set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups):null:null;
             setBank('')
-            alert("Class Added")
+            window.location.reload()
         }
         else{
             setBank('')
