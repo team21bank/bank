@@ -4,6 +4,7 @@ import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import "./StudentHomePage.css";
 import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
+import {JoinClassButton} from "../../ClassCode/JoinClass/JoinClass"
 
 export function StudentHomePage(){
     const userContext = useContext(AuthContext);
@@ -16,6 +17,7 @@ export function StudentHomePage(){
     return userObj ? (
         <div className="student-home">
             <h2>Hello {userObj.username}</h2>
+            <JoinClassButton></JoinClassButton>
             <LogoutButton></LogoutButton>
         </div>
     ) : (
