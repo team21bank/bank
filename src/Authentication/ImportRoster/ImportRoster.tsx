@@ -2,7 +2,7 @@ import { createUserWithEmailAndPassword } from "@firebase/auth";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { auth } from "../../firebase";
-import { ref, getDatabase, child, update  } from '@firebase/database';
+import { ref, getDatabase, child, update, set  } from '@firebase/database';
 import { BankUser } from "../../Interfaces/BankUser";
 
 export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Element {
@@ -49,7 +49,7 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
                         groups:[currentGroup],
                         isTeacher: false
                     }
-                    update(userRef,{userObj:newUser});
+                    set(userRef,{userObj:newUser});
                 }).catch(function(error){
                     var errorCode = error.code;
                     var errorMessage = error.message;

@@ -18,7 +18,6 @@ export function TeacherHomePage(){
         <div className="teacher-home">
             <h2>Hello {userObj.username}</h2>
             <ClassCodeForm></ClassCodeForm>
-            <ImportRoster></ImportRoster>
             <LogoutButton></LogoutButton>
         </div>
     ) : (
