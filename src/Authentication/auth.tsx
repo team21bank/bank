@@ -25,13 +25,12 @@ export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Elem
 }
 
 //function to fetch the user's data from the database
-export function getCurrentUser(setUser: (n: BankUser | undefined)=>void) {
-    const userContext = useContext(AuthContext);
-    if(userContext.state == null) {
+export function getCurrentUser(userState: UserCredential | null, setUser: (n: BankUser | undefined)=>void) {
+    if(userState == null) {
         console.log("No user is currently logged in");
         return;
     }
-    let userRef=ref(getDatabase(),'/users/'+userContext.state.user.uid+'/userObj/');
+    let userRef=ref(getDatabase(),'/users/'+userState.user.uid+'/userObj/');
     get(userRef).then(snap => {
         setUser(snap.val());
     });
