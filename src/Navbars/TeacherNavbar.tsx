@@ -14,6 +14,7 @@ export function TeacherNavbar(): JSX.Element {
             <Nav.Link href="/teachers/classes">View your classes</Nav.Link>
             <Nav.Link href="/teachers/account">Manage your account</Nav.Link>
             <Nav.Link href="/teachers/home">Back to home</Nav.Link>
+            <Nav.Link href="/teachers/changeusername">Change Username</Nav.Link>
           </Nav>
         </Container>
         <Outlet></Outlet>

@@ -4,8 +4,11 @@ import { BankUser } from '../../Interfaces/BankUser';
 import { AuthContext, getCurrentUser } from '../auth';
 import { NoUserPage } from '../NoUserPage/NoUserPage';
 import './ChangeUsername.css'
+import { ref, getDatabase, set, update  } from '@firebase/database';
+import "../../firebase";
 
-export function UsernameForm(){
+export function ChangeUsernameButton(){
+    let database_reference = ref(getDatabase());
     const userContext = useContext(AuthContext);
     if(userContext == null) return <NoUserPage />;
 
@@ -21,22 +24,28 @@ export function UsernameForm(){
 
     function confirm() {
         if(userObj) setUserObj({...userObj, username: username});
+        if (userObj!==undefined){
+            if (userContext.state!==null){
+                set(ref(getDatabase(),"users/"+userContext.state.user.uid+"/userObj/username"),userObj.username)
+            }
+        }
         //THIS NEW USER OBJECT MUST BE PUSHED TO THE DATABASE TO SAVE CHANGES
         alert("Username updated!")
     }
 
     return userObj ? (
-        <div>
-            <h1>Reset Username</h1>
+        <div className="change-username" >
+            <h1>Change Username</h1>
             <Form.Group controlId="changename">
                 <Form.Label>Enter Your New Username</Form.Label>
                 <Form.Control
+                    className="username-text-box"
                     value={username}
                     onChange={updateLocalUsername}/>
                 <br/>
                 <Button onClick={confirm}>Confirm</Button>
             </Form.Group>
-            Hello, {username}!
+            Hello, {userObj.username}!
         </div>
     ) : (
         <h2>LOADING...</h2>

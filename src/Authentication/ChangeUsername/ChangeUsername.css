@@ -1,9 +1,10 @@
-div{
-    background-color: #282c34;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(11px+1vm);
-    color: white;
+.change-username{
+    text-align: center;
+}
+
+.username-text-box {
+    max-width: fit-content;
+    min-width: 35%;
+    margin-left: auto;
+    margin-right: auto;
 }
