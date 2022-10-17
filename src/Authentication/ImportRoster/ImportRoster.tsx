@@ -5,7 +5,7 @@ import { auth } from "../../firebase";
 import { ref, getDatabase, child, update  } from '@firebase/database';
 import { BankUser } from "../../Interfaces/BankUser";
 
-export function ImportRoster(): JSX.Element {
+export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Element {
     const [contents, setContents] = useState<string>("");
     const [view, toggleView] = useState<boolean>(false);
     function importFile(event: React.ChangeEvent<HTMLInputElement>) {
@@ -46,7 +46,7 @@ export function ImportRoster(): JSX.Element {
                         email:split[0],
                         id:split[1],
                         avatar:'',
-                        groups:[],
+                        groups:[currentGroup],
                         isTeacher: false
                     }
                     update(userRef,{userObj:newUser});
