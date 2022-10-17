@@ -5,6 +5,7 @@ import "./TeacherHomePage.css";
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
+import { ImportRoster } from "../../Authentication/ImportRoster/ImportRoster";
 
 export function TeacherHomePage(){
     const userContext = useContext(AuthContext);
@@ -17,6 +18,7 @@ export function TeacherHomePage(){
         <div className="teacher-home">
             <h2>Hello {userObj.username}</h2>
             <ClassCodeForm></ClassCodeForm>
+            <ImportRoster></ImportRoster>
             <LogoutButton></LogoutButton>
         </div>
     ) : (
