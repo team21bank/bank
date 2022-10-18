@@ -15,6 +15,7 @@ import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { BankUser } from './Interfaces/BankUser';
 import { EditProfile } from './Authentication/EditProfilePage/EditProfilePage';
 import { ChangeUsernameButton } from './Authentication/ChangeUsername/ChangeUsername';
+import { AvatarForm } from './Avatar/Avatar';
 
 
 function App() {
