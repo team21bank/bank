@@ -14,6 +14,7 @@ import { AuthContext, CurrentUserProvider, getCurrentUser } from './Authenticati
 import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { BankUser } from './Interfaces/BankUser';
 import { ChangeUsernameButton } from './Authentication/ChangeUsername/ChangeUsername';
+import { AvatarForm } from './Avatar/Avatar';
 
 
 function App() {
