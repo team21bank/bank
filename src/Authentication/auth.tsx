@@ -46,7 +46,7 @@ export function getCurrentUser(userState: UserCredential | null, setUser: (n: Ba
 
         const userContext = useContext(AuthContext);              <--- gets the value of the global state, this just a reference to the logged in user in the database
         const [userObj, setUserObj]  = useState<BankUser>();      <--- create a local state variable to store the value fetched via the database reference
-        if(!userObj) getCurrentUser(setUserObj);                  <--- fetch user info from the database and place it in the local state created above if the state isnt already set
+        if(!userObj) getCurrentUser(userContext.state, setUserObj);                  <--- fetch user info from the database and place it in the local state created above if the state isnt already set
                                                                        If the user cannot be found, the userObj state will remain undefined
                                                     
                                                                        
