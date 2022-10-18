@@ -5,6 +5,7 @@ import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import { Await } from 'react-router-dom';
+import { truncateSync } from 'fs';
 
 export function JoinClassButton(){
     const userContext = useContext(AuthContext);
@@ -21,27 +22,18 @@ export function JoinClassButton(){
 
     function addClass(){
         let classId=bank;
-        let classExists=null;
         let className='';
         onValue(ref(getDatabase(),"/groups/"+classId),ss=>{
             if (ss.val()!==null){
-                classExists=true;
+                onValue(ref(getDatabase(),"/groups/"+classId+"/bankObj/classTitle"),ss=>{
+                    className=ss.val()
+                })
+                userObj? userObj.groups.push(classId+className): classId='';
+                userObj? userContext.state? set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups):null:null;
+                setBank('')
+                window.location.reload()
             }
         })
-        if (classExists){
-            onValue(ref(getDatabase(),"/groups/"+classId+"/bankObj/classTitle"),ss=>{
-                alert(ss.val())
-                className=ss.val()
-            })
-            userObj? userObj.groups.push(classId+className): classId='';
-            userObj? userContext.state? set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups):null:null;
-            setBank('')
-            window.location.reload()
-        }
-        else{
-            setBank('')
-            alert("Not valid class code")
-        }
     }
     
     return (<div>
