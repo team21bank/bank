@@ -31,7 +31,6 @@ export function ChangeUsernameButton(){
             }
         }
         //THIS NEW USER OBJECT MUST BE PUSHED TO THE DATABASE TO SAVE CHANGES
-        alert("Username updated!")
     }
 
     return userObj ? (
