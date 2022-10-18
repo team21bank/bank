@@ -17,6 +17,9 @@ export function StudentNavbar(): JSX.Element {
             <Nav.Link href="/students/changeusername">Change Username</Nav.Link>
             <LogoutButton></LogoutButton>
           </Nav>
+          <Nav>
+            <Nav.Link href="/editprofile">Edit Profile</Nav.Link>
+          </Nav>
         </Container>
         <Outlet></Outlet>
       </Navbar>

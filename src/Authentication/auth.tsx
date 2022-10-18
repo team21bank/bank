@@ -25,13 +25,12 @@ export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Elem
 }
 
 //function to fetch the user's data from the database
-export function getCurrentUser(setUser: (n: BankUser | undefined)=>void) {
-    const userContext = useContext(AuthContext);
-    if(userContext.state == null) {
+export function getCurrentUser(userState: UserCredential | null, setUser: (n: BankUser | undefined)=>void) {
+    if(userState == null) {
         console.log("No user is currently logged in");
         return;
     }
-    let userRef=ref(getDatabase(),'/users/'+userContext.state.user.uid+'/userObj/');
+    let userRef=ref(getDatabase(),'/users/'+userState.user.uid+'/userObj/');
     get(userRef).then(snap => {
         setUser(snap.val());
     });
@@ -47,7 +46,7 @@ export function getCurrentUser(setUser: (n: BankUser | undefined)=>void) {
 
         const userContext = useContext(AuthContext);              <--- gets the value of the global state, this just a reference to the logged in user in the database
         const [userObj, setUserObj]  = useState<BankUser>();      <--- create a local state variable to store the value fetched via the database reference
-        if(!userObj) getCurrentUser(setUserObj);                  <--- fetch user info from the database and place it in the local state created above if the state isnt already set
+        if(!userObj) getCurrentUser(userContext.state, setUserObj);                  <--- fetch user info from the database and place it in the local state created above if the state isnt already set
                                                                        If the user cannot be found, the userObj state will remain undefined
                                                     
                                                                        

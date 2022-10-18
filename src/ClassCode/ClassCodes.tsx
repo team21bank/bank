@@ -18,7 +18,7 @@ export function ClassCodeForm(){
     if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
 
     const [userObj, setUserObj]  = useState<BankUser>();
-    if(!userObj) getCurrentUser(setUserObj);
+    if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
     const [className,setClassName] = useState<string>('');
     function updateClassName(event: React.ChangeEvent<HTMLInputElement>){

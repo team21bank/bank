@@ -12,7 +12,7 @@ export function TeacherHomePage(){
     if(userContext == null) return <NoUserPage />;
 
     const [userObj, setUserObj]  = useState<BankUser>();
-    if(!userObj) getCurrentUser(setUserObj);
+    if(!userObj) getCurrentUser(userContext.state, setUserObj);
     
     return userObj ? (
         <div className="teacher-home">
