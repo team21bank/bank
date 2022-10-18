@@ -14,6 +14,7 @@ import { AuthContext, CurrentUserProvider, getCurrentUser } from './Authenticati
 import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { BankUser } from './Interfaces/BankUser';
 import { EditProfile } from './Authentication/EditProfilePage/EditProfilePage';
+import { ChangeUsernameButton } from './Authentication/ChangeUsername/ChangeUsername';
 
 
 function App() {
@@ -46,9 +47,11 @@ function AppBody(): JSX.Element {
           <Route path="home" element={<TeacherHomePage />}/>
           <Route path="classes" element={<TeacherHomePage/>}/>
           <Route path="account" element={<TeacherHomePage/>}/>
+          <Route path="changeusername" element={<ChangeUsernameButton/>}/>
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
+          <Route path="changeusername" element={<ChangeUsernameButton/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

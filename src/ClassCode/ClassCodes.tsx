@@ -1,4 +1,4 @@
-import {Button} from 'react-bootstrap'
+import {Button, Form} from 'react-bootstrap'
 import { ref, getDatabase, update, onValue, set} from '@firebase/database';
 import "../firebase";
 import {Bank} from "../BankTest/BankObject"
@@ -9,6 +9,9 @@ import { NoUserPage } from "../Authentication/NoUserPage/NoUserPage";
 
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import { stringify } from 'querystring';
+import { exit } from 'process';
+import { render } from '@testing-library/react';
+import { isThisTypeNode } from 'typescript';
 
 export function ClassCodeForm(){
     const userContext = useContext(AuthContext);
@@ -17,7 +20,16 @@ export function ClassCodeForm(){
     const [userObj, setUserObj]  = useState<BankUser>();
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
+    const [className,setClassName] = useState<string>('');
+    function updateClassName(event: React.ChangeEvent<HTMLInputElement>){
+        setClassName(event.target.value)
+    }
+
     function createCode(){
+        if (className===''){
+            alert("Please enter a class name")
+            return 
+        }
         let codeExists=true
         let characters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
         let code=""
@@ -42,15 +54,21 @@ export function ClassCodeForm(){
             bankId:code,
             teacherID:userObj? userObj.id: '',
             studentBals:[],
-            classTitle:'',
+            classTitle:className,
             classDescription:'',
         }
-        userObj? userObj.groups.push(code): code='';
+        userObj? userObj.groups.push(code+className): code='';
         update(ref(getDatabase(),"/groups/"+code),{bankObj:newBank});
         userObj? userContext.state? set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups):null:null;
+        window.location.reload()
     }
 
     return (<div>
-        <Button onClick={createCode}>Create Class Code</Button>
+        <Form.Group controlId="createClass">
+            <Form.Control
+                value={className}
+                onChange={updateClassName}/>
+            <Button onClick={createCode}>Create Class Code</Button>
+        </Form.Group>
     </div>)
 }
