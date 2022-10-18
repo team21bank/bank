@@ -11,7 +11,7 @@ export function AvatarForm() {
     const userContext = useContext(AuthContext);
 
     const [userObj, setUserObj]  = useState<BankUser>();
-    if(!userObj) getCurrentUser(setUserObj);
+    if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
     function saveAvatar(avatar: string | undefined) {
         if(userObj && avatar) userObj.avatar=avatar;
