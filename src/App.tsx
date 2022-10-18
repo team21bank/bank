@@ -13,6 +13,7 @@ import { LoginForm } from './Authentication/Login/Login';
 import { AuthContext, CurrentUserProvider, getCurrentUser } from './Authentication/auth';
 import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { BankUser } from './Interfaces/BankUser';
+import { ChangeUsernameButton } from './Authentication/ChangeUsername/ChangeUsername';
 
 
 function App() {
@@ -42,9 +43,13 @@ function AppBody(): JSX.Element {
         <Route path="/login/resetpassword" element={<ResetMessage />} />
         <Route path="/teachers" element={<TeacherNavbar />}>
           <Route path="home" element={<TeacherHomePage />}/>
+          <Route path="classes" element={<TeacherHomePage/>}/>
+          <Route path="account" element={<TeacherHomePage/>}/>
+          <Route path="changeusername" element={<ChangeUsernameButton/>}/>
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
+          <Route path="changeusername" element={<ChangeUsernameButton/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

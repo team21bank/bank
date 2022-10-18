@@ -59,7 +59,7 @@ export function RegistrationForm(){
                 email:email,
                 id:id,
                 avatar:'',
-                groups:[],
+                groups:['placeholder'],
                 isTeacher: isTeacher
             }
             setEmail('')
@@ -106,14 +106,6 @@ export function RegistrationForm(){
                 type="password"
                 value={p2}
                 onChange={updateP2}/>
-            <br/>
-            <Form.Label>Select your role</Form.Label>
-            <Form.Select onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                setIsTeacher((e.target.value=="teacher")? true : false);
-            }}>
-                <option value="student">student</option>
-                <option value="teacher">teacher</option>
-            </Form.Select>
             <br/>
             <Button onClick={register}>Register</Button>
             <Link to="/"><Button>Back To Home</Button></Link>
