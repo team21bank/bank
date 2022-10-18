@@ -1,0 +1,10 @@
+.change-username{
+    text-align: center;
+}
+
+.username-text-box {
+    max-width: fit-content;
+    min-width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+}
