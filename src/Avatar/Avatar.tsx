@@ -1,23 +1,22 @@
 import { Button, Form } from "react-bootstrap";
-import React, { ChangeEvent, useContext, useRef, useState } from "react";
+import React, { ChangeEvent, useContext, useRef, useState, useEffect } from "react";
 import ImageUploading, { ImageListType, ImageType } from "react-images-uploading";
 import { BankUser } from "../Interfaces/BankUser";
 import { AuthContext, getCurrentUser } from "../Authentication/auth";
 import { getDatabase } from "@firebase/database";
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from "../firebase";
 import {ref, update, child} from "@firebase/database";
 import { url } from "inspector";
-//import myImageList which is a list of appropriate images that users can pick from
-//for their avatar profile
+import { upload } from "@testing-library/user-event/dist/upload";
+//import { useAuth, upload } from "../firebase";
 
 
 export function AvatarForm() {
+
     let database_reference = ref(getDatabase());
     let users=child(database_reference,"users");
 
     const [images, setImages] = React.useState([]);
-    //teacher uploads her pool of images into the class... students pick from that pool
     const maxNumber = 69;
 
     const userContext = useContext(AuthContext);
@@ -27,7 +26,7 @@ export function AvatarForm() {
   
     function saveAvatar(){
         if(userContext.state){
-            update(ref(getDatabase(), '/users/'+userContext.state.user.uid), {...userObj, avatar: ImageUploading})
+            update(ref(getDatabase(), '/users/'+userContext.state.user.uid), {...userObj, avatar: ImageData})
         }
         /*
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -41,6 +40,7 @@ export function AvatarForm() {
     //userContext.user.uid
     //ref with getDatabase /users/+uid
 
+    
     const onChange = (
         imageList: ImageListType,
         addUpdateIndex: number[] | undefined
@@ -91,7 +91,6 @@ export function AvatarForm() {
                                 </div> */}
                             </div>
                         ))}
-                        {/*Allows user to save their avatar once they upload an image*/} 
                     </div>
                 )}
             </ImageUploading>
