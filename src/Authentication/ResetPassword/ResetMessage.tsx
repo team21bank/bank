@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import { FirebaseError } from '@firebase/util';
+import './ResetMessage.css';
 
 export default function ResetMessage(){
 
@@ -67,7 +68,8 @@ export default function ResetMessage(){
             <br/>
             { showEmailError ? <EmailError /> : null }
             { showResults ? <Results /> : null }
-            <Button onClick={resetPassword}>Reset Password</Button>
+            <Button className = "reset-buttons" onClick={resetPassword}>Reset Password</Button>
+            <Button className = "reset-buttons" onClick={()=>navigate("/login")}>Login</Button>
             </Form.Group>
     </div>)
 }
