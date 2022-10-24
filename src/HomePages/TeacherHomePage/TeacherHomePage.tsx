@@ -5,13 +5,14 @@ import "./TeacherHomePage.css";
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
+import { ImportRoster } from "../../Authentication/ImportRoster/ImportRoster";
 
 export function TeacherHomePage(){
     const userContext = useContext(AuthContext);
     if(userContext == null) return <NoUserPage />;
 
     const [userObj, setUserObj]  = useState<BankUser>();
-    if(!userObj) getCurrentUser(setUserObj);
+    if(!userObj) getCurrentUser(userContext.state, setUserObj);
     
     return userObj ? (
         <div className="teacher-home">
