@@ -14,6 +14,7 @@ import { AuthContext, CurrentUserProvider, getCurrentUser } from './Authenticati
 import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { BankUser } from './Interfaces/BankUser';
 import { EditProfile } from './Authentication/EditProfilePage/EditProfilePage';
+import { JoinClassButton } from './ClassCode/JoinClass/JoinClass';
 import { ChangeUsernameButton } from './Authentication/ChangeUsername/ChangeUsername';
 import { AvatarForm } from './Avatar/Avatar';
 
@@ -52,6 +53,7 @@ function AppBody(): JSX.Element {
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
+          <Route path="joinclass" element={<JoinClassButton/>}/>
           <Route path="changeusername" element={<ChangeUsernameButton/>}/>
         </Route>
       </Routes>
