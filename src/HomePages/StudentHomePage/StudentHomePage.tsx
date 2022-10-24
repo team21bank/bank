@@ -29,7 +29,7 @@ export function StudentHomePage(){
             <br></br>
             <div className="classes">
                 {userObj.groups.map((classButton: string) => (
-                    classButton !== "placeholder" ? <Button id={classButton.slice(0, 6)} onClick={() => goToClass(classButton.slice(0, 6))}>{classButton.slice(6)}</Button> : <br></br>
+                    classButton !== "placeholder" ? <Button key={classButton.slice(6)} id={classButton.slice(0, 6)} onClick={() => goToClass(classButton.slice(0, 6))}>{classButton.slice(6)}</Button> : <br></br>
                 ))}
             </div>\
         </div>

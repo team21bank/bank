@@ -11,7 +11,10 @@ export function StudentClassPage({classCode}:{classCode:string}){
     if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
 
     const [userObj, setUserObj]  = useState<BankUser>();
-    if(!userObj) getCurrentUser(setUserObj);
+    if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
-    return (<div><Button>hello</Button></div>)
+    return (<div>
+        Welcome to {classCode.slice(6)}
+        <Button>hello</Button>
+    </div>)
 }
