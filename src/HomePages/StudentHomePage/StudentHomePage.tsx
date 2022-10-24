@@ -5,6 +5,7 @@ import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import {JoinClassButton} from "../../ClassCode/JoinClass/JoinClass"
 import {Button} from "react-bootstrap"
+import { useNavigate} from 'react-router-dom';
 
 
 export function StudentHomePage(){
@@ -14,8 +15,10 @@ export function StudentHomePage(){
     const [userObj, setUserObj]  = useState<BankUser>();
     if(!userObj) getCurrentUser(setUserObj);
 
+    const navigate=useNavigate()
+    
     function goToClass(classID:string){
-        return classID
+        navigate('/students/'+classID)
     }
 
     return userObj ? (

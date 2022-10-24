@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, Component} from 'react';
 import './App.css';
 import "./firebase";
 import { RegistrationForm } from './Authentication/Registration/Reg';
@@ -14,6 +14,7 @@ import { AuthContext, CurrentUserProvider, getCurrentUser } from './Authenticati
 import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { BankUser } from './Interfaces/BankUser';
 import { ChangeUsernameButton } from './Authentication/ChangeUsername/ChangeUsername';
+import {StudentClassPage} from './HomePages/StudentClassPage/StudentClassPage'
 
 
 function App() {
@@ -30,7 +31,6 @@ function AppBody(): JSX.Element {
   const userContext = useContext(AuthContext);
   const [currUser, setCurrUser] = useState<BankUser>();
   if(!currUser) getCurrentUser(setCurrUser);
-
 
   return <div>
     {userContext.state && currUser ? <div>logged in as {currUser.username}</div> : <div>not logged in</div>}
@@ -50,6 +50,9 @@ function AppBody(): JSX.Element {
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
           <Route path="changeusername" element={<ChangeUsernameButton/>}/>
+          {currUser? currUser.groups.map((classCode:string)=>(
+            classCode !== "placeholder" ? <Route path={classCode} element={<StudentClassPage classCode={classCode}/>}/>:null
+          )):null}
         </Route>
       </Routes>
     </BrowserRouter>
