@@ -11,12 +11,12 @@ import { AvatarForm } from '../../Avatar/Avatar';
 export function StudentHomePage(){
     const userContext = useContext(AuthContext);
     const [userObj, setUserObj]  = useState<BankUser>();
+    const navigate=useNavigate()
+
     if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
 
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
-    const navigate=useNavigate()
-    
     function goToClass(classID:string){
         navigate('/students/'+classID)
     }

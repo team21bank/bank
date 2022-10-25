@@ -12,11 +12,11 @@ import { Navigate, useNavigate } from "react-router-dom";
 export function TeacherHomePage(){
     const [userObj, setUserObj]  = useState<BankUser>();
     const userContext = useContext(AuthContext);
+    const navigate = useNavigate();
+
     if(userContext == null) return <NoUserPage />;
 
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
-
-    const navigate = useNavigate();
 
     function goToClass(classID: string) {
         console.log("navigating to ", classID);
@@ -33,7 +33,6 @@ export function TeacherHomePage(){
                 ))}
             </div>
             <LogoutButton></LogoutButton>
-            <ImportRoster currentGroup="testgr"></ImportRoster>
         </div>
     ) : (
         <div className="teacher-home">
