@@ -9,14 +9,13 @@ import "../../firebase";
 
 export function ChangeUsernameButton(){
     let database_reference = ref(getDatabase());
+    const [userObj, setUserObj]  = useState<BankUser>();
+    const [username, setUsername] = useState<string>('')
     const userContext = useContext(AuthContext);
     if(userContext == null) return <NoUserPage />;
-
-    const [userObj, setUserObj]  = useState<BankUser>();
     if(!userObj) getCurrentUser(setUserObj);
 
     //New username information
-    const [username, setUsername] = useState<string>('')
 
     function updateLocalUsername(event: React.ChangeEvent<HTMLInputElement>){
         setUsername(event.target.value)

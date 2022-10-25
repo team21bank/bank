@@ -9,9 +9,9 @@ import {Button} from "react-bootstrap"
 
 export function StudentHomePage(){
     const userContext = useContext(AuthContext);
+    const [userObj, setUserObj]  = useState<BankUser>();
     if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
 
-    const [userObj, setUserObj]  = useState<BankUser>();
     if(!userObj) getCurrentUser(setUserObj);
 
     function goToClass(classID:string){

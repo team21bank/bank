@@ -2,8 +2,9 @@ import { createUserWithEmailAndPassword } from "@firebase/auth";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { auth } from "../../firebase";
-import { ref, getDatabase, child, update, set  } from '@firebase/database';
+import { ref, getDatabase, onValue, child, update, set, get  } from '@firebase/database';
 import { BankUser } from "../../Interfaces/BankUser";
+import { Bank } from "../../BankTest/BankObject";
 
 export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Element {
     const [contents, setContents] = useState<string>("");
@@ -35,6 +36,15 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
     function makeChange() {
         toggleView(false);
         const splitRow = contents.split(/\r?\n/);
+        let newBank: Bank = {
+            bankId: "000000",
+            teacherID: "111111",
+            studentList: [""],
+            classDescription: "",
+            classTitle: ""
+        };
+        let groupRef = ref(getDatabase(), '/groups/' + currentGroup + '/bankObj/');
+        let studentListRef = ref(getDatabase(), '/groups/' + currentGroup + '/bankObj/studentList/');
         splitRow.map(function (loginInfo: string) {
             const split = loginInfo.split(",");
             if(split.length === 2 && split[0].includes("@")){
@@ -50,6 +60,31 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
                         isTeacher: false
                     }
                     set(userRef,{userObj:newUser});
+                    onValue(groupRef, ss=>{
+                        if(ss.val()!==null){
+                            onValue(studentListRef, sval=>{
+                                if(newBank.studentList[0] === ""){
+                                    //console.log("test1");
+                                    if(sval.val() !== null){
+                                        let studentList: string[] = sval.val();
+                                        newBank = {...ss.val(), studentList:[...studentList]}
+                                        if(!studentList.includes(split[1])){
+                                            newBank = {...ss.val(), studentList:[...newBank.studentList, split[1]]}
+                                        }
+                                    }else{
+                                        //console.log("test2")
+                                        newBank = {...ss.val(), studentList:["placeholder", split[1]]}
+                                    }
+                                }else{
+                                    //console.log("test3");
+                                    if(!newBank.studentList.includes(split[1])){
+                                        newBank = {...ss.val(), studentList:[...newBank.studentList, split[1]]}
+                                    }
+                                }
+                                //console.log(newBank.studentList);
+                            })
+                        }
+                    });
                 }).catch(function(error){
                     var errorCode = error.code;
                     var errorMessage = error.message;
@@ -59,7 +94,14 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
             }
             return split;
         });
-        setContents("");
+
+        setTimeout(function waitForData() {
+            //console.log(newBank);
+            if(newBank.bankId !== "000000"){
+                set(studentListRef, newBank.studentList);
+            }
+            setContents("");
+        }, 2000);
     }
 
     return (

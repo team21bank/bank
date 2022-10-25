@@ -8,10 +8,10 @@ import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import { ImportRoster } from "../../Authentication/ImportRoster/ImportRoster";
 
 export function TeacherHomePage(){
+    const [userObj, setUserObj]  = useState<BankUser>();
     const userContext = useContext(AuthContext);
     if(userContext == null) return <NoUserPage />;
 
-    const [userObj, setUserObj]  = useState<BankUser>();
     if(!userObj) getCurrentUser(setUserObj);
     
     return userObj ? (
@@ -19,6 +19,7 @@ export function TeacherHomePage(){
             <h2>Hello {userObj.username}</h2>
             <ClassCodeForm></ClassCodeForm>
             <LogoutButton></LogoutButton>
+            <ImportRoster currentGroup="testgr"></ImportRoster>
         </div>
     ) : (
         <div className="teacher-home">
