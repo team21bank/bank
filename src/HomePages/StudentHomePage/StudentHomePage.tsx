@@ -5,6 +5,7 @@ import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import {JoinClassButton} from "../../ClassCode/JoinClass/JoinClass"
 import {Button} from "react-bootstrap"
+import { useNavigate} from 'react-router-dom';
 import { AvatarForm } from '../../Avatar/Avatar';
 
 export function StudentHomePage(){
@@ -14,8 +15,10 @@ export function StudentHomePage(){
 
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
+    const navigate=useNavigate()
+    
     function goToClass(classID:string){
-        return classID
+        navigate('/students/'+classID)
     }
 
     return userObj ? (
@@ -26,7 +29,7 @@ export function StudentHomePage(){
             <br></br>
             <div className="classes">
                 {userObj.groups.map((classButton: string) => (
-                    classButton !== "placeholder" ? <Button id={classButton.slice(0, 6)} onClick={() => goToClass(classButton.slice(0, 6))}>{classButton.slice(6)}</Button> : <br></br>
+                    classButton !== "placeholder" ? <Button key={classButton.slice(6)} id={classButton.slice(0, 6)} onClick={() => goToClass(classButton.slice(0, 6))}>{classButton.slice(6)}</Button> : <br></br>
                 ))}
             </div>\
         </div>
