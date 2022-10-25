@@ -1,8 +1,8 @@
 import { Button } from "react-bootstrap";
 import React, { useContext, useState } from "react";
 import ImageUploading, { ImageListType } from "react-images-uploading";
-import { BankUser } from "../Interfaces/BankUser";
-import { AuthContext, getCurrentUser } from "../Authentication/auth";
+import { BankUser } from "../../Interfaces/BankUser";
+import { AuthContext, getCurrentUser } from "../auth";
 import { getDatabase } from "@firebase/database";
 import {ref, set} from "@firebase/database";
 

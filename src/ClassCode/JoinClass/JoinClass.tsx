@@ -41,6 +41,7 @@ export function JoinClassButton(){
             <Form.Label>Enter Class Code</Form.Label>
             <Form.Control
                 value={bank}
+                placeholder="Enter Class Code"
                 onChange={updateBank}/>
             <Button onClick={addClass}>Add Class</Button>
         </Form.Group>
