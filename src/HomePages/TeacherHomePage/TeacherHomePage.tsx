@@ -5,9 +5,8 @@ import "./TeacherHomePage.css";
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
-import { ImportRoster } from "../../Authentication/ImportRoster/ImportRoster";
 import {Button} from "react-bootstrap"
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function TeacherHomePage(){
     const [userObj, setUserObj]  = useState<BankUser>();
@@ -15,7 +14,6 @@ export function TeacherHomePage(){
     const navigate = useNavigate();
 
     if(userContext == null) return <NoUserPage />;
-
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
     function goToClass(classID: string) {

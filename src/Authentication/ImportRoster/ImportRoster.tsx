@@ -56,7 +56,7 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
                         email:split[0],
                         id:split[1],
                         avatar:'',
-                        groups:[currentGroup],
+                        groups:["placeholder", currentGroup],
                         isTeacher: false
                     }
                     set(userRef,{userObj:newUser});
@@ -101,7 +101,7 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
                 set(studentListRef, newBank.studentList);
             }
             setContents("");
-        }, 2000);
+        }, 1000*splitRow.length);
     }
 
     return (
