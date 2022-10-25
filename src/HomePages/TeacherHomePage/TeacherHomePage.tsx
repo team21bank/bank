@@ -12,7 +12,7 @@ export function TeacherHomePage(){
     const userContext = useContext(AuthContext);
     if(userContext == null) return <NoUserPage />;
 
-    if(!userObj) getCurrentUser(setUserObj);
+    if(!userObj) getCurrentUser(userContext.state, setUserObj);
     
     return userObj ? (
         <div className="teacher-home">

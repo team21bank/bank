@@ -20,7 +20,7 @@ export function ClassCodeForm(){
     
     if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
 
-    if(!userObj) getCurrentUser(setUserObj);
+    if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
     function updateClassName(event: React.ChangeEvent<HTMLInputElement>){
         setClassName(event.target.value)

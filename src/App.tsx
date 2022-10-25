@@ -13,7 +13,10 @@ import { LoginForm } from './Authentication/Login/Login';
 import { AuthContext, CurrentUserProvider, getCurrentUser } from './Authentication/auth';
 import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { BankUser } from './Interfaces/BankUser';
+import { EditProfile } from './Authentication/EditProfilePage/EditProfilePage';
+import { JoinClassButton } from './ClassCode/JoinClass/JoinClass';
 import { ChangeUsernameButton } from './Authentication/ChangeUsername/ChangeUsername';
+import { AvatarForm } from './Avatar/Avatar';
 
 
 function App() {
@@ -29,7 +32,7 @@ export default App;
 function AppBody(): JSX.Element {
   const userContext = useContext(AuthContext);
   const [currUser, setCurrUser] = useState<BankUser>();
-  if(!currUser) getCurrentUser(setCurrUser);
+  if(!currUser) getCurrentUser(userContext.state, setCurrUser);
 
 
   return <div>
@@ -41,6 +44,7 @@ function AppBody(): JSX.Element {
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/login" element={<LoginForm/>}/>
         <Route path="/login/resetpassword" element={<ResetMessage />} />
+        <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/teachers" element={<TeacherNavbar />}>
           <Route path="home" element={<TeacherHomePage />}/>
           <Route path="classes" element={<TeacherHomePage/>}/>
@@ -49,6 +53,7 @@ function AppBody(): JSX.Element {
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
+          <Route path="joinclass" element={<JoinClassButton/>}/>
           <Route path="changeusername" element={<ChangeUsernameButton/>}/>
         </Route>
       </Routes>
