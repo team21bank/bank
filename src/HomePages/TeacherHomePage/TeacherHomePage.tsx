@@ -1,6 +1,6 @@
 import { LogoutButton } from "../../Authentication/Logout/Logout";
 import { ClassCodeForm } from "../../ClassCode/ClassCodes";
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import "./TeacherHomePage.css";
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import { BankUser } from "../../Interfaces/BankUser";
