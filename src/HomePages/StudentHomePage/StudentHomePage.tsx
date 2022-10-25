@@ -10,20 +10,19 @@ import { AvatarForm } from '../../Avatar/Avatar';
 
 export function StudentHomePage(){
     const userContext = useContext(AuthContext);
-    if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
-
     const [userObj, setUserObj]  = useState<BankUser>();
+    const navigate=useNavigate()
+
+    if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
-    const navigate=useNavigate()
-    
     function goToClass(classID:string){
         navigate('/students/'+classID)
     }
 
     return userObj ? (
         <div className="student-home">
-            <h2>Hello {userObj.username}</h2>\
+            <h2>Hello {userObj.username}</h2>
             <JoinClassButton></JoinClassButton>
             <AvatarForm></AvatarForm>
             <br></br>
@@ -31,7 +30,7 @@ export function StudentHomePage(){
                 {userObj.groups.map((classButton: string) => (
                     classButton !== "placeholder" ? <Button key={classButton.slice(6)} id={classButton.slice(0, 6)} onClick={() => goToClass(classButton.slice(0, 6))}>{classButton.slice(6)}</Button> : <br></br>
                 ))}
-            </div>\
+            </div>
         </div>
     ) : (
         <div className="student-home">

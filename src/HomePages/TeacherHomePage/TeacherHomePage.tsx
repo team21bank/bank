@@ -1,22 +1,20 @@
 import { LogoutButton } from "../../Authentication/Logout/Logout";
 import { ClassCodeForm } from "../../ClassCode/ClassCodes";
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import "./TeacherHomePage.css";
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
-import { ImportRoster } from "../../Authentication/ImportRoster/ImportRoster";
 import {Button} from "react-bootstrap"
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function TeacherHomePage(){
     const userContext = useContext(AuthContext);
-    if(userContext == null) return <NoUserPage />;
-
     const [userObj, setUserObj]  = useState<BankUser>();
-    if(!userObj) getCurrentUser(userContext.state, setUserObj);
-
     const navigate = useNavigate();
+
+    if(userContext == null) return <NoUserPage />;
+    if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
     function goToClass(classID: string) {
         console.log("navigating to ", classID);

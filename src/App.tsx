@@ -4,7 +4,7 @@ import './App.css';
 import "./firebase";
 import { RegistrationForm } from './Authentication/Registration/Reg';
 import ResetMessage from './Authentication/ResetPassword/ResetMessage';
-import {Route, BrowserRouter, Link, Routes} from 'react-router-dom';
+import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import { StudentNavbar } from './Navbars/StudentNavbar';
 import { TeacherNavbar } from './Navbars/TeacherNavbar';
 import { StudentHomePage } from './HomePages/StudentHomePage/StudentHomePage'
@@ -15,7 +15,7 @@ import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { BankUser } from './Interfaces/BankUser';
 import { ChangeUsernameButton } from './Authentication/ChangeUsername/ChangeUsername';
 import { StudentClassPage } from './HomePages/StudentClassPage/StudentClassPage';
-
+import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
 
 function App() {
     return (
@@ -53,11 +53,9 @@ function AppBody(): JSX.Element {
           <Route path="classes" element={<TeacherHomePage/>}/>
           <Route path="account" element={<TeacherHomePage/>}/>
           <Route path="changeusername" element={<ChangeUsernameButton/>}/>
-          {/*
           {classes.map(str => {
-            return <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>
+            return <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}></Route>
           })}
-          */}
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
