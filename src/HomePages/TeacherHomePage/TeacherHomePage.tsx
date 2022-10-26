@@ -9,9 +9,10 @@ import { ImportRoster } from "../../Authentication/ImportRoster/ImportRoster";
 
 export function TeacherHomePage(){
     const userContext = useContext(AuthContext);
+    const [userObj, setUserObj]  = useState<BankUser>();
     if(userContext == null) return <NoUserPage />;
 
-    const [userObj, setUserObj]  = useState<BankUser>();
+    
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
     
     return userObj ? (

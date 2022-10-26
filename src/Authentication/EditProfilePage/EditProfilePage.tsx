@@ -9,8 +9,9 @@ import { NoUserPage } from "../NoUserPage/NoUserPage";
 export function EditProfile(): JSX.Element {
 
     const userContext = useContext(AuthContext);
-    if(userContext.state == null) return <NoUserPage />;
     const [currUser, setCurrUser] = useState<BankUser>();
+    if(userContext.state == null) return <NoUserPage />;
+    
     if(!currUser) getCurrentUser(userContext.state, setCurrUser);
 
     //updates the database instance of currUser
