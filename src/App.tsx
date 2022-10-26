@@ -16,6 +16,7 @@ import { BankUser } from './Interfaces/BankUser';
 import { ChangeUsernameButton } from './Authentication/ChangeUsername/ChangeUsername';
 import { StudentClassPage } from './HomePages/StudentClassPage/StudentClassPage';
 import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
+import { EditProfile } from './Authentication/EditProfilePage/EditProfilePage';
 
 function App() {
     return (
@@ -36,15 +37,13 @@ function AppBody(): JSX.Element {
   if(!currUser) getCurrentUser(userContext.state, setCurrUser);
   else classes = [...currUser.groups];
 
-  console.log("User: ", currUser ? currUser : "none");
-  console.log("Current classes: ", classes);
-
   return <div>
     {userContext.state && currUser ? <div>logged in as {currUser.username}</div> : <div>not logged in</div>}
     <div>^ just for testing, will be removed later</div>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<DefaultHomePage />} />
+        <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/login" element={<LoginForm/>}/>
         <Route path="/login/resetpassword" element={<ResetMessage />} />
