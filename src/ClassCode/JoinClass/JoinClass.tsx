@@ -9,12 +9,11 @@ import { truncateSync } from 'fs';
 
 export function JoinClassButton(){
     const userContext = useContext(AuthContext);
+    const [userObj, setUserObj]  = useState<BankUser>();
+    const [bank, setBank] = useState<string>('');
     if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
 
-    const [userObj, setUserObj]  = useState<BankUser>();
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
-
-    const [bank, setBank] = useState<string>('');
 
     function updateBank(event: React.ChangeEvent<HTMLInputElement>){
         setBank(event.target.value)
@@ -28,6 +27,13 @@ export function JoinClassButton(){
                 onValue(ref(getDatabase(),"/groups/"+classId+"/bankObj/classTitle"),ss=>{
                     className=ss.val()
                 })
+                if (userObj){
+                    if (userObj.groups.includes(classId+className)){
+                        alert("Already Part of Class")
+                        setBank('')
+                        return
+                    }
+                }
                 userObj? userObj.groups.push(classId+className): classId='';
                 userObj? userContext.state? set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups):null:null;
                 setBank('')
