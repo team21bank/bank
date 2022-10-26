@@ -12,11 +12,14 @@ export function ChangeUsernameButton(){
     const userContext = useContext(AuthContext);
     const [userObj, setUserObj]  = useState<BankUser>();
     //New username information
-    const [username, setUsername] = useState<string>('');
-    
-    if(userContext == null) return <NoUserPage />;
+    const [username, setUsername] = useState<string>('')
 
+    if(userContext == null) return <NoUserPage />;
+    
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
+
+    //New username information
+    const [username, setUsername] = useState<string>('')
 
     function updateLocalUsername(event: React.ChangeEvent<HTMLInputElement>){
         setUsername(event.target.value)
@@ -31,7 +34,6 @@ export function ChangeUsernameButton(){
             }
         }
         //THIS NEW USER OBJECT MUST BE PUSHED TO THE DATABASE TO SAVE CHANGES
-        alert("Username updated!")
     }
 
     return userObj ? (

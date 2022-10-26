@@ -27,8 +27,15 @@ export function JoinClassButton(){
                 onValue(ref(getDatabase(),"/groups/"+classId+"/bankObj/classTitle"),ss=>{
                     className=ss.val()
                 })
-                userObj ? userObj.groups.push(classId+className) : classId='';
-                userObj ? (userContext.state? set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups) : null) : null;
+                if (userObj){
+                    if (userObj.groups.includes(classId+className)){
+                        alert("Already Part of Class")
+                        setBank('')
+                        return
+                    }
+                }
+                userObj? userObj.groups.push(classId+className): classId='';
+                userObj? userContext.state? set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups):null:null;
                 setBank('')
                 window.location.reload()
             }

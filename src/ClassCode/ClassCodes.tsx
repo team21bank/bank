@@ -17,9 +17,9 @@ export function ClassCodeForm(){
     const userContext = useContext(AuthContext);
     const [userObj, setUserObj]  = useState<BankUser>();
     const [className,setClassName] = useState<string>('');
+    
     if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
 
-    
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
     function updateClassName(event: React.ChangeEvent<HTMLInputElement>){
@@ -54,13 +54,17 @@ export function ClassCodeForm(){
         let newBank: Bank={
             bankId:code,
             teacherID:userObj? userObj.id: '',
-            studentBals:[],
+            studentList:[],
             classTitle:className,
             classDescription:'',
         }
         userObj? userObj.groups.push(code+className): code='';
         update(ref(getDatabase(),"/groups/"+code),{bankObj:newBank});
-        userObj? userContext.state? set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups):null:null;
+        if(userObj){
+            if(userContext.state){
+                set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups);
+            }
+        }
         window.location.reload()
     }
 
