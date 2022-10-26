@@ -35,7 +35,9 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
 
     function makeChange() {
         toggleView(false);
+        //parsing CSV rows
         const splitRow = contents.split(/\r?\n/);
+        //holder bank, will be overwritten if expected bank exists
         let newBank: Bank = {
             bankId: "000000",
             teacherID: "111111",
@@ -43,14 +45,20 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
             classDescription: "",
             classTitle: ""
         };
+        //database reference for bank object
         let groupRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/');
+        //database reference for list of students within bank object
         let studentListRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/studentList/');
+        //Performs all operations on the student information
         splitRow.map(function (loginInfo: string) {
+            //separates email from password
             const split = loginInfo.split(",");
+            //if CSV is of proper format
             if(split.length === 2 && split[0].includes("@")){
                 createUserWithEmailAndPassword(auth,split[0],split[1]).then(somedata=>{
                     let uid=somedata.user.uid;
                     let userRef=ref(getDatabase(),'/users/'+uid)
+                    //creates the new user object
                     const newUser: BankUser={
                         username:split[0].split("@")[0],
                         email:split[0],
@@ -59,12 +67,13 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
                         groups:["placeholder", currentGroup],
                         isTeacher: false
                     }
+                    //pushes user object to database
                     set(userRef,{userObj:newUser});
+                    //within a class, grabs the list of existing students and appends the new student to it
                     onValue(groupRef, ss=>{
                         if(ss.val()!==null){
                             onValue(studentListRef, sval=>{
                                 if(newBank.studentList[0] === ""){
-                                    //console.log("test1");
                                     if(sval.val() !== null){
                                         let studentList: string[] = sval.val();
                                         newBank = {...ss.val(), studentList:[...studentList]}
@@ -72,16 +81,13 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
                                             newBank = {...ss.val(), studentList:[...newBank.studentList, split[1]]}
                                         }
                                     }else{
-                                        //console.log("test2")
                                         newBank = {...ss.val(), studentList:["placeholder", split[1]]}
                                     }
                                 }else{
-                                    //console.log("test3");
                                     if(!newBank.studentList.includes(split[1])){
                                         newBank = {...ss.val(), studentList:[...newBank.studentList, split[1]]}
                                     }
                                 }
-                                //console.log(newBank.studentList);
                             })
                         }
                     });
@@ -95,8 +101,8 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
             return split;
         });
 
+        //pushes the new list of students in the class to the database
         setTimeout(function waitForData() {
-            //console.log(newBank);
             if(newBank.bankId !== "000000"){
                 set(studentListRef, newBank.studentList);
             }
