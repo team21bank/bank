@@ -43,8 +43,8 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
             classDescription: "",
             classTitle: ""
         };
-        let groupRef = ref(getDatabase(), '/groups/' + currentGroup + '/bankObj/');
-        let studentListRef = ref(getDatabase(), '/groups/' + currentGroup + '/bankObj/studentList/');
+        let groupRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/');
+        let studentListRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/studentList/');
         splitRow.map(function (loginInfo: string) {
             const split = loginInfo.split(",");
             if(split.length === 2 && split[0].includes("@")){

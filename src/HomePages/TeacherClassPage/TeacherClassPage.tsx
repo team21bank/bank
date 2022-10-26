@@ -14,6 +14,6 @@ export function TeacherClassPage({classCode}:{classCode:string}){
 
     return (<div>
         Welcome back to your class: {classCode.slice(6)}
-        <ImportRoster currentGroup={classCode.slice(0,6)}></ImportRoster>
+        <ImportRoster currentGroup={classCode}></ImportRoster>
     </div>)
 }
