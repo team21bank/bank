@@ -5,7 +5,33 @@ import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import { FirebaseError } from '@firebase/util';
 import './ResetMessage.css';
 
+import { getDatabase, ref } from "firebase/database"
+import { initializeApp } from "firebase/app";
+import { get, query, onValue } from "firebase/database"
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyAA0b6LN-jkBbviEcl6GeKAFDPJQ169lcM",
+  authDomain: "banking-application-abbda.firebaseapp.com",
+  databaseURL: "https://banking-application-abbda-default-rtdb.firebaseio.com",
+  projectId: "banking-application-abbda",
+  storageBucket: "banking-application-abbda.appspot.com",
+  messagingSenderId: "616492109802",
+  appId: "1:616492109802:web:7d02eb116a01291807ac93",
+  measurementId: "G-EWWD2G1WP9"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app) 
+const dbRef = ref(db, "/users")
+const usersSnapshot = get(query(dbRef)) 
+onValue(query(dbRef), snapshot => {
+console.log("getting value")
+  console.log(snapshot.val())
+})
+
 export default function ResetMessage(){
+//const accountRef =  firebase.database().ref('users');
 
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
