@@ -18,7 +18,6 @@ export function RegistrationForm(){
     const [id, setId] = useState<string>('')
     const [p1, setP1] = useState<string>('')
     const [p2, setP2] = useState<string>('')
-    const [isTeacher, setIsTeacher] = useState<boolean>(false);
 
     //Setters for textbox values
     function updateEmail(event: React.ChangeEvent<HTMLInputElement>){
@@ -60,7 +59,7 @@ export function RegistrationForm(){
                 id:id,
                 avatar:'',
                 groups:['placeholder'],
-                isTeacher: isTeacher
+                isTeacher: true,
             }
             setEmail('')
             setP1('')
