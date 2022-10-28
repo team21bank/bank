@@ -1,45 +1,35 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {Button, Form, Modal} from 'react-bootstrap'
 import { BankUser } from '../../Interfaces/BankUser';
-import { AuthContext, getCurrentUser } from '../auth';
 import { NoUserPage } from '../NoUserPage/NoUserPage';
 import './ChangeUsername.css'
-import { ref, getDatabase, set, update  } from '@firebase/database';
 import "../../firebase";
 
-export function ChangeUsernameButton(){
+export function ChangeUsernameButton(
+    {currUser, setCurrUser}: {currUser: BankUser | undefined, setCurrUser: (n: BankUser | undefined)=>void}
+){
     const [showModal, setShowModal] = useState(false);
 
-    let database_reference = ref(getDatabase());
-    const userContext = useContext(AuthContext);
-    const [userObj, setUserObj]  = useState<BankUser>();
     //New username information
     const [username, setUsername] = useState<string>('')
 
-    if(userContext == null) {return <NoUserPage />};
-    
-    if(!userObj) {getCurrentUser(userContext.state, setUserObj);};
+    if(!currUser) {return <NoUserPage />};
 
     function updateLocalUsername(event: React.ChangeEvent<HTMLInputElement>){
         setUsername(event.target.value)
     }
 
     function confirm() {
-        if(userObj) userObj.username=username;
-        if(userObj) setUserObj({...userObj})
-        if (userObj!==undefined){
-            if (userContext.state!==null){
-                set(ref(getDatabase(),"users/"+userContext.state.user.uid+"/userObj/username"),userObj.username)
-            }
-        }
+        if(currUser) setCurrUser({...currUser, username});
+        setUsername("");
         setShowModal(false);
     }
     function cancel() {
         setUsername("");
-        setShowModal(false)
+        setShowModal(false);
     }
 
-    return userObj ? (
+    return currUser ? (
         <div className="change-username" >
             <Modal show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton>Change Username</Modal.Header>
@@ -53,7 +43,7 @@ export function ChangeUsernameButton(){
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={confirm}>Save</Button>
+                    <Button onClick={confirm}>Confirm</Button>
                     <Button onClick={cancel}>Cancel</Button>
                 </Modal.Footer>
                 
