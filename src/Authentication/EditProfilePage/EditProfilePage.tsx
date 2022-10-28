@@ -1,8 +1,10 @@
 import { ref, getDatabase, set, update } from "@firebase/database";
 import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { BankUser } from "../../Interfaces/BankUser";
 import { AuthContext, getCurrentUser } from "../auth";
+import { ChangeUsernameButton } from "../ChangeUsername/ChangeUsername";
 import { NoUserPage } from "../NoUserPage/NoUserPage";
 
 
@@ -27,6 +29,8 @@ export function EditProfile(): JSX.Element {
         <div>
             <h1>Edit Profile</h1>
             <div>Logged in as user {currUser ? currUser.username : ""}</div>
+
+            <ChangeUsernameButton />
 
 
             <Button onClick={saveToDatabase}>Save Changes</Button>

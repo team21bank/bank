@@ -13,9 +13,9 @@ import { LoginForm } from './Authentication/Login/Login';
 import { AuthContext, CurrentUserProvider, getCurrentUser } from './Authentication/auth';
 import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { BankUser } from './Interfaces/BankUser';
-import { ChangeUsernameButton } from './Authentication/ChangeUsername/ChangeUsername';
 import { StudentClassPage } from './HomePages/StudentClassPage/StudentClassPage';
 import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
+import { EditProfile } from './Authentication/EditProfilePage/EditProfilePage';
 
 function App() {
     return (
@@ -36,9 +36,6 @@ function AppBody(): JSX.Element {
   if(!currUser) getCurrentUser(userContext.state, setCurrUser);
   else classes = [...currUser.groups];
 
-  console.log("User: ", currUser ? currUser : "none");
-  console.log("Current classes: ", classes);
-
   return <div>
     {userContext.state && currUser ? <div>logged in as {currUser.username}</div> : <div>not logged in</div>}
     <div>^ just for testing, will be removed later</div>
@@ -48,18 +45,17 @@ function AppBody(): JSX.Element {
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/login" element={<LoginForm/>}/>
         <Route path="/login/resetpassword" element={<ResetMessage />} />
+        <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/teachers" element={<TeacherNavbar />}>
           <Route path="home" element={<TeacherHomePage />}/>
           <Route path="classes" element={<TeacherHomePage/>}/>
           <Route path="account" element={<TeacherHomePage/>}/>
-          <Route path="changeusername" element={<ChangeUsernameButton/>}/>
           {classes.map(str => {
             return <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}></Route>
           })}
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
-          <Route path="changeusername" element={<ChangeUsernameButton/>}/>
           {classes.map(str => {
             return <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>
           })}
