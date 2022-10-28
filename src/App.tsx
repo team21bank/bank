@@ -37,8 +37,6 @@ function AppBody(): JSX.Element {
   else classes = [...currUser.groups];
 
   return <div>
-    {userContext.state && currUser ? <div>logged in as {currUser.username}</div> : <div>not logged in</div>}
-    <div>^ just for testing, will be removed later</div>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<DefaultHomePage />} />

@@ -1,8 +1,7 @@
-import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
-import React, { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Navbar, Container, Nav } from 'react-bootstrap';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
 import "../firebase";
-import { ChangeUsernameButton } from '../Authentication/ChangeUsername/ChangeUsername';
 import { LogoutButton } from "../Authentication/Logout/Logout";
 
 
@@ -18,7 +17,7 @@ export function StudentNavbar(): JSX.Element {
             <LogoutButton></LogoutButton>
           </Nav>
           <Nav>
-            <Nav.Link href="/editprofile">Edit Profile</Nav.Link>
+            <Nav.Link href="/editprofile">Manage Account</Nav.Link>
           </Nav>
         </Container>
         <Outlet></Outlet>
