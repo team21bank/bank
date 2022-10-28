@@ -54,7 +54,7 @@ export function ClassCodeForm(){
         let newBank: Bank={
             bankId:code,
             teacherID:userObj? userObj.id: '',
-            studentList:[],
+            studentList:['placeholder'],
             classTitle:className,
             classDescription:'',
         }
