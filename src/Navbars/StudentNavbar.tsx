@@ -16,7 +16,7 @@ export function StudentNavbar(): JSX.Element {
             <Nav.Link href="/students/joinclass">Join Class</Nav.Link>
             <LogoutButton></LogoutButton>
           </Nav>
-          <Nav>
+          <Nav className='justify-content-end'>
             <Nav.Link href="/editprofile">Manage Account</Nav.Link>
           </Nav>
         </Container>
