@@ -42,7 +42,6 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
             bankId: "000000",
             teacherID: "111111",
             studentList: [""],
-            classDescription: "",
             classTitle: ""
         };
         //database reference for bank object
@@ -77,15 +76,17 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
                                     if(sval.val() !== null){
                                         let studentList: string[] = sval.val();
                                         newBank = {...ss.val(), studentList:[...studentList]}
-                                        if(!studentList.includes(split[1])){
-                                            newBank = {...ss.val(), studentList:[...newBank.studentList, split[1]]}
+                                        //fix conditional for schoolid+uid
+                                        ;
+                                        if(studentList.filter((aStudent:string): boolean => aStudent.startsWith(split[1])).length === 0){
+                                            newBank = {...ss.val(), studentList:[...newBank.studentList, split[1]+uid]}
                                         }
                                     }else{
-                                        newBank = {...ss.val(), studentList:["placeholder", split[1]]}
+                                        newBank = {...ss.val(), studentList:["placeholder", split[1]+uid]}
                                     }
                                 }else{
-                                    if(!newBank.studentList.includes(split[1])){
-                                        newBank = {...ss.val(), studentList:[...newBank.studentList, split[1]]}
+                                    if(newBank.studentList.filter((aStudent:string): boolean => aStudent.startsWith(split[1])).length === 0){
+                                        newBank = {...ss.val(), studentList:[...newBank.studentList, split[1]+uid]}
                                     }
                                 }
                             })
