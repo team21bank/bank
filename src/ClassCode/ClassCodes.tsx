@@ -56,7 +56,6 @@ export function ClassCodeForm(){
             teacherID:userObj? userObj.id: '',
             studentList:['placeholder'],
             classTitle:className,
-            classDescription:'',
         }
         userObj? userObj.groups.push(code+className): code='';
         update(ref(getDatabase(),"/groups/"+code),{bankObj:newBank});

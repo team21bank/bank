@@ -51,8 +51,7 @@ export function RegistrationForm(){
             return;
         }
         createUserWithEmailAndPassword(auth,email,p1).then(somedata=>{
-            let uid=somedata.user.uid;
-            let userRef=ref(getDatabase(),'/users/'+uid)
+            let userRef=ref(getDatabase(),'/users/'+somedata.user.uid)
             const newUser: BankUser={
                 username:username,
                 email:email,
