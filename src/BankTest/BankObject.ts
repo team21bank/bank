@@ -8,6 +8,4 @@ export interface Bank {
     studentList: string[];
     /**The title of the class */ 
     classTitle:string;
-    /**The description of the class */
-    classDescription:string;
 }

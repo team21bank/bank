@@ -40,7 +40,6 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
             bankId: "000000",
             teacherID: "111111",
             studentList: [""],
-            classDescription: "",
             classTitle: ""
         };
         let groupRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/');
