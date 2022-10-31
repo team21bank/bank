@@ -4,6 +4,7 @@ import React, { useContext, useState } from 'react';
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
+import {Bank} from "../../BankTest/BankObject"
 import { Await } from 'react-router-dom';
 import { truncateSync } from 'fs';
 
@@ -22,28 +23,28 @@ export function JoinClassButton(){
     function addClass(){
         let classId=bank;
         let className='';
-        onValue(ref(getDatabase(),"/groups/"+classId),ss=>{
-            if (ss.val()!==null){
-                onValue(ref(getDatabase(),"/groups/"+classId+"/bankObj/classTitle"),ss=>{
-                    className=ss.val()
-                })
-                if (userObj){
-                    if (userObj.groups.includes(classId+className)){
-                        alert("Already Part of Class")
-                        setBank('')
-                        return
+        let currBank={} as Bank;
+        if (userObj){
+            onValue(ref(getDatabase(),"/groups/"+classId),ss=>{
+                if (ss.val()!==null && !userObj.groups.includes(classId)){
+                    className=ss.val().bankObj.classTitle
+                    currBank=ss.val().bankObj
+                    if (userObj){
+                        userObj.groups.push(classId+className);
+                        currBank.studentList.push(userObj.id)
+                        if (userContext.state){
+                            set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups);
+                            alert("Group Added")
+                        }
                     }
                 }
-                if (userObj){
-                    userObj.groups.push(classId+className);
-                    if (userContext.state){
-                        set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups)
-                    }
-                }
-                setBank('')
-                window.location.reload()
+            })
+            if (currBank.bankId!==undefined){
+                set(ref(getDatabase(),"/groups/"+classId+"/bankObj"),currBank)
             }
-        })
+            setBank('')
+            window.location.reload()
+        }   
     }
     
     return (<div>
