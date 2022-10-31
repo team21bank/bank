@@ -56,8 +56,8 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
             //if CSV is of proper format
             if(split.length === 2 && split[0].includes("@")){
                 createUserWithEmailAndPassword(auth,split[0],split[1]).then(somedata=>{
-                    let uid=somedata.user.uid;
-                    let userRef=ref(getDatabase(),'/users/'+uid)
+                    //let uid=somedata.user.uid;
+                    let userRef=ref(getDatabase(),'/users/'+split[1])
                     //creates the new user object
                     const newUser: BankUser={
                         username:split[0].split("@")[0],
