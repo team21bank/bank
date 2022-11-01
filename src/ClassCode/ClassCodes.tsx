@@ -1,17 +1,11 @@
 import {Button, Form} from 'react-bootstrap'
 import { ref, getDatabase, update, onValue, set} from '@firebase/database';
 import "../firebase";
-import {Bank} from "../BankTest/BankObject"
+import {Bank} from "../Interfaces/BankObject"
 import React, { useContext, useState } from 'react';
 import { AuthContext, getCurrentUser } from "../Authentication/auth";
 import { BankUser } from "../Interfaces/BankUser";
 import { NoUserPage } from "../Authentication/NoUserPage/NoUserPage";
-
-import {Routes, Route, useNavigate} from 'react-router-dom';
-import { stringify } from 'querystring';
-import { exit } from 'process';
-import { render } from '@testing-library/react';
-import { isThisTypeNode } from 'typescript';
 
 export function ClassCodeForm(){
     const userContext = useContext(AuthContext);
