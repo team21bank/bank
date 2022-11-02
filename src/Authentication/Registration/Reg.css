@@ -1,0 +1,44 @@
+.register-page {
+    text-align: center;
+}
+
+.register-header {
+    height: 150px;
+    line-height: 150px;
+    text-align: center;
+    background-color: beige;
+}
+
+.register-header-text {
+    display: inline-block;
+    vertical-align: middle
+}
+
+.register-forms {
+    padding-top: 50px;
+}
+
+.register-text-box {
+    width: 50%;
+    margin-left: 100px;
+    margin-right: 20%;
+    outline-style: solid;
+    outline-width: 1px;
+}
+
+.register-form-header {
+    font-size: xx-large;
+    margin-left: auto;
+}
+
+.register-form-button {
+    font-size: xx-large;
+}
+
+.form-wrapper {
+    display: flex;
+    flex-direction: row;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: end;
+}
