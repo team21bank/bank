@@ -2,6 +2,7 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import React from "react";
 import "./DefaultHomePage.css";
+import { ImageGallery } from "../../AvatarPool/ImageGallery";
 
 export function DefaultHomePage(): JSX.Element {
   return (
@@ -12,5 +13,6 @@ export function DefaultHomePage(): JSX.Element {
     </header>
     <Link to="/login"><Button className="start-button">Login</Button></Link>
     <Link to="/register"><Button className="start-button">Register</Button></Link>
+    <ImageGallery></ImageGallery>
   </div>)
 }

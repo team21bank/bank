@@ -6,11 +6,11 @@ export function ImageViewer({avatar}: {avatar: string | undefined}){
     //Try catch block that'll display the user's profile picture if it exists; The default profile otherwise.
     try {
         return <span>
-        <img border-radius="50%" width="50px" alt="Your Avatar" src={require("./" + avatar + ".png")} ></img>
+        <img style={{borderRadius: "50%"}} width="50px" alt="Your Avatar" src={require("./" + avatar + ".png")} ></img>
         </span>
     } catch {
         return <span>
-        <img border-radius="50%" width="50px" alt="Default Avatar" src={require("./default.png")} ></img>
+        <img style={{borderRadius: "50%"}} width="50px" alt="Default Avatar" src={require("./default.png")} ></img>
         </span>
     }
 }
