@@ -14,21 +14,26 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
         if (event.target.files && event.target.files.length) {
             // Get the first filename
             const filename = event.target.files[0];
-            // Create a reader
-            const reader = new FileReader();
-            // Create lambda callback to handle when we read the file
-            reader.onload = (loadEvent) => {
-                // Target might be null, so provide default error value
-                const newContent =
-                    loadEvent.target?.result || "Data was not loaded";
-                // FileReader provides string or ArrayBuffer, force it to be string
-                setContents(newContent as string);
-            };
-            // Actually read the file
-            reader.readAsText(filename);
+            if(filename.name.endsWith(".csv")){
+                // Create a reader
+                const reader = new FileReader();
+                // Create lambda callback to handle when we read the file
+                reader.onload = (loadEvent) => {
+                    // Target might be null, so provide default error value
+                    const newContent =
+                        loadEvent.target?.result || "Data was not loaded";
+                    // FileReader provides string or ArrayBuffer, force it to be string
+                    setContents(newContent as string);
+                };
+                // Actually read the file
+                reader.readAsText(filename);
+            } else {
+                alert("Invalid file type!  Please upload a .csv");
+                event.target.value = "";
+            }
         }
     }
-
+ 
     function changeToggle() {
         toggleView(true);
     }
@@ -48,7 +53,7 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
         let groupRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/');
         //database reference for list of students within bank object
         let studentListRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/studentList/');
-        //Performs all operations on the student information
+        //Performs all operations on the student information, map acts as a for loop
         splitRow.map(function (loginInfo: string) {
             //separates email from password
             const split = loginInfo.split(",");
