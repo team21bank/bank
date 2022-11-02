@@ -13,7 +13,6 @@ import {firebaseConfig, app} from "../../firebase"
 
 
 export default function ResetMessage(){
-//const accountRef =  firebase.database().ref('users');
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
     const navigate = useNavigate();
@@ -51,8 +50,6 @@ export default function ResetMessage(){
                 var found = false
                 for(let i = 0; i<parsedJSonValues.length;i++)
                 {
-                    //var found = false;
-                    
                     if((parsedJSonValues[i]["userObj"]["email"]===email)&&(parsedJSonValues[i]["userObj"]["isTeacher"]===true))
                     {
                         sendPasswordResetEmail(auth,email)
@@ -72,16 +69,13 @@ export default function ResetMessage(){
                         found=true;
                         console.log("Value of found is")
                         console.log(found)
-
                     }
                     if(i===parsedJSonValues.length-1)
                     {
-                    if(found===false){
-                        
-                        throw new Error}
-                        
+                        if(found===false){
+                             throw new Error
+                        }
                     }
-                        
                 }
             }
             catch (e:unknown) {
@@ -105,7 +99,6 @@ export default function ResetMessage(){
                         console.error(e.code)
                     }
                 }
-
             }
         }
         triggerResetEmail();
@@ -120,13 +113,14 @@ export default function ResetMessage(){
             <Form.Control
                 value={email}
                 onChange={updateEmail}
-                />
+             />
             <br/>
             { showEmailError ? <EmailError /> : null }
             { showResults ? <Results /> : null }
             { showStudentError ? <StudentError /> : null }
+            <br/>
             <Button className = "reset-buttons" onClick={resetPassword}>Reset Password</Button>
             <Button className = "reset-buttons" onClick={()=>navigate("/login")}>Login</Button>
-            </Form.Group>
+        </Form.Group>
     </div>)
 }
