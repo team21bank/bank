@@ -11,15 +11,12 @@ import { Link } from 'react-router-dom';
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 
 export function RegistrationForm(){
-    let database_reference = ref(getDatabase());
-    let users=child(database_reference,"users");
-
     //All information needed from user to register
-    const [email, setEmail] = useState<string>('')
-    const [username, setUser] = useState<string>('')
-    const [id, setId] = useState<string>('')
-    const [p1, setP1] = useState<string>('')
-    const [p2, setP2] = useState<string>('')
+    const [email, setEmail] = useState<string>('');
+    const [username, setUser] = useState<string>('');
+    const [id, setId] = useState<string>('');
+    const [p1, setP1] = useState<string>('');
+    const [p2, setP2] = useState<string>('');
 
     
     //Allows user to register account if information is inputted correctly and email does not already have an account
@@ -34,7 +31,7 @@ export function RegistrationForm(){
         }
         createUserWithEmailAndPassword(auth,email,p1).then(somedata=>{
             let uid=somedata.user.uid;
-            let userRef=ref(getDatabase(),'/users/'+uid)
+            let userRef=ref(getDatabase(),'/users/'+uid);
             const newUser: BankUser={
                 username:username,
                 email:email,
@@ -43,11 +40,7 @@ export function RegistrationForm(){
                 groups:['placeholder'],
                 isTeacher: true,
             }
-            setEmail('')
-            setP1('')
-            setP2('')
-            setId('')
-            setUser('')
+            setEmail(''); setP1(''); setP2(''); setId(''); setUser('');
             update(userRef,{userObj:newUser});
         }).catch(function(error){
             var errorCode = error.code;
@@ -55,7 +48,7 @@ export function RegistrationForm(){
             console.log(errorCode);
             alert(errorMessage);
         });
-        console.log(email,username,id)
+        console.log("Created user: ",email,username,id)
     };
 
     //HTML for registration textboxes and button

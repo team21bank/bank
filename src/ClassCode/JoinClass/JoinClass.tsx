@@ -1,14 +1,15 @@
-import {Button,Form, useAccordionButton} from 'react-bootstrap'
-import { ref, getDatabase, update, onValue, set} from '@firebase/database';
+import {Button,Form, Modal } from 'react-bootstrap'
+import { ref, getDatabase, onValue, set} from '@firebase/database';
 import React, { useContext, useState } from 'react';
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import { BankUser } from "../../Interfaces/BankUser";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import {Bank} from "../../BankTest/BankObject"
-import { Await } from 'react-router-dom';
-import { truncateSync } from 'fs';
+
 
 export function JoinClassButton(){
+    const [showModal, setShowModal] = useState(false);
+
     const userContext = useContext(AuthContext);
     const [userObj, setUserObj]  = useState<BankUser>();
     const [bank, setBank] = useState<string>('');
@@ -48,12 +49,22 @@ export function JoinClassButton(){
     }
     
     return (<div>
-        <Form.Group controlId="addClass">
-            <Form.Label>Enter Class Code</Form.Label>
-            <Form.Control
-                value={bank}
-                onChange={updateBank}/>
-            <Button onClick={addClass}>Add Class</Button>
-        </Form.Group>
+        <Modal show={showModal} onHide={()=>setShowModal(false)}>
+            <Modal.Header closeButton><h1>Join Class</h1></Modal.Header>
+            <Modal.Body>
+                <Form.Group controlId="addClass">
+                    <Form.Label>Enter Class Code</Form.Label>
+                    <Form.Control
+                        value={bank}
+                        onChange={updateBank}/>
+                        <br />
+                </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={addClass}>Add Class</Button>
+                <Button onClick={()=>setBank("")}>Cancel</Button>
+            </Modal.Footer>
+        </Modal>
+        <Button onClick={()=>setShowModal(true)} size="lg">Join Class</Button>
     </div>);
 }
