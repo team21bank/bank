@@ -8,6 +8,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import {BankUser} from "../../Interfaces/BankUser";
 import { Link } from 'react-router-dom';
 
+type InputEvent = React.ChangeEvent<HTMLInputElement>;
+
 export function RegistrationForm(){
     let database_reference = ref(getDatabase());
     let users=child(database_reference,"users");
@@ -19,29 +21,9 @@ export function RegistrationForm(){
     const [p1, setP1] = useState<string>('')
     const [p2, setP2] = useState<string>('')
 
-    //Setters for textbox values
-    function updateEmail(event: React.ChangeEvent<HTMLInputElement>){
-        setEmail(event.target.value)
-    }
-
-    function updateUser(event: React.ChangeEvent<HTMLInputElement>){
-        setUser(event.target.value)
-    }
-
-    function updateId(event: React.ChangeEvent<HTMLInputElement>){
-        setId(event.target.value)
-    }
-
-    function updateP1(event: React.ChangeEvent<HTMLInputElement>){
-        setP1(event.target.value)
-    }
-
-    function updateP2(event: React.ChangeEvent<HTMLInputElement>){
-        setP2(event.target.value)
-    }
     
     //Allows user to register account if information is inputted correctly and email does not already have an account
-    function register(){
+    function register_new_user(){
         if (p1!==p2){
             alert("Passwords don't match");
             return;
@@ -90,7 +72,7 @@ export function RegistrationForm(){
                         placeholder='ex. example@test.com'
                         size='lg'
                         value={email}
-                        onChange={updateEmail}/>
+                        onChange={(e: InputEvent) => setEmail(e.target.value)}/>
                 </div>
                 <div className="form-wrapper">
                     <Form.Label className="register-form-header">Enter Your Username</Form.Label>
@@ -98,7 +80,7 @@ export function RegistrationForm(){
                         className='register-text-box'
                         size='lg'
                         value={username}
-                        onChange={updateUser}/>
+                        onChange={(e: InputEvent) => setUser(e.target.value)}/>
                 </div>
                 <div className="form-wrapper">
                     <Form.Label className="register-form-header">Enter Your School ID</Form.Label>
@@ -106,7 +88,7 @@ export function RegistrationForm(){
                         className='register-text-box'
                         size='lg'
                         value={id}
-                        onChange={updateId}/>
+                        onChange={(e: InputEvent) => setId(e.target.value)}/>
                 </div>
                 <div className="form-wrapper">
                     <Form.Label className="register-form-header">Enter Your Password</Form.Label>
@@ -115,7 +97,7 @@ export function RegistrationForm(){
                         size='lg'
                         type="password"
                         value={p1}
-                        onChange={updateP1}/>
+                        onChange={(e: InputEvent) => setP1(e.target.value)}/>
                 </div>
                 <div className="form-wrapper">
                     <Form.Label className="register-form-header">Confirm Your Password</Form.Label>
@@ -124,10 +106,10 @@ export function RegistrationForm(){
                         size='lg'
                         type="password"
                         value={p2}
-                        onChange={updateP2}/>
+                        onChange={(e: InputEvent) => setP2(e.target.value)}/>
                 </div>
                 <br/>
-                <Button onClick={register} className="register-form-button">Register</Button>
+                <Button onClick={register_new_user} className="register-form-button">Register</Button>
                 <Link to="/"><Button className="register-form-button">Back To Home</Button></Link>
             </Form.Group>
         </div>
