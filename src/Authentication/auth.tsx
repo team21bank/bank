@@ -1,5 +1,5 @@
 import { UserCredential } from "firebase/auth";
-import React, { ReactNode, useContext, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { BankUser } from "../Interfaces/BankUser";
 import { ref, get, getDatabase } from "@firebase/database";
 

@@ -4,7 +4,7 @@ import { Button, Form } from "react-bootstrap";
 import { auth } from "../../firebase";
 import { ref, getDatabase, onValue, set } from '@firebase/database';
 import { BankUser } from "../../Interfaces/BankUser";
-import { Bank } from "../../BankTest/BankObject";
+import { Bank } from "../../Interfaces/BankObject";
 
 export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Element {
     const [contents, setContents] = useState<string>("");
@@ -40,7 +40,6 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
             bankId: "000000",
             teacherID: "111111",
             studentList: [""],
-            classDescription: "",
             classTitle: ""
         };
         let groupRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/');
