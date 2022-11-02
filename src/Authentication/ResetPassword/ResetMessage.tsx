@@ -10,61 +10,14 @@ import { get, query, onValue } from "firebase/database"
 import {firebaseConfig, app} from "../../firebase"
 
 
-async function returntruthy(dbEmail:string){
-    var truthy = false
-    const db = await getDatabase(app)
-    const usersSnapshot = await get(ref(db, '/'))
-    var item = usersSnapshot.child('users').val();
-    var items:string[]=[]
-    const JSonValues = Object.values(item);
-    const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
-    for(let i = 0; i<parsedJSonValues.length;i++){
-        if((parsedJSonValues[i]["userObj"]["email"]===dbEmail)&&(parsedJSonValues[i]["userObj"]["isTeacher"]===true)){
-            truthy = true
-        }
-        else{
-            truthy = false
-        }
-        if(truthy===true)
-            break
-    }
-    return truthy;
-}
-function canResetPW(dbEmail: string){
-    const db = getDatabase(app)
-    const dbRef = ref(db, "/users")
-    const usersSnapshot = get(query(dbRef))
-    let truthy = onValue(query(dbRef), snapshot => {
-        var items:string[] = [] 
-        snapshot.forEach((child) => {
-            items.push({
-                _key: child.key,
-                ...child.val()
-            });
-        });
-        for(var i=0;i<items.length;i++){
-            //console.log(JSON.stringify(items[i]))
-            const k = JSON.parse(JSON.stringify(items[i]))
-            if(k["userObj"]["email"]===dbEmail){
-                if(k["userObj"]["isTeacher"]){
-                console.log("Teacher is true")
-                return true;
-                }
-            }
-            else{
-                return false
-            }
-        }
-    })
-    console.log("TRUTH IS")
-    console.log(truthy)
-}
+
 
 export default function ResetMessage(){
 //const accountRef =  firebase.database().ref('users');
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
     const navigate = useNavigate();
+    const auth = getAuth();
 
     const [showResults, setShowResults] = React.useState(false)
     const Results = () => (
@@ -88,39 +41,56 @@ export default function ResetMessage(){
     )
 
     function resetPassword(){
-        const auth = getAuth()
-        
-        console.log("now printing truthy value ")
-        var truthy = returntruthy(email)
-        truthy.then(value=>{
-            console.log(value)
-        })
-        console.log(truthy)
-
         const triggerResetEmail = async () => {
             try{
+                const db = await getDatabase(app)
+                const usersSnapshot = await get(ref(db, '/'))
+                var item = usersSnapshot.child('users').val();
+                const JSonValues = Object.values(item);
+                const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
+                var found = false
+                for(let i = 0; i<parsedJSonValues.length;i++)
+                {
+                    //var found = false;
+                    
+                    if((parsedJSonValues[i]["userObj"]["email"]===email)&&(parsedJSonValues[i]["userObj"]["isTeacher"]===true))
+                    {
+                        sendPasswordResetEmail(auth,email)
+                        setShowResults(true);
+                        setShowEmailError(false);
+                        setShowStudentError(false);
+                        console.log("Password reset email sent");
+                        found=true;
+                        console.log(found)
+                    }
+                    else if((parsedJSonValues[i]["userObj"]["email"]===email)&&(parsedJSonValues[i]["userObj"]["isTeacher"]!==true))
+                    {   
+                        console.log("User is a student! Can't change password");
+                        setShowResults(false);
+                        setShowEmailError(false);
+                        setShowStudentError(true);
+                        found=true;
+                        console.log("Value of found is")
+                        console.log(found)
 
-                const value = await returntruthy(email)
-                console.log("*****************")
-                console.log("Value and email are")
-                console.log(value)
-                console.log(email)
-                console.log("*****************")
-                if(value){
-                await sendPasswordResetEmail(auth,email)
-                setShowResults(true)
-                setShowEmailError(false)
-                setShowStudentError(false)
-                console.log("Password reset email sent")}
-                else{
-                setShowResults(false)
-                setShowEmailError(false)
-                setShowStudentError(true)
+                    }
+                    if(i===parsedJSonValues.length-1)
+                    {
+                    if(found===false){
+                        
+                        throw new Error}
+                        
+                    }
+                        
                 }
             }
             catch (e:unknown) {
+
                 setShowResults(false)
                 setShowStudentError(false)
+                setShowEmailError(true)
+                console.log(e)
+                console.log("User not found")
                 if(e instanceof FirebaseError){
                     if(e.code==='auth/invalid-email'){
                         console.error(e.code)
@@ -131,6 +101,7 @@ export default function ResetMessage(){
                         setShowEmailError(true)
                     }
                     else{
+                        console.log("Getting new error")
                         console.error(e.code)
                     }
                 }
