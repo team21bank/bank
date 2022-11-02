@@ -9,7 +9,7 @@ export interface QuizQuestion{
 
     points: number; //question points
 
-    type: QuestionType; //either MultipleChoice or ShortAnswer
+    type: string; //only MultipleChoice
 
     options: string[]; //options exist if MultipleChoice type
 

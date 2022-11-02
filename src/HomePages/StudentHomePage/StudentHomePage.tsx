@@ -7,6 +7,7 @@ import {JoinClassButton} from "../../ClassCode/JoinClass/JoinClass"
 import {Button} from "react-bootstrap"
 import { useNavigate} from 'react-router-dom';
 import { AvatarForm } from '../../Authentication/Avatar/Avatar';
+import { QuizMain } from '../../Quiz/QuizMain';
 
 export function StudentHomePage(){
     const userContext = useContext(AuthContext);
@@ -25,6 +26,7 @@ export function StudentHomePage(){
             <h2>Hello {userObj.username}</h2>
             <JoinClassButton></JoinClassButton>
             <AvatarForm></AvatarForm>
+            <QuizMain></QuizMain>
             <br></br>
             <div className="classes">
                 {userObj.groups.map((classButton: string) => (

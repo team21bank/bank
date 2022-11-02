@@ -1,0 +1,110 @@
+[
+    {
+        "id": 1,
+        "title": "Renaissance Quiz",
+        "description": "Questions about the Renaissance period",
+        "questionTotal": 5,
+        "money": 100,
+        "questions": [
+            {
+                "id": 1,
+                "name": "What language does 'Renaissance' originate from?",
+                "body": "Renaissance means rebirth, but what language does it come from?",
+                "points": 20,
+                "type": "multiple-choice-question",
+                "options": ["French", "Italian", "Old English", "Polish"],
+                "expected": "French",
+                "published": true
+            },
+            {
+                "id": 2,
+                "name": "When was the Renaissance?",
+                "body": "Which time period was this era of history?",
+                "points": 20,
+                "type": "multiple-choice-question",
+                "options": ["1000s-1250s", "1300s-1500s", "1700s", "1600s"],
+                "expected": "1300s-1500s",
+                "published": true
+            },
+            {
+                "id": 3,
+                "name": "Which of the following subjects flourished during this era?",
+                "body": "Which topics were studied deeply?",
+                "points": 20,
+                "type": "multiple-choice-question",
+                "options": ["Literature", "Art", "Science", "All of the above"],
+                "expected": "All of the above",
+                "published": true
+            },
+            {
+                "id": 4,
+                "name": "What is Galileo known for?",
+                "body": "Galileo was a notable figure during the Renaissance; what did he do?",
+                "points": 20,
+                "type": "multiple-choice-question",
+                "options": ["His artwork", "His work with the Church", "His contributions to astronomy/science", "His politics"],
+                "expected": "His contributions to astronomy/science",
+                "published": true
+            },
+            {
+                "id": 5,
+                "name": "What did the Church try to do during this time?",
+                "body": "Think about what the role of the Church was during the Renaissance?",
+                "points": 20,
+                "type": "multiple-choice-question",
+                "options": ["Gain more power through royalty", "Censor anything that conflicted with their teachings and beliefs", "Influence trade deals between countries", "Spread Christianity across all parts of the world"],
+                "expected": "Censor anything that conflicted with their teachings and beliefs",
+                "published": true
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Voyagers/Explorers Quiz",
+        "description": "Questions about the explorers during the Renaissance",
+        "questionTotal": 5,
+        "money": 100,
+        "questions": [
+            {
+                "id": 1,
+                "name": "Which countries were the leaders during the Age of Exploration?",
+                "body": "Leading countries during the early stages of the Age of Exploration",
+                "points": 25,
+                "type": "multiple-choice-question",
+                "options": ["Portugal & Italy", "Italy & England", "Portugal & Spain", "Spain & France"],
+                "expected": "Portugal & Spain",
+                "published": true
+            },
+            {
+                "id": 2,
+                "name": "What was the nationality of the first explorer to sail the globe?",
+                "body": "Who led the first global expedititon?",
+                "points": 25,
+                "type": "multiple-choice-question",
+                "options": ["Christopher Columbus", "Ferdinand Magellan", "Vasco da Gama", "Sir Francis Drake"],
+                "expected": "Ferdinand Magellan",
+                "published": true
+            },
+            {
+                "id": 3,
+                "name": "Which of the following is the definition of circumnavigation?",
+                "body": "Think about 'circum' + 'navigation'",
+                "points": 25,
+                "type": "multiple-choice-question",
+                "options": ["travel completely around something (like a globe)", "find the circumference while navigating", "discover new land", "settle in a new continent"],
+                "expected": "travel completely around something (like a globe)",
+                "published": true
+            },
+            {
+                "id": 4,
+                "name": "What was a negative effect of the Columbian exchange?",
+                "body": "Think about what the Columbian exchange was",
+                "points": 25,
+                "type": "multiple-choice-question",
+                "options": ["People tasted no new foods", "Farmers in the Americas ran out of crops to grow", "Europe suffered a shortage of horses for battle", "Diseases such as smallpox and measles were spread"],
+                "expected": "Diseases such as smallpox and measles were spread",
+                "published": true
+            }
+        ]
+    }
+]
