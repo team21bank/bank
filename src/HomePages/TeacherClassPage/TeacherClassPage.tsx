@@ -6,6 +6,7 @@ import {Button, Modal} from "react-bootstrap"
 import { ImportRoster } from "../../Authentication/ImportRoster/ImportRoster";
 import {Bank} from "../../Interfaces/BankObject"
 import { ref, getDatabase, onValue} from '@firebase/database';
+import { BankUser } from '../../Interfaces/BankUser';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
     const userContext = useContext(AuthContext);   
@@ -14,7 +15,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
     const [currClass, setCurrClass] = useState<Bank>({
         bankId:'',
         teacherID:'',
-        studentList:[''],
+        studentList:[],
         classTitle:'',
     })
 
@@ -39,8 +40,8 @@ export function TeacherClassPage({classCode}:{classCode:string}){
             <Modal show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton>Your Students</Modal.Header>
                 <Modal.Body>
-                    {currClass.studentList.map((student:string)=>(
-                        student !== "placeholder" ? <li>{student}</li>: <br></br>
+                    {currClass.studentList.map((student: BankUser)=>(
+                        student.uid !== "" ? <li>{student.uid}</li>: <br></br>
                     ))}
                 </Modal.Body>
                 <Modal.Footer>

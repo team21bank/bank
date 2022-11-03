@@ -4,6 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import { AuthContext, AuthUser, getCurrentUser } from "../Authentication/auth";
 import { NoUserPage } from "../Authentication/NoUserPage/NoUserPage";
 import { Bank } from "../Interfaces/BankObject";
+import { BankUser, BANKUSER_PLACEHOLDER } from "../Interfaces/BankUser";
 import "./CreateClassPage.css";
 
 
@@ -13,7 +14,7 @@ export function CreateClassPage(): JSX.Element {
     const [newBank, setNewBank] = useState<Bank>({
         bankId: "",
         teacherID: "",
-        studentList: ["placeholder"],
+        studentList: [BANKUSER_PLACEHOLDER],
         classTitle: ""
     });
     

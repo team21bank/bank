@@ -7,3 +7,4 @@ export interface BankUser {
     balance: number
 }
 
+export const BANKUSER_PLACEHOLDER: BankUser = {uid: "", isBanker: false, balance: 0};
