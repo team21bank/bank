@@ -8,6 +8,7 @@ import { AuthContext, getCurrentUser } from "../auth";
 import { ChangeUsernameButton } from "../ChangeUsername/ChangeUsername";
 import { NoUserPage } from "../NoUserPage/NoUserPage";
 import "./EditProfilePage.css";
+import { DeleteAccountModal } from "./DeleteAccount";
 
 
 export function EditProfile(): JSX.Element {
@@ -41,6 +42,8 @@ export function EditProfile(): JSX.Element {
             <br />
             <Link to={home_page}><Button onClick={saveToDatabase}>Save Changes</Button></Link>
             <Link to={home_page}><Button>Cancel Changes</Button></Link>
+
+            <DeleteAccountModal />
         </div>
     ) : (
         <h1>Loading...</h1>
