@@ -1,4 +1,3 @@
-import { ClassCodeForm } from "../../ClassCode/ClassCodes";
 import React, { useContext, useState } from 'react';
 import "./TeacherHomePage.css";
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
@@ -17,7 +16,6 @@ export function TeacherHomePage(){
     return userObj ? (
         <div className="teacher-home">
             <h2>Hello {userObj.username}</h2>
-            <ClassCodeForm></ClassCodeForm>
             <br />
             <div>Classes: </div>
             <ClassList classes={userObj.groups}/>
