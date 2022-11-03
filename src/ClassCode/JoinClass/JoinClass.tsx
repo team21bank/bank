@@ -1,5 +1,5 @@
 import {Button,Form, Modal } from 'react-bootstrap'
-import { ref, getDatabase, onValue, set} from '@firebase/database';
+import { ref, getDatabase, set} from '@firebase/database';
 import React, { useContext, useState } from 'react';
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
 import { AuthUser } from "../../Authentication/auth";
@@ -29,7 +29,7 @@ export function JoinClassButton(){
             return;
         }
         if(bankCode === "") { //return if bankCode is empty
-            alert("No bank found");
+            alert("Class Not Found");
             return;
         }
 
@@ -38,7 +38,7 @@ export function JoinClassButton(){
         get(bank_ref).then(bank_snapshot => { //get bank object
             let bank: Bank = bank_snapshot.val().bankObj;
             if(!bank) { //return if bank with bankCode is not found
-                alert("Bank Not Found");
+                alert("Class Not Found");
                 return;
             }
             //create BankUser object for user
@@ -51,7 +51,6 @@ export function JoinClassButton(){
                 set(user_ref, {userObj: {...current_user_object, groups: new_user_groups}});
             });
         });
-        
     }
     
     return (<div>
