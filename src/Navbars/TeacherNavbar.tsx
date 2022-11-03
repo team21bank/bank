@@ -18,7 +18,7 @@ export function TeacherNavbar(): JSX.Element {
           <Navbar.Brand href="/teachers/home">Teacher</Navbar.Brand>
           <Nav>
             <Nav.Link href="/teachers/classes">View your classes</Nav.Link>
-            <Nav.Link href="/teachers/home">Back to home</Nav.Link>
+            <Nav.Link href="/teachers/createclass">Create New Class</Nav.Link>
           </Nav>
           <Nav className='justify-content-end'>
             <NavDropdown title="Manage Account" className="teacher-nav-dropdown">

@@ -1,15 +1,9 @@
-export interface BankUser{
+export interface BankUser {
     
-    email: string
+    uid: string
 
-    username: string
+    isBanker: boolean
 
-    id: string
-
-    avatar: string
-
-    groups: Array<string>
-
-    isTeacher: boolean
+    balance: number
 }
 

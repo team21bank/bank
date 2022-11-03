@@ -5,7 +5,7 @@ import { ref, getDatabase, update  } from '@firebase/database';
 import "../../firebase";
 import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import {BankUser} from "../../Interfaces/BankUser";
+import { AuthUser } from "../../Authentication/auth";
 import { Link } from 'react-router-dom';
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
@@ -31,7 +31,7 @@ export function RegistrationForm(){
         }
         createUserWithEmailAndPassword(auth,email,p1).then(somedata=>{
             let userRef=ref(getDatabase(),'/users/'+somedata.user.uid)
-            const newUser: BankUser={
+            const newUser: AuthUser={
                 username:username,
                 email:email,
                 id:id,

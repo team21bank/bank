@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
-import { BankUser } from "../../Interfaces/BankUser";
+import { AuthUser } from "../../Authentication/auth";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import {Button, Modal} from "react-bootstrap"
 import { ImportRoster } from "../../Authentication/ImportRoster/ImportRoster";
@@ -9,7 +9,7 @@ import { ref, getDatabase, onValue} from '@firebase/database';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
     const userContext = useContext(AuthContext);   
-    const [userObj, setUserObj]  = useState<BankUser>();
+    const [userObj, setUserObj]  = useState<AuthUser>();
     const [showModal, setShowModal] = useState(false);
     const [currClass, setCurrClass] = useState<Bank>({
         bankId:'',

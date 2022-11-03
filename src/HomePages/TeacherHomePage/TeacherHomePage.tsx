@@ -1,13 +1,12 @@
-import { ClassCodeForm } from "../../ClassCode/ClassCodes";
 import React, { useContext, useState } from 'react';
 import "./TeacherHomePage.css";
 import { AuthContext, getCurrentUser } from "../../Authentication/auth";
-import { BankUser } from "../../Interfaces/BankUser";
+import { AuthUser } from "../../Authentication/auth";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import { ClassList } from "../../ClassCode/ClassList";
 
 export function TeacherHomePage(){
-    const [userObj, setUserObj]  = useState<BankUser>();
+    const [userObj, setUserObj]  = useState<AuthUser>();
     const userContext = useContext(AuthContext);
 
     if(userContext == null) return <NoUserPage />;
@@ -17,7 +16,6 @@ export function TeacherHomePage(){
     return userObj ? (
         <div className="teacher-home">
             <h2>Hello {userObj.username}</h2>
-            <ClassCodeForm></ClassCodeForm>
             <br />
             <div>Classes: </div>
             <ClassList classes={userObj.groups}/>

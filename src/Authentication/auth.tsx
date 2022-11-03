@@ -1,7 +1,16 @@
 import { UserCredential } from "firebase/auth";
 import React, { ReactNode, useState } from "react";
-import { BankUser } from "../Interfaces/BankUser";
 import { ref, get, getDatabase } from "@firebase/database";
+
+//Object to store information about a user
+export interface AuthUser {
+    email: string
+    username: string
+    id: string
+    avatar: string
+    groups: string[]
+    isTeacher: boolean
+}
 
 export const STORAGE_KEY = "CurrentUser";
 
@@ -25,7 +34,7 @@ export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Elem
 }
 
 //function to fetch the user's data from the database
-export function getCurrentUser(userState: UserCredential | null, setUser: (n: BankUser | undefined)=>void) {
+export function getCurrentUser(userState: UserCredential | null, setUser: (n: AuthUser | undefined)=>void) {
     if(userState == null) {
         console.log("No user is currently logged in");
         return;

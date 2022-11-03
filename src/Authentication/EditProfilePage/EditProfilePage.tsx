@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AvatarForm } from "../../Avatar/Avatar";
-import { BankUser } from "../../Interfaces/BankUser";
+import { AuthUser } from "../../Authentication/auth";
 import { AuthContext, getCurrentUser } from "../auth";
 import { ChangeUsernameButton } from "../ChangeUsername/ChangeUsername";
 import { NoUserPage } from "../NoUserPage/NoUserPage";
@@ -13,7 +13,7 @@ import "./EditProfilePage.css";
 export function EditProfile(): JSX.Element {
 
     const userContext = useContext(AuthContext);
-    const [currUser, setCurrUser] = useState<BankUser>(); //Current state of the user object
+    const [currUser, setCurrUser] = useState<AuthUser>(); //Current state of the user object
 
     if(userContext.state == null) {return <NoUserPage />};
     if(!currUser) getCurrentUser(userContext.state, setCurrUser);

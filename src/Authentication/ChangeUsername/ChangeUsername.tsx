@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {Button, Form, Modal} from 'react-bootstrap'
-import { BankUser } from '../../Interfaces/BankUser';
+import { AuthUser } from '../../Authentication/auth';
 import { NoUserPage } from '../NoUserPage/NoUserPage';
 import './ChangeUsername.css'
 import "../../firebase";
 
 export function ChangeUsernameButton(
-    {currUser, setCurrUser}: {currUser: BankUser | undefined, setCurrUser: (n: BankUser | undefined)=>void}
+    {currUser, setCurrUser}: {currUser: AuthUser | undefined, setCurrUser: (n: AuthUser | undefined)=>void}
 ){
     const [showModal, setShowModal] = useState(false);
 
