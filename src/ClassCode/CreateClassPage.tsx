@@ -20,7 +20,7 @@ export function CreateClassPage(): JSX.Element {
     
     if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
-    if(newBank.teacherID === "" && userObj) setNewBank({...newBank, teacherID: userObj.id}); //set the bank's teacherID when it is availabe from userObj
+    if(newBank.teacherID === "" && userObj) setNewBank({...newBank, teacherID: userContext.state.user.uid}); //set the bank's teacherID when it is availabe from userObj
 
     const createCode = () => {
         if (newBank.classTitle===''){
