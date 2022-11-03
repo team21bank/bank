@@ -69,16 +69,16 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
                                         let studentList: BankUser[] = sval.val();
                                         newBank = {...ss.val(), studentList:[...studentList]}
                                         if(studentList.filter(user => user.uid === split[1]).length < 1){
-                                            newBank = {...ss.val(), studentList:[...newBank.studentList, {uid: split[1], isBanker: false, balance: 0}]}
+                                            newBank = {...ss.val(), studentList:[...newBank.studentList, {uid: uid, isBanker: false, balance: 0}]}
                                         }
                                     }else{
                                         //console.log("test2")
-                                        newBank = {...ss.val(), studentList:["placeholder", split[1]]}
+                                        newBank = {...ss.val(), studentList:[BANKUSER_PLACEHOLDER, {uid: uid, isBanker: false, balance: 0}]}
                                     }
                                 }else{
                                     //console.log("test3");
                                     if(newBank.studentList.filter(user => user.uid === split[1]).length < 1){
-                                        newBank = {...ss.val(), studentList:[...newBank.studentList, {uid: split[1], isBanker: false, balance: 0}]}
+                                        newBank = {...ss.val(), studentList:[...newBank.studentList, {uid: uid, isBanker: false, balance: 0}]}
                                     }
                                 }
                                 //console.log(newBank.studentList);
