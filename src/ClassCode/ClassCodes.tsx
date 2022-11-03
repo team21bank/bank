@@ -4,12 +4,12 @@ import "../firebase";
 import {Bank} from "../Interfaces/BankObject"
 import React, { useContext, useState } from 'react';
 import { AuthContext, getCurrentUser } from "../Authentication/auth";
-import { BankUser } from "../Interfaces/BankUser";
+import { AuthUser } from "../Authentication/auth";
 import { NoUserPage } from "../Authentication/NoUserPage/NoUserPage";
 
 export function ClassCodeForm(){
     const userContext = useContext(AuthContext);
-    const [userObj, setUserObj]  = useState<BankUser>();
+    const [userObj, setUserObj]  = useState<AuthUser>();
     const [className,setClassName] = useState<string>('');
     
     if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in

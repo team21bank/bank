@@ -12,10 +12,11 @@ import { TeacherHomePage } from './HomePages/TeacherHomePage/TeacherHomePage';
 import { LoginForm } from './Authentication/Login/Login';
 import { AuthContext, CurrentUserProvider, getCurrentUser } from './Authentication/auth';
 import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
-import { BankUser } from './Interfaces/BankUser';
+import { AuthUser } from './Authentication/auth';
 import { StudentClassPage } from './HomePages/StudentClassPage/StudentClassPage';
 import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
 import { EditProfile } from './Authentication/EditProfilePage/EditProfilePage';
+import { CreateClassPage } from './ClassCode/CreateClassPage';
 
 function App() {
     return (
@@ -32,7 +33,7 @@ function AppBody(): JSX.Element {
   let classes: string[] = [];
 
   const userContext = useContext(AuthContext);
-  const [currUser, setCurrUser] = useState<BankUser>();
+  const [currUser, setCurrUser] = useState<AuthUser>();
   if(!currUser) getCurrentUser(userContext.state, setCurrUser);
   else classes = [...currUser.groups];
 
@@ -47,7 +48,7 @@ function AppBody(): JSX.Element {
         <Route path="/teachers" element={<TeacherNavbar />}>
           <Route path="home" element={<TeacherHomePage />}/>
           <Route path="classes" element={<TeacherHomePage/>}/>
-          <Route path="account" element={<TeacherHomePage/>}/>
+          <Route path="createclass" element={<CreateClassPage/>}/>
           {classes.map(str => {
             return <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}></Route>
           })}

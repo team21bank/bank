@@ -1,4 +1,4 @@
-export interface BankUser{
+export interface BankStudent{
     
     email: string
 

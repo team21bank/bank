@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { auth } from "../../firebase";
 import { ref, getDatabase, onValue, set } from '@firebase/database';
-import { BankUser } from "../../Interfaces/BankUser";
+import { AuthUser } from "../../Authentication/auth";
 import { Bank } from "../../Interfaces/BankObject";
 
 export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Element {
@@ -50,7 +50,7 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
                 createUserWithEmailAndPassword(auth,split[0],split[1]).then(somedata=>{
                     let uid=somedata.user.uid;
                     let userRef=ref(getDatabase(),'/users/'+uid)
-                    const newUser: BankUser={
+                    const newUser: AuthUser={
                         username:split[0].split("@")[0],
                         email:split[0],
                         id:split[1],

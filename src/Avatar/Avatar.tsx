@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import React, { useContext, useState } from "react";
 import ImageUploading, { ImageListType } from "react-images-uploading";
-import { BankUser } from "../Interfaces/BankUser";
+import { AuthUser } from "../Authentication/auth";
 import { AuthContext, getCurrentUser } from "../Authentication/auth";
 import { getDatabase } from "@firebase/database";
 import {ref, set} from "@firebase/database";
@@ -10,7 +10,7 @@ import {ref, set} from "@firebase/database";
 export function AvatarForm() {
     const userContext = useContext(AuthContext);
 
-    const [userObj, setUserObj]  = useState<BankUser>();
+    const [userObj, setUserObj]  = useState<AuthUser>();
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
     function saveAvatar(avatar: string | undefined) {
