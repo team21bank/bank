@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 
 
 export function ClassList({classes}: {classes: string[]}): JSX.Element {
-    
-
     return (
         <div>
             {classes.map((classString: string) => (

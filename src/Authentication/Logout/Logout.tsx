@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import {Button, Form} from 'react-bootstrap'
+import {Button} from 'react-bootstrap'
 import "../../firebase";
-import { auth, app } from '../../firebase';
-import {signOut, Auth, getAuth, UserCredential} from 'firebase/auth';
+import { auth } from '../../firebase';
+import {signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, STORAGE_KEY } from '../auth';
 

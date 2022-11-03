@@ -1,4 +1,3 @@
-import { idBal } from "../BankTest/idBalObject";
 export interface Bank {
     /** The ID of the bank*/
     bankId: string;

@@ -1,20 +1,18 @@
-import {Routes, Route, useNavigate} from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import { FirebaseError } from '@firebase/util';
 import './ResetMessage.css';
 import { getDatabase, ref } from "firebase/database"
-import { initializeApp } from "firebase/app";
-import { get, query, onValue } from "firebase/database"
-import {firebaseConfig, app} from "../../firebase"
+import { get } from "firebase/database"
+import {app} from "../../firebase"
 
 
 
 
 export default function ResetMessage(){
     const [email, setEmail] = useState<string>('')
-    const [pass, setPass] = useState<string>('')
     const navigate = useNavigate();
     const auth = getAuth();
 
@@ -73,7 +71,7 @@ export default function ResetMessage(){
                     if(i===parsedJSonValues.length-1)
                     {
                         if(found===false){
-                             throw new Error
+                             throw Error
                         }
                     }
                 }

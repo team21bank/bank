@@ -39,9 +39,9 @@ export function TeacherClassPage({classCode}:{classCode:string}){
             <Modal show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton>Your Students</Modal.Header>
                 <Modal.Body>
-                {currClass.studentList.map((student:string)=>(
-                    student !== "placeholder" ? <li>{student}</li>: <br></br>
-                ))}
+                    {currClass.studentList.map((student:string)=>(
+                        student !== "placeholder" ? <li>{student}</li>: <br></br>
+                    ))}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={closeStudentView}>Close</Button>

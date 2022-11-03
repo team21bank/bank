@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
-import {Button, Form, Row} from 'react-bootstrap'
-import { ref, getDatabase, push, child, update, get } from '@firebase/database';
+import {Button, Form} from 'react-bootstrap'
+import { ref, getDatabase, get } from '@firebase/database';
 import "../../firebase";
 import { auth } from '../../firebase';
-import {signInWithEmailAndPassword, Auth, signInWithPopup, GoogleAuthProvider, UserCredential } from 'firebase/auth';
+import {signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import './Login.css';
 import { useNavigate, Link} from 'react-router-dom';
 import { AuthContext, STORAGE_KEY } from '../auth';

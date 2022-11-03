@@ -37,11 +37,7 @@ export function ClassCodeForm(){
                 let groupObj=ss.val();
                 if (groupObj!==null){
                     let groupIDS=Object.keys(groupObj);
-                    groupIDS.map(key=>{
-                        if(key===code){
-                            codeExists=true
-                        }
-                    })
+                    groupIDS.forEach(key => {if(key===code) codeExists=true})
                 }
             })
         alert(code)

@@ -1,4 +1,3 @@
-import { LogoutButton } from "../../Authentication/Logout/Logout";
 import { ClassCodeForm } from "../../ClassCode/ClassCodes";
 import React, { useContext, useState } from 'react';
 import "./TeacherHomePage.css";

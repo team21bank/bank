@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
 import './Reg.css'
-import { ref, getDatabase, child, update  } from '@firebase/database';
+import { ref, getDatabase, update  } from '@firebase/database';
 import "../../firebase";
 import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
