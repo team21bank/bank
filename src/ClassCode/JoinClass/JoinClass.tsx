@@ -50,6 +50,8 @@ export function JoinClassButton(){
                 const new_user_groups = [...current_user_object.groups, bankCode+bank.classTitle];
                 set(user_ref, {userObj: {...current_user_object, groups: new_user_groups}});
             });
+        }).finally(() => {
+            setShowModal(false);
         });
     }
     

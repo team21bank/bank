@@ -11,6 +11,7 @@ export function DeleteAccountModal(): JSX.Element {
     const navigate = useNavigate();
 
     function delete_current_user(){
+        //TODO: If user is a teacher, also delete all owned classes
         const currUser = auth.currentUser;
         if(!currUser) return;
         
