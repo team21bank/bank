@@ -4,7 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import { AuthContext, AuthUser, getCurrentUser } from "../Authentication/auth";
 import { NoUserPage } from "../Authentication/NoUserPage/NoUserPage";
 import { Bank } from "../Interfaces/BankObject";
-import { BankUser, BANKUSER_PLACEHOLDER } from "../Interfaces/BankUser";
+import { BANKUSER_PLACEHOLDER } from "../Interfaces/BankUser";
 import "./CreateClassPage.css";
 
 
@@ -44,7 +44,7 @@ export function CreateClassPage(): JSX.Element {
             })
         alert(code)
         userObj? userObj.groups.push(code+newBank.classTitle): code='';
-        update(ref(getDatabase(),"/groups/"+code),{bankObj:newBank});
+        update(ref(getDatabase(),"/groups/"+code),{bankObj:{...newBank, bankId: code}});
         if(userObj){
             if(userContext.state){
                 set(ref(getDatabase(),"/users/"+userContext.state.user.uid+"/userObj/groups"),userObj.groups);

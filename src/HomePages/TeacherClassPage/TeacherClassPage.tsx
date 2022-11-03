@@ -17,17 +17,15 @@ export function TeacherClassPage({classCode}:{classCode:string}){
         teacherID:'',
         studentList:[],
         classTitle:'',
-    })
+    });
 
     if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
     if(!userObj) getCurrentUser(userContext.state, setUserObj);
     if (currClass.bankId===''){
-        onValue(ref(getDatabase(),"/groups/"+classCode.slice(0,6)+"/bankObj"),ss=>(
-            setCurrClass(ss.val())
-        ))
+        onValue(ref(getDatabase(),"/groups/"+classCode.slice(0,6)+"/bankObj"),ss=>{
+            setCurrClass(ss.val());
+        })
     }
-
-    console.log(currClass.bankId)
 
     function closeStudentView(){
         setShowModal(false)
@@ -41,7 +39,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
                 <Modal.Header closeButton>Your Students</Modal.Header>
                 <Modal.Body>
                     {currClass.studentList.map((student: BankUser)=>(
-                        student.uid !== "" ? <li>{student.uid}</li>: <br></br>
+                        student.uid !== "" ? <li>{student.uid}</li>: <></>
                     ))}
                 </Modal.Body>
                 <Modal.Footer>
