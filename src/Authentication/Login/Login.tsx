@@ -34,7 +34,7 @@ export function LoginForm(){
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid);
             get(userRef).then(ss=>{
                 userContext.setUser(ss.val().userObj);
-                ss.val() ? navigate('/teachers/home') : navigate('/students/home');
+                ss.val().userObj.isTeacher ? navigate('/teachers/home') : navigate('/students/home');
             });
         }).catch(function(error){
             var errorCode = error.code;
