@@ -5,6 +5,7 @@ import "./DefaultHomePage.css";
 import { ImageGallery } from "../../AvatarPool/ImageGallery";
 
 export function DefaultHomePage(): JSX.Element {
+
   return (
   <div className="home-page">
     <header className="home-page-header">

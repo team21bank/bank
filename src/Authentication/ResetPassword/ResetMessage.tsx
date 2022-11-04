@@ -1,14 +1,20 @@
-import {Routes, Route, useNavigate} from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import React, { useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 import { FirebaseError } from '@firebase/util';
+import './ResetMessage.css';
+import { getDatabase, ref } from "firebase/database"
+import { get } from "firebase/database"
+import {app} from "../../firebase"
+
+
+
 
 export default function ResetMessage(){
-
     const [email, setEmail] = useState<string>('')
-    const [pass, setPass] = useState<string>('')
     const navigate = useNavigate();
+    const auth = getAuth();
 
     const [showResults, setShowResults] = React.useState(false)
     const Results = () => (
@@ -24,17 +30,59 @@ export default function ResetMessage(){
         </div>
     )
 
+    const[showStudentError, setShowStudentError] = React.useState(false)
+    const StudentError = () =>(
+        <div id = "studentError">
+        Ask your teacher!
+        </div>
+    )
+
     function resetPassword(){
-        const auth = getAuth()
         const triggerResetEmail = async () => {
             try{
-                await sendPasswordResetEmail(auth,email)
-                setShowResults(true)
-                setShowEmailError(false)
-                console.log("Password reset email sent")
+                const db = await getDatabase(app)
+                const usersSnapshot = await get(ref(db, '/'))
+                var item = usersSnapshot.child('users').val();
+                const JSonValues = Object.values(item);
+                const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
+                var found = false
+                for(let i = 0; i<parsedJSonValues.length;i++)
+                {
+                    if((parsedJSonValues[i]["userObj"]["email"]===email)&&(parsedJSonValues[i]["userObj"]["isTeacher"]===true))
+                    {
+                        sendPasswordResetEmail(auth,email)
+                        setShowResults(true);
+                        setShowEmailError(false);
+                        setShowStudentError(false);
+                        console.log("Password reset email sent");
+                        found=true;
+                        console.log(found)
+                    }
+                    else if((parsedJSonValues[i]["userObj"]["email"]===email)&&(parsedJSonValues[i]["userObj"]["isTeacher"]!==true))
+                    {   
+                        console.log("User is a student! Can't change password");
+                        setShowResults(false);
+                        setShowEmailError(false);
+                        setShowStudentError(true);
+                        found=true;
+                        console.log("Value of found is")
+                        console.log(found)
+                    }
+                    if(i===parsedJSonValues.length-1)
+                    {
+                        if(found===false){
+                             throw Error
+                        }
+                    }
+                }
             }
             catch (e:unknown) {
+
                 setShowResults(false)
+                setShowStudentError(false)
+                setShowEmailError(true)
+                console.log(e)
+                console.log("User not found")
                 if(e instanceof FirebaseError){
                     if(e.code==='auth/invalid-email'){
                         console.error(e.code)
@@ -45,10 +93,10 @@ export default function ResetMessage(){
                         setShowEmailError(true)
                     }
                     else{
+                        console.log("Getting new error")
                         console.error(e.code)
                     }
                 }
-
             }
         }
         triggerResetEmail();
@@ -63,11 +111,14 @@ export default function ResetMessage(){
             <Form.Control
                 value={email}
                 onChange={updateEmail}
-                />
+             />
             <br/>
             { showEmailError ? <EmailError /> : null }
             { showResults ? <Results /> : null }
-            <Button onClick={resetPassword}>Reset Password</Button>
-            </Form.Group>
+            { showStudentError ? <StudentError /> : null }
+            <br/>
+            <Button className = "reset-buttons" onClick={resetPassword}>Reset Password</Button>
+            <Button className = "reset-buttons" onClick={()=>navigate("/login")}>Login</Button>
+        </Form.Group>
     </div>)
 }

@@ -1,11 +1,15 @@
-import { Navbar, Container, Nav } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import React from 'react';
-import { Outlet } from 'react-router-dom';
-import "../firebase";
-import { LogoutButton } from "../Authentication/Logout/Logout";
+import { Outlet, useNavigate } from 'react-router-dom';
+import { auth } from "../firebase";
+import { signOut } from 'firebase/auth';
+import { STORAGE_KEY } from '../Authentication/auth';
+import "./StudentNavbar.css";
 
 
 export function StudentNavbar(): JSX.Element {
+    const navigate = useNavigate();
+
     return (
     <div>
       <Navbar bg="light" sticky="top" expand="lg" style={{"flexDirection": "column"}}>
@@ -13,11 +17,16 @@ export function StudentNavbar(): JSX.Element {
           <Navbar.Brand href="/students/home">Student</Navbar.Brand>
           <Nav>
             <Nav.Link href="/students/home">Back to home</Nav.Link>
-            <Nav.Link href="/students/joinclass">Join Class</Nav.Link>
-            <LogoutButton></LogoutButton>
           </Nav>
           <Nav className='justify-content-end'>
-            <Nav.Link href="/editprofile">Manage Account</Nav.Link>
+            <NavDropdown title="Manage Account" className="student-navbar-dropdown">
+                <NavDropdown.Item href="/editprofile">Edit Profile</NavDropdown.Item>
+                <NavDropdown.Item onClick={()=>{
+                    signOut(auth);
+                    window.sessionStorage.removeItem(STORAGE_KEY);
+                    navigate("/");
+                }}>Log Out</NavDropdown.Item>
+            </NavDropdown>
           </Nav>
         </Container>
         <Outlet></Outlet>

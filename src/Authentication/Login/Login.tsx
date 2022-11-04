@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
-import {Button, Form, Row} from 'react-bootstrap'
-import { ref, getDatabase, push, child, update, get } from '@firebase/database';
+import {Button, Form} from 'react-bootstrap'
+import { ref, getDatabase, get } from '@firebase/database';
 import "../../firebase";
 import { auth } from '../../firebase';
-import {signInWithEmailAndPassword, Auth, signInWithPopup, GoogleAuthProvider, UserCredential } from 'firebase/auth';
+import {signInWithEmailAndPassword } from 'firebase/auth';
 import './Login.css';
 import { useNavigate, Link} from 'react-router-dom';
 import { AuthContext, STORAGE_KEY } from '../auth';
@@ -13,7 +13,6 @@ export function LoginForm(){
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
     const navigate = useNavigate();
-    const provider = new GoogleAuthProvider();
 
     //Setters for email and pass
     function updateEmail(event: React.ChangeEvent<HTMLInputElement>){
@@ -31,12 +30,12 @@ export function LoginForm(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
             setEmail('')
             setPass('')
-            window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(currUser)) //Add current user to browser storage
-            userContext.setState(currUser);
-            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/isTeacher')
+            window.sessionStorage.setItem(STORAGE_KEY, currUser.user.uid); //Add current user to browser storage
+            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid);
             get(userRef).then(ss=>{
-                ss.val() ? navigate('/teachers/home') : navigate('/students/home')
-            })
+                userContext.setUser(ss.val().userObj);
+                ss.val() ? navigate('/teachers/home') : navigate('/students/home');
+            });
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -46,8 +45,7 @@ export function LoginForm(){
     }
 
 
-    return (<AuthContext.Consumer>{(value) => {
-        return <div className="login-page">
+    return <div className="login-page">
         <h1>Login</h1>
         <br/>
         <Form.Group controlId="login">
@@ -72,10 +70,8 @@ export function LoginForm(){
             <br/>
         </Form.Group>
         <div>
-            <Button onClick={() => {login(); value.setState(null)}} className="login-button">Login</Button>
-            <Button onClick={() => signInWithPopup(auth, provider)} className="login-button">Sign in with Google</Button>
+            <Button onClick={()=>login()} className="login-button">Login</Button>
             <Link to="/"><Button className="login-button">Back to home</Button></Link>
         </div>
     </div>;
-    }}</AuthContext.Consumer>)
 }
