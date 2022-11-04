@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from "../../Authentication/auth";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import {Button, Modal} from "react-bootstrap"
-import { ImportRoster } from "../../Authentication/ImportRoster/ImportRoster";
+import { ImportRoster } from "./ImportRoster";
 import {Bank} from "../../Interfaces/BankObject"
 import { ref, getDatabase, onValue} from '@firebase/database';
 import { BankUser } from '../../Interfaces/BankUser';
