@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
-import { AuthContext, getCurrentUser } from "../../Authentication/auth";
+import React, { useContext } from 'react';
+import { AuthContext } from "../../Authentication/auth";
 import "./StudentHomePage.css";
-import { AuthUser } from "../../Authentication/auth";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import { JoinClassButton } from "../../ClassCode/JoinClass/JoinClass"
 import { ClassList } from '../../ClassCode/ClassList';

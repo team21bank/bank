@@ -1,7 +1,7 @@
 import { onValue, ref, getDatabase, update, set } from "firebase/database";
 import React, { useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import { AuthContext, AuthUser, getCurrentUser } from "../Authentication/auth";
+import { AuthContext } from "../Authentication/auth";
 import { NoUserPage } from "../Authentication/NoUserPage/NoUserPage";
 import { auth } from "../firebase";
 import { Bank } from "../Interfaces/BankObject";

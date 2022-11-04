@@ -1,6 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { AuthContext, getCurrentUser } from "../../Authentication/auth";
-import { AuthUser } from "../../Authentication/auth";
+import React, { useContext } from 'react';
+import { AuthContext } from "../../Authentication/auth";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import {Button} from "react-bootstrap"
 

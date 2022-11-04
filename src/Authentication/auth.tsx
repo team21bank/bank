@@ -1,7 +1,5 @@
-import { UserCredential } from "firebase/auth";
 import React, { ReactNode, useEffect, useState } from "react";
-import { ref, get, getDatabase } from "@firebase/database";
-import { auth } from "../firebase";
+import { ref, getDatabase } from "@firebase/database";
 import { onValue } from "firebase/database";
 
 //Object to store information about a user
@@ -43,19 +41,8 @@ export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Elem
         }
     }, [uid_string]);
 
-    return (<AuthContext.Provider value={{user: CurrentAuthUser, setUser: setCurrentAuthUser}}>{children}</AuthContext.Provider>);
-}
 
-//function to fetch the user's data from the database
-export function getCurrentUser(userState: UserCredential | null, setUser: (n: AuthUser | undefined)=>void) {
-    if(userState == null) {
-        console.log("No user is currently logged in");
-        return;
-    }
-    let userRef=ref(getDatabase(),'/users/'+userState.user.uid+'/userObj/');
-    get(userRef).then(snap => {
-        setUser(snap.val());
-    });
+    return (<AuthContext.Provider value={{user: CurrentAuthUser, setUser: setCurrentAuthUser}}>{children}</AuthContext.Provider>);
 }
 
 

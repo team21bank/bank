@@ -1,7 +1,7 @@
 import {Button,Form, Modal } from 'react-bootstrap'
 import { ref, getDatabase, set} from '@firebase/database';
 import React, { useContext, useState } from 'react';
-import { AuthContext, getCurrentUser } from "../../Authentication/auth";
+import { AuthContext } from "../../Authentication/auth";
 import { AuthUser } from "../../Authentication/auth";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import { auth } from '../../firebase';

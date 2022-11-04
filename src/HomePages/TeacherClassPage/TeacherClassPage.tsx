@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { AuthContext, getCurrentUser } from "../../Authentication/auth";
-import { AuthUser } from "../../Authentication/auth";
+import { AuthContext } from "../../Authentication/auth";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import {Button, Modal} from "react-bootstrap"
 import { ImportRoster } from "../../Authentication/ImportRoster/ImportRoster";
