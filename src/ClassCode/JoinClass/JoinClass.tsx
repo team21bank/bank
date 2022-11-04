@@ -49,6 +49,7 @@ export function JoinClassButton(){
             });
         }).finally(() => {
             setShowModal(false);
+            setBankCode("");
         });
     }
     

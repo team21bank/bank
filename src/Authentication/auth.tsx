@@ -31,16 +31,15 @@ export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Elem
     //THIS STATE WILL BE NULL IF NO USER IS CURRENTLY LOGGED IN
     const [CurrentAuthUser, setCurrentAuthUser] = useState<AuthUser | null>(null);
 
-    useEffect(() => {
+    useEffect(() => { //update currentAuthUser if the state in the database changes
         if(uid_string != null) {
             const user_ref = ref(getDatabase(), "/users/"+uid_string);
             onValue(user_ref, user_snapshot => {
-                const user: AuthUser = user_snapshot.val().userObj;
-                setCurrentAuthUser(user);
+                const user = user_snapshot.val();
+                if(user != null) setCurrentAuthUser(user.userObj);
             });
         }
     }, [uid_string]);
-
 
     return (<AuthContext.Provider value={{user: CurrentAuthUser, setUser: setCurrentAuthUser}}>{children}</AuthContext.Provider>);
 }
@@ -51,28 +50,13 @@ export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Elem
     AuthContext is essentially a global state accessible from any component rendered under CurrentUserProvider.
     In App.tsx, literally everything renders under CurrentUserProvider so it is accessible everywhere.
 
-    To access this state copy paste this code into the top of your component:
-
-        const userContext = useContext(AuthContext);              <--- gets the value of the global state, this just a reference to the logged in user in the database
-        const [userObj, setUserObj]  = useState<BankUser>();      <--- create a local state variable to store the value fetched via the database reference
-        if(!userObj) getCurrentUser(userContext.state, setUserObj);                  <--- fetch user info from the database and place it in the local state created above if the state isnt already set
-                                                                       If the user cannot be found, the userObj state will remain undefined
-                                                    
-                                                                       
-    If the component you want to display requires a user to be logged in,
-    add this line between the first and second to make sure the component cannot be rendered without being logged in:
-
-        if(userContext.state == null) return <NoUserPage />;
-
+    To access this state in your code use:
+        const user = useContext(AuthContext);
     
-    userObj may remain undefined as the component tries to rerender a few times while fetching data from the database.
-    To handle this, use a conditional return block like this:
+    user.user is the actual AuthUser object that exists in the database.
+    user.setUser allows you to set this user object.
+    NOTE THAT IF THE OBJECT IS UPDATED IN THE USERBASE, THE CHANGES WILL BE IMMEDIATELY BE REFLECTED IN THE BROWSER
 
-        return userObj ? (
-            <h1>Cool Page</h1>
-        ) : (
-            <h1>Loading...</h1>
-        )
-    maybe in the future we can make a neat spinny loady page thing
-
+    If you need to get the uid of the logged in user, use:
+        auth.currentUser.uid
 */

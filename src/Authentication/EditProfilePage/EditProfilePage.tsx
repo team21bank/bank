@@ -12,7 +12,6 @@ import { auth } from "../../firebase";
 
 
 export function EditProfile(): JSX.Element {
-
     const user = useContext(AuthContext);
 
     if(user.user == null) {return <NoUserPage />};

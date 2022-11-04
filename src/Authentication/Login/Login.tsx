@@ -13,6 +13,7 @@ export function LoginForm(){
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
     const navigate = useNavigate();
+    const provider = new GoogleAuthProvider();
 
     //Setters for email and pass
     function updateEmail(event: React.ChangeEvent<HTMLInputElement>){
@@ -31,11 +32,11 @@ export function LoginForm(){
             setEmail('')
             setPass('')
             window.sessionStorage.setItem(STORAGE_KEY, currUser.user.uid); //Add current user to browser storage
-            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid+'/userObj/isTeacher')
+            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid);
             get(userRef).then(ss=>{
-                userContext.setUser(ss.val());
+                userContext.setUser(ss.val().userObj);
                 ss.val() ? navigate('/teachers/home') : navigate('/students/home');
-            })
+            });
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
