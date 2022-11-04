@@ -6,19 +6,17 @@ import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import { ClassList } from "../../ClassCode/ClassList";
 
 export function TeacherHomePage(){
-    const [userObj, setUserObj]  = useState<AuthUser>();
-    const userContext = useContext(AuthContext);
+    const user = useContext(AuthContext);
 
-    if(userContext == null) return <NoUserPage />;
-    if(!userObj) getCurrentUser(userContext.state, setUserObj);
+    if(user.user == null) return <NoUserPage />;
 
     
-    return userObj ? (
+    return user.user ? (
         <div className="teacher-home">
-            <h2>Hello {userObj.username}</h2>
+            <h2>Hello {user.user.username}</h2>
             <br />
             <div>Classes: </div>
-            <ClassList classes={userObj.groups}/>
+            <ClassList classes={user.user.groups}/>
             
         </div>
     ) : (

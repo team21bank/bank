@@ -6,7 +6,7 @@ import './ChangeUsername.css'
 import "../../firebase";
 
 export function ChangeUsernameButton(
-    {currUser, setCurrUser}: {currUser: AuthUser | undefined, setCurrUser: (n: AuthUser | undefined)=>void}
+    {currUser, setCurrUser}: {currUser: AuthUser | null, setCurrUser: (n: AuthUser | null)=>void}
 ){
     const [showModal, setShowModal] = useState(false);
 

@@ -5,12 +5,10 @@ import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import {Button} from "react-bootstrap"
 
 export function StudentClassPage({classCode}:{classCode:string}){
-    const userContext = useContext(AuthContext);
-    const [userObj, setUserObj]  = useState<AuthUser>();
+    const user = useContext(AuthContext);
     
-    if(userContext.state == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
+    if(user.user == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
 
-    if(!userObj) getCurrentUser(userContext.state, setUserObj);
 
     return (<div>
         Welcome to {classCode.slice(6)}

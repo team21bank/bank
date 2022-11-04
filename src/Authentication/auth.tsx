@@ -1,6 +1,8 @@
 import { UserCredential } from "firebase/auth";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { ref, get, getDatabase } from "@firebase/database";
+import { auth } from "../firebase";
+import { onValue } from "firebase/database";
 
 //Object to store information about a user
 export interface AuthUser {
@@ -16,21 +18,32 @@ export const STORAGE_KEY = "CurrentUser";
 
 //React context to store the current user state and a function to modify it
 export const AuthContext = React.createContext({
-    state: null as UserCredential | null,
-    setState: {} as (n: UserCredential | null) => void
+    user: null as AuthUser | null,
+    setUser: {} as (n: AuthUser | null) => void
 });
 
 //Provider component to wrap the entire app
 export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Element {
-    let stateArg: UserCredential | null = null;
+    let uid_string: string | null = null;
     //AuthContext is reset every time the page reloads so we need to get it from local storage here to stay logged in across links
     const currUserString = window.sessionStorage.getItem(STORAGE_KEY);
-    if(currUserString != null) stateArg = JSON.parse(currUserString);
+    if(currUserString != null) uid_string = currUserString;
 
     //THIS IS THE ACTUAL STATE THAT HOLDS THE CREDENTIALS OF THE CURRENTLY LOGGED IN USER
     //THIS STATE WILL BE NULL IF NO USER IS CURRENTLY LOGGED IN
-    const [CurrentUserCredential, setCurrentUserCredential] = useState<UserCredential | null>(stateArg);
-    return (<AuthContext.Provider value={{state: CurrentUserCredential, setState: setCurrentUserCredential}}>{children}</AuthContext.Provider>);
+    const [CurrentAuthUser, setCurrentAuthUser] = useState<AuthUser | null>(null);
+
+    useEffect(() => {
+        if(uid_string != null) {
+            const user_ref = ref(getDatabase(), "/users/"+uid_string);
+            onValue(user_ref, user_snapshot => {
+                const user: AuthUser = user_snapshot.val().userObj;
+                setCurrentAuthUser(user);
+            });
+        }
+    }, [uid_string]);
+
+    return (<AuthContext.Provider value={{user: CurrentAuthUser, setUser: setCurrentAuthUser}}>{children}</AuthContext.Provider>);
 }
 
 //function to fetch the user's data from the database

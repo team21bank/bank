@@ -9,33 +9,33 @@ import { ChangeUsernameButton } from "../ChangeUsername/ChangeUsername";
 import { NoUserPage } from "../NoUserPage/NoUserPage";
 import "./EditProfilePage.css";
 import { DeleteAccountModal } from "./DeleteAccount";
+import { auth } from "../../firebase";
 
 
 export function EditProfile(): JSX.Element {
 
-    const userContext = useContext(AuthContext);
-    const [currUser, setCurrUser] = useState<AuthUser>(); //Current state of the user object
+    const user = useContext(AuthContext);
 
-    if(userContext.state == null) {return <NoUserPage />};
-    if(!currUser) getCurrentUser(userContext.state, setCurrUser);
+    if(user.user == null) {return <NoUserPage />};
 
     //updates the database instance of currUser
     function saveToDatabase() {
-        if(userContext.state==null) alert("Failed to push to database");
+        if(user.user==null) alert("Failed to push to database");
         else {
-            let userRef = ref(getDatabase(), "/users/"+userContext.state.user.uid);
-            set(userRef, {userObj:{...currUser}});
+            if(auth.currentUser == null) return;
+            let userRef = ref(getDatabase(), "/users/"+auth.currentUser.uid);
+            set(userRef, {userObj:{...user.user}});
         }
     }
 
-    const home_page = currUser?.isTeacher ? "/teachers/home" : "/students/home";
+    const home_page = user.user?.isTeacher ? "/teachers/home" : "/students/home";
 
-    return currUser ? (
+    return user.user ? (
         <div className="edit-profile-page">
             <h1>Edit Profile</h1>
-            <div>Logged in as user {currUser ? currUser.username : ""}</div>
+            <div>Logged in as user {user.user ? user.user.username : ""}</div>
 
-            <ChangeUsernameButton currUser={currUser} setCurrUser={setCurrUser}/>
+            <ChangeUsernameButton currUser={user.user} setCurrUser={user.setUser}/>
             <br />
             <AvatarForm />
 

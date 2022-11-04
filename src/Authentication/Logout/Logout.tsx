@@ -14,7 +14,7 @@ export function LogoutButton(){
     //Function for button click logging out current user
     function logout(){
         signOut(auth);
-        userContext.setState(null);
+        userContext.setUser(null);
         window.sessionStorage.removeItem(STORAGE_KEY)
         alert("Successfully logged out!");
     }

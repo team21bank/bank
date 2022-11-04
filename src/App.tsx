@@ -32,10 +32,8 @@ export default App;
 function AppBody(): JSX.Element {
   let classes: string[] = [];
 
-  const userContext = useContext(AuthContext);
-  const [currUser, setCurrUser] = useState<AuthUser>();
-  if(!currUser) getCurrentUser(userContext.state, setCurrUser);
-  else classes = [...currUser.groups];
+  const currUser = useContext(AuthContext);
+  if(currUser.user) classes = [...currUser.user.groups];
 
   return <div>
     <BrowserRouter>
