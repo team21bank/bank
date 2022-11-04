@@ -6,6 +6,7 @@ import { ImportRoster } from "./ImportRoster";
 import {Bank} from "../../Interfaces/BankObject"
 import { ref, getDatabase, onValue} from '@firebase/database';
 import { BankUser } from '../../Interfaces/BankUser';
+import "./TeacherClassPage.css";
 
 export function TeacherClassPage({classCode}:{classCode:string}){
     const user = useContext(AuthContext);   
@@ -28,7 +29,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
         setShowModal(false)
     }
 
-    return user.user ? (<div>
+    return user.user ? (<div className="teacher-class-page">
         Welcome back to your class: {classCode.slice(6)}
         <ImportRoster currentGroup={classCode}></ImportRoster>
         <div className="view-students">
