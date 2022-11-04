@@ -3,7 +3,7 @@ import {Button, Form} from 'react-bootstrap'
 import { ref, getDatabase, get } from '@firebase/database';
 import "../../firebase";
 import { auth } from '../../firebase';
-import {signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import {signInWithEmailAndPassword } from 'firebase/auth';
 import './Login.css';
 import { useNavigate, Link} from 'react-router-dom';
 import { AuthContext, STORAGE_KEY } from '../auth';
@@ -13,7 +13,6 @@ export function LoginForm(){
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
     const navigate = useNavigate();
-    const provider = new GoogleAuthProvider();
 
     //Setters for email and pass
     function updateEmail(event: React.ChangeEvent<HTMLInputElement>){
