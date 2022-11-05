@@ -9,6 +9,7 @@ import { NoUserPage } from "../NoUserPage/NoUserPage";
 import "./EditProfilePage.css";
 import { DeleteAccountModal } from "./DeleteAccount";
 import { auth } from "../../firebase";
+import { ImageGallery } from "../../AvatarPool/ImageGallery";
 
 
 export function EditProfile(): JSX.Element {
@@ -35,6 +36,7 @@ export function EditProfile(): JSX.Element {
 
             <ChangeUsernameButton />
             <br />
+            <ImageGallery></ImageGallery>
             <AvatarForm />
 
             <br />
