@@ -6,8 +6,9 @@
     border-radius: 50%;
 }
 
-.image-gallery-image:focus {
+.image-gallery:focus {
     outline-style: solid;
-    outline-color: cyan;
+    outline-color: red;
     outline-width: 3px;
+    border-radius: 50%;
 }

@@ -30,10 +30,10 @@ export function ImageGallery(): JSX.Element {
         }
         document.getElementById("image_gallery_" + imageIndex.toString())?.focus();
     }
-    return <div style={{display: "wrap", justifyContent: "center", alignItems: "stretch"}}> 
+    return <div style={{display: "wrap", justifyContent: "center", alignItems: "stretch", width: "50%", margin: "auto"}}> 
+    <h3>Select A New Profile Picture!</h3>
         {image_map.map((i: number): JSX.Element => {
-        return <span id={"image_gallery_" + i.toString()} className="image-gallery" onClick={() => updateUserAvatar(i.toString())}><ImageViewer avatar={i.toString()}></ImageViewer></span>})}
+        return <span tabIndex={i} id={"image_gallery_" + i.toString()} className="image-gallery" onClick={() => updateUserAvatar(i.toString())}><ImageViewer avatar={i.toString()}></ImageViewer></span>})}
         <div></div>
-        <Button onClick={() => updateProfile()}>Save New Profile Picture</Button>
     </div>
 }
