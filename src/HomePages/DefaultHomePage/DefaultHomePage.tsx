@@ -2,6 +2,7 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import React from "react";
 import "./DefaultHomePage.css";
+
 export function DefaultHomePage(): JSX.Element {
 
   return (

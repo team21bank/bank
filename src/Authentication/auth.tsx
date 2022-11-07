@@ -41,6 +41,8 @@ export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Elem
         }
     }, [uid_string]);
 
+    console.log(CurrentAuthUser);
+
     return (<AuthContext.Provider value={{user: CurrentAuthUser, setUser: setCurrentAuthUser}}>{children}</AuthContext.Provider>);
 }
 
