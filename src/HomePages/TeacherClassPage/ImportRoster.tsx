@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { auth } from "../../firebase";
 import { ref, getDatabase, onValue, set } from '@firebase/database';
-import { BankUser } from "../../Interfaces/BankUser";
-import { Bank } from "../../BankTest/BankObject";
+import { AuthUser } from "../../Authentication/auth";
+import { Bank } from "../../Interfaces/BankObject";
+import { BankUser, BANKUSER_PLACEHOLDER } from "../../Interfaces/BankUser";
 
 export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Element {
     const [contents, setContents] = useState<string>("");
@@ -46,7 +47,7 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
         let newBank: Bank = {
             bankId: "000000",
             teacherID: "111111",
-            studentList: [""],
+            studentList: [BANKUSER_PLACEHOLDER],
             classTitle: ""
         };
         //database reference for bank object
@@ -62,8 +63,7 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
                 createUserWithEmailAndPassword(auth,split[0],split[1]).then(somedata=>{
                     let uid=somedata.user.uid;
                     let userRef=ref(getDatabase(),'/users/'+uid)
-                    //creates the new user object
-                    const newUser: BankUser={
+                    const newUser: AuthUser={
                         username:split[0].split("@")[0],
                         email:split[0],
                         id:split[1],
@@ -77,21 +77,22 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
                     onValue(groupRef, ss=>{
                         if(ss.val()!==null){
                             onValue(studentListRef, sval=>{
-                                if(newBank.studentList[0] === ""){
+                                if(newBank.studentList[0] === BANKUSER_PLACEHOLDER){
+                                    //console.log("test1");
                                     if(sval.val() !== null){
-                                        let studentList: string[] = sval.val();
+                                        let studentList: BankUser[] = sval.val();
                                         newBank = {...ss.val(), studentList:[...studentList]}
-                                        //fix conditional for schoolid+uid
-                                        ;
-                                        if(studentList.filter((aStudent:string): boolean => aStudent.startsWith(split[1])).length === 0){
-                                            newBank = {...ss.val(), studentList:[...newBank.studentList, split[1]+uid]}
+                                        if(studentList.filter(user => user.uid === split[1]).length < 1){
+                                            newBank = {...ss.val(), studentList:[...newBank.studentList, {uid: uid, isBanker: false, balance: 0}]}
                                         }
                                     }else{
-                                        newBank = {...ss.val(), studentList:["placeholder", split[1]+uid]}
+                                        //console.log("test2")
+                                        newBank = {...ss.val(), studentList:[BANKUSER_PLACEHOLDER, {uid: uid, isBanker: false, balance: 0}]}
                                     }
                                 }else{
-                                    if(newBank.studentList.filter((aStudent:string): boolean => aStudent.startsWith(split[1])).length === 0){
-                                        newBank = {...ss.val(), studentList:[...newBank.studentList, split[1]+uid]}
+                                    //console.log("test3");
+                                    if(newBank.studentList.filter(user => user.uid === split[1]).length < 1){
+                                        newBank = {...ss.val(), studentList:[...newBank.studentList, {uid: uid, isBanker: false, balance: 0}]}
                                     }
                                 }
                             })

@@ -1,36 +1,20 @@
-import { LogoutButton } from "../../Authentication/Logout/Logout";
-import { ClassCodeForm } from "../../ClassCode/ClassCodes";
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import "./TeacherHomePage.css";
-import { AuthContext, getCurrentUser } from "../../Authentication/auth";
-import { BankUser } from "../../Interfaces/BankUser";
+import { AuthContext } from "../../Authentication/auth";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
-import {Button} from "react-bootstrap"
-import { useNavigate } from "react-router-dom";
+import { ClassList } from "../../ClassCode/ClassList";
 
 export function TeacherHomePage(){
-    const [userObj, setUserObj]  = useState<BankUser>();
-    const userContext = useContext(AuthContext);
-    const navigate = useNavigate();
+    const user = useContext(AuthContext);
 
-    if(userContext == null) return <NoUserPage />;
-    if(!userObj) getCurrentUser(userContext.state, setUserObj);
-
-    function goToClass(classID: string) {
-        console.log("navigating to ", classID);
-        navigate("/teachers/"+classID);
-    }
+    if(user.user == null) return <NoUserPage />;
     
-    return userObj ? (
+    return user.user ? (
         <div className="teacher-home">
-            <h2>Hello {userObj.username}</h2>
-            <ClassCodeForm></ClassCodeForm>
-            <div className="classes">
-                {userObj.groups.map((classButton:string)=>(
-                    classButton !== "placeholder" ? <Button id={classButton.slice(0,6)} onClick={()=>goToClass(classButton.slice(0,6))}>{classButton.slice(6)}</Button> : <br></br>
-                ))}
-            </div>
-            <LogoutButton></LogoutButton>
+            <h2>Hello {user.user.username}</h2>
+            <br />
+            <div>Classes: </div>
+            <ClassList classes={user.user.groups}/>            
         </div>
     ) : (
         <div className="teacher-home">
