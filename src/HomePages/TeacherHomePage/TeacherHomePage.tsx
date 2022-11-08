@@ -3,6 +3,7 @@ import "./TeacherHomePage.css";
 import { AuthContext } from "../../Authentication/auth";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import { ClassList } from "../../ClassCode/ClassList";
+import { QuizMain } from '../../Quizzes/QuizMain';
 
 export function TeacherHomePage(){
     const user = useContext(AuthContext);
@@ -14,7 +15,8 @@ export function TeacherHomePage(){
             <h2>Hello {user.user.username}</h2>
             <br />
             <div>Classes: </div>
-            <ClassList classes={user.user.groups}/>            
+            <ClassList classes={user.user.groups}/>
+            <QuizMain></QuizMain>
         </div>
     ) : (
         <div className="teacher-home">
