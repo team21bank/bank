@@ -4,6 +4,10 @@ import "./StudentHomePage.css";
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import { JoinClassButton } from "../../ClassCode/JoinClass/JoinClass"
 import { ClassList } from '../../ClassCode/ClassList';
+import {Button} from "react-bootstrap"
+import { useNavigate} from 'react-router-dom';
+import { AvatarForm } from '../../Authentication/Avatar/Avatar';
+import { QuizMain } from '../../Quiz/QuizMain';
 
 export function StudentHomePage(){
     const user = useContext(AuthContext);
