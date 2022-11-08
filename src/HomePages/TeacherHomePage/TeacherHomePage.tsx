@@ -16,7 +16,6 @@ export function TeacherHomePage(){
             <br />
             <div>Classes: </div>
             <ClassList classes={user.user.groups}/>
-            <QuizMain></QuizMain>
         </div>
     ) : (
         <div className="teacher-home">
