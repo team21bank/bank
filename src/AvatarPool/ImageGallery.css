@@ -1,0 +1,14 @@
+.image-gallery {
+    margin: 20px;
+}
+
+.image-gallery-image {
+    border-radius: 50%;
+}
+
+.image-gallery:focus {
+    outline-style: solid;
+    outline-color: red;
+    outline-width: 3px;
+    border-radius: 50%;
+}

@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {Button, Form, Modal} from 'react-bootstrap'
-import { AuthUser } from '../../Authentication/auth';
 import { NoUserPage } from '../NoUserPage/NoUserPage';
 import './ChangeUsername.css'
 import "../../firebase";
+import { auth } from '../../firebase';
+import { AuthContext } from '../auth';
 
-export function ChangeUsernameButton(
-    {currUser, setCurrUser}: {currUser: AuthUser | undefined, setCurrUser: (n: AuthUser | undefined)=>void}
-){
+export function ChangeUsernameButton(){
+    const user = useContext(AuthContext);
+
     const [showModal, setShowModal] = useState(false);
 
     //New username information
     const [username, setUsername] = useState<string>('')
 
-    if(!currUser) {return <NoUserPage />};
+    if(!auth.currentUser) {return <NoUserPage />};
 
     function updateLocalUsername(event: React.ChangeEvent<HTMLInputElement>){
         setUsername(event.target.value)
     }
 
     function confirm() {
-        if(currUser) setCurrUser({...currUser, username});
+        if(auth.currentUser && user.user) user.setUser({...user.user, username});
         setUsername("");
         setShowModal(false);
     }
@@ -29,7 +30,7 @@ export function ChangeUsernameButton(
         setShowModal(false);
     }
 
-    return currUser ? (
+    return user.user ? (
         <div className="change-username" >
             <Modal show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton>Change Username</Modal.Header>

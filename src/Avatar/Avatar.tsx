@@ -2,7 +2,7 @@ import { Button } from "react-bootstrap";
 import React, { useContext, useState } from "react";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import { AuthUser } from "../Authentication/auth";
-import { AuthContext, getCurrentUser } from "../Authentication/auth";
+import { AuthContext } from "../Authentication/auth";
 import { getDatabase } from "@firebase/database";
 import {ref, set} from "@firebase/database";
 
@@ -10,15 +10,13 @@ import {ref, set} from "@firebase/database";
 export function AvatarForm() {
     const userContext = useContext(AuthContext);
 
-    const [userObj, setUserObj]  = useState<AuthUser>();
-    if(!userObj) getCurrentUser(userContext.state, setUserObj);
-
+    /*
     function saveAvatar(avatar: string | undefined) {
-        if(userObj && avatar) userObj.avatar=avatar;
-        if(userObj) setUserObj({...userObj})
+        if(userContext && avatar) userContext.user.avatar=avatar;
+        if(user.user) setUserObj({...userObj})
         if (userObj!==undefined){
             if (userContext.state!==null){
-                set(ref(getDatabase(),"users/"+userContext.state.user.uid+"/userObj/avatar"),userObj.avatar)
+                set(ref(getDatabase(),"users/"+userContext.user.user.uid+"/userObj/avatar"),userObj.avatar)
             }
         }
         alert("Avatar updated!")
@@ -63,7 +61,6 @@ export function AvatarForm() {
                        {imageList.map((image, index) => (
                             <div key={index} className="image-item">
                                  <img src={image.dataURL} alt="" width="100" />
-                                 {/*  map dataURL string to userObj.avatar*/}
                                  <Button onClick= {image.dataURL!==undefined ? ()=>saveAvatar(image.dataURL): undefined}>Save Avatar</Button>
                            </div>
                       ))}
@@ -72,4 +69,6 @@ export function AvatarForm() {
             </ImageUploading>
          </div>
     )
+    */
+   return <div></div>;
 };

@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import './App.css';
 import "./firebase";
 import { RegistrationForm } from './Authentication/Registration/Reg';
@@ -10,13 +10,13 @@ import { TeacherNavbar } from './Navbars/TeacherNavbar';
 import { StudentHomePage } from './HomePages/StudentHomePage/StudentHomePage'
 import { TeacherHomePage } from './HomePages/TeacherHomePage/TeacherHomePage';
 import { LoginForm } from './Authentication/Login/Login';
-import { AuthContext, CurrentUserProvider, getCurrentUser } from './Authentication/auth';
+import { AuthContext, CurrentUserProvider } from './Authentication/auth';
 import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
-import { AuthUser } from './Authentication/auth';
 import { StudentClassPage } from './HomePages/StudentClassPage/StudentClassPage';
 import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
 import { EditProfile } from './Authentication/EditProfilePage/EditProfilePage';
 import { CreateClassPage } from './ClassCode/CreateClassPage';
+import { QuizMain } from './Quizzes/QuizMain';
 
 function App() {
     return (
@@ -32,10 +32,8 @@ export default App;
 function AppBody(): JSX.Element {
   let classes: string[] = [];
 
-  const userContext = useContext(AuthContext);
-  const [currUser, setCurrUser] = useState<AuthUser>();
-  if(!currUser) getCurrentUser(userContext.state, setCurrUser);
-  else classes = [...currUser.groups];
+  const user = useContext(AuthContext);
+  if(user.user) classes = [...(user.user.groups)];
 
   return <div>
     <BrowserRouter>
@@ -48,6 +46,7 @@ function AppBody(): JSX.Element {
         <Route path="/teachers" element={<TeacherNavbar />}>
           <Route path="home" element={<TeacherHomePage />}/>
           <Route path="classes" element={<TeacherHomePage/>}/>
+          <Route path="quizzes" element={<QuizMain/>} />
           <Route path="createclass" element={<CreateClassPage/>}/>
           {classes.map(str => {
             return <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}></Route>
@@ -58,6 +57,7 @@ function AppBody(): JSX.Element {
           {classes.map(str => {
             return <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>
           })}
+          <Route path="quizzes" element={<QuizMain/>} />
         </Route>
       </Routes>
     </BrowserRouter>

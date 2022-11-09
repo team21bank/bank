@@ -9,22 +9,19 @@ import { AuthContext, STORAGE_KEY } from '../auth';
 export function LogoutButton(){
     const navigate = useNavigate();
     
-    const userContext = useContext(AuthContext);
+    const user = useContext(AuthContext);
 
     //Function for button click logging out current user
     function logout(){
         signOut(auth);
-        userContext.setState(null);
+        user.setUser(null);
         window.sessionStorage.removeItem(STORAGE_KEY)
         alert("Successfully logged out!");
+        navigate("/");
     }
 
     //HTML holding logout button
     return (<div>
-        <Button onClick={() => {
-            logout();
-            navigate("/");
-            }
-        }>Logout</Button>
+        <Button onClick={logout}>Logout</Button>
     </div>)
 }
