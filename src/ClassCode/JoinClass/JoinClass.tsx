@@ -3,7 +3,7 @@ import { ref, getDatabase, set} from '@firebase/database';
 import React, { useContext, useState } from 'react';
 import { AuthContext } from "../../Authentication/auth";
 import { AuthUser } from "../../Authentication/auth";
-import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
+import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { auth } from '../../firebase';
 import { get } from 'firebase/database';
 import { Bank } from '../../Interfaces/BankObject';
@@ -13,7 +13,6 @@ export function JoinClassButton(){
 
     const user = useContext(AuthContext);
     const [bankCode, setBankCode] = useState<string>('');
-    if(user.user == null) {return <NoUserPage />;} //display fail page if attempting to access user page without being logged in
 
     function updateBank(event: React.ChangeEvent<HTMLInputElement>){
         setBankCode(event.target.value)
@@ -53,23 +52,27 @@ export function JoinClassButton(){
         });
     }
     
-    return (<div>
-        <Modal show={showModal} onHide={()=>setShowModal(false)}>
-            <Modal.Header closeButton><h1>Join Class</h1></Modal.Header>
-            <Modal.Body>
-                <Form.Group controlId="addClass">
-                    <Form.Label>Enter Class Code</Form.Label>
-                    <Form.Control
-                        value={bankCode}
-                        onChange={updateBank}/>
-                        <br />
-                </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={addClass}>Add Class</Button>
-                <Button onClick={()=>{setBankCode(""); setShowModal(false);}}>Cancel</Button>
-            </Modal.Footer>
-        </Modal>
-        <Button onClick={()=>setShowModal(true)} size="lg">Join Class</Button>
-    </div>);
+    return user.user ? (
+        <div>
+            <Modal show={showModal} onHide={()=>setShowModal(false)}>
+                <Modal.Header closeButton><h1>Join Class</h1></Modal.Header>
+                <Modal.Body>
+                    <Form.Group controlId="addClass">
+                        <Form.Label>Enter Class Code</Form.Label>
+                        <Form.Control
+                            value={bankCode}
+                            onChange={updateBank}/>
+                            <br />
+                    </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={addClass}>Add Class</Button>
+                    <Button onClick={()=>{setBankCode(""); setShowModal(false);}}>Cancel</Button>
+                </Modal.Footer>
+            </Modal>
+            <Button onClick={()=>setShowModal(true)} size="lg">Join Class</Button>
+        </div>
+    ) : (
+        <LoadingPage/>
+    )
 }

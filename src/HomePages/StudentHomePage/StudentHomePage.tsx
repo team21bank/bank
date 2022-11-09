@@ -1,14 +1,12 @@
 import React, { useContext } from 'react';
 import { AuthContext } from "../../Authentication/auth";
 import "./StudentHomePage.css";
-import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
+import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { JoinClassButton } from "../../ClassCode/JoinClass/JoinClass"
 import { ClassList } from '../../ClassCode/ClassList';
 
 export function StudentHomePage(){
     const user = useContext(AuthContext);
-
-    if(user.user == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
 
     return user.user ? (
         <div className="student-home">
@@ -21,8 +19,6 @@ export function StudentHomePage(){
             
         </div>
     ) : (
-        <div className="student-home">
-            <h2>LOADING...</h2>
-        </div>
+        <LoadingPage/>
     )
 }
