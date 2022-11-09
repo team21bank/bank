@@ -2,7 +2,7 @@ import { onValue, ref, getDatabase, update, set } from "firebase/database";
 import React, { useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { AuthContext } from "../Authentication/auth";
-import { NoUserPage } from "../Authentication/NoUserPage/NoUserPage";
+import { LoadingPage } from "../Authentication/LoadingPage/LoadingPage";
 import { auth } from "../firebase";
 import { Bank } from "../Interfaces/BankObject";
 import { BANKUSER_PLACEHOLDER } from "../Interfaces/BankUser";
@@ -18,7 +18,6 @@ export function CreateClassPage(): JSX.Element {
         classTitle: ""
     });
     
-    if(user.user == null) return <NoUserPage />; //display fail page if attempting to access user page without being logged in
     if(newBank.teacherID === "" && auth.currentUser) setNewBank({...newBank, teacherID: auth.currentUser.uid}); //set the bank's teacherID when it is availabe from userObj
 
     const createCode = () => {
@@ -64,7 +63,7 @@ export function CreateClassPage(): JSX.Element {
             </Form.Group>
         </div>
     ) : (
-        <h1>LOADING...</h1>
+        <LoadingPage/>
     )
 }
 
