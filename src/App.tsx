@@ -57,6 +57,7 @@ function AppBody(): JSX.Element {
           {classes.map(str => {
             return <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>
           })}
+          <Route path="quizzes" element={<QuizMain/>} />
         </Route>
       </Routes>
     </BrowserRouter>
