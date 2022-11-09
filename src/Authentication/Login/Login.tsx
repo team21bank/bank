@@ -41,6 +41,7 @@ export function LoginForm(){
             var errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
+            alert("Wrong email/password")
         });
     }
 
