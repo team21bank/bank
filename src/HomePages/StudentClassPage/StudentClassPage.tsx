@@ -12,6 +12,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
     const [bankUser, setBankUser] = useState<BankUser | undefined>();
     useEffect(()=>{
         const classRef = ref(getDatabase(), "/groups/"+classCode.slice(0,6));
+        console.log("reading from groups");
         onValue(classRef, classSnapshot=>{
             const classObj = classSnapshot.val();
             if(classObj != null) {
@@ -27,7 +28,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
     return user.user ? (
         <div className="student-class-page">
             Welcome to {classCode.slice(6)}
-            <div>your total balance is {bankUser ? bankUser.balance : "fail"}</div>
+            <div>your total balance is {bankUser?.balance}</div>
         </div>
     ) : (
         <LoadingPage/>
