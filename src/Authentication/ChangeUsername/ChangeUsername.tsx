@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import {Button, Form, Modal} from 'react-bootstrap'
-import { NoUserPage } from '../NoUserPage/NoUserPage';
+import { LoadingPage } from '../LoadingPage/LoadingPage';
 import './ChangeUsername.css'
 import "../../firebase";
 import { auth } from '../../firebase';
@@ -13,8 +13,6 @@ export function ChangeUsernameButton(){
 
     //New username information
     const [username, setUsername] = useState<string>('')
-
-    if(!auth.currentUser) {return <NoUserPage />};
 
     function updateLocalUsername(event: React.ChangeEvent<HTMLInputElement>){
         setUsername(event.target.value)
@@ -52,7 +50,7 @@ export function ChangeUsernameButton(){
             <Button onClick={()=> setShowModal(true)}>Change Username</Button>
         </div>
     ) : (
-        <h2>LOADING...</h2>
+        <LoadingPage/>
     )
 
 }

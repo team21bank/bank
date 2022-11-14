@@ -1,14 +1,19 @@
 import { ref, getDatabase, onValue } from 'firebase/database';
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from "../../Authentication/auth";
+<<<<<<< HEAD
 import { NoUserPage } from "../../Authentication/NoUserPage/NoUserPage";
 import { BankUser } from '../../Interfaces/BankUser';
 import {Button} from 'react-bootstrap'
+=======
+import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
+>>>>>>> 681cc5752e849d56768823ce9700e5316875de0c
 import "./StudentClassPage.css";
 import { auth } from '../../firebase';
 
 export function StudentClassPage({classCode}:{classCode:string}){
     const user = useContext(AuthContext);
+<<<<<<< HEAD
     const [currBankUser,setCurrBankUser] = useState<BankUser>({} as BankUser);
 
     useEffect(()=>{
@@ -38,4 +43,14 @@ export function StudentClassPage({classCode}:{classCode:string}){
         <br></br>
         Your Total Balance: {currBankUser.balance}
     </div>)
+=======
+
+    return user.user ? (
+        <div className="student-class-page">
+            Welcome to {classCode.slice(6)}
+        </div>
+    ) : (
+        <LoadingPage/>
+    )
+>>>>>>> 681cc5752e849d56768823ce9700e5316875de0c
 }
