@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
+import { AuthUser } from "../../Authentication/auth";
 import { Bank } from "../../Interfaces/BankObject";
 import { BankUser } from "../../Interfaces/BankUser";
 
 
 
-export function ViewStudentList({currClass}: {currClass: Bank}) {
+export function ViewStudentList({currStudents}: {currStudents: AuthUser[]}) {
     const [showModal, setShowModal] = useState(false);
 
     return (
@@ -13,8 +14,8 @@ export function ViewStudentList({currClass}: {currClass: Bank}) {
             <Modal show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton>Your Students</Modal.Header>
                 <Modal.Body>
-                    {currClass.studentList.map((student: BankUser)=>(
-                        student.uid !== "" ? <li>{student.uid}</li>: <></>
+                    {currStudents.map((student: AuthUser)=>(
+                        <li key={student.username+student.id}>{student.username}</li>
                     ))}
                 </Modal.Body>
                 <Modal.Footer>
