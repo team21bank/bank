@@ -54,7 +54,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
 //gets the AuthUser object for each BankUser in the bankUserList
 function getStudentList(bankUserList: BankUser[], setStudentList: (students: AuthUser[])=>void) {
     let tmpStudentList: AuthUser[] = [];
-    bankUserList.map((bankUser) => {
+    bankUserList.forEach((bankUser) => {
         if(bankUser.uid !== "") {
             //console.log("getting object for user ", bankUser.uid);
             onValue(ref(getDatabase(), "/users/"+bankUser.uid), (snapshot) => {
