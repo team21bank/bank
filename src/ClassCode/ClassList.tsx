@@ -24,7 +24,7 @@ function ClassButton({classString}: {classString: string}): JSX.Element {
 
     return (
         <div>
-            <Link to={"../"+id}><Button>Go To {name}'s class</Button></Link>
+            <Link to={"../"+id}><Button>Go To {name}</Button></Link>
         </div>
     )
 }

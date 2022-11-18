@@ -7,8 +7,14 @@ import { ref, getDatabase, onValue} from '@firebase/database';
 import { ViewStudentList } from "./ViewStudentList";
 import "./TeacherClassPage.css";
 import { BankUser } from '../../Interfaces/BankUser';
+import { Button } from 'react-bootstrap';
+import { delete_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
+import { auth } from '../../firebase';
+import { useNavigate } from 'react-router-dom';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
+    const navigate = useNavigate();
+
     const user = useContext(AuthContext);   
     const [currClass, setCurrClass] = useState<Bank>({
         bankId:'',
@@ -34,6 +40,11 @@ export function TeacherClassPage({classCode}:{classCode:string}){
             Welcome back to your class: {classCode.slice(6)}
             <ImportRoster currentGroup={classCode}></ImportRoster>
             <ViewStudentList currStudents={studentList}/>
+            <Button variant="danger" onClick={()=>{
+                delete_bank(currClass.bankId, auth.currentUser ? auth.currentUser.uid : "");
+                navigate("/teachers/home");
+                alert("class successfully deleted");
+            }}>Delete Bank</Button>
         </div>
     ): (
         <LoadingPage/>
