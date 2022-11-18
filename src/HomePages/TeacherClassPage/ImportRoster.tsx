@@ -1,11 +1,13 @@
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { auth } from "../../firebase";
+import { auth, firebaseConfig } from "../../firebase";
+import { initializeApp, deleteApp } from "firebase/app";
 import { ref, getDatabase, onValue, set } from '@firebase/database';
 import { AuthUser } from "../../Authentication/auth";
 import { Bank } from "../../Interfaces/BankObject";
 import { BankUser, BANKUSER_PLACEHOLDER } from "../../Interfaces/BankUser";
+import { getAuth } from "firebase/auth";
 
 export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Element {
     const [contents, setContents] = useState<string>("");
@@ -45,10 +47,12 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
         };
         let groupRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/');
         let studentListRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/studentList/');
+        //Must create a second firebase app here so the teacher that is currently logged in does not become logged out upon creating accounts
+        const secondary_app = initializeApp(firebaseConfig, "secondary app");
         splitRow.map(function (loginInfo: string) {
             const split = loginInfo.split(",");
             if(split.length === 2 && split[0].includes("@")){
-                createUserWithEmailAndPassword(auth,split[0],split[1]).then(somedata=>{
+                createUserWithEmailAndPassword(getAuth(secondary_app),split[0],split[1]).then(somedata=>{
                     let uid=somedata.user.uid;
                     let userRef=ref(getDatabase(),'/users/'+uid)
                     const newUser: AuthUser={
@@ -99,6 +103,7 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
             //console.log(newBank);
             if(newBank.bankId !== "000000"){
                 set(studentListRef, newBank.studentList);
+                deleteApp(secondary_app); //delete the secondary firebase app now that new user account have been created
             }
             setContents("");
         }, 1000*splitRow.length);
