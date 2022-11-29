@@ -12,4 +12,6 @@ export interface QuizQuestion{
     options: string[]; //options exist if MultipleChoice type
 
     expected: string; //correct answer
+
+    published: boolean;
 }

@@ -5,6 +5,7 @@ import "./DefaultHomePage.css";
 import { QuizMain } from "../../Quiz/QuizMain";
 
 export function DefaultHomePage(): JSX.Element {
+  const vis = false;
 
   return (
   <div className="home-page">
@@ -14,6 +15,6 @@ export function DefaultHomePage(): JSX.Element {
     </header>
     <Link to="/login"><Button className="start-button">Login</Button></Link>
     <Link to="/register"><Button className="start-button">Register</Button></Link>
-    <QuizMain></QuizMain>
+    {vis && <QuizMain></QuizMain>}
   </div>)
 }
