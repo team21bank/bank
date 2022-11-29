@@ -1,7 +1,7 @@
 import { getDatabase, onValue, ref } from 'firebase/database';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../../Authentication/auth";
 import { delete_student_from_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
