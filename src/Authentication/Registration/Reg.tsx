@@ -38,6 +38,7 @@ export function RegistrationForm(){
                 avatar:'',
                 groups:['placeholder'],
                 isTeacher: true,
+                hash: somedata.user.uid
             }
             setEmail(''); setP1(''); setP2(''); setId(''); setUser('');
             update(userRef,{userObj:newUser});

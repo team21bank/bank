@@ -39,7 +39,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
         <div className="teacher-class-page">
             Welcome back to your class: {classCode.slice(6)}
             <ImportRoster currentGroup={classCode}></ImportRoster>
-            <ViewStudentList currStudents={studentList}/>
+            <ViewStudentList currStudents={studentList} currBank={currClass}/>
             <Button variant="danger" onClick={()=>{
                 delete_bank(currClass.bankId, auth.currentUser ? auth.currentUser.uid : "");
                 navigate("/teachers/home");

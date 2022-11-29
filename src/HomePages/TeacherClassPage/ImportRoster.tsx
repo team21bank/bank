@@ -61,7 +61,8 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
                         id:split[1],
                         avatar:'',
                         groups:["placeholder", currentGroup],
-                        isTeacher: false
+                        isTeacher: false,
+                        hash: uid
                     }
                     set(userRef,{userObj:newUser});
                     onValue(groupRef, ss=>{

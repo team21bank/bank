@@ -10,6 +10,7 @@ export interface AuthUser {
     avatar: string
     groups: string[]
     isTeacher: boolean
+    hash: string
 }
 
 export const STORAGE_KEY = "CurrentUser";

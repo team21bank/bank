@@ -6,8 +6,12 @@ import { BankUser } from "../../Interfaces/BankUser";
 
 
 
-export function ViewStudentList({currStudents}: {currStudents: AuthUser[]}) {
+export function ViewStudentList({currStudents, currBank}: {currStudents: AuthUser[], currBank: Bank}) {
     const [showModal, setShowModal] = useState(false);
+
+    function editStudent(event, hash){
+        alert(hash);
+    }
 
     return (
         <div className="view-students">
@@ -15,7 +19,7 @@ export function ViewStudentList({currStudents}: {currStudents: AuthUser[]}) {
                 <Modal.Header closeButton>Your Students</Modal.Header>
                 <Modal.Body>
                     {currStudents.map((student: AuthUser)=>(
-                        <li key={student.username+student.id}>{student.username}</li>
+                        <li onClick={event=>editStudent(event,student.hash)} key={student.hash}>{student.username}</li>
                     ))}
                 </Modal.Body>
                 <Modal.Footer>
