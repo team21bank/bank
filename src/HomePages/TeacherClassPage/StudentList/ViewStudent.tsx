@@ -14,7 +14,7 @@ export function ViewStudent(
 ): JSX.Element {
 
     function editBalance(){
-        let money=Number((document.getElementById('deposit-withdrawal') as HTMLInputElement).value);
+        let money=Number((document.getElementById(String(index)) as HTMLInputElement).value);
         set(ref(getDatabase(),'/groups/'+bank.bankId+'/bankObj/studentList/'+String(index)+'/balance'),bank_user.balance+money);
     }
 
@@ -33,7 +33,7 @@ export function ViewStudent(
                     balance: {bank_user.balance}
                 </Col>
                 <Col>
-                    <input id='deposit-withdrawal' type='number'></input>
+                    <input id={String(index)} type='number'></input>
                     <Button onClick={editBalance}>Add/Subtract From Student Balance</Button>
                 </Col>
                 <Col>
