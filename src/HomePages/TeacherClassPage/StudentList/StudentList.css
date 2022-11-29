@@ -1,0 +1,10 @@
+.student-list {
+    outline-width: 1px;
+    outline-color: black;
+    outline-style: solid;
+    padding-inline: 50px;
+    padding-block: 20px;
+    width: 50%;
+    margin-inline: auto;
+    border-radius: 20px;
+}

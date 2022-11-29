@@ -4,13 +4,13 @@ import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { ImportRoster } from "./ImportRoster";
 import {Bank} from "../../Interfaces/BankObject"
 import { ref, getDatabase, onValue} from '@firebase/database';
-import { ViewStudentList } from "./ViewStudentList";
 import "./TeacherClassPage.css";
 import { BankUser } from '../../Interfaces/BankUser';
 import { Button } from 'react-bootstrap';
 import { delete_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
+import { StudentList } from './StudentList/StudentList';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
     const navigate = useNavigate();
@@ -39,7 +39,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
         <div className="teacher-class-page">
             Welcome back to your class: {classCode.slice(6)}
             <ImportRoster currentGroup={classCode}></ImportRoster>
-            <ViewStudentList currStudents={studentList}/>
+            <StudentList bank_users={currClass.studentList} auth_users={studentList}/>
             <Button variant="danger" onClick={()=>{
                 delete_bank(currClass.bankId, auth.currentUser ? auth.currentUser.uid : "");
                 navigate("/teachers/home");
@@ -54,7 +54,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
 //gets the AuthUser object for each BankUser in the bankUserList
 function getStudentList(bankUserList: BankUser[], setStudentList: (students: AuthUser[])=>void) {
     let tmpStudentList: AuthUser[] = [];
-    bankUserList.forEach((bankUser) => {
+    bankUserList.forEach((bankUser, index) => {
         if(bankUser.uid !== "") {
             //console.log("getting object for user ", bankUser.uid);
             onValue(ref(getDatabase(), "/users/"+bankUser.uid), (snapshot) => {
@@ -66,5 +66,15 @@ function getStudentList(bankUserList: BankUser[], setStudentList: (students: Aut
         }
     });
 
-    setStudentList(tmpStudentList);
+
+    //weird stuff to wait until the student list is populated
+    function check_finished() {
+        if(tmpStudentList.length < bankUserList.length - 1) {
+            window.setTimeout(check_finished, 100);
+        } else {
+            setStudentList(tmpStudentList);
+            return;
+        }
+    }
+    check_finished();
 }

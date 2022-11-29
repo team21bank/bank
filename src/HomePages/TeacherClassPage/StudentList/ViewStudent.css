@@ -1,0 +1,12 @@
+.student-list-item {
+    font-size: larger;
+    text-align: left;
+    margin-block: 20px;
+    padding-left: 10px;
+    padding-block: 5px;
+
+    outline: solid 1px darkgray;
+
+    background-color: rgb(238, 238, 238);
+    border-radius: 10px;
+}
