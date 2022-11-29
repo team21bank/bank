@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { AvatarForm } from "../Avatar/Avatar";
 import { AuthContext } from "../auth";
 import { ChangeUsernameButton } from "../ChangeUsername/ChangeUsername";
-import { NoUserPage } from "../NoUserPage/NoUserPage";
+import { LoadingPage } from "../LoadingPage/LoadingPage";
 import "./EditProfilePage.css";
 import { DeleteAccountModal } from "./DeleteAccount";
 import { auth } from "../../firebase";
@@ -14,8 +14,6 @@ import { ImageGallery } from "../../AvatarPool/ImageGallery";
 
 export function EditProfile(): JSX.Element {
     const user = useContext(AuthContext);
-
-    if(user.user == null) {return <NoUserPage />};
 
     //updates the database instance of currUser
     function saveToDatabase() {
@@ -46,6 +44,6 @@ export function EditProfile(): JSX.Element {
             <DeleteAccountModal />
         </div>
     ) : (
-        <h1>Loading...</h1>
+        <LoadingPage/>
     )
 }
