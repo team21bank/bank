@@ -29,17 +29,19 @@ export function TeacherClassPage({classCode}:{classCode:string}){
         getStudentList(currClass.studentList, setStudentList);
     }, [currClass.studentList]);
 
-    if (currClass.bankId===''){
+    useEffect(() => {
         onValue(ref(getDatabase(),"/groups/"+classCode.slice(0,6)+"/bankObj"),ss=>{
-            setCurrClass(ss.val());
+            if(currClass !== ss.val()) {
+                setCurrClass(ss.val());
+            }
         })
-    }
+    }, []);
 
     return user.user ? (
         <div className="teacher-class-page">
             Welcome back to your class: {classCode.slice(6)}
             <ImportRoster currentGroup={classCode}></ImportRoster>
-            <StudentList bank_users={currClass.studentList} auth_users={studentList}/>
+            <StudentList current_bank={currClass} auth_users={studentList}/>
             <Button variant="danger" onClick={()=>{
                 delete_bank(currClass.bankId, auth.currentUser ? auth.currentUser.uid : "");
                 navigate("/teachers/home");

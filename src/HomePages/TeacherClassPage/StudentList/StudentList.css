@@ -1,7 +1,6 @@
 .student-list {
-    outline-width: 1px;
-    outline-color: black;
-    outline-style: solid;
+    outline: 1px solid black;
+    
     padding-inline: 50px;
     padding-block: 20px;
     width: 50%;
