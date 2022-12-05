@@ -2,7 +2,7 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import React from "react";
 import "./DefaultHomePage.css";
-import { QuizMain } from "../../Quiz/QuizMain";
+import { QuizMain } from "../../Quizzes/QuizMain";
 
 export function DefaultHomePage(): JSX.Element {
   const vis = false;

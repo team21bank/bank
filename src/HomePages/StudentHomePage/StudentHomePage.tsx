@@ -7,7 +7,7 @@ import { ClassList } from '../../ClassCode/ClassList';
 import {Button} from "react-bootstrap"
 import { useNavigate} from 'react-router-dom';
 import { AvatarForm } from '../../Authentication/Avatar/Avatar';
-import { QuizMain } from '../../Quiz/QuizMain';
+import { QuizMain } from '../../Quizzes/QuizMain';
 
 export function StudentHomePage(){
     const user = useContext(AuthContext);
