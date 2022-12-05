@@ -105,6 +105,7 @@ export function delete_student_from_bank(bank_code: string, student_code: string
         if(bank_snapshot.val() == null) return;
         const bank_object: Bank = bank_snapshot.val().bankObj;
         const new_student_list = bank_object.studentList.filter((bank_user) => bank_user.uid !== student_code);
+        console.log("new student list ", new_student_list);
         set(bank_ref, {bankObj: {...bank_object, studentList: new_student_list}});
     });
 
