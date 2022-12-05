@@ -7,6 +7,7 @@ import { delete_student_from_bank } from '../../Authentication/EditProfilePage/D
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { auth } from '../../firebase';
 import { BankUser } from '../../Interfaces/BankUser';
+import { ViewTransactions } from '../../StudentComponents/ViewTransactions';
 import "./StudentClassPage.css";
 
 export function StudentClassPage({classCode}:{classCode:string}){
