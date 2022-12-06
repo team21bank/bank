@@ -4,7 +4,7 @@ import { ref, getDatabase, onValue, set } from '@firebase/database';
 import { Quiz } from "../Interfaces/Quiz";  
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
 
-export function ImportQuiz(): JSX.Element {
+export function ImportQuiz({addQuiz}: {addQuiz: (newQuiz: Quiz) => void}): JSX.Element {
     const [contents, setContents] = useState<string>("");
     const [view, toggleView] = useState<boolean>(false);
     function importFile(event: React.ChangeEvent<HTMLInputElement>) {
@@ -48,12 +48,14 @@ export function ImportQuiz(): JSX.Element {
                 if(!split[i][j].startsWith("\"")){
                     newSplit.push(split[i][j]);
                 } else {
-                    holderString = "";
+                    holderString = split[i][j];
+                    j++;
                     while(!split[i][j].endsWith("\"")){
                         holderString = holderString + "," + split[i][j]
                         j++;
                     }
-                    holderString = holderString + "," + split[i][j]
+                    holderString = holderString + "," + split[i][j];
+                    holderString.slice(1);
                     newSplit.push(holderString);
                 }
             }
@@ -68,7 +70,7 @@ export function ImportQuiz(): JSX.Element {
             money: Number(split[1][2]),
             questions: []
         }
-        const questions = split.splice(3).map(function (questionFields: string[]): QuizQuestion {
+        let questions = split.splice(3).map(function (questionFields: string[]): QuizQuestion {
             let options = [...questionFields].splice(3, questionFields.length-2);
             options.pop();
             let newQuest = {
@@ -83,9 +85,16 @@ export function ImportQuiz(): JSX.Element {
             }
             return newQuest;
         });
+        if(isNaN(questions[questions.length-1].points)){
+            questions.pop();
+        }
         newQuiz.questions = questions;
         newQuiz.questionTotal = questions.length;
         console.log(newQuiz);
+
+        //temporary for testing purposes, replace with storage to firebase
+        addQuiz(newQuiz);
+
         setContents("");
     }
 

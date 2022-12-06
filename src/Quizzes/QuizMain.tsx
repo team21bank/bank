@@ -11,13 +11,18 @@ const allQuizzes = quizzes.map((myquiz): Quiz => ({ ...myquiz}));
 //make an import JSON feature
 export function QuizMain(): JSX.Element{
     const [quizzes, setQuizzes] = useState<Quiz[]>(allQuizzes);
-    
+
+    //temporary function for testing purposes, with uploading quizzes from csv
+    function addQuiz(newQuiz: Quiz){
+        setQuizzes([...quizzes, newQuiz]);
+    }
+
     return(
         <h3>
         <QuizList
-            quizzes={allQuizzes}
+            quizzes={quizzes}
         ></QuizList>
-        <ImportQuiz></ImportQuiz>
+        <ImportQuiz addQuiz={addQuiz}></ImportQuiz>
     </h3>
     
     );
