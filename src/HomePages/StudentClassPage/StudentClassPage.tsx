@@ -1,16 +1,13 @@
 import { getDatabase, onValue, ref } from 'firebase/database';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../../Authentication/auth";
-import { delete_student_from_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { auth } from '../../firebase';
 import { BankUser } from '../../Interfaces/BankUser';
 import "./StudentClassPage.css";
 
 export function StudentClassPage({classCode}:{classCode:string}){
-    const navigate = useNavigate();
     const user = useContext(AuthContext);
 
     //get the BankUser object of the current user 
