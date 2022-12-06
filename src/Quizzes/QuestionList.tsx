@@ -24,6 +24,7 @@ export function QuestionList({
     function moveToNextQuestion(): void {
         if (currQuestionIndex < questions.length-1) {
             setCurrQuestionIndex(currQuestionIndex + 1);
+            setChoice(questions[currQuestionIndex+1].options[0]);
         }
     }
 
@@ -58,7 +59,6 @@ export function QuestionList({
     function scoreTracker(): void{
         updateScore()
         moveToNextQuestion()
-        setChoice(questions[currQuestionIndex].options[0])
         console.log("Points updated")
     }
 
