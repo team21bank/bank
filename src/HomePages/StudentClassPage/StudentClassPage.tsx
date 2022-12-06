@@ -23,10 +23,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
         <div className="student-class-page">
             Welcome to {classCode.slice(6)}
             <div>your total balance is {bankUser?.balance}</div>
-            <Button variant="danger" onClick={()=>{
-                delete_student_from_bank(classCode.slice(0,6), auth.currentUser ? auth.currentUser.uid : "");
-                navigate("/students/home");
-            }}>Leave Class</Button>
         </div>
     ) : (
         <LoadingPage/>
