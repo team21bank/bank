@@ -1,16 +1,13 @@
 import { getDatabase, onValue, ref } from 'firebase/database';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../../Authentication/auth";
-import { delete_student_from_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { auth } from '../../firebase';
 import { BankUser } from '../../Interfaces/BankUser';
 import "./StudentClassPage.css";
 
 export function StudentClassPage({classCode}:{classCode:string}){
-    const navigate = useNavigate();
     const user = useContext(AuthContext);
 
     //get the BankUser object of the current user 
@@ -23,10 +20,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
         <div className="student-class-page">
             Welcome to {classCode.slice(6)}
             <div>your total balance is {bankUser?.balance}</div>
-            <Button variant="danger" onClick={()=>{
-                delete_student_from_bank(classCode.slice(0,6), auth.currentUser ? auth.currentUser.uid : "");
-                navigate("/students/home");
-            }}>Leave Class</Button>
         </div>
     ) : (
         <LoadingPage/>

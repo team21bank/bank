@@ -13,7 +13,6 @@ export function QuestionView({
     question: QuizQuestion;
 }): JSX.Element {
     const [choice, setChoice] = useState<string>(question.options[0]);
-    const defaultChoice = question.options[0];
 
     const OPTIONS = question.options;
 
@@ -43,8 +42,8 @@ export function QuestionView({
                                             ))}
                                         </Form.Select>
                                     </Form.Group>
-                                    <option>Your answer is: </option>
-                                    {choice === question.expected ? "✔️" : "❌"}
+                                    {/*<option>Your answer is: </option>*/}
+                                    {/*choice === question.expected ? "✔️" : "❌"*/}
                                 </div>
                             </div>
                     </div>
