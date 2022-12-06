@@ -1,6 +1,8 @@
+import { getDatabase, onValue, ref } from "firebase/database";
 import React, { ChangeEvent, useContext, useState } from "react";
 import { Button, FormSelect, Stack } from "react-bootstrap";
 import { AuthContext, AuthUser } from "../Authentication/auth";
+import { auth } from "../firebase";
 import { BankUser } from "../Interfaces/BankUser";
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
 import { QuestionView } from "./QuestionView";
@@ -17,6 +19,7 @@ export function QuestionList({
     const [currQuestionIndex, setCurrQuestionIndex] = useState<number>(0);
     const [choice, setChoice] = useState<string>(questions[currQuestionIndex].options[0]);
     const [score, setScore] = useState<number>(0);
+    const [bankUser, setBankUser] = useState<BankUser | undefined>();
 
     function moveToNextQuestion(): void {
         if (currQuestionIndex < questions.length-1) {
@@ -24,10 +27,24 @@ export function QuestionList({
         }
     }
 
-    function finishedQuiz(): void {
-        //set
-        if (currQuestionIndex === questions.length) {
+    function getBankUser(classCode: string, setBankUser: (b)=>void) {
+        const classRef = ref(getDatabase(), "/groups/"+classCode.slice(0,6));
+        onValue(classRef, classSnapshot=>{
+            const classObj = classSnapshot.val();
+            if(classObj != null) {
+                classObj.bankObj.studentList.map(bank_user => {
+                    if(bank_user.uid === auth.currentUser?.uid) {
+                        setBankUser(bank_user);
+                    }
+                });
+            }
+        })
+    }
 
+    function finishedQuiz(/*classCode: string, setBankUser: (b)=>void*/) {
+        //push score from here onto the database
+        if (currQuestionIndex === questions.length) {
+            //getBankUser(classCode, setBankUser)
         }
         updateScore()
     }
