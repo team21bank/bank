@@ -11,9 +11,14 @@ export function QuizView({
     quiz: Quiz;
 }): JSX.Element {
     const [visible, setVisible] = useState<boolean>(false);
+    const [myPoints, setMyPoints] = useState<number>(0);
 
     function viewQuiz(): void {
         setVisible(!visible);
+    }
+
+    function addPoints(pointsAdded: number) {
+        setMyPoints(myPoints + pointsAdded);
     }
 
     return (
@@ -31,6 +36,7 @@ export function QuizView({
                     <div>
                         <QuestionList
                             questions={quiz.questions}
+                            //addPoints={addPoints}
                         ></QuestionList>
                     </div>
                 ) : (
