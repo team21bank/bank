@@ -1,12 +1,12 @@
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { auth, firebaseConfig } from "../../firebase";
+import { auth, firebaseConfig } from "../../../firebase";
 import { initializeApp, deleteApp } from "firebase/app";
 import { ref, getDatabase, onValue, set } from '@firebase/database';
-import { AuthUser } from "../../Authentication/auth";
-import { Bank } from "../../Interfaces/BankObject";
-import { BankUser, BANKUSER_PLACEHOLDER } from "../../Interfaces/BankUser";
+import { AuthUser } from "../../../Authentication/auth";
+import { Bank } from "../../../Interfaces/BankObject";
+import { BankUser, BANKUSER_PLACEHOLDER } from "../../../Interfaces/BankUser";
 import { getAuth } from "firebase/auth";
 
 export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Element {
@@ -112,20 +112,20 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
 
     return (
         <div>
-            {!view && <Button onClick={changeToggle}>Import Class Roster</Button>}
-            {view && (
-                <div>
-                    <table width="40%" align="center">
-                        <td>
-                            <Form.Group controlId="exampleForm">
-                                <Form.Label>Upload a roster CSV</Form.Label>
-                                <Form.Control type="file" onChange={importFile} />
-                            </Form.Group>
-                            <Button onClick={makeChange}>Create Student Accounts</Button>
-                        </td>
-                    </table>
-                </div>
-            )}
+            <table align="center">
+                <td>
+                    <Form.Group controlId="exampleForm">
+                        <Form.Label>
+                            *Column A should contain student's email addresses.
+                            *Column B should contain each student's password.
+                            *Passwords must be at least 6 characters in length.
+                        </Form.Label>
+                        <Form.Control type="file" onChange={importFile} />
+                        <br/>
+                    </Form.Group>
+                    <Button variant="success" onClick={makeChange}>Create Student Accounts</Button>
+                </td>
+            </table>
         </div>
     );
 }
