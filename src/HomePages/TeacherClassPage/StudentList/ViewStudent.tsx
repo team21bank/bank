@@ -55,7 +55,7 @@ function RemoveStudentModal(
     return (
     <div>
         <Modal show={showModal} onHide={()=>setShowModal(false)}>
-        <Modal.Header closeButton><h2>Remove Student</h2></Modal.Header>
+        <Modal.Header closeButton><h2>Remove Student {student_name}</h2></Modal.Header>
             <Modal.Body style={{"textAlign": "center", "fontSize": "150%", "color": "red"}}>
                 Are you sure you want to remove student {student_name} from this class?
             </Modal.Body>
