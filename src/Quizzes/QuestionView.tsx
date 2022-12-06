@@ -38,7 +38,7 @@ export function QuestionView({
                                             value={choice}
                                             onChange={updateChoice}
                                         >
-                                            {OPTIONS.map((item: string) => (
+                                            {["Select a Choice", ...OPTIONS].map((item: string) => (
                                                 <option key={item} value={item}>
                                                     {item}
                                                 </option>

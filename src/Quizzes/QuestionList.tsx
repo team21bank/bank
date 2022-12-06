@@ -17,14 +17,14 @@ export function QuestionList({
 }): JSX.Element {
 
     const [currQuestionIndex, setCurrQuestionIndex] = useState<number>(0);
-    const [choice, setChoice] = useState<string>(questions[currQuestionIndex].options[0]);
+    const [choice, setChoice] = useState<string>("Select a Choice");
     const [score, setScore] = useState<number>(0);
     const [bankUser, setBankUser] = useState<BankUser | undefined>();
 
     function moveToNextQuestion(): void {
         if (currQuestionIndex < questions.length-1) {
             setCurrQuestionIndex(currQuestionIndex + 1);
-            setChoice(questions[currQuestionIndex+1].options[0]);
+            setChoice("Select a Choice");
         }
     }
 
