@@ -135,6 +135,7 @@ function createStudentAccountsFromList(classID: string, studentList: NewStudent[
                     uid: new_credential.user.uid
                 });
                 set(class_reference, {bankObj: {...bank_obj}});
+            });
         }).catch((reason) => {
             failed_list.push(new_student.email);
         });
@@ -149,6 +150,4 @@ function createStudentAccountsFromList(classID: string, studentList: NewStudent[
         }
     }
     check_finished();
-    });
-
 }
