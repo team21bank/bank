@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { ImportRoster } from "./ImportRoster";
-import { AddStudentList } from "./ManualAddStudent";
+import { AddStudentList } from "./ManualAddStudents";
 
 export function AddStudentsModal({classID}: {classID: string}): JSX.Element {
     const [showModal, setShowModal] = useState(false);
@@ -17,9 +17,9 @@ export function AddStudentsModal({classID}: {classID: string}): JSX.Element {
                 </Button>
                 <br/><br/>
                 {showImportCSV ? (
-                    <ImportRoster currentGroup={classID} />
+                    <ImportRoster currentGroup={classID} setShowModal={setShowModal}/>
                 ) : (
-                    <AddStudentList classID={classID}/>
+                    <AddStudentList classID={classID} setShowModal={setShowModal}/>
                 )}
             </Modal.Body>
             <Modal.Footer>

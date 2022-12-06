@@ -9,9 +9,8 @@ import { Bank } from "../../../Interfaces/BankObject";
 import { BankUser, BANKUSER_PLACEHOLDER } from "../../../Interfaces/BankUser";
 import { getAuth } from "firebase/auth";
 
-export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Element {
+export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string, setShowModal: (b)=>void}): JSX.Element {
     const [contents, setContents] = useState<string>("");
-    const [view, toggleView] = useState<boolean>(false);
     function importFile(event: React.ChangeEvent<HTMLInputElement>) {
         // Might have removed the file, need to check that the files exist
         if (event.target.files && event.target.files.length) {
@@ -32,12 +31,7 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
         }
     }
 
-    function changeToggle() {
-        toggleView(true);
-    }
-
     function makeChange() {
-        toggleView(false);
         const splitRow = contents.split(/\r?\n/);
         let newBank: Bank = {
             bankId: "000000",
