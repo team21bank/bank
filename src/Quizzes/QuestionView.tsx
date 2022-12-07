@@ -7,16 +7,19 @@ type ChangeEvent = React.ChangeEvent<
 >;
 
 export function QuestionView({
-    question
+    question,
+    choice,
+    setChoice
 }:
 {
     question: QuizQuestion;
+    choice: string;
+    setChoice: (string) => void;
 }): JSX.Element {
-    const [choice, setChoice] = useState<string>(question.options[0]);
 
     const OPTIONS = question.options;
 
-    function answerMatch(event: ChangeEvent) {
+    function updateChoice(event: ChangeEvent) {
         setChoice(event.target.value);
     }
 
@@ -33,17 +36,15 @@ export function QuestionView({
                                     <Form.Group controlId="userAnswers">
                                         <Form.Select
                                             value={choice}
-                                            onChange={answerMatch}
+                                            onChange={updateChoice}
                                         >
-                                            {OPTIONS.map((item: string) => (
+                                            {["Select a Choice", ...OPTIONS].map((item: string) => (
                                                 <option key={item} value={item}>
                                                     {item}
                                                 </option>
                                             ))}
                                         </Form.Select>
                                     </Form.Group>
-                                    {/*<option>Your answer is: </option>*/}
-                                    {/*choice === question.expected ? "✔️" : "❌"*/}
                                 </div>
                             </div>
                     </div>

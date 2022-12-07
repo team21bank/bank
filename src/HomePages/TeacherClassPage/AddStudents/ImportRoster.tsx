@@ -16,35 +16,46 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
         if (event.target.files && event.target.files.length) {
             // Get the first filename
             const filename = event.target.files[0];
-            // Create a reader
-            const reader = new FileReader();
-            // Create lambda callback to handle when we read the file
-            reader.onload = (loadEvent) => {
-                // Target might be null, so provide default error value
-                const newContent =
-                    loadEvent.target?.result || "Data was not loaded";
-                // FileReader provides string or ArrayBuffer, force it to be string
-                setContents(newContent as string);
-            };
-            // Actually read the file
-            reader.readAsText(filename);
+            if(filename.name.endsWith(".csv")){
+                // Create a reader
+                const reader = new FileReader();
+                // Create lambda callback to handle when we read the file
+                reader.onload = (loadEvent) => {
+                    // Target might be null, so provide default error value
+                    const newContent =
+                        loadEvent.target?.result || "Data was not loaded";
+                    // FileReader provides string or ArrayBuffer, force it to be string
+                    setContents(newContent as string);
+                };
+                // Actually read the file
+                reader.readAsText(filename);
+            } else {
+                alert("Invalid file type!  Please upload a .csv");
+                event.target.value = "";
+            }
         }
     }
 
     function makeChange() {
         const splitRow = contents.split(/\r?\n/);
+        //holder bank, will be overwritten if expected bank exists
         let newBank: Bank = {
             bankId: "000000",
             teacherID: "111111",
             studentList: [BANKUSER_PLACEHOLDER],
             classTitle: ""
         };
+        //database reference for bank object
         let groupRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/');
+        //database reference for list of students within bank object
         let studentListRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/studentList/');
+        //Performs all operations on the student information, map acts as a for loop
         //Must create a second firebase app here so the teacher that is currently logged in does not become logged out upon creating accounts
         const secondary_app = initializeApp(firebaseConfig, "secondary app");
         splitRow.map(function (loginInfo: string) {
+            //separates email from password
             const split = loginInfo.split(",");
+            //if CSV is of proper format
             if(split.length === 2 && split[0].includes("@")){
                 createUserWithEmailAndPassword(getAuth(secondary_app),split[0],split[1]).then(somedata=>{
                     let uid=somedata.user.uid;
@@ -58,7 +69,9 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
                         isTeacher: false,
                         hash: uid
                     }
+                    //pushes user object to database
                     set(userRef,{userObj:newUser});
+                    //within a class, grabs the list of existing students and appends the new student to it
                     onValue(groupRef, ss=>{
                         if(ss.val()!==null){
                             onValue(studentListRef, sval=>{
@@ -80,7 +93,6 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
                                         newBank = {...ss.val(), studentList:[...newBank.studentList, {uid: uid, isBanker: false, balance: 0}]}
                                     }
                                 }
-                                //console.log(newBank.studentList);
                             })
                         }
                     });
@@ -94,8 +106,8 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
             return split;
         });
 
+        //pushes the new list of students in the class to the database
         setTimeout(function waitForData() {
-            //console.log(newBank);
             if(newBank.bankId !== "000000"){
                 set(studentListRef, newBank.studentList);
                 deleteApp(secondary_app); //delete the secondary firebase app now that new user account have been created
