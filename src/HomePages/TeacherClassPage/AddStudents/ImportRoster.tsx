@@ -1,17 +1,16 @@
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { auth, firebaseConfig } from "../../firebase";
+import { auth, firebaseConfig } from "../../../firebase";
 import { initializeApp, deleteApp } from "firebase/app";
 import { ref, getDatabase, onValue, set } from '@firebase/database';
-import { AuthUser } from "../../Authentication/auth";
-import { Bank } from "../../Interfaces/BankObject";
-import { BankUser, BANKUSER_PLACEHOLDER } from "../../Interfaces/BankUser";
+import { AuthUser } from "../../../Authentication/auth";
+import { Bank } from "../../../Interfaces/BankObject";
+import { BankUser, BANKUSER_PLACEHOLDER } from "../../../Interfaces/BankUser";
 import { getAuth } from "firebase/auth";
 
-export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Element {
+export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string, setShowModal: (b)=>void}): JSX.Element {
     const [contents, setContents] = useState<string>("");
-    const [view, toggleView] = useState<boolean>(false);
     function importFile(event: React.ChangeEvent<HTMLInputElement>) {
         // Might have removed the file, need to check that the files exist
         if (event.target.files && event.target.files.length) {
@@ -36,14 +35,8 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
             }
         }
     }
- 
-    function changeToggle() {
-        toggleView(true);
-    }
 
     function makeChange() {
-        toggleView(false);
-        //parsing CSV rows
         const splitRow = contents.split(/\r?\n/);
         //holder bank, will be overwritten if expected bank exists
         let newBank: Bank = {
@@ -125,20 +118,20 @@ export function ImportRoster({currentGroup}: {currentGroup: string}): JSX.Elemen
 
     return (
         <div>
-            {!view && <Button onClick={changeToggle}>Import Class Roster</Button>}
-            {view && (
-                <div>
-                    <table width="40%" align="center">
-                        <td>
-                            <Form.Group controlId="exampleForm">
-                                <Form.Label>Upload a roster CSV</Form.Label>
-                                <Form.Control type="file" onChange={importFile} />
-                            </Form.Group>
-                            <Button onClick={makeChange}>Create Student Accounts</Button>
-                        </td>
-                    </table>
-                </div>
-            )}
+            <table align="center">
+                <td>
+                    <Form.Group controlId="exampleForm">
+                        <Form.Label>
+                            *Column A should contain student's email addresses.
+                            *Column B should contain each student's password.
+                            *Passwords must be at least 6 characters in length.
+                        </Form.Label>
+                        <Form.Control type="file" onChange={importFile} />
+                        <br/>
+                    </Form.Group>
+                    <Button variant="success" onClick={makeChange}>Create Student Accounts</Button>
+                </td>
+            </table>
         </div>
     );
 }

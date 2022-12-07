@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext, AuthUser } from "../../Authentication/auth";
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
-import { ImportRoster } from "./ImportRoster";
+import { AddStudentsModal } from "./AddStudents/AddStudentsModal";
 import {Bank} from "../../Interfaces/BankObject"
 import { ref, getDatabase, onValue} from '@firebase/database';
 import "./TeacherClassPage.css";
@@ -40,7 +40,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
     return user.user ? (
         <div className="teacher-class-page">
             Welcome back to your class: {classCode.slice(6)}
-            <ImportRoster currentGroup={classCode}></ImportRoster>
+            <AddStudentsModal classID={classCode} />
             <StudentList current_bank={currClass} auth_users={studentList}/>
             <DeleteBankModal 
                 delete_bank_function={()=>{
