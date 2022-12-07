@@ -8,6 +8,7 @@ import { RiPlayListAddFill } from "react-icons/ri";
 import { AuthUser } from "../../../Authentication/auth";
 import { firebaseConfig } from "../../../firebase";
 import { Bank } from "../../../Interfaces/BankObject";
+import { BankUser } from "../../../Interfaces/BankUser";
 
 /*
 I HAVE NO CLUE IF THIS IS A GOOD WAY TO GO ABOUT MAKING A LIST OF EDITABLE ITEMS.
@@ -104,13 +105,13 @@ function NewStudentForm({student, setStudent}: {student: NewStudent, setStudent:
 
 //create accounts for each student in the list and add them to the class
 function createStudentAccountsFromList(classID: string, studentList: NewStudent[]) {
-    let failed_list: string[] = [];
+    let failed_list: NewStudent[] = studentList.filter((student) => student.email==="" || student.password.length<6);
     let finished_list: string[] = [];
-    studentList = studentList.filter((student) => student.email!=="" && student.password.length>5);
+    let newStudentList = studentList.filter((student) => student.email!=="" && student.password.length>5);
 
     let class_reference = ref(getDatabase(), "/groups/"+classID);
     const secondary_app = initializeApp(firebaseConfig, "secondary app");
-    studentList.forEach((new_student, index) => {
+    newStudentList.forEach((new_student, index) => {
         createUserWithEmailAndPassword(getAuth(secondary_app), new_student.email, new_student.password).then((new_credential) => {
             let user_reference = ref(getDatabase(), "/users/"+new_credential.user.uid);
             const new_auth_user: AuthUser = {
@@ -122,31 +123,31 @@ function createStudentAccountsFromList(classID: string, studentList: NewStudent[
                 isTeacher: false,
                 hash: new_credential.user.uid
             }
-            set(user_reference, {userObj:new_auth_user}).then((val) => {
-                finished_list.push(new_credential.user.uid);
-            });
-
-            get(class_reference).then((snapshot) => {
-                if(snapshot.val() == null) return;
-                let bank_obj: Bank = snapshot.val().bankObj;
-                bank_obj.studentList.push({
-                    balance: 0,
-                    isBanker: false,
-                    uid: new_credential.user.uid
-                });
-                set(class_reference, {bankObj: {...bank_obj}});
-            });
+            set(user_reference, {userObj:new_auth_user});
+            finished_list.push(new_credential.user.uid);
         }).catch((reason) => {
-            failed_list.push(new_student.email);
+            failed_list.push(new_student);
         });
     });
 
     //weird stuff to wait until finished creating accounts
     function check_finished() {
-        if(finished_list.length < studentList.length) {
+        if(finished_list.length+failed_list.length < studentList.length) {
             window.setTimeout(check_finished, 100);
         } else {
-            return;
+            get(class_reference).then((snapshot) => {
+                if(snapshot.val() == null) return;
+                let bank_obj: Bank = snapshot.val().bankObj;
+                finished_list.forEach((new_uid) => {
+                    bank_obj.studentList.push({
+                        balance: 0,
+                        isBanker: false,
+                        uid: new_uid
+                    })
+                });
+        
+                set(class_reference, {bankObj: {...bank_obj}});
+            });
         }
     }
     check_finished();
