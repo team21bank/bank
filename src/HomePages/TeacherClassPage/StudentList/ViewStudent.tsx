@@ -20,7 +20,7 @@ export function ViewStudent(
 
     function remove_student() {
         delete_student_from_bank(bank.bankId, bank_user.uid);
-        window.setTimeout(()=>window.location.reload(), 100);
+        //window.setTimeout(()=>window.location.reload(), 100);
     }
 
     return bank_user ? (
@@ -61,7 +61,7 @@ function RemoveStudentModal(
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={()=>setShowModal(false)}>Cancel</Button>
-                <Button variant="danger" onClick={remove_student_function}>Confirm</Button>
+                <Button variant="danger" onClick={()=>{remove_student_function(); setShowModal(false);}}>Confirm</Button>
             </Modal.Footer>
         </Modal>
         <Button variant="danger" onClick={()=>setShowModal(true)}>Remove Student</Button>
