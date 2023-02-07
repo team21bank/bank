@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext, AuthUser } from "../../Authentication/auth";
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
-import { ImportRoster } from "./ImportRoster";
+import { AddStudentsModal } from "./AddStudents/AddStudentsModal";
 import {Bank} from "../../Interfaces/BankObject"
 import { ref, getDatabase, onValue} from '@firebase/database';
 import "./TeacherClassPage.css";
 import { BankUser } from '../../Interfaces/BankUser';
-import { Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { delete_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
@@ -40,13 +40,16 @@ export function TeacherClassPage({classCode}:{classCode:string}){
     return user.user ? (
         <div className="teacher-class-page">
             Welcome back to your class: {classCode.slice(6)}
-            <ImportRoster currentGroup={classCode}></ImportRoster>
+            <AddStudentsModal classID={classCode} />
             <StudentList current_bank={currClass} auth_users={studentList}/>
-            <Button variant="danger" onClick={()=>{
-                delete_bank(currClass.bankId, auth.currentUser ? auth.currentUser.uid : "");
-                navigate("/teachers/home");
-                alert("class successfully deleted");
-            }}>Delete Bank</Button>
+            <DeleteBankModal 
+                delete_bank_function={()=>{
+                    delete_bank(currClass.bankId, auth.currentUser ? auth.currentUser.uid : "");
+                    navigate("/teachers/home");
+                    alert("class successfully deleted");
+                }}
+                bank_name={classCode.slice(6)}
+            />
         </div>
     ): (
         <LoadingPage/>
@@ -79,4 +82,29 @@ function getStudentList(bankUserList: BankUser[], setStudentList: (students: Aut
         }
     }
     check_finished();
+}
+
+
+function DeleteBankModal(
+    {delete_bank_function, bank_name}: {delete_bank_function: ()=>void, bank_name: string}
+): JSX.Element {
+    const [showModal, setShowModal] = useState(false);
+
+
+    return (
+    <div>
+        <Modal show={showModal} onHide={()=>setShowModal(false)}>
+        <Modal.Header closeButton><h2>Delete Bank {bank_name}</h2></Modal.Header>
+            <Modal.Body style={{"textAlign": "center", "fontSize": "150%", "color": "red"}}>
+                Are you sure you want to delete bank {bank_name}? <br/>
+                This action is irreversible!
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={()=>setShowModal(false)}>Cancel</Button>
+                <Button variant="danger" onClick={delete_bank_function}>Confirm</Button>
+            </Modal.Footer>
+        </Modal>
+        <Button variant="danger" onClick={()=>setShowModal(true)}>Delete Bank</Button>
+    </div>
+    )
 }

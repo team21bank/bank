@@ -23,6 +23,7 @@ export function StudentList(
                     //note that the bank_users begins with placeholder while auth_users does not, hence the index+1
                     bank_user={current_bank.studentList[index+1]}
                     bank={current_bank}
+                    index={index+1}
                 />
             })}
         </div>

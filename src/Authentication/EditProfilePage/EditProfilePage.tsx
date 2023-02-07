@@ -2,7 +2,7 @@ import { ref, getDatabase, set } from "@firebase/database";
 import React, { useContext } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { AvatarForm } from "../../Avatar/Avatar";
+import { AvatarForm } from "../Avatar/Avatar";
 import { AuthContext } from "../auth";
 import { ChangeUsernameButton } from "../ChangeUsername/ChangeUsername";
 import { LoadingPage } from "../LoadingPage/LoadingPage";

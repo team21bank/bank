@@ -4,6 +4,10 @@ import "./StudentHomePage.css";
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { JoinClassButton } from "../../ClassCode/JoinClass/JoinClass"
 import { ClassList } from '../../ClassCode/ClassList';
+import {Button} from "react-bootstrap"
+import { useNavigate} from 'react-router-dom';
+import { AvatarForm } from '../../Authentication/Avatar/Avatar';
+import { QuizMain } from '../../Quizzes/QuizMain';
 import { ViewTransactions } from '../../StudentComponents/ViewTransactions';
 
 export function StudentHomePage(){
