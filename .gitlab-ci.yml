@@ -1,19 +1,20 @@
-# The Docker image that will be used to build your app
+# Docker image
 image: node
 
-before_script:
-  - npm install
+
 pages:
+  stage: deploy
+  cache:
+    paths:
+      - node_modules/
   script:
+    - npm install
     - npm run build
     - rm -rf public
+    - cp build/index.html build/404.html
     - mv build public
   artifacts:
     paths:
-      # The folder that contains the files to be exposed at the Page URL
       - public
-  rules:
-    # This ensures that only pushes to the default branch will trigger
-    # a pages deploy
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-
+  only:
+    - main
