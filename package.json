@@ -28,7 +28,6 @@
   "scripts": {
     "start": "if-node-version '>=17' && react-scripts --openssl-legacy-provider start || react-scripts start",
     "build": "react-scripts build",
-    "build-remote": "PUBLIC_URL=http://cisc-capstone-teams.pages.eecis.udel.edu/cisc498-22f/team-21/banking-application/ react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
