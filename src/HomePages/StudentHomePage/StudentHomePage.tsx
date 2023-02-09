@@ -12,7 +12,6 @@ import { ViewTransactions } from '../../StudentComponents/ViewTransactions';
 
 export function StudentHomePage(){
     const user = useContext(AuthContext);
-
     return user.user ? (
         <div className="student-home">
             <h2>Hello {user.user.username}</h2>
@@ -22,7 +21,7 @@ export function StudentHomePage(){
             <br />
             <JoinClassButton />
             <br />
-            <ViewTransactions transactions={["Transaction1", "Transaction2"]}></ViewTransactions>
+            <ViewTransactions transactions={[{date: "02/09/2023", account: "student1", description: "starting balance", type: "debit", sender: "banker_1", amount: 42.06, balance: 42.69, account_uid: "idk what these formats are", sender_uid: "0"}, {date: "02/09/2023", account: "student1", description: "starting balance", type: "debit", sender: "banker_1", amount: 42.06, balance: 42.69, account_uid: "idk what these formats are", sender_uid: "0"}, {date: "02/09/2023", account: "student1", description: "starting balance", type: "debit", sender: "banker_1", amount: 42.06, balance: 42.69, account_uid: "idk what these formats are", sender_uid: "0"}, {date: "02/09/2023", account: "student1", description: "starting balance", type: "debit", sender: "banker_1", amount: 42.06, balance: 42.69, account_uid: "idk what these formats are", sender_uid: "0"}, {date: "02/09/2023", account: "student1", description: "starting balance", type: "debit", sender: "banker_1", amount: 42.06, balance: 42.69, account_uid: "idk what these formats are", sender_uid: "0"}, {date: "02/09/2023", account: "student1", description: "starting balance", type: "debit", sender: "banker_1", amount: 42.06, balance: 42.69, account_uid: "idk what these formats are", sender_uid: "0"}, {date: "02/09/2023", account: "student1", description: "starting balance", type: "debit", sender: "banker_1", amount: 42.06, balance: 42.69, account_uid: "idk what these formats are", sender_uid: "0"}, {date: "02/09/2023", account: "student1", description: "starting balance", type: "debit", sender: "banker_1", amount: 42.06, balance: 42.69, account_uid: "idk what these formats are", sender_uid: "0"}]}></ViewTransactions>
             
         </div>
     ) : (
