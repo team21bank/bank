@@ -1,0 +1,17 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\Authentication",
+    "\\src\\Authentication\\ResetPassword",
+    "\\src\\HomePages",
+    "\\src\\HomePages\\DefaultHomePage",
+    "\\src\\HomePages\\StudentClassPage",
+    "\\src\\HomePages\\TeacherClassPage",
+    "\\src\\HomePages\\TeacherClassPage\\AddStudents",
+    "\\src\\HomePages\\TeacherHomePage",
+    "\\src\\Navbars"
+  ],
+  "SelectedNode": "\\src\\HomePages\\StudentClassPage\\StudentClassPage.tsx",
+  "PreviewInSolutionExplorer": false
+}

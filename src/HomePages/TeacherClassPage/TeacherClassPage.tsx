@@ -6,6 +6,8 @@ import {Bank} from "../../Interfaces/BankObject"
 import { ref, getDatabase, onValue} from '@firebase/database';
 import "./TeacherClassPage.css";
 import { BankUser } from '../../Interfaces/BankUser';
+import { Subgroups } from "./Subgroups";
+import {SubgroupsPage} from "./SubgroupsPage";
 import { Button, Modal } from 'react-bootstrap';
 import { delete_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
 import { auth } from '../../firebase';
@@ -41,6 +43,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
         <div className="teacher-class-page">
             Welcome back to your class: {classCode.slice(6)}
             <AddStudentsModal classID={classCode} />
+            <Subgroups classID={classCode}></Subgroups>
             <StudentList current_bank={currClass} auth_users={studentList}/>
             <DeleteBankModal 
                 delete_bank_function={()=>{
@@ -70,7 +73,6 @@ function getStudentList(bankUserList: BankUser[], setStudentList: (students: Aut
             });
         }
     });
-
 
     //weird stuff to wait until the student list is populated
     function check_finished() {
