@@ -13,7 +13,7 @@ import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { StudentList } from './StudentList/StudentList';
 
-export function SubgroupsPage({classCode}:{classCode:string}){
+export function SubgroupsPage({classCode}:{classCode:string[]}):JSX.Element{
 	return(
 		<div>
 		<h1>HELLO WORLD</h1>

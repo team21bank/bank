@@ -17,7 +17,7 @@ import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
 import { EditProfile } from './Authentication/EditProfilePage/EditProfilePage';
 import { CreateClassPage } from './ClassCode/CreateClassPage';
 import { QuizMain } from './Quizzes/QuizMain';
-import { SubgroupsPage } from './HomePages/TeacherClassPage/SubgroupsPage'
+import { SubgroupsPage } from './HomePages/TeacherClassPage/SubgroupsPage';
 
 function App() {
     return (
