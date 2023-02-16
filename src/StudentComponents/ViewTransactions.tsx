@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Transaction } from '../Interfaces/Transaction';
 
@@ -20,8 +20,8 @@ export function ViewTransactions({transactions}: {transactions: Transaction[]}):
             <td>{transaction.account}</td>
             <td>{transaction.sender}</td>
             <td>{transaction.description}</td>
-            <td>{transaction.amount}</td>
-            <td>{transaction.balance}</td>
+            <td>{transaction.amount.toFixed(2)}</td>
+            <td>{transaction.balance.toFixed(2)}</td>
         </tr>})}
         </tbody>
         </table>
@@ -42,8 +42,8 @@ export function ViewTransactions({transactions}: {transactions: Transaction[]}):
         <td>{transaction.account}</td>
         <td>{transaction.sender}</td>
         <td>{transaction.description}</td>
-        <td>{transaction.amount}</td>
-        <td>{transaction.balance}</td>
+        <td>{transaction.amount.toFixed(2)}</td>
+        <td>{transaction.balance.toFixed(2)}</td>
     </tr>})}
     </tbody>
     </table>
