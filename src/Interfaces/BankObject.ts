@@ -1,4 +1,5 @@
 import { BankUser } from "./BankUser";
+import { Subgroup } from "./Subgroup";
 
 export interface Bank {
     /** The ID of the bank*/
@@ -8,5 +9,7 @@ export interface Bank {
     /** An array of studentID/balance pairs.*/
     studentList: BankUser[];
     /**The title of the class */ 
-    classTitle:string;
+    classTitle: string;
+    /** An array of subgroups and their students */
+    subgroups: Subgroup[];
 }

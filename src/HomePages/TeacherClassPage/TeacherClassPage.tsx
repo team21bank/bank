@@ -20,7 +20,8 @@ export function TeacherClassPage({classCode}:{classCode:string}){
         bankId:'',
         teacherID:'',
         studentList:[],
-        classTitle:'',
+        classTitle: '',
+        subgroups: [],
     });
 
     //Get AuthUser objects for each student in the class
