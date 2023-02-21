@@ -11,6 +11,7 @@ import { delete_bank } from '../../Authentication/EditProfilePage/DeleteAccount'
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { StudentList } from './StudentList/StudentList';
+import { Subgroups } from './Subgroups';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
     const navigate = useNavigate();
@@ -42,6 +43,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
         <div className="teacher-class-page">
             Welcome back to your class: {classCode.slice(6)}
             <AddStudentsModal classID={classCode} />
+            <Subgroups classID={classCode}></Subgroups>
             <StudentList current_bank={currClass} auth_users={studentList}/>
             <DeleteBankModal 
                 delete_bank_function={()=>{

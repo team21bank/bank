@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\ClassCode",
+    "\\src\\HomePages",
+    "\\src\\HomePages\\TeacherClassPage",
+    "\\src\\HomePages\\TeacherClassPage\\AddStudents",
+    "\\src\\HomePages\\TeacherHomePage",
+    "\\src\\Interfaces",
+    "\\src\\Navbars"
+  ],
+  "SelectedNode": "\\src\\HomePages\\TeacherClassPage\\Subgroups.tsx",
+  "PreviewInSolutionExplorer": false
+}
