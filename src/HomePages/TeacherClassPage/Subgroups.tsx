@@ -27,7 +27,6 @@ export function Subgroups({ classID }: { classID: string }): JSX.Element {
     )
     function reloadPage() {
         navigate(`/teachers/${classID.slice(0, 6)}/groups`);
-        setShowResults(true);
     }
 
     return user.user ? (
