@@ -1,19 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
 import "./TeacherClassPage.css";
 import { Modal, Button } from "react-bootstrap";
-import { StudentsInClass } from "./SubgroupsAddStudentsModal";
 import { getDatabase, ref, get } from 'firebase/database';
 import { Form } from 'react-bootstrap';
 import { app } from "../../firebase";
 import { getAuth } from 'firebase/auth';
+import SearchableDropdown from "./SearchableDropdown";
+import { animals } from "./animals";
+import "./styles.css";
 
 
 
 export function SubgroupsPage({ classCode }: { classCode: string }) {
     const [check, setCheck] = React.useState(null);
-    if (check != null) {
+    /*if (check != null) {
         alert(check[0]["userObj"]["email"])
-    }
+    }*/
     //below function does same thing as getStudentsInClass. kept here bc it was cool
     /*React.useEffect(() => {
         async function checkData() {
@@ -30,6 +32,14 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     */
 
     const [showModal, setShowModal] = useState(false);
+    function hidemodals() {
+        setShowModal(false)
+        setShowDropDown(false)
+    }
+    function showmodals() {
+        setShowModal(true)
+        setShowDropDown(true)
+    }
     function getStudentsInClass() {
         const getStudents = async () => {
             const db = await getDatabase(app);
@@ -42,21 +52,32 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         getStudents();
     }
 
+    const [value, setValue] = useState("Select option...");
+    const [showDropDown, setShowDropDown] = React.useState(false)
+    const DropDown = () => (
+        <div className="App"><SearchableDropdown
+            options={animals}
+            label="name"
+            id="id"
+            selectedVal={value}
+            handleChange={(val) => setValue(val)}
+        /></div>
+    )
 
     return (
         <div>
             <Button onClick={getStudentsInClass}>HELP</Button>
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Modal show={showModal} onHide={hidemodals}>
                 <Modal.Header closeButton><h2>Add Group</h2></Modal.Header>
                 <Modal.Body>
                     <br /><br />
-                    <StudentsInClass classID={classCode} setShowModal={setShowModal} />
+                    {showDropDown ? <DropDown/>:null}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => setShowModal(false)}>Cancel</Button>
+                    <Button onClick={hidemodals}>Cancel</Button>
                 </Modal.Footer>
             </Modal>
-            <Button onClick={() => setShowModal(true)}>Add Group</Button>
+            <Button onClick={showmodals}>Add Group</Button>
         </div>
     )
 }
