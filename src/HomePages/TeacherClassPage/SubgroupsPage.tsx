@@ -10,12 +10,22 @@ import { animals } from "./animals";
 import "./styles.css";
 
 
-
 export function SubgroupsPage({ classCode }: { classCode: string }) {
-    const [check, setCheck] = React.useState(null);
-    /*if (check != null) {
-        alert(check[0]["userObj"]["email"])
-    }*/
+    
+    const [check, setCheck] = React.useState<any[]>([]);
+    let dataArr :any[] = []
+    let check3:String[]=[]
+    
+    if (check != null) {
+        for (let i = 0; i < check.length; i++) {
+            dataArr.push(check[i]["userObj"])
+        }
+       
+    }
+    
+    console.log(JSON.stringify(dataArr));
+    
+    
     //below function does same thing as getStudentsInClass. kept here bc it was cool
     /*React.useEffect(() => {
         async function checkData() {
@@ -39,6 +49,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     function showmodals() {
         setShowModal(true)
         setShowDropDown(true)
+        getStudentsInClass()
     }
     function getStudentsInClass() {
         const getStudents = async () => {
@@ -47,7 +58,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             var item = usersSnapshot.child('users').val();
             const JSonValues = Object.values(item);
             const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
-            setCheck(parsedJSonValues);
+            setCheck(parsedJSonValues)
         }
         getStudents();
     }
@@ -56,8 +67,8 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     const [showDropDown, setShowDropDown] = React.useState(false)
     const DropDown = () => (
         <div className="App"><SearchableDropdown
-            options={animals}
-            label="name"
+            options={dataArr}//animals
+            label="email"
             id="id"
             selectedVal={value}
             handleChange={(val) => setValue(val)}

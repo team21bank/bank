@@ -2,12 +2,13 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\ClassCode",
+    "\\src\\Authentication",
+    "\\src\\Authentication\\Login",
+    "\\src\\Authentication\\ResetPassword",
     "\\src\\HomePages",
     "\\src\\HomePages\\TeacherClassPage",
     "\\src\\HomePages\\TeacherClassPage\\AddStudents",
-    "\\src\\HomePages\\TeacherHomePage",
-    "\\src\\Interfaces",
+    "\\src\\HomePages\\TeacherClassPage\\StudentList",
     "\\src\\Navbars"
   ],
   "SelectedNode": "\\src\\HomePages\\TeacherClassPage\\Subgroups.tsx",
