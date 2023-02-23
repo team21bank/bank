@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import "./TeacherClassPage.css";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Col, Row } from "react-bootstrap";
 import { getDatabase, ref, get, update } from 'firebase/database';
 import { Form } from 'react-bootstrap';
 import { app } from "../../firebase";
@@ -81,6 +81,29 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         </div>
     )
 
+    /**component for groups modal**/
+    const [showGroups, setShowGroups] = useState(false);
+    const GroupModal = () => {
+        return (
+            
+            <div>
+                
+                <table align="left">
+                <h3>
+                        Group name:{groupName}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                </h3>
+                                <Row>
+                                    <Col>
+                                        Students : {value}
+                                    </Col>  
+                                </Row>
+                </table>
+                </div>
+            
+            )
+        
+    }
+    /**end of component for groups modal**/
     /**Set the name field for each subgroup
      * */
     const [groupName, setgroupName] = useState<string>("")
@@ -101,7 +124,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
 
 
     /**end of set name field for each subgroup */
-
+    
 
     /*return value from form*/
     const [group, setGroup] = useState<Subgroup>({
@@ -111,11 +134,20 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     const handleSubmit=()=>{
         console.log(`Value is ${value}`)
         setGroup({ ...group, studentList: [value] })
-        
-        update(ref(getDatabase(), "/groups/" + classCode.slice(0,6)+"/bankObj"), { subgroups: { ...group,name:"placeholder" } });
+        setShowDropDown(false)
+        setShowForm(false)
+        setShowModal(false)
+        setShowGroups(true)
+        update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj"), { subgroups: { ...group, name: groupName } });
+        return (
+            <div>
+                <GroupModal/>
+            </div>
+            )
     }
     return (
         <div>
+            
             <Button onClick={getStudentsInClass}>HELP</Button>
             <Modal show={showModal} onHide={hidemodals}>
                 <Modal.Header closeButton><h2>Add Group</h2></Modal.Header>
@@ -131,6 +163,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                 </Modal.Footer>
             </Modal>
             <Button onClick={showmodals}>Add Group</Button>
+            {showGroups ?<GroupModal />:null}
         </div>
     )
 }
