@@ -1,12 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { ref, getDatabase, onValue, set } from '@firebase/database';
 import { Quiz } from "../Interfaces/Quiz";  
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
+import { Bank } from "../Interfaces/BankObject";
 
-export function ImportQuiz({addQuiz}: {addQuiz: (newQuiz: Quiz) => void}): JSX.Element {
+export function ImportQuiz({addQuiz, classCode}: {addQuiz: (newQuiz: Quiz) => void, classCode: string}): JSX.Element {
+    const [currClass, setCurrClass] = useState<Bank>({
+        bankId:'',
+        teacherID:'',
+        studentList:[],
+        classTitle:'',
+        quizzes:[],
+    });
+    
+    useEffect(() => {
+        onValue(ref(getDatabase(),"/groups/"+classCode.slice(0,6)+"/bankObj"),ss=>{
+            if(currClass !== ss.val()) {
+                setCurrClass(ss.val());
+            }
+        })
+    }, []);
+
     const [contents, setContents] = useState<string>("");
     const [view, toggleView] = useState<boolean>(false);
+
+    let groupRef = ref(getDatabase(), '/groups/' + classCode.slice(0,6) + '/bankObj/');
+
     function importFile(event: React.ChangeEvent<HTMLInputElement>) {
         // Might have removed the file, need to check that the files exist
         if (event.target.files && event.target.files.length) {
@@ -94,6 +114,14 @@ export function ImportQuiz({addQuiz}: {addQuiz: (newQuiz: Quiz) => void}): JSX.E
 
         //temporary for testing purposes, replace with storage to firebase
         addQuiz(newQuiz);
+        if (currClass.quizzes.length === 1){
+            currClass.quizzes[0] = newQuiz
+        }
+        else{
+            currClass.quizzes.push(newQuiz);
+        }
+        set(groupRef,currClass)
+
 
         setContents("");
     }

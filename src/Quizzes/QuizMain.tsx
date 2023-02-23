@@ -9,7 +9,7 @@ import { QuizList } from "./QuizList";
 const allQuizzes = quizzes.map((myquiz): Quiz => ({ ...myquiz}));
 
 //make an import JSON feature
-export function QuizMain(): JSX.Element{
+export function QuizMain({classCode}:{classCode:string}): JSX.Element{
     const [quizzes, setQuizzes] = useState<Quiz[]>(allQuizzes);
 
     //temporary function for testing purposes, with uploading quizzes from csv
@@ -22,7 +22,7 @@ export function QuizMain(): JSX.Element{
         <QuizList
             quizzes={quizzes}
         ></QuizList>
-        <ImportQuiz addQuiz={addQuiz}></ImportQuiz>
+        <ImportQuiz addQuiz={addQuiz} classCode = {classCode}></ImportQuiz>
     </h3>
     
     );

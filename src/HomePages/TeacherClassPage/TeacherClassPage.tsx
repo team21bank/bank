@@ -21,6 +21,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
         teacherID:'',
         studentList:[],
         classTitle:'',
+        quizzes:[],
     });
 
     //Get AuthUser objects for each student in the class
@@ -50,6 +51,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
                 }}
                 bank_name={classCode.slice(6)}
             />
+            <Button onClick={()=>navigate("/teachers/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
         </div>
     ): (
         <LoadingPage/>

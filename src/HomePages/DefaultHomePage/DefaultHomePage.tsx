@@ -15,6 +15,6 @@ export function DefaultHomePage(): JSX.Element {
     </header>
     <Link to="/login"><Button className="start-button">Login</Button></Link>
     <Link to="/register"><Button className="start-button">Register</Button></Link>
-    {vis && <QuizMain></QuizMain>}
+    {/* {vis && <QuizMain></QuizMain>} */}
   </div>)
 }
