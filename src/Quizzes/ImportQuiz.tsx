@@ -114,7 +114,7 @@ export function ImportQuiz({addQuiz, classCode}: {addQuiz: (newQuiz: Quiz) => vo
 
         //temporary for testing purposes, replace with storage to firebase
         addQuiz(newQuiz);
-        if (currClass.quizzes.length === 1){
+        if (currClass.quizzes[0].title ===''){
             currClass.quizzes[0] = newQuiz
         }
         else{
