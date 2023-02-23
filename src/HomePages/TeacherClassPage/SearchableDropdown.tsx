@@ -22,7 +22,8 @@ const SearchableDropdown = ({
 
   const selectOption = (option) => {
     setQuery(() => "");
-    handleChange(option[label]);
+      handleChange(option[label]);
+      console.log(`You selected ${option[label]}`)
     setIsOpen((isOpen) => !isOpen);
   };
 
