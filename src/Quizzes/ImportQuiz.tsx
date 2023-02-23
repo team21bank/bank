@@ -20,7 +20,7 @@ export function ImportQuiz({addQuiz, classCode}: {addQuiz: (newQuiz: Quiz) => vo
                 setCurrClass(ss.val());
             }
         })
-    }, []);
+    }, [classCode, currClass]);
 
     const [contents, setContents] = useState<string>("");
     const [view, toggleView] = useState<boolean>(false);
