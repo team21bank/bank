@@ -3,14 +3,14 @@
     "",
     "\\src",
     "\\src\\Authentication",
-    "\\src\\Authentication\\Login",
     "\\src\\Authentication\\ResetPassword",
     "\\src\\HomePages",
     "\\src\\HomePages\\TeacherClassPage",
     "\\src\\HomePages\\TeacherClassPage\\AddStudents",
     "\\src\\HomePages\\TeacherClassPage\\StudentList",
+    "\\src\\Interfaces",
     "\\src\\Navbars"
   ],
-  "SelectedNode": "\\src\\HomePages\\TeacherClassPage\\AddStudents\\ManualAddStudents.tsx",
+  "SelectedNode": "\\src\\Authentication\\ResetPassword\\ResetMessage.tsx",
   "PreviewInSolutionExplorer": false
 }

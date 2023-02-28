@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import "./TeacherClassPage.css";
 import { Modal, Button, Col, Row } from "react-bootstrap";
-import { getDatabase, ref, get, update } from 'firebase/database';
+import { getDatabase, ref, get, update, set, push } from 'firebase/database';
 import { Form } from 'react-bootstrap';
 import { app } from "../../firebase";
 import { getAuth } from 'firebase/auth';
@@ -14,9 +14,10 @@ import { Subgroups } from './Subgroups';
 
 export function SubgroupsPage({ classCode }: { classCode: string }) {
     
-    const [check, setCheck] = React.useState<any[]>([]);
+    const [check, setCheck] = React.useState<any[]>([]);//for storing list of users from database
+    const [villages, setVillages] = React.useState <any[]>([]);//for storing list of subgroups from database, AKA villages
     let dataArr :any[] = []
-    let check3:String[]=[]
+    let villageArr:any[] = []
     
     if (check != null) {
         for (let i = 0; i < check.length; i++) {
@@ -24,8 +25,11 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         }
        
     }
-    
-    
+    if (villages != null) {
+        for (let i = 0; i < villages.length; i++) {
+            villageArr.push(villages[i])
+        }
+    }
     //below function does same thing as getStudentsInClass. kept here bc it was cool
     /*React.useEffect(() => {
         async function checkData() {
@@ -37,10 +41,8 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             setCheck(data);
         }
         checkData();
-
     }, []);
     */
-
     const [showModal, setShowModal] = useState(false);
     function hidemodals() {
         setShowModal(false)
@@ -84,19 +86,40 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     /**component for groups modal**/
     const [showGroups, setShowGroups] = useState(false);
     const GroupModal = () => {
+        const object = async () => {
+            const db = await getDatabase(app);
+            const usersSnapshot = await get(ref(db, '/'))
+            var item = usersSnapshot.child('groups/' + classCode.slice(0,6) + '/bankObj/subgroups').val();
+            const JSonValues = Object.values(item);
+            const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
+            setVillages(parsedJSonValues)
+        }
+        object();
+        villageArr.forEach((el) => {
+            console.log(el)
+        })
+        console.log("Printing out the villages lmao" + villageArr)
         return (
             
             <div>
                 
                 <table align="left">
-                <h3>
-                        Group name:{groupName}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                </h3>
-                                <Row>
+                
+                    <th>Village name</th>  
+                    <th>Students</th>
+
+                    {villageArr.map((village, index) => (
+                        <tr data-index={index}>
+                            <td>{village.name}</td>
+                            <td>{village.studentList }</td>
+                        </tr>
+                    ))}  
+                    {/** } <Row>
                                     <Col>
-                                        Students : {value}
+                                        Students :{value}
                                     </Col>  
-                                </Row>
+                    </Row>
+                    */}
                 </table>
                 </div>
             
@@ -120,12 +143,8 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             </div>
     )
     }
-    
-
 
     /**end of set name field for each subgroup */
-    
-
     /*return value from form*/
     const [group, setGroup] = useState<Subgroup>({
         name: "placeholder",
@@ -138,7 +157,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         setShowForm(false)
         setShowModal(false)
         setShowGroups(true)
-        update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj"), { subgroups: { ...group, name: groupName } });
+        push(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/subgroups"), { ...group, name: groupName  });
         return (
             <div>
                 <GroupModal/>
@@ -163,7 +182,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                 </Modal.Footer>
             </Modal>
             <Button onClick={showmodals}>Add Group</Button>
-            {showGroups ?<GroupModal />:null}
+            <GroupModal />
         </div>
     )
 }
