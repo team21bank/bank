@@ -46,10 +46,13 @@ function AppBody(): JSX.Element {
         <Route path="/teachers" element={<TeacherNavbar />}>
           <Route path="home" element={<TeacherHomePage />}/>
           <Route path="classes" element={<TeacherHomePage/>}/>
-          <Route path="quizzes" element={<QuizMain/>} />
+          
           <Route path="createclass" element={<CreateClassPage/>}/>
           {classes.map(str => {
             return <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}></Route>
+          })}
+          {classes.map(str => {
+            return <Route path={str.slice(0,6)+"/quizzes"} element={<QuizMain classCode = {str}/>} />
           })}
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
@@ -57,7 +60,7 @@ function AppBody(): JSX.Element {
           {classes.map(str => {
             return <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>
           })}
-          <Route path="quizzes" element={<QuizMain/>} />
+          {/* <Route path="quizzes" element={<QuizMain/>} /> */}
         </Route>
       </Routes>
     </BrowserRouter>
