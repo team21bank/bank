@@ -8,7 +8,7 @@ import {Button} from "react-bootstrap"
 import { useNavigate} from 'react-router-dom';
 import { AvatarForm } from '../../Authentication/Avatar/Avatar';
 import { QuizMain } from '../../Quizzes/QuizMain';
-import { ViewTransactions } from '../../StudentComponents/ViewTransactions';
+import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
 
 export function StudentHomePage(){
     const user = useContext(AuthContext);
