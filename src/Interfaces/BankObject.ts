@@ -1,4 +1,5 @@
 import { BankUser } from "./BankUser";
+import { Quiz } from "./Quiz";
 
 export interface Bank {
     /** The ID of the bank*/
@@ -9,4 +10,6 @@ export interface Bank {
     studentList: BankUser[];
     /**The title of the class */ 
     classTitle:string;
+    /**List of quizzes for a class */
+    quizzes: Quiz[];
 }

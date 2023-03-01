@@ -14,3 +14,4 @@ export interface Quiz{
     questions: QuizQuestion[]; //the actual questions in the quiz
 }
 
+export const QUIZ_PLACEHOLDER: Quiz = {id: 0, title: '', description: '', questionTotal: 0, money: 0, questions: [] };
