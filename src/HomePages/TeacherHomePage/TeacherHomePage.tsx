@@ -5,8 +5,7 @@ import { ClassList } from "../../ClassCode/ClassList";
 import { QuizPage } from '../../Quizzes/QuizPage';
 
 export function TeacherHomePage(){
-    const user = useContext(AuthContext);
-    const current_user = user.user ? user.user : DEFAULT_AUTH_USER;
+    const current_user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
 
     
     return (
