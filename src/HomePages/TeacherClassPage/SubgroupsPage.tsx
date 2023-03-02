@@ -5,9 +5,7 @@ import { getDatabase, ref, get, update, set, push } from 'firebase/database';
 import { Form } from 'react-bootstrap';
 import { app } from "../../firebase";
 import { getAuth } from 'firebase/auth';
-import SearchableDropdown from "./SearchableDropdown";
 import { Subgroup } from "../../Interfaces/Subgroup";
-import { animals } from "./animals";
 import "./styles.css";
 import { Subgroups } from './Subgroups';
 import { Multiselect } from "multiselect-react-dropdown";
@@ -147,8 +145,6 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     }
     return (
         <div>
-            
-            <Button onClick={getStudentsInClass}>HELP</Button>
             <Modal show={showModal} onHide={hidemodals}>
                 <Modal.Header closeButton><h2>Add Group</h2></Modal.Header>
                 <Modal.Body>
