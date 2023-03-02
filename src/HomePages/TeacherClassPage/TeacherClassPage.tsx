@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext, AuthUser, BankContext, DEFAULT_AUTH_USER } from "../../Authentication/auth";
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { AddStudentsModal } from "./AddStudents/AddStudentsModal";
-import {Bank, DEFAULT_BANK} from "../../Interfaces/BankObject"
+import {Bank} from "../../Interfaces/BankObject"
 import { ref, getDatabase, onValue} from '@firebase/database';
 import "./TeacherClassPage.css";
 import { BankUser } from '../../Interfaces/BankUser';
@@ -18,15 +18,16 @@ export function TeacherClassPage({classCode}:{classCode:string}){
     //Get AuthUser objects for each student in the class
     const [studentList, setStudentList] = useState<AuthUser[]>([]);
 
-    const current_user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
+    const user = useContext(AuthContext);  
+    const current_user = user.user ? user.user : DEFAULT_AUTH_USER;
 
-    
-    const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
+    const bank_context = useContext(BankContext);
+    const current_bank: Bank = bank_context.bank ? bank_context.bank : {bankId: "", teacherID: "", studentList: [], classTitle: "", quizzes: []};
     useEffect(() => { //Update the bank context if this page is navigated to
         onValue(ref(getDatabase(), "/groups/"+classCode.slice(0,6)+"/bankObj"), bank_snapshot => {
             if(bank_snapshot.exists() == false) {return;}
             getStudentList(bank_snapshot.val().studentList, setStudentList);
-            useContext(BankContext).setBank(bank_snapshot.val());
+            bank_context.setBank(bank_snapshot.val());
         });
     }, [classCode]);
     
