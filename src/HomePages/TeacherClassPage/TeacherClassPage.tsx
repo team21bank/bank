@@ -13,6 +13,7 @@ import { delete_bank } from '../../Authentication/EditProfilePage/DeleteAccount'
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { StudentList } from './StudentList/StudentList';
+import { Subgroups } from './Subgroups';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
     const navigate = useNavigate();
@@ -22,7 +23,8 @@ export function TeacherClassPage({classCode}:{classCode:string}){
         bankId:'',
         teacherID:'',
         studentList:[],
-        classTitle:'',
+        classTitle: '',
+        subgroups: [],
     });
 
     //Get AuthUser objects for each student in the class

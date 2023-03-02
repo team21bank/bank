@@ -5,6 +5,7 @@ import { AuthContext } from "../../Authentication/auth";
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { auth } from '../../firebase';
 import { BankUser } from '../../Interfaces/BankUser';
+import { ViewTransactions } from '../../StudentComponents/ViewTransactions';
 import "./StudentClassPage.css";
 
 export function StudentClassPage({classCode}:{classCode:string}){

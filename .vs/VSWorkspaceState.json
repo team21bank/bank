@@ -10,8 +10,11 @@
     "\\src\\HomePages\\TeacherClassPage",
     "\\src\\HomePages\\TeacherClassPage\\AddStudents",
     "\\src\\HomePages\\TeacherHomePage",
+    "\\src\\HomePages\\TeacherClassPage\\StudentList",
+    "\\src\\Interfaces",
     "\\src\\Navbars"
   ],
   "SelectedNode": "\\src\\HomePages\\StudentClassPage\\StudentClassPage.tsx",
+  "SelectedNode": "\\src\\Authentication\\ResetPassword\\ResetMessage.tsx",
   "PreviewInSolutionExplorer": false
 }
