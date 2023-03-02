@@ -13,3 +13,7 @@ export interface Bank {
     /**List of quizzes for a class */
     quizzes: Quiz[];
 }
+
+export const DEFAULT_BANK: Bank = {
+    bankId: "", teacherID: "", studentList: [], classTitle: "", quizzes: []
+}

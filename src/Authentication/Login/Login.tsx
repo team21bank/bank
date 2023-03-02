@@ -28,8 +28,6 @@ export function LoginForm(){
     //Function allowing user to login after clicking the login button
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
-            setEmail('')
-            setPass('')
             window.sessionStorage.setItem(STORAGE_KEY, currUser.user.uid); //Add current user to browser storage
             let userRef=ref(getDatabase(),'/users/'+currUser.user.uid);
             get(userRef).then(ss=>{

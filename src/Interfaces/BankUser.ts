@@ -7,4 +7,4 @@ export interface BankUser {
     balance: number
 }
 
-export const BANKUSER_PLACEHOLDER: BankUser = {uid: "", isBanker: false, balance: 0};
+export const DEFAULT_BANK_USER: BankUser = {uid: "", isBanker: false, balance: 0};
