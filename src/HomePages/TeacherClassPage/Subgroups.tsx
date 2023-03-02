@@ -1,11 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import {Button, Form} from 'react-bootstrap';
-import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
-import { FirebaseError } from '@firebase/util';
-import { getDatabase, ref } from "firebase/database";
-import { get } from "firebase/database";
-import {app} from "../../firebase";
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { SubgroupsPage } from './SubgroupsPage';
 import { AuthContext } from "../../Authentication/auth";
@@ -23,7 +17,6 @@ export function Subgroups({ classID }: { classID: string }): JSX.Element {
     //let subgroupsRef = ref(getDatabase(), '/groups/' + classID.slice(0, 6) + '/groups/');
 
 
-    const user = useContext(AuthContext);
 
     const user = useContext(AuthContext);
     const [showResults, setShowResults] = React.useState(false)

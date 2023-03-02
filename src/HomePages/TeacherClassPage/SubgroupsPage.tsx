@@ -10,10 +10,14 @@ import { Subgroup } from "../../Interfaces/Subgroup";
 import { animals } from "./animals";
 import "./styles.css";
 import { Subgroups } from './Subgroups';
+import { Multiselect } from "multiselect-react-dropdown";
 
 
 export function SubgroupsPage({ classCode }: { classCode: string }) {
     
+    useEffect(() => {
+  GroupModal();
+}, []);
     const [check, setCheck] = React.useState<any[]>([]);//for storing list of users from database
     const [villages, setVillages] = React.useState <any[]>([]);//for storing list of subgroups from database, AKA villages
     let dataArr :any[] = []
@@ -47,12 +51,10 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     function hidemodals() {
         setShowModal(false)
         setShowDropDown(false)
-        setShowForm(false)
     }
     function showmodals() {
         setShowModal(true)
         setShowDropDown(true)
-        setShowForm(true)
         getStudentsInClass()
     }
 
@@ -68,23 +70,44 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         getStudents();
     }
 
-    const [value, setValue] = useState("Select option...");
+
     const [showDropDown, setShowDropDown] = React.useState(false)
-    const [showForm, setShowForm] = React.useState(false)
+    const [emails, setEmails] = useState<string[]>([]);
+    const [groupName, setgroupName] = useState<string>("")
+    const handleSelect = (selectedList) => {
+        setEmails(selectedList);
+    };
+
+    const handleRemove = (selectedList) => {
+        setEmails(selectedList);
+    };
+    
+    const updateFormData = event =>
+            setgroupName(event.target.value);
     const DropDown = () => (
-  
-        <div className="App"><SearchableDropdown
-            options={dataArr}//animals
-            label="email"
-            id="id"
-            selectedVal={value}
-            handleChange={(val) => setValue(val)}
-        />
-        </div>
-    )
+
+    <div className="App">
+        <form onSubmit={handleSubmit}>
+            <Multiselect
+                options={dataArr} // Options to display in the dropdown
+                selectedValues={emails} // Preselected value to persist in dropdown
+                onSelect={handleSelect} // Function will trigger on select event
+                onRemove={handleRemove} // Function will trigger on remove event
+                displayValue="email" // Property name to display in the dropdown options
+            />
+            <div id="results">
+                Enter group name
+                <input autoFocus value={groupName}type="text" onChange={e => updateFormData(e)}>
+            </input>
+            </div>
+    
+            <button type="submit">Create Village</button>
+        </form>
+    </div>)
+
+
 
     /**component for groups modal**/
-    const [showGroups, setShowGroups] = useState(false);
     const GroupModal = () => {
         const object = async () => {
             const db = await getDatabase(app);
@@ -95,46 +118,32 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             setVillages(parsedJSonValues)
         }
         object();
-        villageArr.forEach((el) => {
-            console.log(el)
-        })
-        console.log("Printing out the villages lmao" + villageArr)
-        
+         if (villages != null) {
+        for (let i = 0; i < villages.length; i++) {
+            if(villages[i]["name"]!=="placeholder")  {
+                villageArr.push(villages[i])
+                console.log(villages[i]["name"])}
+        }
+    }
         
     }
     /**end of component for groups modal**/
-    /**Set the name field for each subgroup
-     * */
-    const [groupName, setgroupName] = useState<string>("")
-    const Form = () => {
-        
-        const updateFormData = event =>
-            setgroupName(event.target.value);
-
-        return (
-            <div id="results">
-                Enter group name
-                <input autoFocus value={groupName}type="text" onChange={e => updateFormData(e)}>
-            </input>
-            </div>
-    )
-    }
-
-    /**end of set name field for each subgroup */
-    /*return value from form*/
-    const [group, setGroup] = useState<Subgroup>({
-        name: "placeholder",
-        studentList: [value]
-    })
+    
+    let namesarr :string[] = []
+ 
     const handleSubmit=()=>{
-        console.log(`Value is ${value}`)
-        setGroup({ ...group, studentList: [value] })
-        setShowDropDown(false)
-        setShowForm(false)
-        setShowModal(false)
-        setShowGroups(true)
-        push(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/subgroups"), { ...group, name: groupName  });
-        GroupModal()
+            const JValues = Object.values(emails);
+            const parsedJValues = JSON.parse(JSON.stringify(JValues))
+           for(let i = 0; i<parsedJValues.length;i++)
+            {
+            namesarr.push(parsedJValues[i]["email"])
+            }
+            setShowDropDown(false)
+            setShowModal(false)
+            push(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/subgroups"), {name: groupName, studentList: namesarr  });
+            GroupModal()
+
+           
     }
     return (
         <div>
@@ -146,14 +155,13 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                     <br /><br />
                     { }
                     {showDropDown ? <DropDown /> : null}
-                    {showForm ? <Form/> : null }
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={handleSubmit}>Create groups</Button>
                     <Button onClick={hidemodals}>Cancel</Button>
                 </Modal.Footer>
             </Modal>
             <Button onClick={showmodals}>Add Group</Button>
+            <br></br>
             <table align="left">
 
                 <th>Village name</th>
@@ -162,7 +170,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                 {villageArr.map((village, index) => (
                     <tr data-index={index}>
                         <td>{village.name}</td>
-                        <td>{village.studentList}</td>
+                        <td>{village.studentList.map((student, id)=>(<tr data-index={id}>{student}</tr>))}</td>
                     </tr>
                 ))}
             </table>

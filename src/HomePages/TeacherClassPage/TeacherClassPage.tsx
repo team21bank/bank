@@ -6,8 +6,6 @@ import {Bank} from "../../Interfaces/BankObject"
 import { ref, getDatabase, onValue} from '@firebase/database';
 import "./TeacherClassPage.css";
 import { BankUser } from '../../Interfaces/BankUser';
-import { Subgroups } from "./Subgroups";
-import {SubgroupsPage} from "./SubgroupsPage";
 import { Button, Modal } from 'react-bootstrap';
 import { delete_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
 import { auth } from '../../firebase';
@@ -75,6 +73,7 @@ function getStudentList(bankUserList: BankUser[], setStudentList: (students: Aut
             });
         }
     });
+
 
     //weird stuff to wait until the student list is populated
     function check_finished() {
