@@ -17,6 +17,7 @@ import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
 import { EditProfile } from './Authentication/EditProfilePage/EditProfilePage';
 import { CreateClassPage } from './ClassCode/CreateClassPage';
 import { QuizMain } from './Quizzes/QuizMain';
+import { StudentQuizMain } from './Quizzes/StudentQuiz';
 
 function App() {
     return (
@@ -60,7 +61,9 @@ function AppBody(): JSX.Element {
           {classes.map(str => {
             return <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>
           })}
-          {/* <Route path="quizzes" element={<QuizMain/>} /> */}
+          {classes.map(str => {
+            return <Route path={str.slice(0,6)+"/quizzes"} element={<StudentQuizMain classCode = {str}/>} />
+          })}
         </Route>
       </Routes>
     </BrowserRouter>
