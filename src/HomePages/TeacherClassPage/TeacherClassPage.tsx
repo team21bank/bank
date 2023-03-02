@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext, AuthUser, BankContext } from "../../Authentication/auth";
+import { AuthContext, AuthUser, BankContext, DEFAULT_AUTH_USER } from "../../Authentication/auth";
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { AddStudentsModal } from "./AddStudents/AddStudentsModal";
 import {Bank} from "../../Interfaces/BankObject"
@@ -19,6 +19,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
     const [studentList, setStudentList] = useState<AuthUser[]>([]);
 
     const user = useContext(AuthContext);  
+    const current_user = user.user ? user.user : DEFAULT_AUTH_USER;
 
     const bank_context = useContext(BankContext);
     const current_bank: Bank = bank_context.bank ? bank_context.bank : {bankId: "", teacherID: "", studentList: [], classTitle: "", quizzes: []};
@@ -38,7 +39,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
             <StudentList current_bank={current_bank} auth_users={studentList}/>
             <DeleteBankModal 
                 delete_bank_function={()=>{
-                    delete_bank(current_bank.bankId, auth.currentUser ? auth.currentUser.uid : "");
+                    delete_bank(current_bank.bankId, current_user.id);
                     navigate("/teachers/home");
                     alert("class successfully deleted");
                 }}
