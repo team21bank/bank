@@ -36,7 +36,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
                 setCurrClass(ss.val());
             }
         })
-    }, []);
+    }, [classCode, currClass]);
 
     return user.user ? (
         <div className="teacher-class-page">
