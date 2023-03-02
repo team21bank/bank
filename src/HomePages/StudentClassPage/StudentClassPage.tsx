@@ -2,7 +2,7 @@ import { getDatabase, onValue, ref } from 'firebase/database';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from "../../Authentication/auth";
+import { AuthContext, DEFAULT_AUTH_USER } from "../../Authentication/auth";
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { auth } from '../../firebase';
 import { BankUser } from '../../Interfaces/BankUser';
@@ -11,6 +11,7 @@ import "./StudentClassPage.css";
 
 export function StudentClassPage({classCode}:{classCode:string}){
     const user = useContext(AuthContext);
+    const current_user = user.user ? user.user : DEFAULT_AUTH_USER;
     const navigate = useNavigate()
 
     //Real transactions will eventually be saved in the database under a BankUser object
@@ -22,15 +23,13 @@ export function StudentClassPage({classCode}:{classCode:string}){
         getBankUser(classCode, setBankUser);
     }, [classCode, user.user]);
 
-    return user.user ? (
+    return (
         <div className="student-class-page">
             Welcome to {classCode.slice(6)}
             <div>your total balance is {bankUser?.balance}</div>
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
             <ViewTransactions transactions={placeholder_transaction}></ViewTransactions>
         </div>
-    ) : (
-        <LoadingPage/>
     )
 }
 

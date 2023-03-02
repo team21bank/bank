@@ -7,7 +7,7 @@ import { ClassList } from '../../ClassCode/ClassList';
 import {Button} from "react-bootstrap"
 import { useNavigate} from 'react-router-dom';
 import { AvatarForm } from '../../Authentication/Avatar/Avatar';
-import { QuizMain } from '../../Quizzes/QuizMain';
+import { QuizPage } from '../../Quizzes/QuizPage';
 import { ViewTransactions } from '../../StudentComponents/ViewTransactions';
 
 export function StudentHomePage(){
