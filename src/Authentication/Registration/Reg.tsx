@@ -7,10 +7,14 @@ import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { AuthUser } from "../../Authentication/auth";
 import { Link } from 'react-router-dom';
+import { create_auth_user } from '../../DatabaseFunctions/UserFunctions';
+import { useNavigate } from 'react-router-dom';
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 
 export function RegistrationForm(){
+    const navigate = useNavigate();
+
     //All information needed from user to register
     const [email, setEmail] = useState<string>('');
     const [username, setUser] = useState<string>('');
@@ -40,15 +44,15 @@ export function RegistrationForm(){
                 isTeacher: true,
                 hash: somedata.user.uid
             }
-            setEmail(''); setP1(''); setP2(''); setId(''); setUser('');
-            update(userRef,{userObj:newUser});
+            create_auth_user(somedata.user.uid, newUser);
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log(errorCode);
             alert(errorMessage);
-        });
-        console.log("Created user: ",email,username,id)
+        }).finally(() => {
+            navigate("/");
+        })
     };
 
     //HTML for registration textboxes and button

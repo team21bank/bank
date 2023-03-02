@@ -47,7 +47,6 @@ function AppBody(): JSX.Element {
         <Route path="/teachers" element={<TeacherNavbar />}>
           <Route path="home" element={<TeacherHomePage />}/>
           <Route path="classes" element={<TeacherHomePage/>}/>
-          
           <Route path="createclass" element={<CreateClassPage/>}/>
           {classes.map(str => {
             return <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}></Route>
