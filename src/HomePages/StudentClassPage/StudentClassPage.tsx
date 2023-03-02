@@ -22,11 +22,12 @@ export function StudentClassPage({classCode}:{classCode:string}){
     //Get AuthUser objects for each student in the class
     const [studentAuthUserList, setStudentAuthUserList] = useState<AuthUser[]>([]);
 
+    const bank_context = useContext(BankContext);
     useEffect(() => { //Update the bank context if this page is navigated to
         onValue(ref(getDatabase(), "/groups/"+classCode.slice(0,6)+"/bankObj"), bank_snapshot => {
             if(bank_snapshot.exists() == false) {return;}
             getStudentList(bank_snapshot.val().studentList, setStudentAuthUserList);
-            useContext(BankContext).setBank(bank_snapshot.val());
+            bank_context.setBank(bank_snapshot.val());
         });
     }, [classCode]);
 

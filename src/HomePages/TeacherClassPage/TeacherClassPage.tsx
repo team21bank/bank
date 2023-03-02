@@ -19,14 +19,14 @@ export function TeacherClassPage({classCode}:{classCode:string}){
     const [studentList, setStudentList] = useState<AuthUser[]>([]);
 
     const current_user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
-
-    
     const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
+
+    const bank_context = useContext(BankContext);
     useEffect(() => { //Update the bank context if this page is navigated to
         onValue(ref(getDatabase(), "/groups/"+classCode.slice(0,6)+"/bankObj"), bank_snapshot => {
             if(bank_snapshot.exists() == false) {return;}
             getStudentList(bank_snapshot.val().studentList, setStudentList);
-            useContext(BankContext).setBank(bank_snapshot.val());
+            bank_context.setBank(bank_snapshot.val());
         });
     }, [classCode]);
     
