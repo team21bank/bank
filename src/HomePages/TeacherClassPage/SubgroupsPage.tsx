@@ -99,31 +99,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             console.log(el)
         })
         console.log("Printing out the villages lmao" + villageArr)
-        return (
-            
-            <div>
-                
-                <table align="left">
-                
-                    <th>Village name</th>  
-                    <th>Students</th>
-
-                    {villageArr.map((village, index) => (
-                        <tr data-index={index}>
-                            <td>{village.name}</td>
-                            <td>{village.studentList }</td>
-                        </tr>
-                    ))}  
-                    {/** } <Row>
-                                    <Col>
-                                        Students :{value}
-                                    </Col>  
-                    </Row>
-                    */}
-                </table>
-                </div>
-            
-            )
+        
         
     }
     /**end of component for groups modal**/
@@ -158,11 +134,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         setShowModal(false)
         setShowGroups(true)
         push(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/subgroups"), { ...group, name: groupName  });
-        return (
-            <div>
-                <GroupModal/>
-            </div>
-            )
+        GroupModal()
     }
     return (
         <div>
@@ -182,7 +154,18 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                 </Modal.Footer>
             </Modal>
             <Button onClick={showmodals}>Add Group</Button>
-            <GroupModal />
+            <table align="left">
+
+                <th>Village name</th>
+                <th>Students</th>
+
+                {villageArr.map((village, index) => (
+                    <tr data-index={index}>
+                        <td>{village.name}</td>
+                        <td>{village.studentList}</td>
+                    </tr>
+                ))}
+            </table>
         </div>
     )
 }
