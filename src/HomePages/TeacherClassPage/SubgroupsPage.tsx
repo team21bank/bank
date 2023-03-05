@@ -29,10 +29,15 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     }
     if (villages != null) {
         for (let i = 0; i < villages.length; i++) {
-            villageArr.push(villages[i])
+            if (villages[i]["name"] !== "placeholder") {
+                villageArr.push(villages[i])
+            }
+
         }
     }
     //below function does same thing as getStudentsInClass. kept here bc it was cool
+    /*React.useEffect(() => {
+    /*React.useEffect(() => {
     /*React.useEffect(() => {
         async function checkData() {
             const db = await getDatabase(app);
