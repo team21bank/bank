@@ -12,44 +12,29 @@ import { Multiselect } from "multiselect-react-dropdown";
 
 
 export function SubgroupsPage({ classCode }: { classCode: string }) {
-    
+
     useEffect(() => {
-  GroupModal();
-}, []);
+        GroupModal();
+    }, []);
     const [check, setCheck] = React.useState<any[]>([]);//for storing list of users from database
-    const [villages, setVillages] = React.useState <any[]>([]);//for storing list of subgroups from database, AKA villages
-    let dataArr :any[] = []
-    let villageArr:any[] = []
-    
+    const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
+    let dataArr: any[] = []
+    let villageArr: any[] = []
+    let takenGroupNames: any[] = []
+
     if (check != null) {
         for (let i = 0; i < check.length; i++) {
             dataArr.push(check[i]["userObj"])
         }
-       
+
     }
     if (villages != null) {
         for (let i = 0; i < villages.length; i++) {
             if (villages[i]["name"] !== "placeholder") {
                 villageArr.push(villages[i])
             }
-
         }
     }
-    //below function does same thing as getStudentsInClass. kept here bc it was cool
-    /*React.useEffect(() => {
-    /*React.useEffect(() => {
-    /*React.useEffect(() => {
-        async function checkData() {
-            const db = await getDatabase(app);
-            const usersSnapshot = await get(ref(db, '/'))
-            var item = usersSnapshot.child('users').val();
-            const JSonValues = Object.values(item);
-            const data = JSON.parse(JSON.stringify(JSonValues))
-            setCheck(data);
-        }
-        checkData();
-    }, []);
-    */
     const [showModal, setShowModal] = useState(false);
     function hidemodals() {
         setShowModal(false)
@@ -84,29 +69,66 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     const handleRemove = (selectedList) => {
         setEmails(selectedList);
     };
-    
-    const updateFormData = event =>
-            setgroupName(event.target.value);
+
+    const [valid, setvalid] = useState("form-control");
+    const [errmsg, setErrmsg] = useState("");
+    const [err, setErr] = useState("");
+    const errors = (errClass, errmsg) => {
+        setErrmsg(errmsg);
+    };
+    const errors2 = (errClass2, err) => {
+        setErr(err);
+    };
+    const updateFormData = event => {
+        setgroupName(event.target.value);
+    };
+    const submitFormData = event => {
+        event.preventDefault();
+        const errClass = "form-control error";
+        const errClass2 = "form-control error"
+        const sucClass = "form-control success";
+        if (emails.length === 0||groupName==="") {
+        if(emails.length === 0)
+            errors2(errClass2, "Students can't be empty")
+        else if(groupName==="")
+            errors(errClass, "Village name can't be nothing");
+        }
+        /*else if ((takenGroupNames.includes(groupName, 0))) {
+            errors(errClass, "Village name is already taken!");
+            console.log("Village name is already taken!");
+        }*/
+        else {
+            console.log("Okay");
+            takenGroupNames.push(groupName)
+            handleSubmit()
+        }
+    }
     const DropDown = () => (
 
-    <div className="App">
-        <form onSubmit={handleSubmit}>
+        <div className="App">
+            <form onSubmit={submitFormData}>
+            Select Students
             <Multiselect
                 options={dataArr} // Options to display in the dropdown
                 selectedValues={emails} // Preselected value to persist in dropdown
                 onSelect={handleSelect} // Function will trigger on select event
                 onRemove={handleRemove} // Function will trigger on remove event
                 displayValue="email" // Property name to display in the dropdown options
-            />
-            <div id="results">
+                />
+                <div><small id="set"> {err}</small></div>
+           
                 Enter group name
-                <input autoFocus value={groupName}type="text" onChange={e => updateFormData(e)}>
-            </input>
-            </div>
-    
-            <button type="submit">Create Village</button>
-        </form>
-    </div>)
+                <br></br>
+                <input autoFocus value={groupName} type="text" onChange={e => updateFormData(e)} >
+                </input>
+                <div>
+                    <small id="set"> {errmsg}</small>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+
+
+        </div>)
 
 
 
@@ -115,38 +137,38 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         const object = async () => {
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
-            var item = usersSnapshot.child('groups/' + classCode.slice(0,6) + '/bankObj/subgroups').val();
+            var item = usersSnapshot.child('groups/' + classCode.slice(0, 6) + '/bankObj/subgroups').val();
             const JSonValues = Object.values(item);
             const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
             setVillages(parsedJSonValues)
         }
         object();
-         if (villages != null) {
-        for (let i = 0; i < villages.length; i++) {
-            if(villages[i]["name"]!=="placeholder")  {
-                villageArr.push(villages[i])
-                console.log(villages[i]["name"])}
+        if (villages != null) {
+            for (let i = 0; i < villages.length; i++) {
+                if (villages[i]["name"] !== "placeholder") {
+                    villageArr.push(villages[i])
+                    takenGroupNames.push(villages[i]["name"])
+                }
+            }
         }
-    }
-        
+
     }
     /**end of component for groups modal**/
-    
-    let namesarr :string[] = []
- 
-    const handleSubmit=()=>{
-            const JValues = Object.values(emails);
-            const parsedJValues = JSON.parse(JSON.stringify(JValues))
-           for(let i = 0; i<parsedJValues.length;i++)
-            {
-            namesarr.push(parsedJValues[i]["email"])
-            }
-            setShowDropDown(false)
-            setShowModal(false)
-            push(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/subgroups"), {name: groupName, studentList: namesarr  });
-            GroupModal()
 
-           
+    let namesarr: string[] = []
+
+    const handleSubmit = () => {
+        const JValues = Object.values(emails);
+        const parsedJValues = JSON.parse(JSON.stringify(JValues))
+        for (let i = 0; i < parsedJValues.length; i++) {
+            namesarr.push(parsedJValues[i]["email"])
+        }
+        setShowDropDown(false)
+        setShowModal(false)
+        push(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/subgroups"), { name: groupName, studentList: namesarr });
+        GroupModal()
+
+
     }
     return (
         <div>
@@ -171,11 +193,10 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                 {villageArr.map((village, index) => (
                     <tr data-index={index}>
                         <td>{village.name}</td>
-                        <td>{village.studentList.map((student, id)=>(<tr data-index={id}>{student}</tr>))}</td>
+                        <td>{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
                     </tr>
                 ))}
             </table>
         </div>
     )
 }
-
