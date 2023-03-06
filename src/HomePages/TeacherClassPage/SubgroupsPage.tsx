@@ -13,8 +13,9 @@ import { Multiselect } from "multiselect-react-dropdown";
 
 export function SubgroupsPage({ classCode }: { classCode: string }) {
 
+
     useEffect(() => {
-        GroupModal();
+        displayGroups();
     }, []);
     const [check, setCheck] = React.useState<any[]>([]);//for storing list of users from database
     const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
@@ -59,6 +60,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     }
 
 
+
     const [showDropDown, setShowDropDown] = React.useState(false)
     const [emails, setEmails] = useState<string[]>([]);
     const [groupName, setgroupName] = useState<string>("")
@@ -86,14 +88,21 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     const errClass2 = "form-control error"
     const submitFormData = event => {
         event.preventDefault();
-        console.log(takenGroupNames)
         const sucClass = "form-control success";
-        if (emails.length === 0||groupName===""||takenGroupNames.includes(groupName, 0)) {
+        let nameTaken = false;
+        if (villages != null) {
+            for (let i = 0; i < villages.length; i++) {
+                if (villages[i]["name"] === groupName) {
+                    nameTaken = true; 
+                }
+            }
+        }
+        if (emails.length === 0||groupName===""||nameTaken) {
         if(emails.length === 0)
             errors2(errClass2, "Students can't be empty")
         else if(groupName==="")
             errors(errClass, "Village name can't be nothing");
-        else if(takenGroupNames.includes(groupName, 0))
+        else if(nameTaken)
             errors(errClass, "Village name already taken!")
         }
         else {
@@ -130,7 +139,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
 
 
     /**component for groups modal**/
-    const GroupModal = () => {
+    const displayGroups = () => {
 
         const object = async () => {
             const db = await getDatabase(app);
@@ -168,7 +177,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         setShowDropDown(false)
         setShowModal(false)
         push(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/subgroups"), { name: groupName, studentList: namesarr });
-        GroupModal()
+        displayGroups()
 
 
     }
