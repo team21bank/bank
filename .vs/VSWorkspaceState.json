@@ -2,19 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\Authentication",
-    "\\src\\Authentication\\ResetPassword",
     "\\src\\HomePages",
-    "\\src\\HomePages\\DefaultHomePage",
-    "\\src\\HomePages\\StudentClassPage",
-    "\\src\\HomePages\\TeacherClassPage",
-    "\\src\\HomePages\\TeacherClassPage\\AddStudents",
-    "\\src\\HomePages\\TeacherHomePage",
-    "\\src\\HomePages\\TeacherClassPage\\StudentList",
-    "\\src\\Interfaces",
-    "\\src\\Navbars"
+    "\\src\\HomePages\\TeacherClassPage"
   ],
-  "SelectedNode": "\\src\\HomePages\\StudentClassPage\\StudentClassPage.tsx",
-  "SelectedNode": "\\src\\Authentication\\ResetPassword\\ResetMessage.tsx",
+  "SelectedNode": "\\src\\HomePages\\TeacherClassPage\\styles.css",
   "PreviewInSolutionExplorer": false
 }

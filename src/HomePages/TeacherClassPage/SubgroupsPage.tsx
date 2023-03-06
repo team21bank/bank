@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import "./TeacherClassPage.css";
 import { Modal, Button, Col, Row } from "react-bootstrap";
-import { getDatabase, ref, get, update, set, push } from 'firebase/database';
+import { getDatabase, ref, get, update, set, push, remove } from 'firebase/database';
 import { Form } from 'react-bootstrap';
 import { app } from "../../firebase";
 import { getAuth } from 'firebase/auth';
@@ -20,6 +20,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     const [check, setCheck] = React.useState<any[]>([]);//for storing list of users from database
     const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
     const [takenGroupNames, setTakenGroupNames]=React.useState<any[]>([]);
+    const [subgroupIDs, setSubgroupIDs]=React.useState<any[]>([]);
     let dataArr: any[] = []
     let villageArr: any[] = []
 
@@ -36,6 +37,8 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             }
         }
     }
+    
+    //Modal visibility logic
     const [showModal, setShowModal] = useState(false);
     function hidemodals() {
         setShowModal(false)
@@ -148,6 +151,10 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             const JSonValues = Object.values(item);
             const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
             setVillages(parsedJSonValues)
+            var item2 = usersSnapshot.child('groups/' + classCode.slice(0, 6) ).val();
+            const JSonValues2 = Object.values(item2);
+            const parsedJSonValues2 = JSON.parse(JSON.stringify(JSonValues2))
+            setSubgroupIDs(parsedJSonValues2)
         }
         object();
         if (villages != null) {
@@ -172,14 +179,33 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         for (let i = 0; i < parsedJValues.length; i++) {
             namesarr.push(parsedJValues[i]["email"])
         }
-        errors2(errClass2, "")
+        errors2(errClass2, "");
         errors(errClass, "");
+        setEmails([])
+        setgroupName("")
         setShowDropDown(false)
         setShowModal(false)
         push(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/subgroups"), { name: groupName, studentList: namesarr });
         displayGroups()
 
 
+    }
+
+    //
+    const deleteGroup = (name) =>{
+        console.log(`Deleting ${name}`)
+        let key = '';
+        let object = subgroupIDs[0]["subgroups"]
+        var result = Object.keys(object).map((key) => [key.toString(), object[key]]);
+        result.forEach((subgroup)=>{
+            if(subgroup[1]["name"]===name)
+                key = subgroup[0]
+        })
+        console.log(key)
+       remove(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/subgroups/"+key))
+        displayGroups();
+        //subgroupIDs[3].forEach((el)=>console.log(el))
+        
     }
     return (
         <div>
@@ -205,6 +231,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                     <tr data-index={index}>
                         <td>{village.name}</td>
                         <td>{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
+                        <td><Button onClick={()=>deleteGroup(village.name)}>Delete Group</Button></td>
                     </tr>
                 ))}
             </table>
