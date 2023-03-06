@@ -18,9 +18,9 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     }, []);
     const [check, setCheck] = React.useState<any[]>([]);//for storing list of users from database
     const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
+    const [takenGroupNames, setTakenGroupNames]=React.useState<any[]>([]);
     let dataArr: any[] = []
     let villageArr: any[] = []
-    let takenGroupNames: any[] = []
 
     if (check != null) {
         for (let i = 0; i < check.length; i++) {
@@ -83,24 +83,20 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         setgroupName(event.target.value);
     };
     const errClass = "form-control error";
-        const errClass2 = "form-control error"
+    const errClass2 = "form-control error"
     const submitFormData = event => {
         event.preventDefault();
-        
+        console.log(takenGroupNames)
         const sucClass = "form-control success";
-        if (emails.length === 0||groupName==="") {
+        if (emails.length === 0||groupName===""||takenGroupNames.includes(groupName, 0)) {
         if(emails.length === 0)
             errors2(errClass2, "Students can't be empty")
         else if(groupName==="")
             errors(errClass, "Village name can't be nothing");
+        else if(takenGroupNames.includes(groupName, 0))
+            errors(errClass, "Village name already taken!")
         }
-        /*else if ((takenGroupNames.includes(groupName, 0))) {
-            errors(errClass, "Village name is already taken!");
-            console.log("Village name is already taken!");
-        }*/
         else {
-            console.log("Okay");
-            takenGroupNames.push(groupName)
             handleSubmit()
         }
     }
@@ -135,6 +131,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
 
     /**component for groups modal**/
     const GroupModal = () => {
+
         const object = async () => {
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
@@ -148,7 +145,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             for (let i = 0; i < villages.length; i++) {
                 if (villages[i]["name"] !== "placeholder") {
                     villageArr.push(villages[i])
-                    takenGroupNames.push(villages[i]["name"])
+                    
                 }
             }
         }
@@ -159,6 +156,8 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     let namesarr: string[] = []
 
     const handleSubmit = () => {
+        if(!takenGroupNames.includes(groupName,0))
+               setTakenGroupNames(takenGroupNames=>[...takenGroupNames,groupName])
         const JValues = Object.values(emails);
         const parsedJValues = JSON.parse(JSON.stringify(JValues))
         for (let i = 0; i < parsedJValues.length; i++) {
