@@ -8,11 +8,13 @@ import { QuizQuestion } from "../Interfaces/QuizQuestion";
 import { QuestionView } from "./QuestionView";
 
 export function QuestionList({
-    questions
+    questions,
+    classCode
     //addPoints
 }:
 {
     questions: QuizQuestion[];
+    classCode: string;
     //addPoints: (addPoints: number)=>void;
 }): JSX.Element {
 
@@ -42,10 +44,20 @@ export function QuestionList({
         })
     }
 
-    function finishedQuiz(/*classCode: string, setBankUser: (b)=>void*/) {
+    function finishedQuiz(classCode: string, setBankUser: (b)=>void) {
         //push score from here onto the database
+        /*
+        let bank_context = useContext(BankContext);
+        let auth_context = useContext(AuthContext);
+
+        const current_user = auth_context.user ? auth_context.user : DEFAULT_AUTH_USER;
+        const current_bank: Bank = bank_context.bank ? bank_context.bank : DEFAULT_BANK;
+        let current_bank_user: BankUser = current_bank.studentList.find(val => val.uid===current_user.hash);
+        current_bank_user ??= DEFAULT_BANK_USER;
+        */
         if (currQuestionIndex === questions.length) {
             //getBankUser(classCode, setBankUser)
+            //set(ref(getDatabase(),'/groups/'+bank.bankId+'/bankObj/studentList/'+String(index)+'/balance'),bank_user.balance+money);
         }
         updateScore()
     }
@@ -71,7 +83,7 @@ export function QuestionList({
                         setChoice={setChoice} 
                     ></QuestionView>
                     <Button onClick={scoreTracker} disabled={currQuestionIndex===questions.length-1 ? true : false} hidden={currQuestionIndex===questions.length-1 ? true : false}>Next Question</Button>
-                    <Button onClick={finishedQuiz} hidden={currQuestionIndex!==questions.length-1 ? true : false}>Submit Quiz</Button>
+                    <Button onClick={()=>finishedQuiz(classCode, setBankUser)} hidden={currQuestionIndex!==questions.length-1 ? true : false}>Submit Quiz</Button>
             </h5>
             <h6>Total Points Tracker: {score}</h6>
         </Stack>

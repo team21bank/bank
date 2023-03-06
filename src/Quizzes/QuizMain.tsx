@@ -20,6 +20,7 @@ export function QuizMain({classCode}:{classCode:string}): JSX.Element{
     return(
         <h3>
         <QuizList
+            classCode={classCode}
             quizzes={quizzes}
         ></QuizList>
         <ImportQuiz addQuiz={addQuiz} classCode = {classCode}></ImportQuiz>
