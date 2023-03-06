@@ -1,60 +1,52 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext, AuthUser } from "../../Authentication/auth";
+import { AuthContext, AuthUser, BankContext, DEFAULT_AUTH_USER } from "../../Authentication/auth";
 import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { AddStudentsModal } from "./AddStudents/AddStudentsModal";
-import {Bank} from "../../Interfaces/BankObject"
+import {Bank, DEFAULT_BANK} from "../../Interfaces/BankObject"
 import { ref, getDatabase, onValue} from '@firebase/database';
 import "./TeacherClassPage.css";
 import { BankUser } from '../../Interfaces/BankUser';
 import { Button, Modal } from 'react-bootstrap';
 import { delete_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
 import { auth } from '../../firebase';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { StudentList } from './StudentList/StudentList';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
     const navigate = useNavigate();
 
-    const user = useContext(AuthContext);   
-    const [currClass, setCurrClass] = useState<Bank>({
-        bankId:'',
-        teacherID:'',
-        studentList:[],
-        classTitle:'',
-        quizzes:[],
-    });
-
     //Get AuthUser objects for each student in the class
     const [studentList, setStudentList] = useState<AuthUser[]>([]);
-    useEffect(() => {
-        getStudentList(currClass.studentList, setStudentList);
-    }, [currClass.studentList]);
 
-    useEffect(() => {
-        onValue(ref(getDatabase(),"/groups/"+classCode.slice(0,6)+"/bankObj"),ss=>{
-            if(currClass !== ss.val()) {
-                setCurrClass(ss.val());
-            }
-        })
-    }, []);
+    const current_user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
+    const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
 
-    return user.user ? (
+    const bank_context = useContext(BankContext);
+    useEffect(() => { //Update the bank context if this page is navigated to
+        onValue(ref(getDatabase(), "/groups/"+classCode.slice(0,6)+"/bankObj"), bank_snapshot => {
+            if(bank_snapshot.exists() == false) {return;}
+            getStudentList(bank_snapshot.val().studentList, setStudentList);
+            bank_context.setBank(bank_snapshot.val());
+        });
+    }, [classCode]);
+    
+
+    return (
         <div className="teacher-class-page">
             Welcome back to your class: {classCode.slice(6)}
             <AddStudentsModal classID={classCode} />
-            <StudentList current_bank={currClass} auth_users={studentList}/>
+            <StudentList current_bank={current_bank} auth_users={studentList}/>
             <DeleteBankModal 
                 delete_bank_function={()=>{
-                    delete_bank(currClass.bankId, auth.currentUser ? auth.currentUser.uid : "");
+                    delete_bank(current_bank.bankId, current_user.id);
                     navigate("/teachers/home");
                     alert("class successfully deleted");
                 }}
                 bank_name={classCode.slice(6)}
             />
             <Button onClick={()=>navigate("/teachers/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
+            <Outlet></Outlet>
         </div>
-    ): (
-        <LoadingPage/>
     )
 }
 

@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { ref, getDatabase } from "@firebase/database";
 import { onValue } from "firebase/database";
+import { Bank } from "../Interfaces/BankObject";
 
 //Object to store information about a user
 export interface AuthUser {
@@ -12,6 +13,9 @@ export interface AuthUser {
     isTeacher: boolean
     hash: string
 }
+export const DEFAULT_AUTH_USER: AuthUser = {
+    email: "", username: "", id: "", avatar: "", groups: [], isTeacher: false, hash: ""
+} 
 
 export const STORAGE_KEY = "CurrentUser";
 
@@ -61,3 +65,17 @@ export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Elem
     If you need to get the uid of the logged in user, use:
         auth.currentUser.uid
 */
+
+
+//Provides global access to the currently selected bank
+//This is set when you navigate to a class page
+export const BankContext = React.createContext({
+    bank: null as Bank | null,
+    setBank: {} as (n: Bank | null) => void
+});
+
+export function CurrentBankProvider({children}: {children: ReactNode}): JSX.Element {
+    const [currentBank, setCurrentBank] = useState<Bank | null>(null);
+
+    return (<BankContext.Provider value={{bank: currentBank, setBank: setCurrentBank}}>{children}</BankContext.Provider>);
+}
