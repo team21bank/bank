@@ -82,10 +82,11 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     const updateFormData = event => {
         setgroupName(event.target.value);
     };
+    const errClass = "form-control error";
+        const errClass2 = "form-control error"
     const submitFormData = event => {
         event.preventDefault();
-        const errClass = "form-control error";
-        const errClass2 = "form-control error"
+        
         const sucClass = "form-control success";
         if (emails.length === 0||groupName==="") {
         if(emails.length === 0)
@@ -163,6 +164,8 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         for (let i = 0; i < parsedJValues.length; i++) {
             namesarr.push(parsedJValues[i]["email"])
         }
+        errors2(errClass2, "")
+        errors(errClass, "");
         setShowDropDown(false)
         setShowModal(false)
         push(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/subgroups"), { name: groupName, studentList: namesarr });
