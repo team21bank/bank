@@ -39,6 +39,7 @@ export function QuizView({
                         <QuestionList
                             classCode={classCode}
                             questions={quiz.questions}
+                            viewQuiz={viewQuiz}
                             //addPoints={addPoints}
                         ></QuestionList>
                     </div>
