@@ -19,7 +19,7 @@ export function TeacherNavbar(): JSX.Element {
           <Nav>
             <Nav.Link href="/teachers/classes">View your classes</Nav.Link>
             <Nav.Link href="/teachers/createclass">Create New Class</Nav.Link>
-            <Nav.Link href="/teachers/quizzes">Quizzes</Nav.Link>
+            {/* <Nav.Link href="/teachers/quizzes">Quizzes</Nav.Link> */}
           </Nav>
           <Nav className='justify-content-end'>
             <NavDropdown title="Manage Account" className="teacher-nav-dropdown">
