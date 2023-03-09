@@ -54,10 +54,32 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         const getStudents = async () => {
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
+            
+            let stuIDs:string[] = []
+            let studentsList: any[] = []
+            var students = usersSnapshot.child(`groups/${classCode.slice(0,6)}/bankObj/studentList`).val();
+            const studentsJson = Object.values(students)
+            const parsedStudentsJson = JSON.parse(JSON.stringify(studentsJson))
+            parsedStudentsJson.forEach((object)=>{
+                if(object["uid"]!==""){
+                    stuIDs.push(object["uid"])
+                }
+            })
+            console.log("GETTING CLASS");
+            console.log(stuIDs);
             var item = usersSnapshot.child('users').val();
             const JSonValues = Object.values(item);
             const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
-            setCheck(parsedJSonValues)
+            for(let i = 0; i < stuIDs.length;i++){
+                parsedJSonValues.forEach((user)=>{
+                console.log(`User id is ${user["userObj"]["hash"]} and current stuID is ${stuIDs[i]}`)
+                    if(user["userObj"]["hash"]===stuIDs[i]){
+                        studentsList.push(user)
+                    }
+                })
+            }
+            console.log(`Students list is ${studentsList}`)
+            setCheck(studentsList)
         }
         getStudents();
     }
