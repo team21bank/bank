@@ -25,8 +25,8 @@ export function AddStudentsModal({classID}: {classID: string}): JSX.Element {
             <Modal.Footer>
                 <Button onClick={()=>setShowModal(false)}>Cancel</Button>
             </Modal.Footer>
-        </Modal>
-        <Button onClick={()=>setShowModal(true)}>Create Student Accounts</Button>
+            </Modal>
+            <form><Button onClick={() => setShowModal(true)}>Create Student Accounts</Button></form>
     </div>
     )
 }

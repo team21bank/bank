@@ -13,11 +13,12 @@ export function LogoutButton(){
 
     //Function for button click logging out current user
     function logout(){
-        signOut(auth);
+        let sign_out_promise = signOut(auth);
         user.setUser(null);
         window.sessionStorage.removeItem(STORAGE_KEY)
         alert("Successfully logged out!");
-        navigate("/");
+        
+        sign_out_promise.finally(() => navigate("/"));
     }
 
     //HTML holding logout button

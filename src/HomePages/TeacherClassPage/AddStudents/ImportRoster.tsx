@@ -6,7 +6,7 @@ import { initializeApp, deleteApp } from "firebase/app";
 import { ref, getDatabase, onValue, set } from '@firebase/database';
 import { AuthUser } from "../../../Authentication/auth";
 import { Bank } from "../../../Interfaces/BankObject";
-import { BankUser, BANKUSER_PLACEHOLDER } from "../../../Interfaces/BankUser";
+import { BankUser, DEFAULT_BANK_USER } from "../../../Interfaces/BankUser";
 import { getAuth } from "firebase/auth";
 
 export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string, setShowModal: (b)=>void}): JSX.Element {
@@ -42,9 +42,10 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
         let newBank: Bank = {
             bankId: "000000",
             teacherID: "111111",
-            studentList: [BANKUSER_PLACEHOLDER],
+            studentList: [DEFAULT_BANK_USER],
             classTitle: "",
             quizzes:[],
+            subgroups:[]
         };
         //database reference for bank object
         let groupRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/');
@@ -76,7 +77,7 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
                     onValue(groupRef, ss=>{
                         if(ss.val()!==null){
                             onValue(studentListRef, sval=>{
-                                if(newBank.studentList[0] === BANKUSER_PLACEHOLDER){
+                                if(newBank.studentList[0] === DEFAULT_BANK_USER){
                                     //console.log("test1");
                                     if(sval.val() !== null){
                                         let studentList: BankUser[] = sval.val();
@@ -86,7 +87,7 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
                                         }
                                     }else{
                                         //console.log("test2")
-                                        newBank = {...ss.val(), studentList:[BANKUSER_PLACEHOLDER, {uid: uid, isBanker: false, balance: 0}]}
+                                        newBank = {...ss.val(), studentList:[DEFAULT_BANK_USER, {uid: uid, isBanker: false, balance: 0}]}
                                     }
                                 }else{
                                     //console.log("test3");
