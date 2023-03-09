@@ -18,6 +18,7 @@ export function StudentQuizMain(): JSX.Element{
     return(
         <h3>
         <QuizList
+            classCode={current_bank.bankId}
             quizzes={quizzes}
         ></QuizList>
     </h3>
