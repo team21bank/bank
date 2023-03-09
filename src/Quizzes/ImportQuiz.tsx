@@ -12,6 +12,7 @@ export function ImportQuiz({addQuiz, classCode}: {addQuiz: (newQuiz: Quiz) => vo
         studentList:[],
         classTitle:'',
         quizzes:[],
+        subgroups:[]
     });
     
     useEffect(() => {

@@ -18,6 +18,7 @@ import { EditProfile } from './Authentication/EditProfilePage/EditProfilePage';
 import { CreateClassPage } from './ClassCode/CreateClassPage';
 import { QuizPage } from './Quizzes/QuizPage';
 import { StudentQuizMain } from './Quizzes/StudentQuiz';
+import { SubgroupsPage } from './HomePages/TeacherClassPage/SubgroupsPage';
 
 function App() {
     return (
@@ -47,8 +48,12 @@ function AppBody(): JSX.Element {
         <Route path="/login/resetpassword" element={<ResetMessage />} />
         <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/teachers" element={<TeacherNavbar />}>
+          <Route path="groups" element={<TeacherHomePage/>}/>
           <Route path="home" element={<TeacherHomePage />}/>
           <Route path="classes" element={<TeacherHomePage/>}/>
+          {classes.map(str => {
+            return <Route path={str.slice(0, 6)+"/groups"} key={str} element={<SubgroupsPage classCode={str} />}></Route>
+          })}
           <Route path="createclass" element={<CreateClassPage/>}/>
           {/*Render the class pages*/}
           {classes.map(str => <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}/>)}

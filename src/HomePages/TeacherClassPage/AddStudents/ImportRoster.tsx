@@ -45,6 +45,7 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
             studentList: [DEFAULT_BANK_USER],
             classTitle: "",
             quizzes:[],
+            subgroups:[]
         };
         //database reference for bank object
         let groupRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/');

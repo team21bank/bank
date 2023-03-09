@@ -7,6 +7,7 @@ import { auth } from "../firebase";
 import { Bank } from "../Interfaces/BankObject";
 import { DEFAULT_BANK_USER } from "../Interfaces/BankUser";
 import { QUIZ_PLACEHOLDER } from "../Interfaces/Quiz";
+import { SUBGROUPS_PLACEHOLDER } from "../Interfaces/Subgroup";
 import "./CreateClassPage.css";
 
 
@@ -18,6 +19,7 @@ export function CreateClassPage(): JSX.Element {
         studentList: [DEFAULT_BANK_USER],
         classTitle: "",
         quizzes: [QUIZ_PLACEHOLDER],
+        subgroups: [SUBGROUPS_PLACEHOLDER]
     });
     
     if(newBank.teacherID === "" && auth.currentUser) setNewBank({...newBank, teacherID: auth.currentUser.uid}); //set the bank's teacherID when it is availabe from userObj
