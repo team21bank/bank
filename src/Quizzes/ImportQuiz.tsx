@@ -5,7 +5,7 @@ import { Quiz } from "../Interfaces/Quiz";
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
 import { Bank } from "../Interfaces/BankObject";
 
-export function ImportQuiz({addQuiz, classCode}: {addQuiz: (newQuiz: Quiz) => void, classCode: string}): JSX.Element {
+export function ImportQuiz({classCode}: {classCode: string}): JSX.Element {
     const [currClass, setCurrClass] = useState<Bank>({
         bankId:'',
         teacherID:'',
@@ -114,7 +114,6 @@ export function ImportQuiz({addQuiz, classCode}: {addQuiz: (newQuiz: Quiz) => vo
         console.log(newQuiz);
 
         //temporary for testing purposes, replace with storage to firebase
-        addQuiz(newQuiz);
         if (currClass.quizzes[0].title ===''){
             currClass.quizzes[0] = newQuiz
         }
