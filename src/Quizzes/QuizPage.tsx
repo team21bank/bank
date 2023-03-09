@@ -29,7 +29,7 @@ export function QuizPage(): JSX.Element{
             classCode={current_bank.bankId}
             quizzes={quizzes}
         ></QuizList>
-        {/*<ImportQuiz addQuiz={addQuiz} classCode = {bank_context.bank ? bank_context.bank.bankId : ""}></ImportQuiz>*/}
+        {<ImportQuiz addQuiz={addQuiz} classCode = {bank_context.bank ? bank_context.bank.bankId : ""}></ImportQuiz>}
     </h3>
     
     );
