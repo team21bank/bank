@@ -9,6 +9,7 @@ import { Subgroup } from "../../Interfaces/Subgroup";
 import "./styles.css";
 import { Subgroups } from './Subgroups';
 import { Multiselect } from "multiselect-react-dropdown";
+import { EditSubgroupsModal } from './EditSubgroupsModal';
 
 
 export function SubgroupsPage({ classCode }: { classCode: string }) {
@@ -24,6 +25,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     let dataArr: any[] = []
     let villageArr: any[] = []
 
+    //move the two below into a function
     if (check != null) {
         for (let i = 0; i < check.length; i++) {
             dataArr.push(check[i]["userObj"])
@@ -65,20 +67,16 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                     stuIDs.push(object["uid"])
                 }
             })
-            console.log("GETTING CLASS");
-            console.log(stuIDs);
             var item = usersSnapshot.child('users').val();
             const JSonValues = Object.values(item);
             const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
             for(let i = 0; i < stuIDs.length;i++){
                 parsedJSonValues.forEach((user)=>{
-                console.log(`User id is ${user["userObj"]["hash"]} and current stuID is ${stuIDs[i]}`)
                     if(user["userObj"]["hash"]===stuIDs[i]){
                         studentsList.push(user)
                     }
                 })
             }
-            console.log(`Students list is ${studentsList}`)
             setCheck(studentsList)
         }
         getStudents();
@@ -97,7 +95,6 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         setEmails(selectedList);
     };
 
-    const [valid, setvalid] = useState("form-control");
     const [errmsg, setErrmsg] = useState("");
     const [err, setErr] = useState("");
     const errors = (errClass, errmsg) => {
@@ -223,7 +220,6 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             if(subgroup[1]["name"]===name)
                 key = subgroup[0]
         })
-        console.log(key)
        remove(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/subgroups/"+key))
         displayGroups();
         //subgroupIDs[3].forEach((el)=>console.log(el))
@@ -254,6 +250,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                         <td>{village.name}</td>
                         <td>{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
                         <td><Button onClick={()=>deleteGroup(village.name)}>Delete Group</Button></td>
+                        <td><EditSubgroupsModal code = {classCode} group = {village.name}/></td>
                     </tr>
                 ))}
             </table>
