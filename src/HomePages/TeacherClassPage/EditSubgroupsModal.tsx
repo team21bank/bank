@@ -12,14 +12,13 @@ import { Multiselect } from "multiselect-react-dropdown";
 
 export function EditSubgroupsModal({ code, group }: { code: string , group: string}) {
 
-    
+    const [groupName, setgroupName] = useState<string>(group)
     const [key, setKey]=React.useState("")
     const [students, setStudents] = React.useState<any[]>([]);
     const [showModal, setShowModal] = React.useState(false);
     const [showDropDown, setShowDropDown] = React.useState(false);
     let dataArr: any[] = []
     const [emails, setEmails] = useState<string[]>([]);
-    const [groupName, setgroupName] = useState<string>("")
     if (students != null) {
         for (let i = 0; i < students.length; i++) {
             dataArr.push(students[i])
@@ -54,9 +53,12 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
             namesarr.push(parsedJValues[i]["email"])
         }
         console.log(`key is ${key}`)
-        update(ref(getDatabase(), "/groups/" + code.slice(0, 6) + "/bankObj/subgroups/"+key), {name:group,studentList: namesarr });
+        update(ref(getDatabase(), "/groups/" + code.slice(0, 6) + "/bankObj/subgroups/"+key), {name:groupName,studentList: namesarr });
     
         }
+    const updateFormData = event => {
+        setgroupName(event.target.value);
+    };
     const DropDown = () => (
 
         <div className="App">
@@ -71,10 +73,11 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
                 />
                 {/**<div><small id="set"> {err}</small></div>**/}
            
-                {/**Enter group name
+                Enter group name
                 <br></br>
                 <input autoFocus value={groupName} type="text" onChange={e => updateFormData(e)} >
                 </input>
+                {/**
                 <div>
                     <small id="set"> {errmsg}</small>
                 </div>
