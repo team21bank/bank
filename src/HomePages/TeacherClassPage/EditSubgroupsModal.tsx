@@ -13,7 +13,7 @@ import { Multiselect } from "multiselect-react-dropdown";
 export function EditSubgroupsModal({ code, group }: { code: string , group: string}) {
 
     
-
+    const [key, setKey]=React.useState("")
     const [students, setStudents] = React.useState<any[]>([]);
     const [showModal, setShowModal] = React.useState(false);
     const [showDropDown, setShowDropDown] = React.useState(false);
@@ -44,7 +44,19 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
         setEmails(selectedList);
     };
     const submitFormData = event => {
+        handleSubmit()
     }
+    const handleSubmit=()=>{
+        let namesarr: string[] = []
+        const JValues = Object.values(emails);
+        const parsedJValues = JSON.parse(JSON.stringify(JValues))
+        for (let i = 0; i < parsedJValues.length; i++) {
+            namesarr.push(parsedJValues[i]["email"])
+        }
+        console.log(`key is ${key}`)
+        update(ref(getDatabase(), "/groups/" + code.slice(0, 6) + "/bankObj/subgroups/"+key), {name:group,studentList: namesarr });
+    
+        }
     const DropDown = () => (
 
         <div className="App">
@@ -72,47 +84,6 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
 
 
         </div>)
-
-
-	/*function getStudentsInClass(villageName:string) {
-        const getStudents = async () => {
-            const db = await getDatabase(app);
-            const usersSnapshot = await get(ref(db, '/'))
-            
-            let stuIDs:string[] = []
-            let studentsList: any[] = []
-            const foundEmails:string[] = []
-
-            var students = usersSnapshot.child(`groups/${code.slice(0,6)}/bankObj/subgroups`).val();
-            const studentsJson = Object.values(students)
-            const parsedStudentsJson = JSON.parse(JSON.stringify(studentsJson))
-
-            var item = usersSnapshot.child('users').val();
-            const JSonValues = Object.values(item);
-            const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
-
-            parsedStudentsJson.forEach((subgroup)=>{
-                if(subgroup["name"]!=="placeholder"){
-                    for(let i =0;i<subgroup["studentList"].length;i++){
-                        if(!foundEmails.includes(subgroup["studentList"][i])){
-                        console.log(subgroup["studentList"][i])
-                        foundEmails.push(subgroup["studentList"][i])
-                            parsedJSonValues.forEach((user)=>{
-                                    if(user["userObj"]["email"]===subgroup["studentList"][i]){
-                                        studentsList.push(user["userObj"])
-                                        console.log(user)
-                                    }
-                            })
-                        }
-                    }
-                }
-            })
-            
-            setStudents(studentsList)
-            
-        }
-        getStudents()
-    }**/
 
     function getStudentsInClass() {
         const getStudents = async () => {
@@ -155,6 +126,17 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
                 }
             })
             
+
+
+            var item3 = usersSnapshot.child('groups/' + code.slice(0, 6)+"/bankObj").val();
+            const JSonValues3 = Object.values(item3);
+            const parsedJSonValues3 = JSON.parse(JSON.stringify(JSonValues3))
+            var result = Object.keys(parsedJSonValues3[4]).map((key) => [key.toString(),parsedJSonValues3[4][key]]);
+            result.forEach((object)=>{
+                if(object[1]["name"]===group){
+                    setKey(object[0])
+                    }
+            })
             
         }
         getStudents();
