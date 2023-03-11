@@ -3,8 +3,9 @@
     "",
     "\\src",
     "\\src\\HomePages",
-    "\\src\\HomePages\\TeacherClassPage"
+    "\\src\\HomePages\\TeacherClassPage",
+    "\\src\\HomePages\\TeacherClassPage\\AddStudents"
   ],
-  "SelectedNode": "\\src\\HomePages\\TeacherClassPage\\styles.css",
+  "SelectedNode": "\\src\\HomePages\\TeacherClassPage\\AddStudents\\AddStudentsModal.tsx",
   "PreviewInSolutionExplorer": false
 }
