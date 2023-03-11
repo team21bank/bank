@@ -42,8 +42,39 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
     const handleRemove = (selectedList) => {
         setEmails(selectedList);
     };
+
+    const [errmsg, setErrmsg] = useState("");
+    const [err, setErr] = useState("");
+    const errors = (errClass, errmsg) => {
+        setErrmsg(errmsg);
+    };
+    const errors2 = (errClass2, err) => {
+        setErr(err);
+    };
+    const errClass = "form-control error";
+    const errClass2 = "form-control error"
     const submitFormData = event => {
-        handleSubmit()
+        let nameTaken = false;
+        /*if (villages != null) {
+            for (let i = 0; i < villages.length; i++) {
+                if (villages[i]["name"] === groupName) {
+                    nameTaken = true; 
+                }
+            }
+        }*/
+        if (emails.length === 0||groupName===""||nameTaken) {
+        if(emails.length === 0)
+            errors2(errClass2, "Students can't be empty")
+        else if(groupName===""){
+            errors(errClass, "Village name can't be nothing");
+            }
+        else if(nameTaken){
+            errors(errClass, "Village name already taken!")
+            }
+        }
+        else {
+            handleSubmit()
+        }
     }
     const handleSubmit=()=>{
         let namesarr: string[] = []
@@ -71,17 +102,17 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
                 onRemove={handleRemove} // Function will trigger on remove event
                 displayValue="email" // Property name to display in the dropdown options
                 />
-                {/**<div><small id="set"> {err}</small></div>**/}
+                <div><small id="set"> {err}</small></div>
            
                 Enter group name
                 <br></br>
                 <input autoFocus value={groupName} type="text" onChange={e => updateFormData(e)} >
                 </input>
-                {/**
+                
                 <div>
                     <small id="set"> {errmsg}</small>
                 </div>
-                **/}
+                
                 <button type="submit">Submit</button>
             </form>
 
