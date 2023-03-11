@@ -55,21 +55,11 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
     const errClass2 = "form-control error"
     const submitFormData = event => {
         let nameTaken = false;
-        /*if (villages != null) {
-            for (let i = 0; i < villages.length; i++) {
-                if (villages[i]["name"] === groupName) {
-                    nameTaken = true; 
-                }
-            }
-        }*/
         if (emails.length === 0||groupName===""||nameTaken) {
         if(emails.length === 0)
             errors2(errClass2, "Students can't be empty")
         else if(groupName===""){
             errors(errClass, "Village name can't be nothing");
-            }
-        else if(nameTaken){
-            errors(errClass, "Village name already taken!")
             }
         }
         else {

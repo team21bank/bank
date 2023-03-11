@@ -95,7 +95,6 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         setEmails(selectedList);
     };
 
-    const [valid, setvalid] = useState("form-control");
     const [errmsg, setErrmsg] = useState("");
     const [err, setErr] = useState("");
     const errors = (errClass, errmsg) => {
