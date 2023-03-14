@@ -6,6 +6,7 @@ import { Bank } from "../../../Interfaces/BankObject";
 import { BankUser } from "../../../Interfaces/BankUser";
 import { ref, getDatabase, onValue, set} from '@firebase/database';
 import "./ViewStudent.css";
+import { AddToBalanceModal } from "./EditBalanceModal";
 
 
 export function ViewStudent(
@@ -29,12 +30,8 @@ export function ViewStudent(
                 <Col>
                     {auth_user.username}
                 </Col>
-                <Col>
-                    balance: {bank_user.balance}
-                </Col>
-                <Col>
-                    <input id={String(index)} type='number'></input>
-                    <Button onClick={editBalance}>Add/Subtract From Student Balance</Button>
+                <Col style={{"display": "flexbox"}}>
+                    balance:{bank_user.balance}<AddToBalanceModal bank_user={bank_user}/>
                 </Col>
                 <Col>
                     <RemoveStudentModal remove_student_function={remove_student} student_name={auth_user.username} />
@@ -64,7 +61,7 @@ function RemoveStudentModal(
                 <Button variant="danger" onClick={()=>{remove_student_function(); setShowModal(false);}}>Confirm</Button>
             </Modal.Footer>
         </Modal>
-        <Button variant="danger" onClick={()=>setShowModal(true)}>Remove Student</Button>
+        <Button variant="danger" size="sm" onClick={()=>setShowModal(true)}>Remove Student</Button>
     </div>
     )
 }

@@ -1,10 +1,24 @@
+
 export interface BankUser {
     
-    uid: string
+    uid: string,
 
-    isBanker: boolean
+    isBanker: boolean,
 
-    balance: number
+    balance: number,
+
+    role?: [MasteryLevel, Role]
+}
+
+export enum Role {
+    
+}
+
+export enum MasteryLevel {
+    Beginner,
+    Intermediate,
+    Advanced,
+    Master
 }
 
 export const DEFAULT_BANK_USER: BankUser = {uid: "", isBanker: false, balance: 0};
