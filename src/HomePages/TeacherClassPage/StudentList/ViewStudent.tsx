@@ -13,12 +13,6 @@ export function ViewStudent(
     {bank_user, auth_user, bank, index}:
     {bank_user: BankUser, auth_user: AuthUser, bank: Bank, index:number}
 ): JSX.Element {
-
-    function editBalance(){
-        let money=Number((document.getElementById(String(index)) as HTMLInputElement).value);
-        set(ref(getDatabase(),'/groups/'+bank.bankId+'/bankObj/studentList/'+String(index)+'/balance'),bank_user.balance+money);
-    }
-
     function remove_student() {
         delete_student_from_bank(bank.bankId, bank_user.uid);
         //window.setTimeout(()=>window.location.reload(), 100);
@@ -26,11 +20,11 @@ export function ViewStudent(
 
     return bank_user ? (
         <div className="student-list-item">
-            <Row>
+            <Row className="student-list-row">
                 <Col>
                     {auth_user.username}
                 </Col>
-                <Col style={{"display": "flexbox"}}>
+                <Col style={{"display": "flex"}}>
                     balance:{bank_user.balance}<AddToBalanceModal bank_user={bank_user}/>
                 </Col>
                 <Col>
