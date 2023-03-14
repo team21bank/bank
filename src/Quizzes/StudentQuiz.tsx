@@ -15,10 +15,13 @@ export function StudentQuizMain(): JSX.Element{
     const bank_context = useContext(BankContext);
     const current_bank: Bank = bank_context.bank ? bank_context.bank : DEFAULT_BANK;
 
+    let dbquizzes = current_bank.quizzes
+
     return(
         <h3>
         <QuizList
-            quizzes={quizzes}
+            classCode={current_bank.bankId}
+            quizzes={dbquizzes}
         ></QuizList>
     </h3>
     

@@ -5,10 +5,12 @@ import { Button, Col, Row } from "react-bootstrap";
 import { QuestionList } from "./QuestionList";
 
 export function QuizView({
-    quiz
+    quiz,
+    classCode
 }:
 {
     quiz: Quiz;
+    classCode: string
 }): JSX.Element {
     const [visible, setVisible] = useState<boolean>(false);
     const [myPoints, setMyPoints] = useState<number>(0);
@@ -35,7 +37,9 @@ export function QuizView({
                 {visible ? (
                     <div>
                         <QuestionList
+                            classCode={classCode}
                             questions={quiz.questions}
+                            viewQuiz={viewQuiz}
                             //addPoints={addPoints}
                         ></QuestionList>
                     </div>
