@@ -6,6 +6,7 @@ import { AuthContext, AuthUser, BankContext, DEFAULT_AUTH_USER } from "../../Aut
 import { Bank, DEFAULT_BANK } from '../../Interfaces/BankObject';
 import { BankUser, DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
+import { UserTransaction } from '../../BankingComponents/UserTransaction';
 import "./StudentClassPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
 
@@ -81,7 +82,12 @@ export function StudentClassPage({classCode}:{classCode:string}){
             <div>your total balance is {current_bank_user.balance}</div>
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
             <ViewTransactions transactions={placeholder_transactions} uid={current_bank_user.uid}></ViewTransactions>
+        <div>
+            <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/pay")}>Pay/Create Transaction</Button>
         </div>
+            
+        </div>
+        
     )
 }
 
