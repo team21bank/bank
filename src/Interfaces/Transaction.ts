@@ -1,3 +1,6 @@
+import { AuthUser } from "../Authentication/auth";
+import { BankUser } from "./BankUser";
+
 export interface Transaction{
     /*
     Representation of Transactions in the database - Contains all the information you'd need about any transaction.
@@ -37,4 +40,44 @@ export interface Transaction{
     sender_uid?: string; //uid of the sender account in this transaction (nullable? special IDs for non-account funds? I dunno.)
 
     
+}
+/*
+Comparison function to sort transactions by date. Passed in when you're calling .sort on an array, i.e:
+transactionList.sort((a, b) => compareDates(a, b))
+
+NOTE FOR USE: .sort() sorts from low to high, if you want to sort from oldest to newest, you'll need to reverse it
+*/
+export function compareDates(a: Transaction, b: Transaction) {
+    if (a.date > b.date) { 
+        return 1;
+    }
+    if (a.date < b.date) {
+        return -1;
+    }
+    return 0
+}
+
+/*
+Function to create a transaction object given parameters:
+*/
+export function makeTransaction(
+    senderAuth: AuthUser, senderBank: BankUser, 
+    receiverAuth: AuthUser, receiverBank: BankUser, 
+    amount: number, type?: string, 
+    receiver_desc?: string, sender_desc?: string,
+    ): Transaction {
+    const transaction: Transaction = {
+        date: new Date(),
+        receiver_name: receiverAuth.username,
+        sender_name: senderAuth.username,
+        receiver_description: sender_desc || "got paid by" + senderAuth.username,
+        sender_description: receiver_desc || "paid" + receiverAuth.username,
+        type: type || "misc",
+        transfer_amount: amount,
+        receiver_balance: receiverBank.balance + amount,
+        sender_balance: senderBank.balance - amount,
+        receiver_uid: receiverBank.uid,
+        sender_uid: senderBank.uid
+    };
+    return transaction;
 }
