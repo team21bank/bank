@@ -9,7 +9,7 @@ import { BsArrowRight } from "react-icons/bs";
 import "./EditBalanceModal.css";
 
 
-export function AddToBalanceModal({bank_user}: {bank_user: BankUser}): JSX.Element {
+export function EditBalanceModal({bank_user}: {bank_user: BankUser}): JSX.Element {
     const [showModal, setShowModal] = useState(false);
     const [amount, setAmount] = useState(0);
 

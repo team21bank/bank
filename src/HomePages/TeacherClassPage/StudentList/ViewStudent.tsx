@@ -3,10 +3,11 @@ import { Button, Col, Modal, Row } from "react-bootstrap";
 import { AuthUser } from "../../../Authentication/auth";
 import { delete_student_from_bank } from "../../../Authentication/EditProfilePage/DeleteAccount";
 import { Bank } from "../../../Interfaces/BankObject";
-import { BankUser } from "../../../Interfaces/BankUser";
+import { BankUser, getTitle } from "../../../Interfaces/BankUser";
 import { ref, getDatabase, onValue, set} from '@firebase/database';
 import "./ViewStudent.css";
-import { AddToBalanceModal } from "./EditBalanceModal";
+import { EditBalanceModal } from "./EditBalanceModal";
+import { EditRoleModal } from "./EditRoleModal";
 
 
 export function ViewStudent(
@@ -25,7 +26,10 @@ export function ViewStudent(
                     {auth_user.username}
                 </Col>
                 <Col style={{"display": "flex"}}>
-                    balance:{bank_user.balance}<AddToBalanceModal bank_user={bank_user}/>
+                    {getTitle(bank_user.role)}<EditRoleModal bank_user={bank_user}/>
+                </Col>
+                <Col style={{"display": "flex"}}>
+                    balance:{bank_user.balance}<EditBalanceModal bank_user={bank_user}/>
                 </Col>
                 <Col>
                     <RemoveStudentModal remove_student_function={remove_student} student_name={auth_user.username} />
