@@ -8,7 +8,7 @@ import { RiPlayListAddFill } from "react-icons/ri";
 import { AuthUser } from "../../../Authentication/auth";
 import { firebaseConfig } from "../../../firebase";
 import { Bank } from "../../../Interfaces/BankObject";
-import { BankUser } from "../../../Interfaces/BankUser";
+import { BankUser, DEFAULT_BANK_USER } from "../../../Interfaces/BankUser";
 
 /*
 I HAVE NO CLUE IF THIS IS A GOOD WAY TO GO ABOUT MAKING A LIST OF EDITABLE ITEMS.
@@ -139,11 +139,9 @@ function createStudentAccountsFromList(classID: string, studentList: NewStudent[
                 if(snapshot.val() == null) return;
                 let bank_obj: Bank = snapshot.val().bankObj;
                 finished_list.forEach((new_uid) => {
-                    bank_obj.studentList.push({
-                        balance: 0,
-                        isBanker: false,
-                        uid: new_uid
-                    })
+                    bank_obj.studentList.push(
+                        {...DEFAULT_BANK_USER, uid: new_uid}
+                    )
                 });
         
                 set(class_reference, {bankObj: {...bank_obj}});

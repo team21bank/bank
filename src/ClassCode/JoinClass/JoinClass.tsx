@@ -7,6 +7,7 @@ import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { auth } from '../../firebase';
 import { get } from 'firebase/database';
 import { Bank } from '../../Interfaces/BankObject';
+import { DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
 
 export function JoinClassButton(){
     const [showModal, setShowModal] = useState(false);
@@ -38,7 +39,7 @@ export function JoinClassButton(){
                 return;
             }
             //create BankUser object for user
-            bank.studentList = [...bank.studentList, {uid: currUser.uid, isBanker: false, balance: 0}];
+            bank.studentList = [...bank.studentList, {...DEFAULT_BANK_USER, uid: currUser.uid}];
             set(bank_ref, {bankObj: bank});
 
             get(user_ref).then(user_snapshot => { //add bank Id to user object

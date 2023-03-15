@@ -3,21 +3,17 @@ import { Button, Col, Modal, Row } from "react-bootstrap";
 import { AuthUser } from "../../../Authentication/auth";
 import { delete_student_from_bank } from "../../../Authentication/EditProfilePage/DeleteAccount";
 import { Bank } from "../../../Interfaces/BankObject";
-import { BankUser } from "../../../Interfaces/BankUser";
+import { BankUser, getTitle } from "../../../Interfaces/BankUser";
 import { ref, getDatabase, onValue, set} from '@firebase/database';
 import "./ViewStudent.css";
+import { EditBalanceModal } from "./EditBalanceModal";
+import { EditRoleModal } from "./EditRoleModal";
 
 
 export function ViewStudent(
     {bank_user, auth_user, bank, index}:
     {bank_user: BankUser, auth_user: AuthUser, bank: Bank, index:number}
 ): JSX.Element {
-
-    function editBalance(){
-        let money=Number((document.getElementById(String(index)) as HTMLInputElement).value);
-        set(ref(getDatabase(),'/groups/'+bank.bankId+'/bankObj/studentList/'+String(index)+'/balance'),bank_user.balance+money);
-    }
-
     function remove_student() {
         delete_student_from_bank(bank.bankId, bank_user.uid);
         //window.setTimeout(()=>window.location.reload(), 100);
@@ -25,16 +21,15 @@ export function ViewStudent(
 
     return bank_user ? (
         <div className="student-list-item">
-            <Row>
+            <Row className="student-list-row">
                 <Col>
                     {auth_user.username}
                 </Col>
-                <Col>
-                    balance: {bank_user.balance}
+                <Col style={{"display": "flex"}}>
+                    {getTitle(bank_user.role)}<EditRoleModal bank_user={bank_user}/>
                 </Col>
-                <Col>
-                    <input id={String(index)} type='number'></input>
-                    <Button onClick={editBalance}>Add/Subtract From Student Balance</Button>
+                <Col style={{"display": "flex"}}>
+                    balance:{bank_user.balance}<EditBalanceModal bank_user={bank_user}/>
                 </Col>
                 <Col>
                     <RemoveStudentModal remove_student_function={remove_student} student_name={auth_user.username} />
@@ -64,7 +59,7 @@ function RemoveStudentModal(
                 <Button variant="danger" onClick={()=>{remove_student_function(); setShowModal(false);}}>Confirm</Button>
             </Modal.Footer>
         </Modal>
-        <Button variant="danger" onClick={()=>setShowModal(true)}>Remove Student</Button>
+        <Button variant="danger" size="sm" onClick={()=>setShowModal(true)}>Remove Student</Button>
     </div>
     )
 }

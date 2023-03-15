@@ -1,4 +1,7 @@
 .student-list-item {
+    display: flex;
+    align-items: center;
+
     font-size: larger;
     text-align: left;
     margin-block: 20px;
@@ -9,4 +12,9 @@
 
     background-color: rgb(238, 238, 238);
     border-radius: 10px;
+}
+
+.student-list-row {
+    display: flex;
+    align-items: center;
 }
