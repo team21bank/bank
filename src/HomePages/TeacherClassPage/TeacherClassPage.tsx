@@ -25,11 +25,14 @@ export function TeacherClassPage({classCode}:{classCode:string}){
     const bank_context = useContext(BankContext);
     useEffect(() => { //Update the bank context if this page is navigated to
         onValue(ref(getDatabase(), "/groups/"+classCode.slice(0,6)+"/bankObj"), bank_snapshot => {
-            if(bank_snapshot.exists() == false) {return;}
+            if(bank_snapshot.exists() === false) {
+                alert("Bank does not exist, displaying default values.");
+                return;
+            }
             getStudentList(bank_snapshot.val().studentList, setStudentList);
             bank_context.setBank(bank_snapshot.val());
         });
-    }, [classCode]);
+    }, []);
     
 
     return (
