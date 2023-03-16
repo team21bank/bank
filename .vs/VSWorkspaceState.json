@@ -2,9 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\HomePages",
-    "\\src\\HomePages\\TeacherClassPage"
+    "\\src\\BankingComponents",
+    "\\src\\HomePages\\StudentClassPage",
+    "\\src\\HomePages\\StudentHomePage",
+    "\\src\\HomePages\\TeacherClassPage",
+    "\\src\\HomePages\\TeacherHomePage"
   ],
-  "SelectedNode": "\\src\\HomePages\\TeacherClassPage\\SubgroupsPage.tsx",
+  "SelectedNode": "\\src\\HomePages",
   "PreviewInSolutionExplorer": false
 }

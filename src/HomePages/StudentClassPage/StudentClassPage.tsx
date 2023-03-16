@@ -1,4 +1,4 @@
-import { getDatabase, onValue, ref } from 'firebase/database';
+import { getDatabase, onValue, ref, get, update, set, push, remove } from 'firebase/database';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,8 @@ import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
 import { UserTransaction } from '../../BankingComponents/UserTransaction';
 import "./StudentClassPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
+import { app } from "../../firebase";
+import { Subgroup } from "../../Interfaces/Subgroup";
 
 export function StudentClassPage({classCode}:{classCode:string}){
     const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
@@ -72,20 +74,59 @@ export function StudentClassPage({classCode}:{classCode:string}){
             getStudentList(bank_snapshot.val().studentList, setStudentAuthUserList);
             bank_context.setBank(bank_snapshot.val());
         });
+        if (villages != null) {
+            for (let i = 0; i < villages.length; i++) {
+                if (villages[i]["name"] !== "placeholder") {
+                    console.log(villages[i]["name"] )
+                    villageArr.push(villages[i])
+                }
+            }
+        }
+        displayGroups();
     }, [classCode]);
 
     const current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? DEFAULT_BANK_USER;
 
+    const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
+    const [villageArr, setVillageArr] = React.useState<any[]>([]);
+    let villageA: any[] = []
+    const displayGroups = () => {
+
+        const object = async () => {
+            const db = await getDatabase(app);
+            const usersSnapshot = await get(ref(db, '/'))
+            var item = usersSnapshot.child('groups/' + classCode.slice(0, 6) + '/bankObj/subgroups').val();
+            const JSonValues = Object.values(item);
+            const parsedJSonValues = (JSON.parse(JSON.stringify(JSonValues)))
+            setVillages(parsedJSonValues)
+        }
+        object();
+        setVillages((v) => v.filter((_, index) => index !== 0));
+        
+    }
+
     return (
         <div className="student-class-page">
             Welcome to {classCode.slice(6)}
+        <table align="center">
+
+                <th>Village name</th>
+                <th>Students</th>
+
+                {villageArr.map((village, index) => (
+                    <tr data-index={index}>
+                        <td>{village.name}</td>
+                        <td>{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
+                    </tr>
+                ))}
+            </table>
             <div>your total balance is {current_bank_user.balance}</div>
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
             <ViewTransactions transactions={placeholder_transactions} uid={current_bank_user.uid}></ViewTransactions>
         <div>
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/pay")}>Pay/Create Transaction</Button>
         </div>
-            
+
         </div>
         
     )
