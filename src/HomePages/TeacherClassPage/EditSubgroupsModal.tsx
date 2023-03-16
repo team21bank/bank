@@ -9,6 +9,7 @@ import { Subgroup } from "../../Interfaces/Subgroup";
 import "./styles.css";
 import { Subgroups } from './Subgroups';
 import { Multiselect } from "multiselect-react-dropdown";
+import { BiEdit } from "react-icons/bi";
 
 export function EditSubgroupsModal({ code, group }: { code: string , group: string}) {
 
@@ -168,7 +169,7 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
 
     return(
         <div>
-            <Button onClick={showmodals}>Edit</Button>
+            <Button onClick={showmodals}><BiEdit/></Button>
             <Modal show={showModal} onHide={hidemodals}>
                 <Modal.Header closeButton><h2>Add Group</h2></Modal.Header>
                 <Modal.Body>
