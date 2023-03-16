@@ -2,10 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\HomePages",
+    "\\src\\BankingComponents",
+    "\\src\\HomePages\\StudentClassPage",
+    "\\src\\HomePages\\StudentHomePage",
     "\\src\\HomePages\\TeacherClassPage",
-    "\\src\\HomePages\\TeacherClassPage\\AddStudents"
+    "\\src\\HomePages\\TeacherHomePage"
   ],
-  "SelectedNode": "\\src\\HomePages\\TeacherClassPage\\AddStudents\\AddStudentsModal.tsx",
+  "SelectedNode": "\\src\\HomePages",
   "PreviewInSolutionExplorer": false
 }
