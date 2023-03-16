@@ -74,14 +74,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
             getStudentList(bank_snapshot.val().studentList, setStudentAuthUserList);
             bank_context.setBank(bank_snapshot.val());
         });
-        if (villages != null) {
-            for (let i = 0; i < villages.length; i++) {
-                if (villages[i]["name"] !== "placeholder") {
-                    console.log(villages[i]["name"] )
-                    villageArr.push(villages[i])
-                }
-            }
-        }
         displayGroups();
     }, [classCode]);
 
@@ -99,9 +91,11 @@ export function StudentClassPage({classCode}:{classCode:string}){
             const JSonValues = Object.values(item);
             const parsedJSonValues = (JSON.parse(JSON.stringify(JSonValues)))
             setVillages(parsedJSonValues)
+            setVillages((current) =>current.filter((fruit) => fruit.name !== "placeholder"));
         }
         object();
-        setVillages((v) => v.filter((_, index) => index !== 0));
+        
+    
         
     }
 
@@ -113,7 +107,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 <th>Village name</th>
                 <th>Students</th>
 
-                {villageArr.map((village, index) => (
+                {villages.map((village, index) => (
                     <tr data-index={index}>
                         <td>{village.name}</td>
                         <td>{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
