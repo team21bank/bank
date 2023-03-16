@@ -227,7 +227,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         
     }
     return (
-        <div>
+        <div className="teacher-class-page">
             <Modal show={showModal} onHide={hidemodals}>
                 <Modal.Header closeButton><h2>Add Group</h2></Modal.Header>
                 <Modal.Body>
@@ -239,7 +239,9 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                     <Button onClick={hidemodals}>Cancel</Button>
                 </Modal.Footer>
             </Modal>
+            <br></br>
             <Button onClick={showmodals}>Add Group</Button>
+            <br></br>
             <br></br>
             <table align="center">
                 <th></th>
