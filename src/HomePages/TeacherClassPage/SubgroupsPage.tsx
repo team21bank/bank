@@ -10,6 +10,7 @@ import "./styles.css";
 import { Subgroups } from './Subgroups';
 import { Multiselect } from "multiselect-react-dropdown";
 import { EditSubgroupsModal } from './EditSubgroupsModal';
+import { BsTrashFill } from "react-icons/bs";
 
 
 export function SubgroupsPage({ classCode }: { classCode: string }) {
@@ -226,7 +227,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         
     }
     return (
-        <div>
+        <div className="teacher-class-page">
             <Modal show={showModal} onHide={hidemodals}>
                 <Modal.Header closeButton><h2>Add Group</h2></Modal.Header>
                 <Modal.Body>
@@ -238,18 +239,20 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                     <Button onClick={hidemodals}>Cancel</Button>
                 </Modal.Footer>
             </Modal>
+            <br></br>
             <Button onClick={showmodals}>Add Group</Button>
             <br></br>
-            <table align="left">
-
+            <br></br>
+            <table align="center">
+                <th></th>
                 <th>Village name</th>
                 <th>Students</th>
 
                 {villageArr.map((village, index) => (
                     <tr data-index={index}>
+                        <td><Button style={{ background: 'gray' }} onClick={()=>deleteGroup(village.name)}><BsTrashFill color="red"/></Button></td>
                         <td>{village.name}</td>
                         <td>{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
-                        <td><Button onClick={()=>deleteGroup(village.name)}>Delete Group</Button></td>
                         <td><EditSubgroupsModal code = {classCode} group = {village.name}/></td>
                     </tr>
                 ))}
