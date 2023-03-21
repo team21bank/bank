@@ -11,6 +11,7 @@ import { QuizPage } from '../../Quizzes/QuizPage';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
 import { Transaction } from '../../Interfaces/Transaction';
 import { BalanceGraph } from '../../BankingComponents/BalanceGraph';
+import { EarningChart } from '../../BankingComponents/EarningChart';
 
 
 export function StudentHomePage(){
@@ -71,7 +72,7 @@ export function StudentHomePage(){
             <br />
             <BalanceGraph transactions={placeholder_transactions} uid={current_user.id}></BalanceGraph>
             <ViewTransactions transactions={placeholder_transactions} uid={current_user.id}></ViewTransactions>
-            
+            <EarningChart transactions={placeholder_transactions} uid={current_user.id}></EarningChart>
         </div>
     );
 }

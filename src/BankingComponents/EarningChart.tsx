@@ -1,11 +1,12 @@
 import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-
-ChartJS.register(ArcElement, Tooltip, Legend);
 import { Transaction, compareDates } from '../Interfaces/Transaction';
 
-export const data = {
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+
+const data = {
     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
     datasets: [
       {
@@ -65,7 +66,7 @@ export function getCategories(transactions: Transaction[]): string[] {
     return Array.from(categoryList);
 }
 
-export function BalanceGraph(transactionsAndUID: {transactions: Transaction[], uid: string}): JSX.Element {
+export function EarningChart(transactionsAndUID: {transactions: Transaction[], uid: string}): JSX.Element {
   const balanceHistory = transactionsAndUID.transactions.sort((a, b) => compareDates(a, b)).map((transaction: Transaction): number => {
     return transaction.receiver_uid === transactionsAndUID.uid ? transaction.receiver_balance : transaction.sender_balance || 0;
   })
@@ -77,8 +78,8 @@ export function BalanceGraph(transactionsAndUID: {transactions: Transaction[], u
       return transaction.receiver_uid === transactionsAndUID.uid;
   });
 
-  const losses = transactionsAndUID.transactions.filter((transaction: Transaction): boolean => {
-      return transaction.sender_uid === transactionsAndUID.uid;
+  const losses = transactionsAndUID.transactions.filter((transaction: Transaction) => {
+      return transaction.sender_uid !== transactionsAndUID.uid;
   });
 
   const spendData = {
@@ -86,7 +87,7 @@ export function BalanceGraph(transactionsAndUID: {transactions: Transaction[], u
     datasets: [
       {
         label: "Amount of Money spent on",
-        data: [0.1, 19, 3, 5, 2, 3],
+        data: getSpendingPerCategory(losses),
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
@@ -136,7 +137,10 @@ export function BalanceGraph(transactionsAndUID: {transactions: Transaction[], u
   };
   return <div>
       <Pie data={spendData}/>
-      <Pie data={earnData}/>
+      <span>losses length: {losses.length}</span>
+      <span>data: {getSpendingPerCategory(losses).toString()}</span>
+      <div>{""}</div>
+      <span>labels: {getCategories(losses).toString()}</span>
   </div>;
 }
 /*
