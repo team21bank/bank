@@ -28,6 +28,7 @@ export function StudentHomePage(){
         transfer_amount: 500,
         receiver_balance: 500,
         receiver_uid: current_user?.id || "0",
+        type: "misc"
         },
         {
             date: new Date(),
@@ -38,6 +39,7 @@ export function StudentHomePage(){
             transfer_amount: 150,
             receiver_balance: 650,
             receiver_uid: current_user?.id || "0",
+            type: "misc"
         },
         {
             date: LaterDate,
@@ -48,6 +50,7 @@ export function StudentHomePage(){
             transfer_amount: 75,
             receiver_balance: 700,
             receiver_uid: current_user?.id || "0",
+            type: "academics"
         },
         {
             date: new Date(),
@@ -59,6 +62,7 @@ export function StudentHomePage(){
             sender_balance: 625,
             receiver_balance: 1025,
             receiver_uid: "0",
+            type: "commerce"
         }
     ]
     return (

@@ -61,9 +61,8 @@ export function getSpendingPerCategory(transactions: Transaction[]): number[] {
 export function getCategories(transactions: Transaction[]): string[] {
     const categoryList = transactions.map((transaction: Transaction): string => {
         return transaction.type || "misc";
-    }).values();
-
-    return Array.from(categoryList);
+    });
+    return Array.from(new Set(categoryList));
 }
 
 export function EarningChart(transactionsAndUID: {transactions: Transaction[], uid: string}): JSX.Element {
@@ -79,7 +78,7 @@ export function EarningChart(transactionsAndUID: {transactions: Transaction[], u
   });
 
   const losses = transactionsAndUID.transactions.filter((transaction: Transaction) => {
-      return transaction.sender_uid !== transactionsAndUID.uid;
+      return transaction.receiver_uid !== transactionsAndUID.uid;
   });
 
   const spendData = {
@@ -114,7 +113,7 @@ export function EarningChart(transactionsAndUID: {transactions: Transaction[], u
     datasets: [
       {
         label: "Amount of Money spent on",
-        data: [0.1, 19, 3, 5, 2, 3],
+        data: getSpendingPerCategory(earnings),
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
@@ -137,10 +136,7 @@ export function EarningChart(transactionsAndUID: {transactions: Transaction[], u
   };
   return <div>
       <Pie data={spendData}/>
-      <span>losses length: {losses.length}</span>
-      <span>data: {getSpendingPerCategory(losses).toString()}</span>
-      <div>{""}</div>
-      <span>labels: {getCategories(losses).toString()}</span>
+      <Pie data={earnData}/>
   </div>;
 }
 /*
