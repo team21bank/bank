@@ -10,7 +10,7 @@ import {
     Legend,
   } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { Transaction } from '../Interfaces/Transaction';
+import { Transaction, compareDates } from '../Interfaces/Transaction';
 
 ChartJS.register(
     CategoryScale,
@@ -54,11 +54,11 @@ export const data = {
 };
 
 
-export function BalanceGraph({transactions}: {transactions: Transaction[]}): JSX.Element {
-  const balanceHistory = transactions.map((transaction: Transaction): number => {
-    return transaction.receiver_balance;
+export function BalanceGraph(transactionsAndUID: {transactions: Transaction[], uid: string}): JSX.Element {
+  const balanceHistory = transactionsAndUID.transactions.sort((a, b) => compareDates(a, b)).map((transaction: Transaction): number => {
+    return transaction.receiver_uid === transactionsAndUID.uid ? transaction.receiver_balance : transaction.sender_balance || 0;
   })
-  const dataPoints = transactions.map((transaction: Transaction): string => {
+  const dataPoints = transactionsAndUID.transactions.map((transaction: Transaction): string => {
     return transaction.date.toString().slice(0, 25);
   })
   const dataCopy = JSON.parse(JSON.stringify(data));

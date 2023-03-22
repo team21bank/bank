@@ -15,10 +15,12 @@ import { BalanceGraph } from '../../BankingComponents/BalanceGraph';
 
 export function StudentHomePage(){
     const current_user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
+    const LaterDate = new Date();
+    LaterDate.setHours(20);
     const placeholder_transactions:Transaction[] = [
         {
         date: new Date(),
-        receiver_name: current_user?.id || "user",
+        receiver_name: current_user?.username || "user",
         sender_name: "system",
         receiver_description: "starting balance",
         sender_description: "paid out starting balance",
@@ -37,13 +39,13 @@ export function StudentHomePage(){
             receiver_uid: current_user?.id || "0",
         },
         {
-            date: new Date(),
+            date: LaterDate,
             receiver_name: current_user?.username || "user",
             sender_name: "system",
             receiver_description: "quiz earnings",
             sender_description: "paid out quiz earnings",
             transfer_amount: 75,
-            receiver_balance: 725,
+            receiver_balance: 700,
             receiver_uid: current_user?.id || "0",
         },
         {
@@ -53,7 +55,8 @@ export function StudentHomePage(){
             receiver_description: "sold candles",
             sender_description: "bought candles",
             transfer_amount: 25,
-            receiver_balance: 700,
+            sender_balance: 625,
+            receiver_balance: 1025,
             receiver_uid: "0",
         }
     ]
@@ -66,7 +69,7 @@ export function StudentHomePage(){
             <br />
             <JoinClassButton />
             <br />
-            <BalanceGraph transactions={placeholder_transactions}></BalanceGraph>
+            <BalanceGraph transactions={placeholder_transactions} uid={current_user.id}></BalanceGraph>
             <ViewTransactions transactions={placeholder_transactions} uid={current_user.id}></ViewTransactions>
             
         </div>
