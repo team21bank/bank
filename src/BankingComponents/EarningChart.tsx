@@ -134,9 +134,9 @@ export function EarningChart(transactionsAndUID: {transactions: Transaction[], u
       }
     ]
   };
-  return <div>
-      <Pie data={spendData}/>
-      <Pie data={earnData}/>
+  return <div style={{width: "90%", justifySelf: "center", margin: "auto"}}>
+      <div style={{width: "45%", marginLeft: "auto", display: "inline-flex"}}><Pie data={spendData}/></div>
+      <div style={{width: "45%", marginLeft: "auto", display: "inline-flex"}}><Pie data={earnData}/></div>
   </div>;
 }
 /*

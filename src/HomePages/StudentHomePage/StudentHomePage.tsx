@@ -74,9 +74,9 @@ export function StudentHomePage(){
             <br />
             <JoinClassButton />
             <br />
+            <EarningChart transactions={placeholder_transactions} uid={current_user.id}></EarningChart>
             <BalanceGraph transactions={placeholder_transactions} uid={current_user.id}></BalanceGraph>
             <ViewTransactions transactions={placeholder_transactions} uid={current_user.id}></ViewTransactions>
-            <EarningChart transactions={placeholder_transactions} uid={current_user.id}></EarningChart>
         </div>
     );
 }
