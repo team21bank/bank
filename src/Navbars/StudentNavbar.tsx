@@ -3,7 +3,7 @@ import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { auth } from "../firebase";
 import { signOut } from 'firebase/auth';
-import { STORAGE_KEY } from '../Authentication/auth';
+import { USER_STORAGE_KEY } from '../Authentication/auth';
 import "./StudentNavbar.css";
 
 
@@ -23,7 +23,7 @@ export function StudentNavbar(): JSX.Element {
                 <NavDropdown.Item href="/editprofile">Edit Profile</NavDropdown.Item>
                 <NavDropdown.Item onClick={()=>{
                     signOut(auth);
-                    window.sessionStorage.removeItem(STORAGE_KEY);
+                    window.sessionStorage.removeItem(USER_STORAGE_KEY);
                     navigate("/");
                 }}>Log Out</NavDropdown.Item>
             </NavDropdown>
