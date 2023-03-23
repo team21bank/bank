@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
-import { ref, getDatabase, get } from '@firebase/database';
 import "../../firebase";
 import { auth } from '../../firebase';
 import {signInWithEmailAndPassword } from 'firebase/auth';

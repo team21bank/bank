@@ -1,17 +1,15 @@
-import { getDatabase, onValue, ref, get, update, set, push, remove } from 'firebase/database';
-import React, { useContext, useEffect, useState } from 'react';
+import { getDatabase, ref, get } from 'firebase/database';
+import React, { useContext, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, AuthUser, BankContext, BANK_STORAGE_KEY, DEFAULT_AUTH_USER } from "../../Authentication/auth";
 import { Bank, DEFAULT_BANK } from '../../Interfaces/BankObject';
-import { BankUser, DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
+import { DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
-import { UserTransaction } from '../../BankingComponents/UserTransaction';
 import "./StudentClassPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
 import { get_bank } from '../../DatabaseFunctions/BankFunctions';
 import { app } from "../../firebase";
-import { Subgroup } from "../../Interfaces/Subgroup";
 
 export function StudentClassPage({classCode}:{classCode:string}){
     window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
