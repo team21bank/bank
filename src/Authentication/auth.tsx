@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { ref, getDatabase } from "@firebase/database";
 import { onValue } from "firebase/database";
 import { Bank } from "../Interfaces/BankObject";
+import { get_auth_user } from "../DatabaseFunctions/UserFunctions";
 
 //Object to store information about a user
 export interface AuthUser {
@@ -38,11 +39,7 @@ export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Elem
 
     useEffect(() => { //update currentAuthUser if the state in the database changes
         if(uid_string != null) {
-            const user_ref = ref(getDatabase(), "/users/"+uid_string);
-            onValue(user_ref, user_snapshot => {
-                const user = user_snapshot.val();
-                if(user != null) setCurrentAuthUser(user.userObj);
-            });
+            get_auth_user(uid_string, setCurrentAuthUser)
         }
     }, [uid_string]);
 

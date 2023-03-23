@@ -7,6 +7,7 @@ import {signInWithEmailAndPassword } from 'firebase/auth';
 import './Login.css';
 import { useNavigate, Link} from 'react-router-dom';
 import { AuthContext, STORAGE_KEY } from '../auth';
+import { get_auth_user } from '../../DatabaseFunctions/UserFunctions';
 
 export function LoginForm(){
     //Email and password variable holding log in information
@@ -29,11 +30,8 @@ export function LoginForm(){
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
             window.sessionStorage.setItem(STORAGE_KEY, currUser.user.uid); //Add current user to browser storage
-            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid);
-            get(userRef).then(ss=>{
-                userContext.setUser(ss.val().userObj);
-                ss.val().userObj.isTeacher ? navigate('/teachers/home') : navigate('/students/home');
-            });
+            get_auth_user(currUser.user.uid, userContext.setUser)
+            navigate(userContext.user?.isTeacher ? "/teachers/home" : "/students/home")
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
