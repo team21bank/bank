@@ -6,7 +6,7 @@ import { auth } from '../../firebase';
 import {signInWithEmailAndPassword } from 'firebase/auth';
 import './Login.css';
 import { useNavigate, Link} from 'react-router-dom';
-import { AuthContext, STORAGE_KEY } from '../auth';
+import { AuthContext, USER_STORAGE_KEY } from '../auth';
 import { get_auth_user } from '../../DatabaseFunctions/UserFunctions';
 
 export function LoginForm(){
@@ -29,7 +29,7 @@ export function LoginForm(){
     //Function allowing user to login after clicking the login button
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
-            window.sessionStorage.setItem(STORAGE_KEY, currUser.user.uid); //Add current user to browser storage
+            window.sessionStorage.setItem(USER_STORAGE_KEY, currUser.user.uid); //Add current user to browser storage
             get_auth_user(currUser.user.uid, userContext.setUser)
             navigate(userContext.user?.isTeacher ? "/teachers/home" : "/students/home")
         }).catch(function(error){

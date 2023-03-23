@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext, AuthUser, BankContext, DEFAULT_AUTH_USER } from "../../Authentication/auth";
+import { AuthContext, AuthUser, BankContext, BANK_STORAGE_KEY, DEFAULT_AUTH_USER } from "../../Authentication/auth";
 import { AddStudentsModal } from "./AddStudents/AddStudentsModal";
 import {Bank, DEFAULT_BANK} from "../../Interfaces/BankObject"
-import { ref, getDatabase, onValue} from '@firebase/database';
 import "./TeacherClassPage.css";
 import { Button, Modal } from 'react-bootstrap';
 import { delete_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
@@ -12,6 +11,7 @@ import { Subgroups } from './Subgroups';
 import { get_bank } from '../../DatabaseFunctions/BankFunctions';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
+    window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
     const navigate = useNavigate();
 
     const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
