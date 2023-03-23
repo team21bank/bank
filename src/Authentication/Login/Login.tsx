@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
-import { ref, getDatabase, get } from '@firebase/database';
 import "../../firebase";
 import { auth } from '../../firebase';
 import {signInWithEmailAndPassword } from 'firebase/auth';
 import './Login.css';
 import { useNavigate, Link} from 'react-router-dom';
-import { AuthContext, STORAGE_KEY } from '../auth';
+import { AuthContext, USER_STORAGE_KEY } from '../auth';
+import { get_auth_user } from '../../DatabaseFunctions/UserFunctions';
 
 export function LoginForm(){
     //Email and password variable holding log in information
@@ -28,12 +28,9 @@ export function LoginForm(){
     //Function allowing user to login after clicking the login button
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
-            window.sessionStorage.setItem(STORAGE_KEY, currUser.user.uid); //Add current user to browser storage
-            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid);
-            get(userRef).then(ss=>{
-                userContext.setUser(ss.val().userObj);
-                ss.val().userObj.isTeacher ? navigate('/teachers/home') : navigate('/students/home');
-            });
+            window.sessionStorage.setItem(USER_STORAGE_KEY, currUser.user.uid); //Add current user to browser storage
+            get_auth_user(currUser.user.uid, userContext.setUser)
+            navigate(userContext.user?.isTeacher ? "/teachers/home" : "/students/home")
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;

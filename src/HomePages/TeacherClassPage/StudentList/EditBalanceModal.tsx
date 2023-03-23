@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { BiEdit } from "react-icons/bi";
-import { AuthUser, BankContext } from "../../../Authentication/auth";
+import { BankContext } from "../../../Authentication/auth";
 import { update_bank_user } from "../../../DatabaseFunctions/BankUserFunctions";
 import { DEFAULT_BANK } from "../../../Interfaces/BankObject";
 import { BankUser } from "../../../Interfaces/BankUser";

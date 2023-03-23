@@ -2,7 +2,7 @@ import { auth } from "../../firebase"
 import { get, set, getDatabase, ref, remove, Database } from "firebase/database";
 import { Modal, Button } from "react-bootstrap";
 import React, { useState } from "react";
-import { AuthUser, STORAGE_KEY } from "../auth";
+import { AuthUser, USER_STORAGE_KEY } from "../auth";
 import { Bank } from "../../Interfaces/BankObject";
 import { useNavigate } from "react-router-dom";
 import { BankUser } from "../../Interfaces/BankUser";
@@ -57,7 +57,7 @@ function delete_current_user(){
     }).finally(() => {
         remove(user_ref); //delete userObj from database
         currUser.delete(); //delete user from firebase authentication
-        sessionStorage.removeItem(STORAGE_KEY); //remove login info from session storage
+        sessionStorage.removeItem(USER_STORAGE_KEY); //remove login info from session storage
     });
     
 }

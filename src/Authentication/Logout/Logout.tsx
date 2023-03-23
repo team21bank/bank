@@ -4,7 +4,7 @@ import "../../firebase";
 import { auth } from '../../firebase';
 import {signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext, STORAGE_KEY } from '../auth';
+import { AuthContext, USER_STORAGE_KEY } from '../auth';
 
 export function LogoutButton(){
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ export function LogoutButton(){
     function logout(){
         let sign_out_promise = signOut(auth);
         user.setUser(null);
-        window.sessionStorage.removeItem(STORAGE_KEY)
+        window.sessionStorage.removeItem(USER_STORAGE_KEY)
         alert("Successfully logged out!");
         
         sign_out_promise.finally(() => navigate("/"));
