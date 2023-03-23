@@ -1,34 +1,25 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext, AuthUser, BankContext, DEFAULT_AUTH_USER } from "../../Authentication/auth";
-import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { AddStudentsModal } from "./AddStudents/AddStudentsModal";
 import {Bank, DEFAULT_BANK} from "../../Interfaces/BankObject"
 import { ref, getDatabase, onValue} from '@firebase/database';
 import "./TeacherClassPage.css";
-import { BankUser } from '../../Interfaces/BankUser';
 import { Button, Modal } from 'react-bootstrap';
 import { delete_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
-import { auth } from '../../firebase';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { StudentList } from './StudentList/StudentList';
 import { Subgroups } from './Subgroups';
-import { get_auth_users } from '../../DatabaseFunctions/UserFunctions';
+import { get_bank } from '../../DatabaseFunctions/BankFunctions';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
     const navigate = useNavigate();
 
-    const current_user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
+    const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
     const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
 
     const bank_context = useContext(BankContext);
-    useEffect(() => { //Update the bank context if this page is navigated to
-        onValue(ref(getDatabase(), "/groups/"+classCode.slice(0,6)+"/bankObj"), bank_snapshot => {
-            if(bank_snapshot.exists() === false) {
-                alert("Bank does not exist, displaying default values.");
-                return;
-            }
-            bank_context.setBank(bank_snapshot.val());
-        });
+    useEffect(() => {
+        get_bank(classCode.slice(0,6), bank_context.setBank)
     }, []);
     
 
