@@ -11,6 +11,8 @@ import "./StudentClassPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
 import { app } from "../../firebase";
 import { Subgroup } from "../../Interfaces/Subgroup";
+import { BankingDashboard } from '../../BankingComponents/BankingDashboard';
+import { sampleTransactions } from '../../Interfaces/Transaction';
 
 export function StudentClassPage({classCode}:{classCode:string}){
     const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
@@ -120,7 +122,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
         <div>
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/pay")}>Pay/Create Transaction</Button>
         </div>
-
+        {current_bank_user.uid}
+        <BankingDashboard current_auth_user={current_user} current_bank_user={current_bank_user} bank_transactions={sampleTransactions} bank_name={current_bank.classTitle}></BankingDashboard>
         </div>
         
     )

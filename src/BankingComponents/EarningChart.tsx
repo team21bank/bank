@@ -88,17 +88,17 @@ export function EarningChart(transactionsAndUID: {transactions: Transaction[], u
         label: "Amount of Money spent on",
         data: getSpendingPerCategory(losses),
         backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)"
+          "rgba(255, 0, 0, 0.8)",
+          "rgba(255, 112, 0, 0.8)",
+          "rgba(255, 201, 0, 0.8)",
+          "rgba(75, 192, 192, 0.4)",
+          "rgba(153, 102, 255, 0.4)",
+          "rgba(255, 159, 64, 0.4)"
         ],
         borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
+          "rgba(255, 0, 0, 1)",
+          "rgba(255, 112, 0, 1)",
+          "rgba(255, 201, 0, 1)",
           "rgba(75, 192, 192, 1)",
           "rgba(153, 102, 255, 1)",
           "rgba(255, 159, 64, 1)"
@@ -112,20 +112,20 @@ export function EarningChart(transactionsAndUID: {transactions: Transaction[], u
     labels: getCategories(earnings),
     datasets: [
       {
-        label: "Amount of Money spent on",
+        label: "Amount of Money earned from",
         data: getSpendingPerCategory(earnings),
         backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
+          "rgba(0, 255, 0, 0.8)",
+          "rgba(0, 200, 120, 0.8)",
+          "rgba(0, 250, 200, 0.8)",
           "rgba(75, 192, 192, 0.2)",
           "rgba(153, 102, 255, 0.2)",
           "rgba(255, 159, 64, 0.2)"
         ],
         borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
+          "rgba(0, 255, 0, 1)",
+          "rgba(0, 200, 120, 1)",
+          "rgba(0, 250, 200, 1)",
           "rgba(75, 192, 192, 1)",
           "rgba(153, 102, 255, 1)",
           "rgba(255, 159, 64, 1)"
@@ -135,8 +135,10 @@ export function EarningChart(transactionsAndUID: {transactions: Transaction[], u
     ]
   };
   return <div style={{width: "90%", justifySelf: "center", margin: "auto"}}>
-      <div style={{width: "45%", marginLeft: "auto", display: "inline-flex"}}><Pie data={spendData}/></div>
-      <div style={{width: "45%", marginLeft: "auto", display: "inline-flex"}}><Pie data={earnData}/></div>
+      <p>SPENDING:</p>
+      <div style={{width: "45%", marginLeft: "auto", display: "inline-flex"}}> <Pie data={spendData}/></div>
+      <p>EARNINGS:</p>
+      <div style={{width: "45%", marginLeft: "auto", display: "inline-flex"}}> <Pie data={earnData}/></div>
   </div>;
 }
 /*
