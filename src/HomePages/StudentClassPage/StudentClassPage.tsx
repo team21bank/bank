@@ -1,4 +1,4 @@
-import { getDatabase, onValue, ref } from 'firebase/database';
+import { getDatabase, onValue, ref, get, update, set, push, remove } from 'firebase/database';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -6,9 +6,12 @@ import { AuthContext, AuthUser, BankContext, BANK_STORAGE_KEY, DEFAULT_AUTH_USER
 import { Bank, DEFAULT_BANK } from '../../Interfaces/BankObject';
 import { BankUser, DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
+import { UserTransaction } from '../../BankingComponents/UserTransaction';
 import "./StudentClassPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
 import { get_bank } from '../../DatabaseFunctions/BankFunctions';
+import { app } from "../../firebase";
+import { Subgroup } from "../../Interfaces/Subgroup";
 
 export function StudentClassPage({classCode}:{classCode:string}){
     window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
@@ -74,12 +77,49 @@ export function StudentClassPage({classCode}:{classCode:string}){
 
     const current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? DEFAULT_BANK_USER;
 
+    const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
+    const [villageArr, setVillageArr] = React.useState<any[]>([]);
+    let villageA: any[] = []
+    const displayGroups = () => {
+
+        const object = async () => {
+            const db = await getDatabase(app);
+            const usersSnapshot = await get(ref(db, '/'))
+            var item = usersSnapshot.child('groups/' + classCode.slice(0, 6) + '/bankObj/subgroups').val();
+            const JSonValues = Object.values(item);
+            const parsedJSonValues = (JSON.parse(JSON.stringify(JSonValues)))
+            setVillages(parsedJSonValues)
+            setVillages((current) =>current.filter((fruit) => fruit.name !== "placeholder"));
+        }
+        object();
+        
+    
+        
+    }
+
     return (
         <div className="student-class-page">
             Welcome to {classCode.slice(6)}
+        <table align="center">
+
+                <th>Village name</th>
+                <th>Students</th>
+
+                {villages.map((village, index) => (
+                    <tr data-index={index}>
+                        <td>{village.name}</td>
+                        <td>{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
+                    </tr>
+                ))}
+            </table>
             <div>your total balance is {current_bank_user.balance}</div>
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
             <ViewTransactions transactions={placeholder_transactions} uid={current_bank_user.uid}></ViewTransactions>
+        <div>
+            <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/pay")}>Pay/Create Transaction</Button>
         </div>
+
+        </div>
+        
     )
 }

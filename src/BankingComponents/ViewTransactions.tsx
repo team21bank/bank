@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Transaction } from '../Interfaces/Transaction';
+import { compareDates, Transaction } from '../Interfaces/Transaction';
 
 //Takes in the student's transactions, as well as their UID (user.user.id) and displays the transactions in a table.
 export function ViewTransactions(transactionsAndUID: {transactions: Transaction[], uid: string}): JSX.Element {
     //State variable to be able to expand/contract transactions
     const [viewAll, setViewAll] = useState<Boolean>(false);
-
     return viewAll ? 
     //Uses html table to display transaction information by mapping the relevant fields of the transaction into the cells of the table.
     <div style={{display: "wrap", justifyContent: "center", alignItems: "stretch", width: "50%", margin: "auto"}}>
@@ -18,7 +17,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
             <th>Description</th>
             <th>Amount</th>
             <th>Balance</th>
-        {transactionsAndUID.transactions.map((transaction: Transaction): JSX.Element => {
+        {(transactionsAndUID.transactions).sort((a,b) => compareDates(a,b)).map((transaction: Transaction): JSX.Element => {
         return transaction.receiver_uid === transactionsAndUID.uid ? (
         <tr>
             <td>{transaction.receiver_name}</td>
@@ -35,7 +34,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
             <td>{transaction.receiver_name}</td>
             <td>{transaction.sender_description}</td>
             <td>{(transaction.transfer_amount * -1).toFixed(2)}</td>
-            <td>{transaction.receiver_balance.toFixed(2)}</td>
+            <td>{(transaction.sender_balance || 0).toFixed(2)}</td>
         </tr>
         )
         })}
@@ -54,7 +53,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
             <th>Description</th>
             <th>Amount</th>
             <th>Balance</th>
-        {transactionsAndUID.transactions.slice(0,5).map((transaction: Transaction): JSX.Element => {
+        {(transactionsAndUID.transactions).slice(0,5).map((transaction: Transaction): JSX.Element => {
         return transaction.receiver_uid === transactionsAndUID.uid ? (
         <tr>
             <td>{transaction.receiver_name}</td>
@@ -71,7 +70,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
             <td>{transaction.receiver_name}</td>
             <td>{transaction.sender_description}</td>
             <td>{(transaction.transfer_amount * -1).toFixed(2)}</td>
-            <td>{transaction.receiver_balance.toFixed(2)}</td>
+            <td>{(transaction.sender_balance || 0).toFixed(2)}</td>
         </tr>
         )
         })}
