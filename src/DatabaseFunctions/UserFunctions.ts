@@ -31,10 +31,11 @@ export function get_auth_user(uid: string, setter: (AuthUser) => void): Unsubscr
 //Fetches a list of AuthUser objects
 //THIS IS ONLY SUPPOSED TO BE USED ON THE TEACHER CLASS PAGE
 //ONVALUE IS NOT USED SO UPDATES TO THE DATABASE ARE NOT REFLECTED ON THE WEBSITE UNTIL REFRESH
-export function get_auth_users(uids: [string], setter: ([AuthUser]) => void) {
+export function get_auth_users(uids: string[], setter: (users: AuthUser[]) => void) {
     const database = getDatabase()
     const users = uids.map(uid => get(ref(database, "/users/"+uid+"/userObj")))
-    Promise.allSettled(users).then(settled_result => {
-        console.log("got array: ", settled_result)
+    Promise.all(users).then(settled_result => {
+        let users = settled_result.filter(snapshot => snapshot.exists()).map(snapshot => snapshot.val())
+        setter(users)
     })
 }
