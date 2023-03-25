@@ -1,6 +1,6 @@
 import { getDatabase, onValue, ref, get, update, set, push, remove } from 'firebase/database';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Modal,Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, AuthUser, BankContext, DEFAULT_AUTH_USER } from "../../Authentication/auth";
 import { Bank, DEFAULT_BANK } from '../../Interfaces/BankObject';
@@ -79,6 +79,21 @@ export function StudentClassPage({classCode}:{classCode:string}){
 
     const current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? DEFAULT_BANK_USER;
 
+    const [showTransactionModal,setShowTransactionModal] = React.useState(false)
+    const [showDropDown, setShowDropDown] = React.useState(false)
+    function showTransactions(){
+        setShowTransactionModal(true)
+        setShowDropDown(true)
+    }
+    function hideTransactions(){
+        setShowTransactionModal(false)
+        setShowDropDown(false)
+    }
+
+    const DropDown = () => (
+    <div></div>
+    )
+
     const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
     const [villageArr, setVillageArr] = React.useState<any[]>([]);
     let villageA: any[] = []
@@ -94,9 +109,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
             setVillages((current) =>current.filter((fruit) => fruit.name !== "placeholder"));
         }
         object();
-        
-    
-        
     }
 
     return (
@@ -114,11 +126,22 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     </tr>
                 ))}
             </table>
+            <Modal show={showTransactionModal} onHide={hideTransactions}>
+                <Modal.Header closeButton><h2>Create Transactions</h2></Modal.Header>
+                <Modal.Body>
+                    <br /><br />
+                    { }
+                    {showDropDown ? <DropDown /> : null}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={hideTransactions}>Cancel</Button>
+                </Modal.Footer>
+            </Modal>
             <div>your total balance is {current_bank_user.balance}</div>
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
             <ViewTransactions transactions={placeholder_transactions} uid={current_bank_user.uid}></ViewTransactions>
         <div>
-            <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/pay")}>Pay/Create Transaction</Button>
+            <Button onClick={showTransactions}>Pay/Create Transaction</Button>
         </div>
 
         </div>

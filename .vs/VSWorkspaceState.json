@@ -2,12 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\BankingComponents",
-    "\\src\\HomePages\\StudentClassPage",
-    "\\src\\HomePages\\StudentHomePage",
-    "\\src\\HomePages\\TeacherClassPage",
-    "\\src\\HomePages\\TeacherHomePage"
+    "\\src\\HomePages",
+    "\\src\\HomePages\\TeacherClassPage"
   ],
-  "SelectedNode": "\\src\\HomePages",
+  "SelectedNode": "\\src\\HomePages\\TeacherClassPage\\styles.css",
   "PreviewInSolutionExplorer": false
 }
