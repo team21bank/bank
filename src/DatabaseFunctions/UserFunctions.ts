@@ -20,7 +20,7 @@ export function create_auth_user(uid: string, user_object: AuthUser) {
 }
 
 //Fetches an AuthUser object from the database and uses it in the setter function
-export function get_auth_user(uid: string, setter: (AuthUser) => void): Unsubscribe {
+export function get_auth_user(uid: string, setter: (AuthUser: AuthUser) => void): Unsubscribe {
     return onValue(ref(getDatabase(), "/users/"+uid+"/userObj"),
         snapshot => {
             setter(snapshot.val() ?? DEFAULT_AUTH_USER)
