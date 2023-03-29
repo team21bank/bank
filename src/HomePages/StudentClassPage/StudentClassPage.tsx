@@ -11,6 +11,8 @@ import "./StudentClassPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
 import { app } from "../../firebase";
 import { Subgroup } from "../../Interfaces/Subgroup";
+import { Multiselect } from "multiselect-react-dropdown";
+
 
 export function StudentClassPage({classCode}:{classCode:string}){
     const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
@@ -75,6 +77,11 @@ export function StudentClassPage({classCode}:{classCode:string}){
             bank_context.setBank(bank_snapshot.val());
         });
         displayGroups();
+
+        //move the two below into a function
+        
+
+
     }, [classCode]);
 
     const current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? DEFAULT_BANK_USER;
@@ -90,11 +97,46 @@ export function StudentClassPage({classCode}:{classCode:string}){
         setShowDropDown(false)
     }
 
+//    const DropDown = () =>(<div></div>)
+
+    const submitFormData = event => {
+        event.preventDefault();
+        handleSubmit();
+    }
+    const handleSubmit = () => {
+        setShowDropDown(false)
+        setShowTransactionModal(false)
+    }
+
+    const [emails, setEmails] = useState<string[]>([]);
+     const handleSelect = (selectedList) => {
+        setEmails(selectedList);
+    };
+
+    const handleRemove = (selectedList) => {
+        setEmails(selectedList);
+    };
+
+
+   
     const DropDown = () => (
-    <div></div>
-    )
+        <div className="App">
+            <form onSubmit={submitFormData}>
+            Select Students
+            <Multiselect
+                options={students} // Options to display in the dropdown
+                selectedValues={emails} // Preselected value to persist in dropdown
+                onSelect={handleSelect} // Function will trigger on select event
+                onRemove={handleRemove} // Function will trigger on remove event
+                displayValue="email" // Property name to display in the dropdown options
+                />
+                <button type="submit">Submit</button>
+            </form>
+        </div>)
+        
 
     const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
+    const [students, setStudents] = React.useState<any[]>([]);
     const [villageArr, setVillageArr] = React.useState<any[]>([]);
     let villageA: any[] = []
     const displayGroups = () => {
@@ -102,13 +144,40 @@ export function StudentClassPage({classCode}:{classCode:string}){
         const object = async () => {
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
-            var item = usersSnapshot.child('groups/' + classCode.slice(0, 6) + '/bankObj/subgroups').val();
-            const JSonValues = Object.values(item);
-            const parsedJSonValues = (JSON.parse(JSON.stringify(JSonValues)))
-            setVillages(parsedJSonValues)
+            var item1 = usersSnapshot.child('groups/' + classCode.slice(0, 6) + '/bankObj/subgroups').val();
+            const jsonValues = Object.values(item1);
+            const parsedjsonValues = (JSON.parse(JSON.stringify(jsonValues)))
+            setVillages(parsedjsonValues)
             setVillages((current) =>current.filter((fruit) => fruit.name !== "placeholder"));
+
+            //set student list
+            let stuIDs:string[] = []
+            let studentsList: any[] = []
+            var studs = usersSnapshot.child(`groups/${classCode.slice(0,6)}/bankObj/studentList`).val();
+            const studentsJson = Object.values(studs)
+            const parsedStudentsJson2 = JSON.parse(JSON.stringify(studentsJson))
+            parsedStudentsJson2.forEach((object)=>{
+                if(object["uid"]!==""){
+                    stuIDs.push(object["uid"])
+                }
+            })
+            
+            var item2 = usersSnapshot.child('users').val();
+            const JSonValues2 = Object.values(item2);
+            const parsedJSonValues2 = JSON.parse(JSON.stringify(JSonValues2))
+            for(let i = 0; i < stuIDs.length;i++){
+                parsedJSonValues2.forEach((user)=>{
+                    if(user["userObj"]["hash"]===stuIDs[i]){
+                        studentsList.push(user["userObj"])
+                    }
+                })
+            }
+            studentsList.forEach((student)=>students.push(student))
+            //end of set student list
+
         }
         object();
+        
     }
 
     return (
