@@ -78,12 +78,11 @@ export function StudentClassPage({classCode}:{classCode:string}){
             bank_context.setBank(bank_snapshot.val());
         });
         displayGroups();
-
         //move the two below into a function
         
 
 
-    }, [classCode]);
+    }, []);
 
     const current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? DEFAULT_BANK_USER;
 
@@ -177,7 +176,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
 
     const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
     const [students, setStudents] = React.useState<any[]>([]);
-    const studentsSet = new Set()
+
+
     
     const displayGroups = () => {
 
