@@ -75,7 +75,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             const JSonValues = Object.values(item);
             const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
             console.log(parsedJSonValues)
-            for(let i = 0; i < stuIDs.length;i++){
+            for(let i = 0; i < stuIDs.length+1;i++){
                 parsedJSonValues.forEach((user)=>{
                     if(user["userObj"]["hash"]===stuIDs[i]){
                         studentsList.push(user)
