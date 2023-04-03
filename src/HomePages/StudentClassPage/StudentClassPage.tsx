@@ -12,6 +12,7 @@ import { Transaction } from '../../Interfaces/Transaction';
 import { app } from "../../firebase";
 import { Subgroup } from "../../Interfaces/Subgroup";
 import { Multiselect } from "multiselect-react-dropdown";
+import CurrencyInput from "react-currency-input-field";
 
 
 export function StudentClassPage({classCode}:{classCode:string}){
@@ -97,7 +98,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
         setShowDropDown(false)
     }
 
-//    const DropDown = () =>(<div></div>)
 
     const submitFormData = event => {
         event.preventDefault();
@@ -117,8 +117,15 @@ export function StudentClassPage({classCode}:{classCode:string}){
         setEmails(selectedList);
     };
 
-
-   
+    const updateFormData = event => {
+        if (event === undefined) {
+            setAmount(0)
+        }
+        else {
+            setAmount(event.target.value);
+        }
+    };
+    const [amount,setAmount] = React.useState(0.00)
     const DropDown = () => (
         <div className="App">
             <form onSubmit={submitFormData}>
@@ -130,6 +137,18 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 onRemove={handleRemove} // Function will trigger on remove event
                 displayValue="email" // Property name to display in the dropdown options
                 />
+                Enter amount name
+                <br></br>
+                <CurrencyInput
+                    allowDecimals
+                    decimalSeparator="."
+                    prefix="$"
+                    decimalsLimit={2}
+                    defaultValue={0}
+                    allowNegativeValue={false}
+                    onValueChange={updateFormData}
+                />
+                <br></br>
                 <button type="submit">Submit</button>
             </form>
         </div>)
