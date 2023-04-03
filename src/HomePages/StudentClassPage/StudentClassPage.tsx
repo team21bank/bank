@@ -97,15 +97,30 @@ export function StudentClassPage({classCode}:{classCode:string}){
         setShowTransactionModal(false)
         setShowDropDown(false)
     }
-
-
+    const [errmsg, setErrmsg] = useState("");
+    const [err, setErr] = useState("");
+    const errors = (errClass, errmsg) => {
+        setErrmsg(errmsg);
+    };
+    const errors2 = (errClass2, err) => {
+        setErr(err);
+    };
+    const errClass = "form-control error";
+    const errClass2 = "form-control error"
     const submitFormData = event => {
         event.preventDefault();
-        handleSubmit();
+        if (emails.length === 0) {
+            if (emails.length === 0)
+                errors2(errClass2, "Students can't be empty")
+        }
+        else {
+            handleSubmit();
+        }
     }
     const handleSubmit = () => {
         setShowDropDown(false)
         setShowTransactionModal(false)
+        setEmails([])
     }
 
     const [emails, setEmails] = useState<string[]>([]);
@@ -137,6 +152,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 onRemove={handleRemove} // Function will trigger on remove event
                 displayValue="email" // Property name to display in the dropdown options
                 />
+                <div><small id="set"> {err}</small></div>
                 Enter amount name
                 <br></br>
                 <CurrencyInput
@@ -148,6 +164,9 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     allowNegativeValue={false}
                     onValueChange={updateFormData}
                 />
+                <div>
+                    <small id="set"> {errmsg}</small>
+                </div>
                 <br></br>
                 <button type="submit">Submit</button>
             </form>
