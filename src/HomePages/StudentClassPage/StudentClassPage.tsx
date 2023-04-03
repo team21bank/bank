@@ -109,6 +109,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
     const errClass2 = "form-control error"
     const submitFormData = event => {
         event.preventDefault();
+        
         if (emails.length === 0) {
             if (emails.length === 0)
                 errors2(errClass2, "Students can't be empty")
@@ -151,6 +152,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 onSelect={handleSelect} // Function will trigger on select event
                 onRemove={handleRemove} // Function will trigger on remove event
                 displayValue="email" // Property name to display in the dropdown options
+
                 />
                 <div><small id="set"> {err}</small></div>
                 Enter amount name
@@ -175,8 +177,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
 
     const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
     const [students, setStudents] = React.useState<any[]>([]);
-    const [villageArr, setVillageArr] = React.useState<any[]>([]);
-    let villageA: any[] = []
+    const studentsSet = new Set()
+    
     const displayGroups = () => {
 
         const object = async () => {
@@ -203,19 +205,18 @@ export function StudentClassPage({classCode}:{classCode:string}){
             var item2 = usersSnapshot.child('users').val();
             const JSonValues2 = Object.values(item2);
             const parsedJSonValues2 = JSON.parse(JSON.stringify(JSonValues2))
-            for(let i = 0; i < stuIDs.length;i++){
+            for(let i = 0; i < stuIDs.length+1;i++){
                 parsedJSonValues2.forEach((user)=>{
                     if(user["userObj"]["hash"]===stuIDs[i]){
-                        studentsList.push(user["userObj"])
+                        //students.push(user["userObj"])
+                        setStudents((students) => {
+                            return students.concat(user["userObj"])
+                        })
                     }
                 })
             }
-            studentsList.forEach((student)=>students.push(student))
-            //end of set student list
-
         }
         object();
-        
     }
 
     return (
