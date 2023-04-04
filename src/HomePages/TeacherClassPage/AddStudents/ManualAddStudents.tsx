@@ -5,10 +5,10 @@ import React, { useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { BsTrashFill } from "react-icons/bs";
 import { RiPlayListAddFill } from "react-icons/ri";
-import { AuthUser } from "../../../Authentication/auth";
 import { firebaseConfig } from "../../../firebase";
 import { Bank } from "../../../Interfaces/BankObject";
 import { BankUser, DEFAULT_BANK_USER } from "../../../Interfaces/BankUser";
+import { AuthUser } from "../../../Interfaces/AuthUser";
 
 /*
 I HAVE NO CLUE IF THIS IS A GOOD WAY TO GO ABOUT MAKING A LIST OF EDITABLE ITEMS.

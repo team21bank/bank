@@ -5,7 +5,7 @@ import { EarningChart } from './EarningChart';
 import { Transaction } from '../Interfaces/Transaction';
 import { Button } from 'react-bootstrap';
 import { BankUser } from '../Interfaces/BankUser';
-import { AuthUser } from '../Authentication/auth';
+import { AuthUser } from '../Interfaces/AuthUser';
 
 /**
  * Takes in bank and user information alongside transactions to display to the student information about how they've earned/used money
@@ -46,7 +46,7 @@ export function BankingDashboard(info: {current_auth_user: AuthUser, current_ban
                 }
             </div>
             <br />
-            
+
             <ViewTransactions transactions={info.bank_transactions} uid={info.current_bank_user.uid}></ViewTransactions>
         </div>
     );

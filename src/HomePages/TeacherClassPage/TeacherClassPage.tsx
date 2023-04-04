@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext, AuthUser, BankContext, BANK_STORAGE_KEY, DEFAULT_AUTH_USER } from "../../Authentication/auth";
+import { AuthContext, BankContext, BANK_STORAGE_KEY } from "../../Authentication/auth";
 import { AddStudentsModal } from "./AddStudents/AddStudentsModal";
 import {Bank, DEFAULT_BANK} from "../../Interfaces/BankObject"
 import "./TeacherClassPage.css";
 import { Button, Modal } from 'react-bootstrap';
-import { delete_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
+import { delete_bank } from '../EditProfilePage/DeleteAccount';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { StudentList } from './StudentList/StudentList';
 import { Subgroups } from './Subgroups';
 import { get_bank } from '../../DatabaseFunctions/BankFunctions';
+import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
     window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));

@@ -2,7 +2,7 @@ import { getDatabase, ref, get } from 'firebase/database';
 import React, { useContext, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext, AuthUser, BankContext, BANK_STORAGE_KEY, DEFAULT_AUTH_USER } from "../../Authentication/auth";
+import { AuthContext, BankContext, BANK_STORAGE_KEY } from "../../Authentication/auth";
 import { Bank, DEFAULT_BANK } from '../../Interfaces/BankObject';
 import { DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
@@ -13,6 +13,7 @@ import { app } from "../../firebase";
 import { Subgroup } from "../../Interfaces/Subgroup";
 import { BankingDashboard } from '../../BankingComponents/BankingDashboard';
 import { sampleTransactions } from '../../Interfaces/Transaction';
+import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
 export function StudentClassPage({classCode}:{classCode:string}){
     window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
