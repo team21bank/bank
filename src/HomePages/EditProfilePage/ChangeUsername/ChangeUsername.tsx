@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import {Button, Form, Modal} from 'react-bootstrap'
 import './ChangeUsername.css'
-import "../../firebase";
-import { auth } from '../../firebase';
-import { AuthContext } from '../auth';
+import "../../../firebase";
+import { auth } from '../../../firebase';
+import { AuthContext } from '../../../Authentication/auth';
 
 export function ChangeUsernameButton(){
     const user = useContext(AuthContext);
