@@ -1,7 +1,8 @@
 import React, { useContext} from "react";
 import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
 import { QuizList } from "./QuizList";
-import { AuthContext, BankContext, DEFAULT_AUTH_USER} from "../Authentication/auth";
+import { AuthContext, BankContext} from "../Authentication/auth";
+import { DEFAULT_AUTH_USER } from "../Interfaces/AuthUser";
 
 //make an import JSON feature
 export function StudentQuizMain(): JSX.Element{
