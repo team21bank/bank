@@ -15,24 +15,24 @@ import { Multiselect } from "multiselect-react-dropdown";
 import CurrencyInput from "react-currency-input-field";
 
 
-export function StudentClassPage({classCode}:{classCode:string}){
+export function StudentClassPage({ classCode }: { classCode: string }) {
     const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
     const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
-    
-    
+
+
     const navigate = useNavigate();
 
     //Real transactions will eventually be saved in the database under a BankUser object
-    const placeholder_transactions:Transaction[] = [
+    const placeholder_transactions: Transaction[] = [
         {
-        date: new Date(),
-        receiver_name: current_user?.id || "user",
-        sender_name: "system",
-        receiver_description: "starting balance",
-        sender_description: "paid out starting balance",
-        transfer_amount: 500,
-        receiver_balance: 500,
-        receiver_uid: current_user?.id || "0",
+            date: new Date(),
+            receiver_name: current_user?.id || "user",
+            sender_name: "system",
+            receiver_description: "starting balance",
+            sender_description: "paid out starting balance",
+            transfer_amount: 500,
+            receiver_balance: 500,
+            receiver_uid: current_user?.id || "0",
         },
         {
             date: new Date(),
@@ -66,33 +66,33 @@ export function StudentClassPage({classCode}:{classCode:string}){
         }
     ]
 
-    
+
     //Get AuthUser objects for each student in the class
     const [studentAuthUserList, setStudentAuthUserList] = useState<AuthUser[]>([]);
 
     const bank_context = useContext(BankContext);
     useEffect(() => { //Update the bank context if this page is navigated to
-        onValue(ref(getDatabase(), "/groups/"+classCode.slice(0,6)+"/bankObj"), bank_snapshot => {
-            if(bank_snapshot.exists() == false) {return;}
+        onValue(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj"), bank_snapshot => {
+            if (bank_snapshot.exists() == false) { return; }
             getStudentList(bank_snapshot.val().studentList, setStudentAuthUserList);
             bank_context.setBank(bank_snapshot.val());
         });
         displayGroups();
         //move the two below into a function
-        
+
 
 
     }, []);
 
-    const current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? DEFAULT_BANK_USER;
+    const current_bank_user = current_bank.studentList.find(val => val.uid === current_user.hash) ?? DEFAULT_BANK_USER;
 
-    const [showTransactionModal,setShowTransactionModal] = React.useState(false)
+    const [showTransactionModal, setShowTransactionModal] = React.useState(false)
     const [showDropDown, setShowDropDown] = React.useState(false)
-    function showTransactions(){
+    function showTransactions() {
         setShowTransactionModal(true)
         setShowDropDown(true)
     }
-    function hideTransactions(){
+    function hideTransactions() {
         setShowTransactionModal(false)
         setShowDropDown(false)
         setAmount(0)
@@ -110,10 +110,15 @@ export function StudentClassPage({classCode}:{classCode:string}){
     const errClass2 = "form-control error"
     const submitFormData = event => {
         event.preventDefault();
-        
-        if (emails.length === 0) {
-            if (emails.length === 0)
+        console.log(`Emails length is ${emails.length} and amount is ${amount} and the bank balance is ${current_bank_user.balance}`)
+        if (emails.length === 0 || emails.length * amount > current_bank_user.balance ) {
+            if (emails.length === 0) {
                 errors2(errClass2, "Students can't be empty")
+            }
+            if (emails.length * amount > current_bank_user.balance) {
+                errors(errClass, "Insufficient funds in bank account")
+            }
+
         }
         else {
             handleSubmit();
@@ -143,8 +148,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
         }
         else {
             setAmount(event);
-            //const parsedValue = value.replace(/[^\d.]/gi, "");
-            //setAmount(parsedValue);
         }
     };
     
