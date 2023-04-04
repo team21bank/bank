@@ -95,6 +95,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
     function hideTransactions(){
         setShowTransactionModal(false)
         setShowDropDown(false)
+        setAmount(0)
+        setEmails([])
     }
     const [errmsg, setErrmsg] = useState("");
     const [err, setErr] = useState("");
@@ -121,6 +123,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
         setShowDropDown(false)
         setShowTransactionModal(false)
         setEmails([])
+        setAmount(0)
     }
 
     const [emails, setEmails] = useState<string[]>([]);
@@ -131,16 +134,20 @@ export function StudentClassPage({classCode}:{classCode:string}){
     const handleRemove = (selectedList) => {
         setEmails(selectedList);
     };
+    const [amount, setAmount] = React.useState(0)
+
 
     const updateFormData = event => {
         if (event === undefined) {
             setAmount(0)
         }
         else {
-            setAmount(event.target.value);
+            setAmount(event);
+            //const parsedValue = value.replace(/[^\d.]/gi, "");
+            //setAmount(parsedValue);
         }
     };
-    const [amount,setAmount] = React.useState(0.00)
+    
     const DropDown = () => (
         <div className="App">
             <form onSubmit={submitFormData}>
@@ -157,13 +164,16 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 Enter amount name
                 <br></br>
                 <CurrencyInput
+                    autoFocus
                     allowDecimals
                     decimalSeparator="."
                     prefix="$"
                     decimalsLimit={2}
+                    value={amount}
                     defaultValue={0}
                     allowNegativeValue={false}
                     onValueChange={updateFormData}
+                    step={1}
                 />
                 <div>
                     <small id="set"> {errmsg}</small>
