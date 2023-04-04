@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { Bank } from "../Interfaces/BankObject";
-import { get_auth_user } from "../DatabaseFunctions/UserFunctions";
+import { get_auth_user_updating } from "../DatabaseFunctions/UserFunctions";
 import { get_bank } from "../DatabaseFunctions/BankFunctions";
 import { AuthUser } from "../Interfaces/AuthUser";
 
@@ -38,7 +38,7 @@ export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Elem
     const currUserString = window.sessionStorage.getItem(USER_STORAGE_KEY);
     useEffect(() => { //update currentAuthUser if the state in the database changes
         if(currUserString != null) {
-            get_auth_user(currUserString, setCurrentAuthUser)
+            get_auth_user_updating(currUserString, setCurrentAuthUser)
         }
     }, [currUserString]);    
 

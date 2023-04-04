@@ -1,5 +1,5 @@
 import { Unsubscribe } from "firebase/auth";
-import { get, onValue, set, ref, getDatabase, remove } from "firebase/database";
+import { get, onValue, set, ref, getDatabase, remove, DataSnapshot } from "firebase/database";
 import { AuthUser, DEFAULT_AUTH_USER } from "../Interfaces/AuthUser";
 
 //Sets the AuthUser object at /users/uid to new_object
@@ -19,13 +19,22 @@ export function create_auth_user(uid: string, user_object: AuthUser) {
     set(ref(getDatabase(), "/users/"+uid+"/userObj"), user_object);
 }
 
+
 //Fetches an AuthUser object from the database and uses it in the setter function
-export function get_auth_user(uid: string, setter: (AuthUser: AuthUser) => void): Unsubscribe {
+export function get_auth_user_updating(uid: string, setter: (AuthUser: AuthUser) => void): Unsubscribe {
     return onValue(ref(getDatabase(), "/users/"+uid+"/userObj"),
         snapshot => {
             setter(snapshot.val() ?? DEFAULT_AUTH_USER)
         }
     )
+}
+
+export function get_auth_user_then(uid: string, func: (user: AuthUser) => void) {
+    get(ref(getDatabase(), "/users/"+uid+"/userObj")).then(data => {
+        if(data.exists()) {
+            func(data.val());
+        }
+    })
 }
 
 //Fetches a list of AuthUser objects
