@@ -40,6 +40,11 @@ export function LoginForm(){
         });
     }
 
+    function handle_key_press(event) {
+        if(event.key === "Enter") {
+            login()
+        }
+    }
 
     return <div className="login-page">
         <h1>Login</h1>
@@ -59,7 +64,9 @@ export function LoginForm(){
                     className="login-text-box"
                     type="password"
                     value={pass}
-                    onChange={updatePass}/>
+                    onChange={updatePass}
+                    onKeyUp={handle_key_press}
+                />
             </div>
             <Button className="button_reset" onClick={()=>navigate("/login/resetpassword")}>Forgot Password?</Button>
             <br/>
