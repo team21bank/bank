@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react';
 import {Button, Form, Modal} from 'react-bootstrap'
-import { LoadingPage } from '../LoadingPage/LoadingPage';
 import './ChangeUsername.css'
-import "../../firebase";
-import { auth } from '../../firebase';
-import { AuthContext } from '../auth';
+import "../../../firebase";
+import { auth } from '../../../firebase';
+import { AuthContext } from '../../../Authentication/auth';
 
 export function ChangeUsernameButton(){
     const user = useContext(AuthContext);
@@ -28,7 +27,7 @@ export function ChangeUsernameButton(){
         setShowModal(false);
     }
 
-    return user.user ? (
+    return (
         <div className="change-username" >
             <Modal show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton>Change Username</Modal.Header>
@@ -49,8 +48,5 @@ export function ChangeUsernameButton(){
             </Modal>
             <Button onClick={()=> setShowModal(true)}>Change Username</Button>
         </div>
-    ) : (
-        <LoadingPage/>
     )
-
 }

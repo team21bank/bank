@@ -2,12 +2,11 @@ import {Button,Form, Modal } from 'react-bootstrap'
 import { ref, getDatabase, set} from '@firebase/database';
 import React, { useContext, useState } from 'react';
 import { AuthContext } from "../../Authentication/auth";
-import { AuthUser } from "../../Authentication/auth";
-import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { auth } from '../../firebase';
 import { get } from 'firebase/database';
 import { Bank } from '../../Interfaces/BankObject';
 import { DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
+import { AuthUser } from '../../Interfaces/AuthUser';
 
 export function JoinClassButton(){
     const [showModal, setShowModal] = useState(false);
@@ -53,7 +52,7 @@ export function JoinClassButton(){
         });
     }
     
-    return user.user ? (
+    return (
         <div>
             <Modal show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton><h1>Join Class</h1></Modal.Header>
@@ -73,7 +72,5 @@ export function JoinClassButton(){
             </Modal>
             <Button onClick={()=>setShowModal(true)} size="lg">Join Class</Button>
         </div>
-    ) : (
-        <LoadingPage/>
     )
 }

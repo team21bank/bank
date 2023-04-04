@@ -1,16 +1,12 @@
 import React, { useContext } from 'react';
-import { AuthContext, DEFAULT_AUTH_USER } from "../../Authentication/auth";
+import { AuthContext } from "../../Authentication/auth";
 import "./StudentHomePage.css";
-import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { JoinClassButton } from "../../ClassCode/JoinClass/JoinClass"
 import { ClassList } from '../../ClassCode/ClassList';
-import {Button} from "react-bootstrap"
-import { useNavigate} from 'react-router-dom';
-import { AvatarForm } from '../../Authentication/Avatar/Avatar';
-import { QuizPage } from '../../Quizzes/QuizPage';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
 import { Transaction } from '../../Interfaces/Transaction';
 import { BalanceGraph } from '../../BankingComponents/BalanceGraph';
+import { DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
 
 export function StudentHomePage(){
