@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap";
-import { AuthUser } from "../../../Authentication/auth";
-import { delete_student_from_bank } from "../../../Authentication/EditProfilePage/DeleteAccount";
+import { delete_student_from_bank } from "../../EditProfilePage/DeleteAccount";
 import { Bank } from "../../../Interfaces/BankObject";
 import { BankUser, getTitle } from "../../../Interfaces/BankUser";
-import { ref, getDatabase, onValue, set} from '@firebase/database';
 import "./ViewStudent.css";
 import { EditBalanceModal } from "./EditBalanceModal";
 import { EditRoleModal } from "./EditRoleModal";
+import { AuthUser } from "../../../Interfaces/AuthUser";
 
 
 export function ViewStudent(

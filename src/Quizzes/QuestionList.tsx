@@ -1,13 +1,14 @@
 import { getDatabase, onValue, ref } from "firebase/database";
 import React, { ChangeEvent, useContext, useState } from "react";
 import { Button, FormSelect, Stack } from "react-bootstrap";
-import { AuthContext, AuthUser, DEFAULT_AUTH_USER, BankContext } from "../Authentication/auth";
+import { AuthContext, BankContext } from "../Authentication/auth";
 import { auth } from "../firebase";
 import { BankUser, DEFAULT_BANK_USER } from "../Interfaces/BankUser";
 import { update_bank_user } from "../DatabaseFunctions/BankUserFunctions";
 import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
 import { QuestionView } from "./QuestionView";
+import { DEFAULT_AUTH_USER } from "../Interfaces/AuthUser";
 
 export function QuestionList({
     questions,

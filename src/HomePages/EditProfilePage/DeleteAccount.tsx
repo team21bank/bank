@@ -2,10 +2,11 @@ import { auth } from "../../firebase"
 import { get, set, getDatabase, ref, remove, Database } from "firebase/database";
 import { Modal, Button } from "react-bootstrap";
 import React, { useState } from "react";
-import { AuthUser, USER_STORAGE_KEY } from "../auth";
+import { USER_STORAGE_KEY } from "../../Authentication/auth";
 import { Bank } from "../../Interfaces/BankObject";
 import { useNavigate } from "react-router-dom";
 import { BankUser } from "../../Interfaces/BankUser";
+import { AuthUser } from "../../Interfaces/AuthUser";
 
 export function DeleteAccountModal(): JSX.Element {
     const [showModal, setShowModal] = useState(false);
@@ -29,11 +30,6 @@ export function DeleteAccountModal(): JSX.Element {
     )
 }
 
-
-//////////////////////////////////// TODO //////////////////////////
-//If a student is in multiple of a teacher's classes, if that teacher deletes their account,
-//the student will not be removed from all the classes and will hold on to a reference to a 
-//deleted bank object.
 
 function delete_current_user(){
     const currUser = auth.currentUser;

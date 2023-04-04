@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
 import { SubgroupsPage } from './SubgroupsPage';
 import { AuthContext } from "../../Authentication/auth";
 import { useContext } from 'react';
@@ -29,15 +28,12 @@ export function Subgroups({ classID }: { classID: string }): JSX.Element {
         navigate(`/teachers/${classID.slice(0, 6)}/groups`);
     }
 
-    return user.user ? (
+    return (
         <div className="teacher-home">
             <br />
             <div>
                 <Button className="groups-button" onClick={reloadPage}>Groups</Button>
             </div>
         </div>
-    ) : (
-        <LoadingPage />
     )
-
 }

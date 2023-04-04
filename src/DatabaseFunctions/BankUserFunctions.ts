@@ -1,4 +1,3 @@
-import React from "react";
 import { BankUser } from "../Interfaces/BankUser";
 import { get, set, ref, getDatabase } from "firebase/database";
 
@@ -66,3 +65,4 @@ export function create_default_bank_user(bank_id: string, user_id: string) {
         set(student_list_ref, student_list);
     });
 }
+

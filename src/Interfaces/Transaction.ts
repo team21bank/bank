@@ -1,4 +1,4 @@
-import { AuthUser } from "../Authentication/auth";
+import { AuthUser } from "./AuthUser";
 import { BankUser } from "./BankUser";
 
 /**

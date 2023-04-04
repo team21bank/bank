@@ -2,7 +2,6 @@ import { onValue, ref, getDatabase, update, set } from "firebase/database";
 import React, { useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { AuthContext } from "../Authentication/auth";
-import { LoadingPage } from "../Authentication/LoadingPage/LoadingPage";
 import { auth } from "../firebase";
 import { Bank } from "../Interfaces/BankObject";
 import { DEFAULT_BANK_USER } from "../Interfaces/BankUser";
@@ -54,7 +53,7 @@ export function CreateClassPage(): JSX.Element {
     }
 
 
-    return user.user ? (
+    return (
         <div className="create-class-page">
             <h1>Create new class</h1>
             <Form.Group controlId="createClass">
@@ -66,8 +65,6 @@ export function CreateClassPage(): JSX.Element {
                 <Button onClick={createCode} style={{"marginTop": "20px"}}>Create Class Code</Button>
             </Form.Group>
         </div>
-    ) : (
-        <LoadingPage/>
     )
 }
 

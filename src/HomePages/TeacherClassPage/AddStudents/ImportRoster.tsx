@@ -4,10 +4,10 @@ import { Button, Form } from "react-bootstrap";
 import { auth, firebaseConfig } from "../../../firebase";
 import { initializeApp, deleteApp } from "firebase/app";
 import { ref, getDatabase, onValue, set } from '@firebase/database';
-import { AuthUser } from "../../../Authentication/auth";
 import { Bank } from "../../../Interfaces/BankObject";
 import { BankUser, DEFAULT_BANK_USER } from "../../../Interfaces/BankUser";
 import { getAuth } from "firebase/auth";
+import { AuthUser } from "../../../Interfaces/AuthUser";
 
 export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string, setShowModal: (b)=>void}): JSX.Element {
     const [contents, setContents] = useState<string>("");
