@@ -16,18 +16,37 @@ export function BankingDashboard(info: {current_auth_user: AuthUser, current_ban
     const [showGraph, setShowGraph] = useState<boolean>(false);
     return (
         <div className="student-home">
-            <h2>Hello {info.current_auth_user.username}</h2>
+            <h2>
+                Hello {info.current_auth_user.username}
+            </h2>
             <br />
-            <h3>Welcome to your banking dashboard for {"your class!" || info.bank_name}:</h3>
+
+            <h3>
+                Welcome to your banking dashboard for {"your class!" || info.bank_name}
+            </h3>
             <br />
+
             <div style={{display: "block", justifyContent: "center"}}>
-                <Button style={{margin: "1px"}} onClick={() => setShowPie(!showPie)}>Toggle Earnings & Losses Pie Chart</Button>
+                <Button style={{margin: "1px"}} onClick={() => setShowPie(!showPie)}>
+                    {showPie ? "Hide " : "Show "} Pie Chart
+                </Button>
                 <br />
-                <Button style={{margin: "1px"}} onClick={() => setShowGraph(!showGraph)}>Toggle Balance History Graph</Button>
+
+                {showPie && 
+                    <EarningChart transactions={info.bank_transactions} uid={info.current_bank_user.uid}></EarningChart>
+                }
+
+                <Button style={{margin: "1px"}} onClick={() => setShowGraph(!showGraph)}>
+                    {showGraph ? "Hide " : "Show "} Balance History Graph
+                </Button>
+                <br />
+
+                {showGraph && 
+                <BalanceGraph transactions={info.bank_transactions} uid={info.current_bank_user.uid}></BalanceGraph>
+                }
             </div>
-            {showPie && <EarningChart transactions={info.bank_transactions} uid={info.current_bank_user.uid}></EarningChart>}
-            {showGraph && <BalanceGraph transactions={info.bank_transactions} uid={info.current_bank_user.uid}></BalanceGraph>}
             <br />
+            
             <ViewTransactions transactions={info.bank_transactions} uid={info.current_bank_user.uid}></ViewTransactions>
         </div>
     );

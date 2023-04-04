@@ -69,7 +69,6 @@ export function getCategories(transactions: Transaction[]): string[] {
 export function EarningChart(transactionsAndUID: {transactions: Transaction[], uid: string}): JSX.Element {
     //State variables to handle hiding/showing the 2 individual pie charts.
     const [showSpending, setShowSpending] = useState<boolean>(true);
-    const [showEarning, setShowEarning] = useState<boolean>(true);
     //Sorts the passed in transactions
     transactionsAndUID.transactions.sort((a, b) => compareDates(a, b)).map((transaction: Transaction): number => {
     return transaction.receiver_uid === transactionsAndUID.uid ? transaction.receiver_balance : transaction.sender_balance || 0;
@@ -136,14 +135,28 @@ export function EarningChart(transactionsAndUID: {transactions: Transaction[], u
       }
     ]
   };
-  return <div style={{width: "auto", justifySelf: "center", margin: "1px"}}>
-      <Button style={{marginRight: "2px"}} onClick={() => setShowSpending(!showSpending)}>Toggle Spending</Button>
-      <Button onClick={() => setShowEarning(!showEarning)}>Toggle Earnings</Button>
-      {showSpending && <p>SPENDING:</p>}
-      {showSpending && <div style={{width: "auto", marginLeft: "auto", display: "inline-flex"}}> <Pie data={spendData}/></div>}
-      {showEarning && <p>EARNINGS:</p>}
-      {showEarning && <div style={{width: "auto", marginLeft: "auto", display: "inline-flex"}}> <Pie data={earnData}/></div>}
-  </div>;
+  return (
+    <div style={{width: "auto", justifySelf: "center", margin: "1px"}}>
+        <h2>Pie Charts</h2>
+        {showSpending && 
+            <div>
+                <h4>Spending</h4>
+                <div style={{width: "auto", marginLeft: "auto", display: "inline-flex"}}>
+                    <Pie data={spendData}/>
+                </div>
+            </div>}
+        {!showSpending && 
+            <p>
+                <h4>Earnings</h4>
+                <div style={{width: "auto", marginLeft: "auto", display: "inline-flex"}}> 
+                    <Pie data={earnData}/>
+                </div>
+            </p>}
+        <Button style={{marginRight: "2px"}} onClick={() => setShowSpending(!showSpending)}>
+            Swap to {showSpending ? "Earnings " : "Spending "} Chart
+        </Button>
+    </div>
+  )
 }
 /*
 export function BalanceGraph({transactions}: {transactions: Transaction[]}): JSX.Element {
