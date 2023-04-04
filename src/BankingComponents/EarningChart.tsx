@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { Transaction, compareDates } from '../Interfaces/Transaction';
+import { Button } from "react-bootstrap";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -66,17 +67,18 @@ export function getCategories(transactions: Transaction[]): string[] {
 }
 
 export function EarningChart(transactionsAndUID: {transactions: Transaction[], uid: string}): JSX.Element {
-  const balanceHistory = transactionsAndUID.transactions.sort((a, b) => compareDates(a, b)).map((transaction: Transaction): number => {
+    //State variables to handle hiding/showing the 2 individual pie charts.
+    const [showSpending, setShowSpending] = useState<boolean>(true);
+    const [showEarning, setShowEarning] = useState<boolean>(true);
+    //Sorts the passed in transactions
+    transactionsAndUID.transactions.sort((a, b) => compareDates(a, b)).map((transaction: Transaction): number => {
     return transaction.receiver_uid === transactionsAndUID.uid ? transaction.receiver_balance : transaction.sender_balance || 0;
   })
-  const dataPoints = transactionsAndUID.transactions.map((transaction: Transaction): number => {
-    return transactionsAndUID.uid === transaction.receiver_uid ? transaction.transfer_amount : (-1 * transaction.transfer_amount);
-  })
-  const dataCopy = JSON.parse(JSON.stringify(data));
+  //Gets the transactions where the given user gained money 
   const earnings = transactionsAndUID.transactions.filter((transaction: Transaction): boolean => {
       return transaction.receiver_uid === transactionsAndUID.uid;
   });
-
+  //Gets the transactions where the given user lost money
   const losses = transactionsAndUID.transactions.filter((transaction: Transaction) => {
       return transaction.receiver_uid !== transactionsAndUID.uid;
   });
@@ -134,11 +136,13 @@ export function EarningChart(transactionsAndUID: {transactions: Transaction[], u
       }
     ]
   };
-  return <div style={{width: "90%", justifySelf: "center", margin: "auto"}}>
-      <p>SPENDING:</p>
-      <div style={{width: "45%", marginLeft: "auto", display: "inline-flex"}}> <Pie data={spendData}/></div>
-      <p>EARNINGS:</p>
-      <div style={{width: "45%", marginLeft: "auto", display: "inline-flex"}}> <Pie data={earnData}/></div>
+  return <div style={{width: "auto", justifySelf: "center", margin: "1px"}}>
+      <Button style={{marginRight: "2px"}} onClick={() => setShowSpending(!showSpending)}>Toggle Spending</Button>
+      <Button onClick={() => setShowEarning(!showEarning)}>Toggle Earnings</Button>
+      {showSpending && <p>SPENDING:</p>}
+      {showSpending && <div style={{width: "auto", marginLeft: "auto", display: "inline-flex"}}> <Pie data={spendData}/></div>}
+      {showEarning && <p>EARNINGS:</p>}
+      {showEarning && <div style={{width: "auto", marginLeft: "auto", display: "inline-flex"}}> <Pie data={earnData}/></div>}
   </div>;
 }
 /*

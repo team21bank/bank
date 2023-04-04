@@ -20,9 +20,10 @@ export function BankingDashboard(info: {current_auth_user: AuthUser, current_ban
             <br />
             <h3>Welcome to your banking dashboard for {"your class!" || info.bank_name}:</h3>
             <br />
-            <div>
-                <Button onClick={() => setShowPie(!showPie)}>Toggle Earnings & Losses Pie Chart</Button>
-                <Button onClick={() => setShowGraph(!showGraph)}>Toggle Balance History Graph</Button>
+            <div style={{display: "block", justifyContent: "center"}}>
+                <Button style={{margin: "1px"}} onClick={() => setShowPie(!showPie)}>Toggle Earnings & Losses Pie Chart</Button>
+                <br />
+                <Button style={{margin: "1px"}} onClick={() => setShowGraph(!showGraph)}>Toggle Balance History Graph</Button>
             </div>
             {showPie && <EarningChart transactions={info.bank_transactions} uid={info.current_bank_user.uid}></EarningChart>}
             {showGraph && <BalanceGraph transactions={info.bank_transactions} uid={info.current_bank_user.uid}></BalanceGraph>}
