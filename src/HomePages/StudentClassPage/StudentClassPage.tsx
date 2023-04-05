@@ -1,6 +1,6 @@
 import { getDatabase, onValue, ref, get, update, set, push, remove } from 'firebase/database';
 import React, { useContext, useEffect, useState } from 'react';
-import { Modal,Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, AuthUser, BankContext, DEFAULT_AUTH_USER } from "../../Authentication/auth";
 import { Bank, DEFAULT_BANK } from '../../Interfaces/BankObject';
@@ -110,8 +110,7 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
     const errClass2 = "form-control error"
     const submitFormData = event => {
         event.preventDefault();
-        console.log(`Emails length is ${emails.length} and amount is ${amount} and the bank balance is ${current_bank_user.balance}`)
-        if (emails.length === 0 || emails.length * amount > current_bank_user.balance ) {
+        if (emails.length === 0 || emails.length * amount > current_bank_user.balance) {
             if (emails.length === 0) {
                 errors2(errClass2, "Students can't be empty")
             }
@@ -124,15 +123,37 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
             handleSubmit();
         }
     }
+
     const handleSubmit = () => {
         setShowDropDown(false)
         setShowTransactionModal(false)
+        var studentID = '';
+        var index = 0;
+
+        
+        emails.forEach((email) => {
+            let e = (email["email"])
+            //console.log(myMap.get(email))
+            let studBal = 0;
+            studentID = myMap.get(e)
+            for (let i = 0; i < parsedStudentsJson2.length; i++) {
+                //console.log(parsedStudentsJson2[1]["uid"])
+                if (parsedStudentsJson2[i]["uid"]) {
+                    index = i;
+                    studBal = parsedStudentsJson2[i]["balance"]
+                }
+            }
+            
+            update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index), { balance: Number(amount)+studBal });
+        })
+
         setEmails([])
         setAmount(0)
+
     }
 
     const [emails, setEmails] = useState<string[]>([]);
-     const handleSelect = (selectedList) => {
+    const handleSelect = (selectedList) => {
         setEmails(selectedList);
     };
 
@@ -150,17 +171,17 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
             setAmount(event);
         }
     };
-    
+
     const DropDown = () => (
         <div className="App">
             <form onSubmit={submitFormData}>
-            Select Students
-            <Multiselect
-                options={students} // Options to display in the dropdown
-                selectedValues={emails} // Preselected value to persist in dropdown
-                onSelect={handleSelect} // Function will trigger on select event
-                onRemove={handleRemove} // Function will trigger on remove event
-                displayValue="email" // Property name to display in the dropdown options
+                Select Students
+                <Multiselect
+                    options={students} // Options to display in the dropdown
+                    selectedValues={emails} // Preselected value to persist in dropdown
+                    onSelect={handleSelect} // Function will trigger on select event
+                    onRemove={handleRemove} // Function will trigger on remove event
+                    displayValue="email" // Property name to display in the dropdown options
 
                 />
                 <div><small id="set"> {err}</small></div>
@@ -185,13 +206,14 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
                 <button type="submit">Submit</button>
             </form>
         </div>)
-        
+
 
     const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
     const [students, setStudents] = React.useState<any[]>([]);
+    const [myMap, setMyMap] = React.useState(new Map());
+    const [parsedStudentsJson2, setParsedStudentsJson2] = React.useState<any[]>([]);//the string of studentList objects
 
 
-    
     const displayGroups = () => {
 
         const object = async () => {
@@ -201,33 +223,38 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
             const jsonValues = Object.values(item1);
             const parsedjsonValues = (JSON.parse(JSON.stringify(jsonValues)))
             setVillages(parsedjsonValues)
-            setVillages((current) =>current.filter((fruit) => fruit.name !== "placeholder"));
+            setVillages((current) => current.filter((fruit) => fruit.name !== "placeholder"));
 
             //set student list
-            let stuIDs:string[] = []
+            let stuIDs: string[] = []
             let studentsList: any[] = []
-            var studs = usersSnapshot.child(`groups/${classCode.slice(0,6)}/bankObj/studentList`).val();
+            var studs = usersSnapshot.child(`groups/${classCode.slice(0, 6)}/bankObj/studentList`).val();
             const studentsJson = Object.values(studs)
-            const parsedStudentsJson2 = JSON.parse(JSON.stringify(studentsJson))
-            parsedStudentsJson2.forEach((object)=>{
-                if(object["uid"]!==""){
+
+            const l = JSON.parse(JSON.stringify(studentsJson))
+            l.forEach((m) => {
+                parsedStudentsJson2.push(m)
+            })
+            parsedStudentsJson2.forEach((object) => {
+                if (object["uid"] !== "") {
                     stuIDs.push(object["uid"])
                 }
             })
-            
+
             var item2 = usersSnapshot.child('users').val();
             const JSonValues2 = Object.values(item2);
             const parsedJSonValues2 = JSON.parse(JSON.stringify(JSonValues2))
-            for(let i = 0; i < stuIDs.length+1;i++){
-                parsedJSonValues2.forEach((user)=>{
-                    if(user["userObj"]["hash"]===stuIDs[i]){
-                        //students.push(user["userObj"])
+            for (let i = 0; i < stuIDs.length + 1; i++) {
+                parsedJSonValues2.forEach((user) => {
+                    if (user["userObj"]["hash"] === stuIDs[i]) {
+                        setMyMap(new Map(myMap.set(user["userObj"]["email"], user["userObj"]["hash"])));
                         setStudents((students) => {
                             return students.concat(user["userObj"])
                         })
                     }
                 })
             }
+
         }
         object();
     }
@@ -235,7 +262,7 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
     return (
         <div className="student-class-page">
             Welcome to {classCode.slice(6)}
-        <table align="center">
+            <table align="center">
 
                 <th>Village name</th>
                 <th>Students</th>
@@ -259,27 +286,27 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
                 </Modal.Footer>
             </Modal>
             <div>your total balance is {current_bank_user.balance}</div>
-            <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
+            <Button onClick={() => navigate("/students/" + classCode.slice(0, 6) + "/quizzes")}> Go to Quizzes </Button>
             <ViewTransactions transactions={placeholder_transactions} uid={current_bank_user.uid}></ViewTransactions>
-        <div>
-            <Button onClick={showTransactions}>Pay/Create Transaction</Button>
-        </div>
+            <div>
+                <Button onClick={showTransactions}>Pay/Create Transaction</Button>
+            </div>
 
         </div>
-        
+
     )
 }
 
 
 
 //gets the AuthUser object for each BankUser in the bankUserList
-function getStudentList(bankUserList: BankUser[], setStudentList: (students: AuthUser[])=>void) {
+function getStudentList(bankUserList: BankUser[], setStudentList: (students: AuthUser[]) => void) {
     let tmpStudentList: AuthUser[] = [];
     bankUserList.forEach((bankUser, index) => {
-        if(bankUser.uid !== "") {
+        if (bankUser.uid !== "") {
             //console.log("getting object for user ", bankUser.uid);
-            onValue(ref(getDatabase(), "/users/"+bankUser.uid), (snapshot) => {
-                if(snapshot.val() != null) {
+            onValue(ref(getDatabase(), "/users/" + bankUser.uid), (snapshot) => {
+                if (snapshot.val() != null) {
                     //console.log("pushing to student list");
                     tmpStudentList.push(snapshot.val().userObj);
                 }
@@ -290,7 +317,7 @@ function getStudentList(bankUserList: BankUser[], setStudentList: (students: Aut
 
     //weird stuff to wait until the student list is populated
     function check_finished() {
-        if(tmpStudentList.length < bankUserList.length - 1) {
+        if (tmpStudentList.length < bankUserList.length - 1) {
             window.setTimeout(check_finished, 100);
         } else {
             setStudentList(tmpStudentList);
