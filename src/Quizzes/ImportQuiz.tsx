@@ -13,7 +13,7 @@ export function ImportQuiz({classCode}: {classCode: string}): JSX.Element {
     const [contents, setContents] = useState<string>("");
     const [view, toggleView] = useState<boolean>(false);
 
-    let groupRef = ref(getDatabase(), '/groups/' + classCode.slice(0,6) + '/bankObj/');
+    let groupRef = ref(getDatabase(), '/groups/' + currClass.bankId + '/bankObj/');
 
     function importFile(event: React.ChangeEvent<HTMLInputElement>) {
         // Might have removed the file, need to check that the files exist
@@ -99,8 +99,8 @@ export function ImportQuiz({classCode}: {classCode: string}): JSX.Element {
         newQuiz.questions = questions;
         newQuiz.questionTotal = questions.length;
         console.log(newQuiz);
-
-        //temporary for testing purposes, replace with storage to firebase
+        
+        currClass.quizzes.push(newQuiz)
         set(groupRef,currClass)
 
 
