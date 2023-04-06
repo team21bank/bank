@@ -103,7 +103,6 @@ export function ImportQuiz({classCode}: {classCode: string}): JSX.Element {
         currClass.quizzes.push(newQuiz)
         set(groupRef,currClass)
 
-
         setContents("");
     }
 
