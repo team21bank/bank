@@ -91,12 +91,14 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
     function showTransactions() {
         setShowTransactionModal(true)
         setShowDropDown(true)
+        setAmount(0)
+        setEmails([])
     }
     function hideTransactions() {
         setShowTransactionModal(false)
         setShowDropDown(false)
-        setAmount(0)
-        setEmails([])
+        
+        
     }
     const [errmsg, setErrmsg] = useState("");
     const [err, setErr] = useState("");
@@ -128,27 +130,33 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
         setShowDropDown(false)
         setShowTransactionModal(false)
         var studentID = '';
-        var index = 0;
+        var indexf = 0;
+        var index2f = 0;
+        let studBalf = 0;
+        let studBal2f = 0;
 
         
         emails.forEach((email) => {
+            
             let e = (email["email"])
-            //console.log(myMap.get(email))
-            let studBal = 0;
+            
             studentID = myMap.get(e)
             for (let i = 0; i < parsedStudentsJson2.length; i++) {
-                //console.log(parsedStudentsJson2[1]["uid"])
-                if (parsedStudentsJson2[i]["uid"]) {
-                    index = i;
-                    studBal = parsedStudentsJson2[i]["balance"]
+                
+                if (parsedStudentsJson2[i]["uid"]===studentID) {
+                    indexf = i;
+                    studBalf = parsedStudentsJson2[i]["balance"]
+                }
+                if (parsedStudentsJson2[i]["uid"] === current_user.hash) {
+                    index2f = i;
+                    studBal2f = parsedStudentsJson2[i]["balance"]
                 }
             }
             
-            update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index), { balance: Number(amount)+studBal });
         })
-
-        setEmails([])
-        setAmount(0)
+        update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: Number(amount) + Number(studBalf) });
+        update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: Number(studBal2f) - Number(amount) });
+    
 
     }
 
