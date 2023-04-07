@@ -1,6 +1,6 @@
 {
-  "homepage": "http://wowjack.github.io/frontend",
-  "name": "frontend",
+  "homepage": "http://wowjack.github.io/team21-bank",
+  "name": "team21-bank",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
