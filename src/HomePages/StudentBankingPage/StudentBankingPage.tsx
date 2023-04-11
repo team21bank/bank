@@ -6,7 +6,7 @@ import { AuthContext, BankContext, BANK_STORAGE_KEY } from "../../Authentication
 import { Bank, DEFAULT_BANK } from '../../Interfaces/BankObject';
 import { DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
-import "./StudentClassPage.css";
+import "./StudentBankingPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
 import { get_bank } from '../../DatabaseFunctions/BankFunctions';
 import { app } from "../../firebase";
@@ -15,7 +15,7 @@ import { BankingDashboard } from '../../BankingComponents/BankingDashboard';
 import { sampleTransactions } from '../../Interfaces/Transaction';
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
-export function StudentClassPage({classCode}:{classCode:string}){
+export function StudentBankingPage({classCode}:{classCode:string}){
     window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
 
     const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
@@ -58,29 +58,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
     }
 
     return (
-        <div className="student-class-page">
-            Welcome to {classCode.slice(6)}
-        <table align="center">
-
-                <th>Village name</th>
-                <th>Students</th>
-
-                {villages.map((village, index) => (
-                    <tr data-index={index}>
-                        <td>{village.name}</td>
-                        <td>{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
-                    </tr>
-                ))}
-            </table>
-            <div>your total balance is {current_bank_user.balance}</div>
-            <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
-        <div>
-            <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/pay")}>Pay/Create Transaction</Button>
-        </div>
-        <div>
-            <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/banking")}> Go to your Banking Dashboard</Button>
-        </div>
-        <br/>
+        <div className="student-banking-page">
+        <BankingDashboard current_auth_user={current_user} current_bank_user={current_bank_user} bank_transactions={sampleTransactions} bank_name={current_bank.classTitle}></BankingDashboard>
         </div>
         
     )
