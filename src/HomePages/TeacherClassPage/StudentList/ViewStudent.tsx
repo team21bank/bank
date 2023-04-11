@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap";
-import { delete_student_from_bank } from "../../EditProfilePage/DeleteAccount";
 import { Bank } from "../../../Interfaces/BankObject";
 import { BankUser, getTitle } from "../../../Interfaces/BankUser";
 import "./ViewStudent.css";
@@ -14,8 +13,8 @@ export function ViewStudent(
     {bank_user: BankUser, auth_user: AuthUser, bank: Bank, index:number}
 ): JSX.Element {
     function remove_student() {
-        delete_student_from_bank(bank.bankId, bank_user.uid);
-        //window.setTimeout(()=>window.location.reload(), 100);
+        alert("TODO. Still needs to be implemented");
+        //delete_student_from_bank(bank.bankId, bank_user.uid);
     }
 
     return bank_user ? (

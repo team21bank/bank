@@ -4,11 +4,10 @@ import { AddStudentsModal } from "./AddStudents/AddStudentsModal";
 import {Bank, DEFAULT_BANK} from "../../Interfaces/BankObject"
 import "./TeacherClassPage.css";
 import { Button, Modal } from 'react-bootstrap';
-import { delete_bank } from '../EditProfilePage/DeleteAccount';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { StudentList } from './StudentList/StudentList';
 import { Subgroups } from './Subgroups';
-import { get_bank } from '../../DatabaseFunctions/BankFunctions';
+import { delete_bank, get_bank_then, get_bank_updating } from '../../DatabaseFunctions/BankFunctions';
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
@@ -20,7 +19,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
 
     const bank_context = useContext(BankContext);
     useEffect(() => {
-        get_bank(classCode.slice(0,6), bank_context.setBank)
+        get_bank_updating(classCode.slice(0,6), bank_context.setBank)
     }, []);
     
 
@@ -32,9 +31,9 @@ export function TeacherClassPage({classCode}:{classCode:string}){
             <Subgroups classID={classCode}></Subgroups>
             <DeleteBankModal 
                 delete_bank_function={()=>{
-                    delete_bank(current_bank.bankId, current_user.id);
-                    navigate("/teachers/home");
-                    alert("class successfully deleted");
+                    delete_bank(current_bank.bankId).then(() =>{
+                        navigate("/teachers/home");
+                    });
                 }}
                 bank_name={classCode.slice(6)}
             />

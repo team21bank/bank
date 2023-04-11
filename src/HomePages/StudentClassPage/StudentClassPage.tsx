@@ -8,7 +8,7 @@ import { DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
 import "./StudentClassPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
-import { get_bank } from '../../DatabaseFunctions/BankFunctions';
+import { get_bank_then } from '../../DatabaseFunctions/BankFunctions';
 import { app } from "../../firebase";
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
@@ -71,7 +71,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
 
     const bank_context = useContext(BankContext);
     useEffect(() => { //Update the bank context if this page is navigated to
-        get_bank(classCode.slice(0,6), bank_context.setBank)
+        get_bank_then(classCode.slice(0,6), bank_context.setBank)
     }, []);
 
     const current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? DEFAULT_BANK_USER;

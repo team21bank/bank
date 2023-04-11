@@ -66,3 +66,9 @@ export function create_default_bank_user(bank_id: string, user_id: string) {
     });
 }
 
+
+//DATABASE READING FUNCTIONS
+
+export function get_bank_user_then(uid: string, bank_id: string, func: (bank_user: BankUser) => void) {
+    
+}

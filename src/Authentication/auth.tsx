@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { Bank } from "../Interfaces/BankObject";
 import { get_auth_user_updating } from "../DatabaseFunctions/UserFunctions";
-import { get_bank } from "../DatabaseFunctions/BankFunctions";
+import { get_bank_then, get_bank_updating } from "../DatabaseFunctions/BankFunctions";
 import { AuthUser } from "../Interfaces/AuthUser";
 
 
@@ -62,7 +62,7 @@ export function CurrentBankProvider({children}: {children: ReactNode}): JSX.Elem
     const currBankString = window.sessionStorage.getItem(BANK_STORAGE_KEY);
     useEffect(() => {
         if(currBankString != null) {
-            get_bank(currBankString, setCurrentBank)
+            get_bank_updating(currBankString, setCurrentBank)
         }
     }, [currBankString]);
 

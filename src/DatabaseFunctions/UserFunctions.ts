@@ -2,6 +2,8 @@ import { Unsubscribe } from "firebase/auth";
 import { get, onValue, set, ref, getDatabase, remove, DataSnapshot } from "firebase/database";
 import { AuthUser, DEFAULT_AUTH_USER } from "../Interfaces/AuthUser";
 
+//DATABASE READING FUNCTIONS
+
 //Sets the AuthUser object at /users/uid to new_object
 export function update_auth_user(uid: string, new_object: AuthUser) {
     set(ref(getDatabase(), "/users/"+uid+"/userObj"), new_object);
@@ -20,6 +22,8 @@ export function create_auth_user(uid: string, user_object: AuthUser) {
 }
 
 
+//DATABASE WRITING FUNCTIONS
+
 //Fetches an AuthUser object from the database and uses it in the setter function
 export function get_auth_user_updating(uid: string, setter: (AuthUser: AuthUser) => void): Unsubscribe {
     return onValue(ref(getDatabase(), "/users/"+uid+"/userObj"),
@@ -29,6 +33,7 @@ export function get_auth_user_updating(uid: string, setter: (AuthUser: AuthUser)
     )
 }
 
+//fetch the AuthUser object then use the callback function on it
 export function get_auth_user_then(uid: string, func: (user: AuthUser) => void) {
     get(ref(getDatabase(), "/users/"+uid+"/userObj")).then(data => {
         if(data.exists()) {
@@ -44,7 +49,7 @@ export function get_auth_users(uids: string[], setter: (users: AuthUser[]) => vo
     const database = getDatabase()
     const users = uids.map(uid => get(ref(database, "/users/"+uid+"/userObj")))
     Promise.all(users).then(settled_result => {
-        let users = settled_result.filter(snapshot => snapshot.exists()).map(snapshot => snapshot.val())
-        setter(users)
+        let users = settled_result.filter(snapshot => snapshot.exists()).map(snapshot => snapshot.val());
+        setter(users);
     })
 }
