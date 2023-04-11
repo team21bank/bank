@@ -29,3 +29,6 @@ export function get_bank_updating(bank_id: string, setter: (bank: Bank) => void)
         }
     );
 }
+
+
+//TODO: Write function to remove BankUsers with dangling references to deleted AuthUser objects

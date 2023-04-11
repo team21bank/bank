@@ -7,10 +7,14 @@ import { Button, Modal } from 'react-bootstrap';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { StudentList } from './StudentList/StudentList';
 import { Subgroups } from './Subgroups';
-import { delete_bank, get_bank_then, get_bank_updating } from '../../DatabaseFunctions/BankFunctions';
+import { delete_bank, get_bank_updating } from '../../DatabaseFunctions/BankFunctions';
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
+    //SOMEWHERE HERE I NEED TO UPDATE THE BANK OBJECT TO REMOVE BANKUSERS WHOS AUTHUSER OBJECT NO LONGER EXIST
+
+
+
     window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
     const navigate = useNavigate();
 

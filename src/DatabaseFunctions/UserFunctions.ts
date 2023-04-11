@@ -53,3 +53,6 @@ export function get_auth_users(uids: string[], setter: (users: AuthUser[]) => vo
         setter(users);
     })
 }
+
+
+//TODO: Write function to remove dangling references to deleted bank objects in the groups array

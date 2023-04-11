@@ -9,7 +9,10 @@ import { AuthUser } from "../../../Interfaces/AuthUser";
 
 
 
-export function StudentList({current_bank}: {current_bank: Bank}): JSX.Element {
+export function StudentList(
+        {current_bank}: {current_bank: Bank}
+    ): JSX.Element {
+        
     //Get AuthUser objects for each student in the class
     const [studentList, setStudentList] = useState<AuthUser[]>([]);
     
