@@ -4,8 +4,11 @@
     "\\src",
     "\\src\\HomePages",
     "\\src\\HomePages\\StudentClassPage",
-    "\\src\\HomePages\\TeacherClassPage"
+    "\\src\\HomePages\\StudentHomePage",
+    "\\src\\HomePages\\TeacherClassPage",
+    "\\src\\HomePages\\TeacherHomePage",
+    "\\src\\Interfaces"
   ],
-  "SelectedNode": "\\src\\HomePages\\StudentClassPage\\StudentClassPage.tsx",
+  "SelectedNode": "\\src\\HomePages\\TeacherClassPage\\TeacherClassPage.tsx",
   "PreviewInSolutionExplorer": false
 }

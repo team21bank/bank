@@ -126,38 +126,66 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
         }
     }
 
+
+
+
+    const [submitJson, setSubmitJson] = React.useState<any[]>([]);//the string of studentList objects
     const handleSubmit = () => {
-        setShowDropDown(false)
-        setShowTransactionModal(false)
-        var studentID = '';
-        var indexf = 0;
-        var index2f = 0;
-        let studBalf = 0;
-        let studBal2f = 0;
+        const object = async () => {
+            const db = await getDatabase(app);
+            const usersSnapshot = await get(ref(db, '/'))
+            let stuIDs: string[] = []
+            let studentsList: any[] = []
+            var studs = usersSnapshot.child(`groups/${classCode.slice(0, 6)}/bankObj/studentList`).val();
+            const studentsJson = Object.values(studs)
 
-        
-        emails.forEach((email) => {
-            
-            let e = (email["email"])
-            
-            studentID = myMap.get(e)
-            for (let i = 0; i < parsedStudentsJson2.length; i++) {
-                
-                if (parsedStudentsJson2[i]["uid"]===studentID) {
-                    indexf = i;
-                    studBalf = parsedStudentsJson2[i]["balance"]
+            const l = JSON.parse(JSON.stringify(studentsJson))
+            l.forEach((m) => {
+                submitJson.push(m)
+            })
+            submitJson.forEach((object) => {
+                if (object["uid"] !== "") {
+                    stuIDs.push(object["uid"])
                 }
-                if (parsedStudentsJson2[i]["uid"] === current_user.hash) {
-                    index2f = i;
-                    studBal2f = parsedStudentsJson2[i]["balance"]
-                }
-            }
-            
-        })
-        update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: Number(amount) + Number(studBalf) });
-        update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: Number(studBal2f) - Number(amount) });
-    
+            })
+            setShowDropDown(false)
+            setShowTransactionModal(false)
+            var studentID = '';
+            var indexf = 0;
+            var index2f = 0;
+            var studBalf = 0;
+            var studBal2f = 0;
 
+
+            emails.forEach((email) => {
+
+                let e = (email["email"])
+
+                studentID = myMap.get(e)
+                for (let i = 0; i < submitJson.length; i++) {
+
+                    if (submitJson[i]["uid"] === studentID) {
+                        indexf = i
+
+                        studBalf = submitJson[i]["balance"]
+                    }
+                    if (submitJson[i]["uid"] === current_user.hash) {
+                        index2f = i;
+                        studBal2f = submitJson[i]["balance"]
+                    }
+                }
+
+            })
+            console.log(`I am taking ${amount} from ${current_user.email} and giving ${amount} to ${studentID}`)
+            let amount1 = Number(amount) + studBalf
+            let amount2 = studBal2f - Number(amount)
+            console.log(amount1)
+            console.log(amount2)
+            update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: Number(amount) + studBalf });
+            update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: studBal2f - Number(amount) });
+        }
+        object()
+        setSubmitJson([])
     }
 
     const [emails, setEmails] = useState<string[]>([]);
@@ -179,12 +207,11 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
             setAmount(event);
         }
     };
-
     const DropDown = () => (
-        <div className="App">
-            <form onSubmit={submitFormData}>
+        <div key = "D" className="App">
+            <form key ="f" onSubmit={submitFormData}>
                 Select Students
-                <Multiselect
+                <Multiselect key = "SSS"
                     options={students} // Options to display in the dropdown
                     selectedValues={emails} // Preselected value to persist in dropdown
                     onSelect={handleSelect} // Function will trigger on select event
@@ -195,8 +222,7 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
                 <div><small id="set"> {err}</small></div>
                 Enter amount name
                 <br></br>
-                <CurrencyInput
-                    autoFocus
+                <CurrencyInput key="SSSDD"
                     allowDecimals
                     decimalSeparator="."
                     prefix="$"
@@ -206,7 +232,9 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
                     allowNegativeValue={false}
                     onValueChange={updateFormData}
                     step={1}
+                    ///autoFocus
                 />
+
                 <div>
                     <small id="set"> {errmsg}</small>
                 </div>
@@ -223,7 +251,7 @@ export function StudentClassPage({ classCode }: { classCode: string }) {
 
 
     const displayGroups = () => {
-
+        setStudents([])
         const object = async () => {
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
