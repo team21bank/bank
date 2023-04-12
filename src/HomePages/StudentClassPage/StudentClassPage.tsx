@@ -114,9 +114,13 @@ export function StudentClassPage({classCode}:{classCode:string}){
             var studBalf = 0;
             var studBal2f = 0;
 
-
+            let count = 0;
+            const roundTo = function (num: number, places: number) {
+                const factor = 10 ** places;
+                return Math.round(num * factor) / factor;
+            };
             emails.forEach((email) => {
-
+                count += 1;
                 let e = (email["email"])
 
                 studentID = myMap.get(e)
@@ -129,18 +133,20 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     }
                     if (submitJson[i]["uid"] === current_user.hash) {
                         index2f = i;
-                        studBal2f = submitJson[i]["balance"]
+                        studBal2f = submitJson[i]["balance"]-(count*Number(amount))
                     }
                 }
+                console.log(`I am taking ${amount} from ${current_user.email} and giving ${amount} to ${studentID}`)
+                let amount1 = Number(amount) + studBalf
+                let amount2 = studBal2f - Number(amount)
+                console.log(amount1)
+                console.log(amount2)
+
+                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: roundTo(Number(amount),2) + roundTo(studBalf,2) });
+                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: roundTo(studBal2f,2)  });
 
             })
-            console.log(`I am taking ${amount} from ${current_user.email} and giving ${amount} to ${studentID}`)
-            let amount1 = Number(amount) + studBalf
-            let amount2 = studBal2f - Number(amount)
-            console.log(amount1)
-            console.log(amount2)
-            update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: Number(amount) + studBalf });
-            update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: studBal2f - Number(amount) });
+            
         }
         object()
         setSubmitJson([])
