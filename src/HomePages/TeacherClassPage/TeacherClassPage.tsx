@@ -1,37 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext, AuthUser, BankContext, DEFAULT_AUTH_USER } from "../../Authentication/auth";
-import { LoadingPage } from "../../Authentication/LoadingPage/LoadingPage";
+import { AuthContext, BankContext, BANK_STORAGE_KEY } from "../../Authentication/auth";
 import { AddStudentsModal } from "./AddStudents/AddStudentsModal";
 import {Bank, DEFAULT_BANK} from "../../Interfaces/BankObject"
-import { ref, getDatabase, onValue} from '@firebase/database';
 import "./TeacherClassPage.css";
-import { BankUser } from '../../Interfaces/BankUser';
 import { Button, Modal } from 'react-bootstrap';
-import { delete_bank } from '../../Authentication/EditProfilePage/DeleteAccount';
-import { auth } from '../../firebase';
+import { delete_bank } from '../EditProfilePage/DeleteAccount';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { StudentList } from './StudentList/StudentList';
 import { Subgroups } from './Subgroups';
+import { get_bank } from '../../DatabaseFunctions/BankFunctions';
+import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
+    window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
     const navigate = useNavigate();
 
-    //Get AuthUser objects for each student in the class
-    const [studentList, setStudentList] = useState<AuthUser[]>([]);
-
-    const current_user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
+    const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
     const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
 
     const bank_context = useContext(BankContext);
-    useEffect(() => { //Update the bank context if this page is navigated to
-        onValue(ref(getDatabase(), "/groups/"+classCode.slice(0,6)+"/bankObj"), bank_snapshot => {
-            if(bank_snapshot.exists() === false) {
-                alert("Bank does not exist, displaying default values.");
-                return;
-            }
-            getStudentList(bank_snapshot.val().studentList, setStudentList);
-            bank_context.setBank(bank_snapshot.val());
-        });
+    useEffect(() => {
+        get_bank(classCode.slice(0,6), bank_context.setBank)
     }, []);
     
 
@@ -39,7 +28,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
         <div className="teacher-class-page">
             Welcome back to your class: {classCode.slice(6)}
             <AddStudentsModal classID={classCode} />
-            <StudentList current_bank={current_bank} auth_users={studentList}/>
+            <StudentList current_bank={current_bank} />
             <Subgroups classID={classCode}></Subgroups>
             <DeleteBankModal 
                 delete_bank_function={()=>{
@@ -53,34 +42,6 @@ export function TeacherClassPage({classCode}:{classCode:string}){
             <Outlet></Outlet>
         </div>
     )
-}
-
-//gets the AuthUser object for each BankUser in the bankUserList
-function getStudentList(bankUserList: BankUser[], setStudentList: (students: AuthUser[])=>void) {
-    let tmpStudentList: AuthUser[] = [];
-    bankUserList.forEach((bankUser, index) => {
-        if(bankUser.uid !== "") {
-            //console.log("getting object for user ", bankUser.uid);
-            onValue(ref(getDatabase(), "/users/"+bankUser.uid), (snapshot) => {
-                if(snapshot.val() != null) {
-                    //console.log("pushing to student list");
-                    tmpStudentList.push(snapshot.val().userObj);
-                }
-            });
-        }
-    });
-
-
-    //weird stuff to wait until the student list is populated
-    function check_finished() {
-        if(tmpStudentList.length < bankUserList.length - 1) {
-            window.setTimeout(check_finished, 100);
-        } else {
-            setStudentList(tmpStudentList);
-            return;
-        }
-    }
-    check_finished();
 }
 
 

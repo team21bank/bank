@@ -5,10 +5,10 @@ import { ref, getDatabase, update  } from '@firebase/database';
 import "../../firebase";
 import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { AuthUser } from "../../Authentication/auth";
 import { Link } from 'react-router-dom';
 import { create_auth_user } from '../../DatabaseFunctions/UserFunctions';
 import { useNavigate } from 'react-router-dom';
+import { AuthUser } from '../../Interfaces/AuthUser';
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 

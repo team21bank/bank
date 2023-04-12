@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
-import { ref, getDatabase, get } from '@firebase/database';
 import "../../firebase";
 import { auth } from '../../firebase';
 import {signInWithEmailAndPassword } from 'firebase/auth';
 import './Login.css';
 import { useNavigate, Link} from 'react-router-dom';
-import { AuthContext, STORAGE_KEY } from '../auth';
+import { AuthContext, USER_STORAGE_KEY } from '../auth';
+import { get_auth_user_then, get_auth_user_updating } from '../../DatabaseFunctions/UserFunctions';
 
 export function LoginForm(){
     //Email and password variable holding log in information
@@ -28,12 +28,9 @@ export function LoginForm(){
     //Function allowing user to login after clicking the login button
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
-            window.sessionStorage.setItem(STORAGE_KEY, currUser.user.uid); //Add current user to browser storage
-            let userRef=ref(getDatabase(),'/users/'+currUser.user.uid);
-            get(userRef).then(ss=>{
-                userContext.setUser(ss.val().userObj);
-                ss.val().userObj.isTeacher ? navigate('/teachers/home') : navigate('/students/home');
-            });
+            window.sessionStorage.setItem(USER_STORAGE_KEY, currUser.user.uid); //Add current user to browser storage
+            get_auth_user_updating(currUser.user.uid, userContext.setUser) //Get the logged in AuthUser and set the context using an updating fetch
+            get_auth_user_then(currUser.user.uid, user => navigate(user.isTeacher ? "/teachers/home" : "/students/home")) //Get the logged in user and navigate to home
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -43,6 +40,11 @@ export function LoginForm(){
         });
     }
 
+    function handle_key_press(event) {
+        if(event.key === "Enter") {
+            login()
+        }
+    }
 
     return <div className="login-page">
         <h1>Login</h1>
@@ -62,7 +64,9 @@ export function LoginForm(){
                     className="login-text-box"
                     type="password"
                     value={pass}
-                    onChange={updatePass}/>
+                    onChange={updatePass}
+                    onKeyUp={handle_key_press}
+                />
             </div>
             <Button className="button_reset" onClick={()=>navigate("/login/resetpassword")}>Forgot Password?</Button>
             <br/>

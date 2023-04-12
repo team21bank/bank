@@ -14,7 +14,7 @@ import { AuthContext, CurrentBankProvider, CurrentUserProvider } from './Authent
 import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { StudentClassPage } from './HomePages/StudentClassPage/StudentClassPage';
 import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
-import { EditProfile } from './Authentication/EditProfilePage/EditProfilePage';
+import { EditProfile } from './HomePages/EditProfilePage/EditProfilePage';
 import { CreateClassPage } from './ClassCode/CreateClassPage';
 import { QuizPage } from './Quizzes/QuizPage';
 import { StudentQuizMain } from './Quizzes/StudentQuiz';

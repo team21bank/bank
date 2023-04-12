@@ -1,23 +1,26 @@
 import { getDatabase, onValue, ref } from "firebase/database";
-import React, { ChangeEvent, useContext, useState } from "react";
-import { Button, FormSelect, Stack } from "react-bootstrap";
-import { AuthContext, AuthUser, DEFAULT_AUTH_USER, BankContext } from "../Authentication/auth";
+import React, {  useContext, useState } from "react";
+import { Button,  Stack } from "react-bootstrap";
+import { AuthContext, BankContext } from "../Authentication/auth";
 import { auth } from "../firebase";
 import { BankUser, DEFAULT_BANK_USER } from "../Interfaces/BankUser";
 import { update_bank_user } from "../DatabaseFunctions/BankUserFunctions";
 import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
 import { QuestionView } from "./QuestionView";
+import { DEFAULT_AUTH_USER } from "../Interfaces/AuthUser";
 
 export function QuestionList({
     questions,
     classCode,
+    id,
     viewQuiz
     //addPoints
 }:
 {
     questions: QuizQuestion[];
     classCode: string;
+    id: number;
     viewQuiz: ()=>void;
     //addPoints: (addPoints: number)=>void;
 }): JSX.Element {
@@ -62,10 +65,19 @@ export function QuestionList({
         if (currQuestionIndex === questions.length-1 && current_bank_user) {
             //console.log("Test 1")
             current_bank_user.balance += score;
-            if (choice === questions[currQuestionIndex].expected) {
+            if (choice === questions[currQuestionIndex].expected && !(current_bank_user.finishedQuizzes.includes(id))) {
                 current_bank_user.balance += questions[currQuestionIndex].points;
             }
+
+            //Add to finished quizzes
+            if (current_bank_user.finishedQuizzes === undefined){
+                current_bank_user.finishedQuizzes = [id];
+            }
+            else{
+                current_bank_user.finishedQuizzes.push(id);
+            }
             update_bank_user(classCode, current_bank_user.uid, current_bank_user);
+
             setScore(0);
             viewQuiz();
         }

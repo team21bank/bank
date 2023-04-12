@@ -6,7 +6,9 @@ export interface BankUser {
 
     balance: number,
 
-    role: [Role, MasteryLevel]
+    role: [Role, MasteryLevel],
+
+    finishedQuizzes : Array<number>
 }
 
 export enum Role {
@@ -26,7 +28,7 @@ export enum MasteryLevel {
     Master
 }
 
-export const DEFAULT_BANK_USER: BankUser = {uid: "", isBanker: false, balance: 0, role: [Role.None, MasteryLevel.None]};
+export const DEFAULT_BANK_USER: BankUser = {uid: "", isBanker: false, balance: 0, role: [Role.None, MasteryLevel.None], finishedQuizzes: []};
 
 export function getTitle(role: [Role, MasteryLevel]): String {
     if(role == undefined) {return "None";}

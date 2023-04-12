@@ -12,6 +12,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import { Transaction, compareDates } from '../Interfaces/Transaction';
 
+//Registers the ChartJS elements, consistent with the library's demos.
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -21,6 +22,10 @@ ChartJS.register(
     Tooltip,
     Legend
   );
+  
+/**
+ * Options used by chartjs to configure the line graph
+ */
   export const options = {
     responsive: true,
     plugins: {
@@ -32,28 +37,14 @@ ChartJS.register(
         text: 'Balance History',
       },
     },
-  };
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: [20, 40, 60, 80, 100, 120, 60, 20],
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: [10, 20, 30, 40, 50, 60, 70],
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
+  }
 
 
+/**
+ * Given a BankUser's uid as well as transactions they were involved with, displays a chart with balance history for that user. 
+ * @param transactionsAndUID @property {Transaction[]} transactions, @property {string} uid
+ * @returns JSX visuals of the user's balance history over the period of the passed in transactions
+ */
 export function BalanceGraph(transactionsAndUID: {transactions: Transaction[], uid: string}): JSX.Element {
   const balanceHistory = transactionsAndUID.transactions.sort((a, b) => compareDates(a, b)).map((transaction: Transaction): number => {
     return transaction.receiver_uid === transactionsAndUID.uid ? transaction.receiver_balance : transaction.sender_balance || 0;
@@ -61,7 +52,6 @@ export function BalanceGraph(transactionsAndUID: {transactions: Transaction[], u
   const dataPoints = transactionsAndUID.transactions.map((transaction: Transaction): string => {
     return transaction.date.toString().slice(0, 25);
   })
-  const dataCopy = JSON.parse(JSON.stringify(data));
   const newData = {
     labels: dataPoints,
     datasets: [
@@ -75,8 +65,3 @@ export function BalanceGraph(transactionsAndUID: {transactions: Transaction[], u
 };
   return <Line options={options} data={newData} />;
 }
-/*
-export function BalanceGraph({transactions}: {transactions: Transaction[]}): JSX.Element {
-  return <Line options={options} data={data} />;
-}
-*/
