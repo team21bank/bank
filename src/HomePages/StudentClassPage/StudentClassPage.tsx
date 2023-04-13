@@ -291,15 +291,9 @@ export function StudentClassPage({classCode}:{classCode:string}){
             </div>
 
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
-<<<<<<< HEAD
-        <div>
-            <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/pay")}>Pay/Create Transaction</Button>
-        </div>
         <div>
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/banking")}> Go to your Banking Dashboard</Button>
         </div>
-=======
->>>>>>> 0de131964432f291bec52c4de703176d82a40635
         <br/>
         </div>
 
