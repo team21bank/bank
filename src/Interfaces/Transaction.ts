@@ -85,7 +85,7 @@ export function compareDates(a: Transaction, b: Transaction) {
  * @param senderBank - The BankUser of the sender in the transaction
  * @param receiverAuth - The AuthUser of the receiver in the transaction
  * @param receiverBank - The BankUser of the receiver in the transaction
- * @param amount - The numeric amount that the transaction is for
+ * @param amount - The numeric amount that the transaction is for (positive)
  * @param shopPurchase - true if this was the result of a sale of goods, sets the type to "commerce", false otherwise, sets the type to "transfer"
  * @param receiverDesc - (optional) A string description of the transaction from the perspective of the receiver, defaults to "got paid by (username)"
  * @param senderDesc - (optional) A string description of the transaction from the perspective of the sender, defaults to "paid (username)"
@@ -110,6 +110,35 @@ export function makeStudentToStudentTransaction(
         sender_balance: senderBank.balance - amount,
         receiver_uid: receiverBank.uid,
         sender_uid: senderBank.uid
+    };
+    return transaction;
+}
+/**
+ * 
+ * @param receiverAuth - The AuthUser of the receiver in the transaction
+ * @param receiverBank - The BankUser of the sender in the transaction
+ * @param amount - The numeric amount the transaction is for (positive)
+ * @param type - A string for the type of the transaction (i.e "academic" for quiz payouts, "misc" for some sort of starting balance, etc)
+ * @param systemName - A string for the name of the system giving this out ("quizzes", "system", etc.)
+ * @param receiverDesc - (optional) A string description of the transaction from the receiver's perspective
+ * @param senderDesc - (optional) A string description of the transaction from the sender's perspective
+ * @returns A transaction object corresponding to the given transaction information
+ */
+export function makeSystemToStudentTransaction(
+    receiverAuth: AuthUser, receiverBank: BankUser, 
+    amount: number, type: string,
+    systemName: string,
+    receiverDesc?: string, senderDesc?: string,
+    ): Transaction {
+    const transaction: Transaction = {
+        date: new Date(),
+        receiver_name: receiverAuth.username,
+        receiver_description: senderDesc || "got paid by" + systemName,
+        sender_description: receiverDesc || "paid" + receiverAuth.username,
+        type: type || "misc",
+        transfer_amount: amount,
+        receiver_balance: receiverBank.balance + amount,
+        receiver_uid: receiverBank.uid
     };
     return transaction;
 }
