@@ -65,9 +65,6 @@ function AppBody(): JSX.Element {
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
-          {classes.map(str => {
-            return <Route path={str.slice(0, 6)+"/pay"} key={str} element={<UserTransaction classString={str} />}></Route>
-          })}
           {classes.map(str => <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>)}
           {classes.map(str => <Route path={str.slice(0,6)+"/quizzes"} element={<StudentQuizMain/>} />)}
           {classes.map(str => <Route path={str.slice(0,6)+"/banking"} element={<StudentBankingPage classCode={str}/>} />)}
