@@ -50,9 +50,13 @@ export function remove_transaction_from_pending(bank_id: string, transaction: Tr
             return;
         }
         //Finds the index of the transaction to be removed
-        let indexRemove = pending_list.indexOf(transaction);
+        let indexRemove = pending_list.findIndex((a: Transaction) => JSON.stringify(a) == JSON.stringify(transaction));
         //If the transaction isn't in the array, do nothing
         if(indexRemove == -1) {
+            console.log(pending_list[0].toString())
+            console.log(transaction.toString())
+            console.log(JSON.stringify(pending_list[0]), JSON.stringify(transaction))
+            console.log(JSON.stringify(pending_list[0]) === JSON.stringify(transaction))
             console.log(pending_list[0])
             console.log(transaction)
             alert("There was no transaction ")
