@@ -59,7 +59,7 @@ export function StudentBankingPage({classCode}:{classCode:string}){
 
     return (
         <div className="student-banking-page">
-        <BankingDashboard current_auth_user={current_user} current_bank_user={current_bank_user} bank_transactions={sampleTransactions} bank_name={current_bank.classTitle}></BankingDashboard>
+        <BankingDashboard current_auth_user={current_user} current_bank_user={current_bank_user} bank_transactions={sampleTransactions} bank_name={current_bank.classTitle} bank_id={classCode.slice(0,6)}></BankingDashboard>
         </div>
         
     )

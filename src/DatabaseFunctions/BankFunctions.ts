@@ -44,7 +44,7 @@ export function push_transaction_to_pending(bank_id: string, transaction: Transa
 export function remove_transaction_from_pending(bank_id: string, transaction: Transaction) {
     let pending_list_ref = ref(getDatabase(), "/groups/"+bank_id+"/bankObj/pendingList");
     get(pending_list_ref).then(pending_list_snapshot => {
-        let pending_list = pending_list_snapshot.val();
+        let pending_list: Transaction[] = pending_list_snapshot.val();
         if( pending_list == null ) {
             alert("There are no pending transactions in the current bank");
             return;
@@ -53,6 +53,8 @@ export function remove_transaction_from_pending(bank_id: string, transaction: Tr
         let indexRemove = pending_list.indexOf(transaction);
         //If the transaction isn't in the array, do nothing
         if(indexRemove == -1) {
+            console.log(pending_list[0])
+            console.log(transaction)
             alert("There was no transaction ")
             return;
         }

@@ -6,12 +6,13 @@ import { Transaction } from '../Interfaces/Transaction';
 import { Button } from 'react-bootstrap';
 import { BankUser } from '../Interfaces/BankUser';
 import { AuthUser } from '../Interfaces/AuthUser';
+import { push_transaction_to_completed, push_transaction_to_pending, remove_transaction_from_pending } from '../DatabaseFunctions/BankFunctions';
 
 /**
  * Takes in bank and user information alongside transactions to display to the student information about how they've earned/used money
  * @param info The current information pertaining to the current student and bank  @property {AuthUser} current_auth_user, @property {BankUser} current_bank_user, @property {Transaction[]} bank_transactions, @property {string} bank_name
  */
-export function BankingDashboard(info: {current_auth_user: AuthUser, current_bank_user: BankUser, bank_transactions: Transaction[], bank_name: string}){
+export function BankingDashboard(info: {current_auth_user: AuthUser, current_bank_user: BankUser, bank_transactions: Transaction[], bank_name: string, bank_id: string}){
     const [showPie, setShowPie] = useState<boolean>(false);
     const [showGraph, setShowGraph] = useState<boolean>(false);
     return (
@@ -48,6 +49,13 @@ export function BankingDashboard(info: {current_auth_user: AuthUser, current_ban
             <br />
 
             <ViewTransactions transactions={info.bank_transactions} uid={info.current_bank_user.uid}></ViewTransactions>
+            <span>The bank id is: {info.bank_id}</span>
+            <Button onClick={() => push_transaction_to_pending(info.bank_id, info.bank_transactions[0])}>Push sample transaction 0 to pending</Button>
+            <Button onClick={() => push_transaction_to_pending(info.bank_id, info.bank_transactions[1])}>Push sample transaction 1 to pending</Button>
+            <Button onClick={() => remove_transaction_from_pending(info.bank_id, info.bank_transactions[0])}>Remove sample transaction 0 from pending</Button>
+            <Button onClick={() => remove_transaction_from_pending(info.bank_id, info.bank_transactions[1])}>Remove sample transaction 1 from pending</Button>
+            <Button onClick={() => push_transaction_to_completed(info.bank_id, info.bank_transactions[0])}>Push sample transaction 0 to completed</Button>
+            <Button onClick={() => push_transaction_to_completed(info.bank_id, info.bank_transactions[1])}>Push sample transaction 1 to completed</Button>
         </div>
     );
 }
