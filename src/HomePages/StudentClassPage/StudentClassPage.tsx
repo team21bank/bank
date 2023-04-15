@@ -1,5 +1,5 @@
 import { getDatabase, onValue, ref, get, update, set, push, remove } from 'firebase/database';
-import React, { useContext, useEffect, useState, useCallback, useRef, MutableRefObject  } from 'react';
+import React, { useContext, useEffect, useState  } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, BankContext, BANK_STORAGE_KEY } from "../../Authentication/auth";
@@ -17,6 +17,7 @@ import { BankingDashboard } from '../../BankingComponents/BankingDashboard';
 import { sampleTransactions } from '../../Interfaces/Transaction';
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 import { PendingTransactionModal } from './BankerTransactionsModal';
+import Select from 'react-select';
 
 export function StudentClassPage({classCode}:{classCode:string}){
     window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
@@ -51,7 +52,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
         setShowTransactionModal(true)
         setShowDropDown(true)
         setAmount(0)
-        setEmails([])
+        setEmail('')
     }
     function hideTransactions() {
         setShowTransactionModal(false)
@@ -71,11 +72,11 @@ export function StudentClassPage({classCode}:{classCode:string}){
     const errClass2 = "form-control error"
     const submitFormData = event => {
         event.preventDefault();
-        if (emails.length === 0 || emails.length * amount > current_bank_user.balance) {
-            if (emails.length === 0) {
+        if (email === '' || amount > current_bank_user.balance) {
+            if (email==='') {
                 errors2(errClass2, "Students can't be empty")
             }
-            if (emails.length * amount > current_bank_user.balance) {
+            if ( amount > current_bank_user.balance) {
                 errors(errClass, "Insufficient funds in bank account")
             }
 
@@ -109,8 +110,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     stuIDs.push(object["uid"])
                 }
             })
-            setShowDropDown(false)
-            setShowTransactionModal(false)
+            hideTransactions()
             var studentID = '';
             var indexf = 0;
             var index2f = 0;
@@ -122,11 +122,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 const factor = 10 ** places;
                 return Math.round(num * factor) / factor;
             };
-            emails.forEach((email) => {
-                count += 1;
-                let e = (email["email"])
-
-                studentID = myMap.get(e)
+            
+                studentID = myMap.get(email)
                 for (let i = 0; i < submitJson.length; i++) {
 
                     if (submitJson[i]["uid"] === studentID) {
@@ -145,24 +142,22 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 console.log(amount1)
                 console.log(amount2)
 
-                //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: roundTo(Number(amount),2) + roundTo(studBalf,2) });
-                //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: roundTo(studBal2f,2)  });
+                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: roundTo(Number(amount),2) + roundTo(studBalf,2) });
+                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: roundTo(amount2,2)  });
 
-            })
+           
             
         }
         object()
         setSubmitJson([])
     }
 
-    const [emails, setEmails] = useState<string[]>([]);
-    const handleSelect = (selectedList) => {
-        setEmails(selectedList);
+    const [email, setEmail] = useState<string>('');
+    const handleSelect = (e) => {
+            setEmail(e["email"]);
+            console.log(e["email"]);
     };
 
-    const handleRemove = (selectedList) => {
-        setEmails(selectedList);
-    };
     const [amount, setAmount] = React.useState(0)
 
 
@@ -183,54 +178,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
         }
     }
 
-
-    const DropDown = () => (
-            <form key ="f" onSubmit={submitFormData}>
-                Select Students
-                <Multiselect key = "f"
-                    options={students} // Options to display in the dropdown
-                    selectedValues={emails} // Preselected value to persist in dropdown
-                    onSelect={handleSelect} // Function will trigger on select event
-                    onRemove={handleRemove} // Function will trigger on remove event
-                    displayValue="email" // Property name to display in the dropdown options
-
-                />
-                <div><small id="set"> {err}</small></div>
-                Enter amount name
-                <br></br>
-                <div>
-                <CurrencyInput id = "myText" key="f"
-                    allowDecimals
-                    decimalSeparator="."
-                    prefix="$"
-                    decimalsLimit={2}
-                    value={amount}
-                    defaultValue={0}
-                    allowNegativeValue={false}
-                    onValueChange={updateFormData}
-                    step={1}
-                    /></div>
-                
-                <br></br>
-                <div>
-                <input
-                    key="f" id = "myText2"
-                    type="text"
-                    onChange={e => getTransactionDescription(e)}
-                    placeholder="What is this for?"
-                    value={description}      />
-                </div>
-
-                <div>
-                    <small id="set"> {errmsg}</small>
-                </div>
-                <br></br>
-            <button type="submit">Submit</button>
-            <script>
-                document.getElementById("myText").focus();
-                document.getElementById("myText2").focus();
-            </script>
-            </form>)
 
 
     const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
@@ -307,7 +254,47 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 <Modal.Body>
                     <br /><br />
                     { }
-                    {showDropDown ? <DropDown /> : null}
+                    {showDropDown ? <form onSubmit={submitFormData}>
+                        <Select key="f"
+                            options={students} // Options to display in the dropdown
+                            //selectedValues={emails} // Preselected value to persist in dropdown
+                            getOptionLabel={(option) => option.email}
+                            getOptionValue={(option) => option.email}
+                            onChange={(e) => { handleSelect(e) }}
+
+                        />
+                        <div><small id="set"> {err}</small></div>
+                        Enter amount name
+                        <br></br>
+                        <div>
+                            <CurrencyInput id="myText" key="f"
+                                allowDecimals
+                                decimalSeparator="."
+                                prefix="$"
+                                decimalsLimit={2}
+                                value={amount}
+                                defaultValue={0}
+                                allowNegativeValue={false}
+                                onValueChange={updateFormData}
+                                step={1}
+                            /></div>
+
+                        <br></br>
+                        <div>
+                            <input
+                                key="f" id="myText2"
+                                type="text"
+                                onChange={e => getTransactionDescription(e)}
+                                placeholder="What is this for?"
+                                value={description} />
+                        </div>
+
+                        <div>
+                            <small id="set"> {errmsg}</small>
+                        </div>
+                        <br></br>
+                        <button type="submit">Submit</button>
+                    </form> : null}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={hideTransactions}>Cancel</Button>
