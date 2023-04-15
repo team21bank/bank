@@ -255,6 +255,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     <br /><br />
                     { }
                     {showDropDown ? <form onSubmit={submitFormData}>
+                        Select recepient
                         <Select key="f"
                             options={students} // Options to display in the dropdown
                             //selectedValues={emails} // Preselected value to persist in dropdown
@@ -278,15 +279,19 @@ export function StudentClassPage({classCode}:{classCode:string}){
                                 onValueChange={updateFormData}
                                 step={1}
                             /></div>
-
-                        <br></br>
                         <div>
+                            <label>
+                                What is this for?
+                            <br></br>
                             <input
                                 key="f" id="myText2"
                                 type="text"
                                 onChange={e => getTransactionDescription(e)}
                                 placeholder="What is this for?"
-                                value={description} />
+                                    value={description}
+                                    style={{ width: "400px", height:"100px" }}
+                                />
+                            </label>
                         </div>
 
                         <div>
