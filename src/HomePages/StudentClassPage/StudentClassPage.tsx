@@ -1,5 +1,5 @@
 import { getDatabase, onValue, ref, get, update, set, push, remove } from 'firebase/database';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback, useRef, MutableRefObject  } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, BankContext, BANK_STORAGE_KEY } from "../../Authentication/auth";
@@ -85,11 +85,13 @@ export function StudentClassPage({classCode}:{classCode:string}){
         }
     }
 
+    
 
 
 
     const [submitJson, setSubmitJson] = React.useState<any[]>([]);//the string of studentList objects
     const handleSubmit = () => {
+        console.log(`The senderDescription is ${description} and the receiverDescription is ${description}`)
         const object = async () => {
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
@@ -143,8 +145,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 console.log(amount1)
                 console.log(amount2)
 
-                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: roundTo(Number(amount),2) + roundTo(studBalf,2) });
-                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: roundTo(studBal2f,2)  });
+                //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: roundTo(Number(amount),2) + roundTo(studBalf,2) });
+                //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: roundTo(studBal2f,2)  });
 
             })
             
@@ -172,11 +174,20 @@ export function StudentClassPage({classCode}:{classCode:string}){
             setAmount(event);
         }
     };
+
+    //react usestates for sender and receiver messages
+    const [description, setDescription] = React.useState<string>()
+    const getTransactionDescription = event => {
+        if (event !== undefined) {
+            setDescription(event.target.value)
+        }
+    }
+
+
     const DropDown = () => (
-        <div key = "D" className="App">
             <form key ="f" onSubmit={submitFormData}>
                 Select Students
-                <Multiselect key = "SSS"
+                <Multiselect key = "f"
                     options={students} // Options to display in the dropdown
                     selectedValues={emails} // Preselected value to persist in dropdown
                     onSelect={handleSelect} // Function will trigger on select event
@@ -187,7 +198,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 <div><small id="set"> {err}</small></div>
                 Enter amount name
                 <br></br>
-                <CurrencyInput key="SSSDD"
+                <div>
+                <CurrencyInput id = "myText" key="f"
                     allowDecimals
                     decimalSeparator="."
                     prefix="$"
@@ -197,22 +209,35 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     allowNegativeValue={false}
                     onValueChange={updateFormData}
                     step={1}
-                    ///autoFocus
-                />
+                    /></div>
+                
+                <br></br>
+                <div>
+                <input
+                    key="f" id = "myText2"
+                    type="text"
+                    onChange={e => getTransactionDescription(e)}
+                    placeholder="What is this for?"
+                    value={description}      />
+                </div>
 
                 <div>
                     <small id="set"> {errmsg}</small>
                 </div>
                 <br></br>
-                <button type="submit">Submit</button>
-            </form>
-        </div>)
+            <button type="submit">Submit</button>
+            <script>
+                document.getElementById("myText").focus();
+                document.getElementById("myText2").focus();
+            </script>
+            </form>)
 
 
     const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
     const [students, setStudents] = React.useState<any[]>([]);
     const [myMap, setMyMap] = React.useState(new Map());
     const [parsedStudentsJson2, setParsedStudentsJson2] = React.useState<any[]>([]);//the string of studentList objects
+    const [userEmail, setUserEmail] = React.useState('')
 
 
     const displayGroups = () => {
@@ -252,6 +277,9 @@ export function StudentClassPage({classCode}:{classCode:string}){
                         setStudents((students) => {
                             return students.concat(user["userObj"])
                         })
+                    }
+                    if (user["userObj"]["hash"] === current_bank_user.uid) {
+                        setUserEmail(user["userObj"]["email"])
                     }
                 })
             }
