@@ -92,12 +92,20 @@ export function compareDates(a: Transaction, b: Transaction) {
  * @returns A transaction object corresponding to the given transaction information.
  */
 
+/*********************/
+//use this when adding/subtracting decimals!!!!!!
+const roundTo = function (num: number, places: number) {
+    const factor = 10 ** places;
+    return Math.round(num * factor) / factor;
+};
+
 export function makeStudentToStudentTransaction(
     senderAuth: AuthUser, senderBank: BankUser, 
     receiverAuth: AuthUser, receiverBank: BankUser, 
     amount: number, shopPurchase: boolean,
     receiverDesc?: string, senderDesc?: string
-    ): Transaction {
+): 
+    Transaction {
     const transaction: Transaction = {
         date: new Date(),
         receiver_name: receiverAuth.username,
@@ -106,8 +114,8 @@ export function makeStudentToStudentTransaction(
         sender_description: receiverDesc || "paid" + receiverAuth.username,
         type: shopPurchase ? "commerce" : "transfer",
         transfer_amount: amount,
-        receiver_balance: receiverBank.balance + amount,
-        sender_balance: senderBank.balance - amount,
+        receiver_balance: roundTo(receiverBank.balance + amount,2),
+        sender_balance: roundTo(senderBank.balance - amount,2),
         receiver_uid: receiverBank.uid,
         sender_uid: senderBank.uid
     };

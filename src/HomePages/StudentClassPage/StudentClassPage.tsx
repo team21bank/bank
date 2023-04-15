@@ -14,10 +14,12 @@ import { Subgroup } from "../../Interfaces/Subgroup";
 import { Multiselect } from "multiselect-react-dropdown";
 import CurrencyInput from "react-currency-input-field";
 import { BankingDashboard } from '../../BankingComponents/BankingDashboard';
-import { sampleTransactions } from '../../Interfaces/Transaction';
+import { sampleTransactions, makeStudentToStudentTransaction } from '../../Interfaces/Transaction';
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 import { PendingTransactionModal } from './BankerTransactionsModal';
 import Select from 'react-select';
+import { BankUser } from "../../Interfaces/BankUser";
+import { get_auth_users } from '../../DatabaseFunctions/UserFunctions';
 
 export function StudentClassPage({classCode}:{classCode:string}){
     window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
@@ -32,11 +34,11 @@ export function StudentClassPage({classCode}:{classCode:string}){
 
 
     //Get AuthUser objects for each student in the class
-    //const [studentAuthUserList, setStudentAuthUserList] = useState<AuthUser[]>([]);
+    const [studentAuthUserList, setStudentAuthUserList] = useState<AuthUser[]>([]);
 
     const bank_context = useContext(BankContext);
     useEffect(() => { //Update the bank context if this page is navigated to
-        
+        get_auth_users(current_bank.studentList.map(user => user.uid), setStudentAuthUserList)
         displayGroups();
         //move the two below into a function
 
@@ -62,22 +64,31 @@ export function StudentClassPage({classCode}:{classCode:string}){
     }
     const [errmsg, setErrmsg] = useState("");
     const [err, setErr] = useState("");
+    const [typeErr, setTypeErr] = useState("");
     const errors = (errClass, errmsg) => {
         setErrmsg(errmsg);
     };
     const errors2 = (errClass2, err) => {
         setErr(err);
     };
+    const errors3 = (errClass3, typeErr) => {
+        setTypeErr(typeErr);
+    }
     const errClass = "form-control error";
-    const errClass2 = "form-control error"
+    const errClass2 = "form-control error";
+    const errClass3 = "form-control error"; 
+
     const submitFormData = event => {
         event.preventDefault();
-        if (email === '' || amount > current_bank_user.balance) {
+        if (email === '' || amount > current_bank_user.balance ||type==='') {
             if (email==='') {
                 errors2(errClass2, "Students can't be empty")
             }
             if ( amount > current_bank_user.balance) {
                 errors(errClass, "Insufficient funds in bank account")
+            }
+            if (type === '') {
+                errors(errClass, "Enter transaction type!")
             }
 
         }
@@ -86,10 +97,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
         }
     }
 
-    
-
-
-
     const [submitJson, setSubmitJson] = React.useState<any[]>([]);//the string of studentList objects
     const handleSubmit = () => {
         console.log(`The senderDescription is ${description} and the receiverDescription is ${description}`)
@@ -97,9 +104,33 @@ export function StudentClassPage({classCode}:{classCode:string}){
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
             let stuIDs: string[] = []
-            let studentsList: any[] = []
             var studs = usersSnapshot.child(`groups/${classCode.slice(0, 6)}/bankObj/studentList`).val();
             const studentsJson = Object.values(studs)
+
+            //use this when subtracting!!!!!! See below for example on how to use to update value in db (commented out)
+            const roundTo = function (num: number, places: number) {
+                const factor = 10 ** places;
+                return Math.round(num * factor) / factor;
+            };
+           
+            
+            //use these fields for creating the transaction object
+            let receiverName = email
+            let senderName = ''//calculated below, ready to use
+            let receiverDescription = description
+            let senderDescription = description
+            let transferAmount = roundTo(Number(amount), 2) //roundTo here rounds weird decimal values to two decimal places, need this to avoid floating decimal problems
+            let receiverBalance = 0 //calculated below, ready to use
+            let receiverID = myMap.get(email)
+            let receiverAuthUser: AuthUser = DEFAULT_AUTH_USER  
+            let receiverBankUser = current_bank.studentList.find(val => val.uid === receiverID) ?? DEFAULT_BANK_USER
+
+
+            
+            studentAuthUserList.forEach(student => {
+                if (student.hash === receiverID)
+                    receiverAuthUser=student
+            })
 
             const l = JSON.parse(JSON.stringify(studentsJson))
             l.forEach((m) => {
@@ -116,13 +147,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
             var index2f = 0;
             var studBalf = 0;
             var studBal2f = 0;
-
-            let count = 0;
-            const roundTo = function (num: number, places: number) {
-                const factor = 10 ** places;
-                return Math.round(num * factor) / factor;
-            };
-            
                 studentID = myMap.get(email)
                 for (let i = 0; i < submitJson.length; i++) {
 
@@ -133,17 +157,24 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     }
                     if (submitJson[i]["uid"] === current_user.hash) {
                         index2f = i;
-                        studBal2f = submitJson[i]["balance"]-(count*Number(amount))
+                        studBal2f = submitJson[i]["balance"] - Number(amount)
+                        //set sender name
+                        senderName = submitJson[i]["emai"]
                     }
                 }
-                console.log(`I am taking ${amount} from ${current_user.email} and giving ${amount} to ${studentID}`)
-                let amount1 = Number(amount) + studBalf
-                let amount2 = studBal2f - Number(amount)
-                console.log(amount1)
-                console.log(amount2)
 
-                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: roundTo(Number(amount),2) + roundTo(studBalf,2) });
-                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: roundTo(amount2,2)  });
+                let amount2 = roundTo(studBal2f - Number(amount), 2)
+                
+                //set receiver balance
+            receiverBalance = Number(amount) + studBalf
+            var transactionObject = makeStudentToStudentTransaction(current_user, current_bank_user, receiverAuthUser, receiverBankUser,
+                transferAmount, true, description, description)
+            console.log(transactionObject)
+                    
+
+                //updates the db with correct balance for sender and receiver
+                //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: receiverBalance });//update receiver balance
+                //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: amount2  }); //update sender balance
 
            
             
@@ -177,6 +208,14 @@ export function StudentClassPage({classCode}:{classCode:string}){
             setDescription(event.target.value)
         }
     }
+    const [type,setType] = useState<string>('')
+    const transactionTypes = [
+        { value: 'misc', label: 'miscellaneous' },
+        { value: 'commerce', label: 'commerce' }
+    ]
+    const handleType = (e) => {
+        setType(e.target)
+    }
 
 
 
@@ -193,10 +232,12 @@ export function StudentClassPage({classCode}:{classCode:string}){
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
             var item1 = usersSnapshot.child('groups/' + classCode.slice(0, 6) + '/bankObj/subgroups').val();
+            
             const jsonValues = Object.values(item1);
             const parsedjsonValues = (JSON.parse(JSON.stringify(jsonValues)))
             setVillages(parsedjsonValues)
             setVillages((current) => current.filter((fruit) => fruit.name !== "placeholder"));
+
 
             //set student list
             let stuIDs: string[] = []
@@ -250,7 +291,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 ))}
             </table>
             <Modal show={showTransactionModal} onHide={hideTransactions}>
-                <Modal.Header closeButton><h2>Create Transactions</h2></Modal.Header>
+                <Modal.Header closeButton><h2>Create Payment Request</h2></Modal.Header>
                 <Modal.Body>
                     <br /><br />
                     { }
@@ -258,7 +299,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
                         Select recepient
                         <Select key="f"
                             options={students} // Options to display in the dropdown
-                            //selectedValues={emails} // Preselected value to persist in dropdown
                             getOptionLabel={(option) => option.email}
                             getOptionValue={(option) => option.email}
                             onChange={(e) => { handleSelect(e) }}
@@ -292,6 +332,15 @@ export function StudentClassPage({classCode}:{classCode:string}){
                                     style={{ width: "400px", height:"100px" }}
                                 />
                             </label>
+                            <label>
+                                Select transaction type
+                                <Select
+                                    options={transactionTypes}
+                                    onChange={(e) => {handleType(e) }}
+                                    
+                                />
+                            </label>
+                            <div>{typeErr}</div>
                         </div>
 
                         <div>
@@ -307,7 +356,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
             </Modal>
             <div>your total balance is {current_bank_user.balance}</div>
             <div>
-                <Button onClick={showTransactions}>Pay/Create Transaction</Button>
+                <Button onClick={showTransactions}>Pay/Create Payment Request</Button>
             </div>
 
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
