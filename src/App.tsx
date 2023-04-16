@@ -20,6 +20,8 @@ import { QuizPage } from './Quizzes/QuizPage';
 import { StudentQuizMain } from './Quizzes/StudentQuiz';
 import { SubgroupsPage } from './HomePages/TeacherClassPage/SubgroupsPage';
 import { UserTransaction } from './BankingComponents/UserTransaction';
+import { BankingDashboard } from './BankingComponents/BankingDashboard';
+import { StudentBankingPage } from './HomePages/StudentBankingPage/StudentBankingPage';
 
 function App() {
     return (
@@ -65,6 +67,7 @@ function AppBody(): JSX.Element {
           <Route path="home" element={<StudentHomePage />}/>
           {classes.map(str => <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>)}
           {classes.map(str => <Route path={str.slice(0,6)+"/quizzes"} element={<StudentQuizMain/>} />)}
+          {classes.map(str => <Route path={str.slice(0,6)+"/banking"} element={<StudentBankingPage classCode={str}/>} />)}
         </Route>
       </Routes>
     </BrowserRouter>

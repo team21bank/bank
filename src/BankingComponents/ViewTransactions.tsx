@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { compareDates, Transaction } from '../Interfaces/Transaction'; //Used to sort the passed in Transactions by date
+import './ViewTransactions.css'
 
 /**
  * Takes in the student's transactions, as well as their BankUser ID (BankUser.uid) and displays the transactions in a table.
@@ -26,7 +27,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
             <td>{transaction.receiver_name}</td>
             <td>{transaction.sender_name}</td>
             <td>{transaction.receiver_description}</td>
-            <td>{transaction.transfer_amount.toFixed(2)}</td>
+            <td className="transaction-history-gain">{transaction.transfer_amount.toFixed(2)}</td>
             <td>{transaction.receiver_balance.toFixed(2)}</td>
         </tr>
         )
@@ -36,7 +37,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
             <td>{transaction.sender_name}</td>
             <td>{transaction.receiver_name}</td>
             <td>{transaction.sender_description}</td>
-            <td>{(transaction.transfer_amount * -1).toFixed(2)}</td>
+            <td className="transaction-history-loss">{(transaction.transfer_amount * -1).toFixed(2)}</td>
             <td>{(transaction.sender_balance || 0).toFixed(2)}</td>
         </tr>
         )
