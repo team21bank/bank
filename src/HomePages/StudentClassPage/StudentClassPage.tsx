@@ -55,6 +55,10 @@ export function StudentClassPage({classCode}:{classCode:string}){
         setType('')
     }
     function hideTransactions() {
+
+        setErr('')
+        setErrmsg('')
+        setTypeErr('')
         setShowTransactionModal(false)
         setShowDropDown(false)
         
@@ -174,8 +178,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     
 
                 //updates the db with correct balance for sender and receiver, commented out because updating balances doesn't happen here
-                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: receiverBalance });//update receiver balance
-                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: amount2  }); //update sender balance
+                //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: receiverBalance });//update receiver balance
+                //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: amount2  }); //update sender balance
 
            
             
