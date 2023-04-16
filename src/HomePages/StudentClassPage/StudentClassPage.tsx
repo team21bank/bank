@@ -105,7 +105,9 @@ export function StudentClassPage({classCode}:{classCode:string}){
         const object = async () => {
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
+            //get ids of students in class
             let stuIDs: string[] = []
+            //get studentlist object
             var studs = usersSnapshot.child(`groups/${classCode.slice(0, 6)}/bankObj/studentList`).val();
             const studentsJson = Object.values(studs)
 
@@ -114,9 +116,10 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 const factor = 10 ** places;
                 return Math.round(num * factor) / factor;
             };
-            //use these fields for creating the transaction object, see them used below in transaction object
+
+            //declare fields for creating the transaction object, see them used below in transaction object
             let receiverName = username
-            let senderName = ''//calculated below, ready to use
+            let senderName = current_user.username//calculated below, ready to use
             let receiverDescription = description
             let senderDescription = description
             let transferAmount = roundTo(Number(amount), 2) //roundTo here rounds weird decimal values to two decimal places, need this to avoid floating decimal problems
@@ -129,22 +132,30 @@ export function StudentClassPage({classCode}:{classCode:string}){
             let receiverAuthUser: AuthUser = DEFAULT_AUTH_USER  
             let receiverBankUser = current_bank.studentList.find(val => val.uid === receiverID) ?? DEFAULT_BANK_USER
 
+            //initialize receiverAuthUser (for transaction object)
             studentAuthUserList.forEach(student => {
                 if (student.hash === receiverID)
                     receiverAuthUser=student
             })
 
+            //parse studentsJson values and push each value to submitJson, which will be used to find sender and receiver information
+            //also add each student to the submitJson
             const l = JSON.parse(JSON.stringify(studentsJson))
             l.forEach((m) => {
                 submitJson.push(m)
             })
+
+            //add id of student if not null, to the stuIDs array
             submitJson.forEach((object) => {
                 if (object["uid"] !== "") {
                     stuIDs.push(object["uid"])
                 }
             })
+            
             hideTransactions()
-            var studentID = '';
+
+            //fields for finding the balance for sender and receiver for calculation of balance to be put in the indices for updating the balance in the db (commented out below) 
+            /*var studentID = '';
             var indexf = 0;
             var index2f = 0;
             var studBalf = 0;
@@ -154,35 +165,36 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     //get info about receiver index in db and receiver balance
                     if (submitJson[i]["uid"] === studentID) {
                         indexf = i
-
                         studBalf = submitJson[i]["balance"]
                     }
+                    //get info about sender index and sender balance
                     if (submitJson[i]["uid"] === current_user.hash) {
                         index2f = i;
                         studBal2f = submitJson[i]["balance"]
-                        //set sender name
-                        senderName = submitJson[i]["username"]
                     }
                 }
 
+            //amount2 is the remaining balance of sender, used this in the now commented out update stuff here
                 let amount2 = roundTo(studBal2f - Number(amount), 2)
                 
-                //set receiver balance
-            receiverBalance = roundTo(Number(amount) + studBalf,2)
+            //set receiver balance for transaction object
+            receiverBalance = roundTo(Number(amount) + studBalf, 2)
+            **/
 
-            /***************************The transaction object */
+            /***************************
+             * The transaction object *
+             **************************/
             var transactionObject = makeStudentToStudentTransaction(current_user, current_bank_user, receiverAuthUser, receiverBankUser,
                 transferAmount, shopPurchase, description, description)
             console.log(transactionObject)
-            /***********************The transaction object*/
+            /***************************
+             * The transaction object *
+             **************************/
                     
 
-                //updates the db with correct balance for sender and receiver, commented out because updating balances doesn't happen here
+                //updates the db with correct balance for sender and receiver with our calcualted indices, commented out because updating balances doesn't happen here
                 //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: receiverBalance });//update receiver balance
                 //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: amount2  }); //update sender balance
-
-           
-            
         }
         object()
         setSubmitJson([])
