@@ -303,16 +303,16 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     <br /><br />
                     { }
                     {showDropDown ? <form onSubmit={submitFormData}>
-                        Select recepient
+                        <b>Select recepient</b>
                         <Select key="f"
                             options={students} // Options to display in the dropdown
                             getOptionLabel={(option) => option.username}
                             getOptionValue={(option) => option.username}
                             onChange={(e) => { handleSelect(e) }}
-
-                        />
+                            />
                         <div><small id="set"> {err}</small></div>
-                        Enter amount name
+                        <br></br>
+                        <b>Enter amount name</b>
                         <br></br>
                         <div>
                             <CurrencyInput id="myText" key="f"
@@ -327,20 +327,24 @@ export function StudentClassPage({classCode}:{classCode:string}){
                                 step={1}
                             /></div>
                         <div>
-                            <label>
-                                What is this for?
                             <br></br>
+                            <label>
+                                <b>What is this for?</b>
+                                <br></br>
                             <input
-                                key="f" id="myText2"
+                                    key="f" id="myText2"
+                                    maxLength={65 }
                                 type="text"
                                 onChange={e => getTransactionDescription(e)}
                                 placeholder="What is this for?"
                                     value={description}
-                                    style={{ width: "400px", height:"100px" }}
+                                    style={{ width: "450px", height:"50px" }}
                                 />
                             </label>
+                            <br></br>
+                            <br></br>
                             <label>
-                                Is this a purchase?
+                                <b>Is this a purchase?</b>
                                 <Select
                                     options={transactionTypes}
                                     onChange={(e) => {handleType(e) }}
