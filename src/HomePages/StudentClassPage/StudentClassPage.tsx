@@ -40,10 +40,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
     useEffect(() => { //Update the bank context if this page is navigated to
         get_auth_users(current_bank.studentList.map(user => user.uid), setStudentAuthUserList)
         displayGroups();
-        //move the two below into a function
-
-        get_bank(classCode.slice(0,6),bank_context.setBank)
-
+        get_bank(classCode.slice(0, 6), bank_context.setBank)
     }, []);
 
     const current_bank_user = current_bank.studentList.find(val => val.uid === current_user.hash) ?? DEFAULT_BANK_USER;
@@ -55,6 +52,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
         setShowDropDown(true)
         setAmount(0)
         setEmail('')
+        setType('')
     }
     function hideTransactions() {
         setShowTransactionModal(false)
@@ -88,7 +86,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 errors(errClass, "Insufficient funds in bank account")
             }
             if (type === '') {
-                errors(errClass, "Enter transaction type!")
+                errors3(errClass3, "Enter transaction type!")
             }
 
         }
@@ -112,9 +110,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 const factor = 10 ** places;
                 return Math.round(num * factor) / factor;
             };
-           
-            
-            //use these fields for creating the transaction object
+            //use these fields for creating the transaction object, see them used below in transaction object
             let receiverName = email
             let senderName = ''//calculated below, ready to use
             let receiverDescription = description
@@ -122,11 +118,13 @@ export function StudentClassPage({classCode}:{classCode:string}){
             let transferAmount = roundTo(Number(amount), 2) //roundTo here rounds weird decimal values to two decimal places, need this to avoid floating decimal problems
             let receiverBalance = 0 //calculated below, ready to use
             let receiverID = myMap.get(email)
+            let shopPurchase = false;
+                if (type === "Yes") {
+                    shopPurchase=true
+                }
             let receiverAuthUser: AuthUser = DEFAULT_AUTH_USER  
             let receiverBankUser = current_bank.studentList.find(val => val.uid === receiverID) ?? DEFAULT_BANK_USER
 
-
-            
             studentAuthUserList.forEach(student => {
                 if (student.hash === receiverID)
                     receiverAuthUser=student
@@ -149,7 +147,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
             var studBal2f = 0;
                 studentID = myMap.get(email)
                 for (let i = 0; i < submitJson.length; i++) {
-
+                    //get info about receiver index in db and receiver balance
                     if (submitJson[i]["uid"] === studentID) {
                         indexf = i
 
@@ -167,12 +165,15 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 
                 //set receiver balance
             receiverBalance = Number(amount) + studBalf
+
+            /***************************The transaction object */
             var transactionObject = makeStudentToStudentTransaction(current_user, current_bank_user, receiverAuthUser, receiverBankUser,
-                transferAmount, true, description, description)
+                transferAmount, shopPurchase, description, description)
             console.log(transactionObject)
+            /***********************The transaction object*/
                     
 
-                //updates the db with correct balance for sender and receiver
+                //updates the db with correct balance for sender and receiver, commented out because updating balances doesn't happen here
                 //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: receiverBalance });//update receiver balance
                 //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: amount2  }); //update sender balance
 
@@ -208,13 +209,15 @@ export function StudentClassPage({classCode}:{classCode:string}){
             setDescription(event.target.value)
         }
     }
-    const [type,setType] = useState<string>('')
+    const [type,setType] = React.useState<string>()
     const transactionTypes = [
-        { value: 'misc', label: 'miscellaneous' },
-        { value: 'commerce', label: 'commerce' }
+        { value: 'Yes', label: 'Yes' },
+        { value: 'No', label: 'No' }
     ]
     const handleType = (e) => {
-        setType(e.target)
+        if (e !== undefined) {
+            setType(e["value"])
+        }
     }
 
 
@@ -250,7 +253,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 parsedStudentsJson2.push(m)
             })
             parsedStudentsJson2.forEach((object) => {
-                if (object["uid"] !== "") {
+                if (object["uid"] !== ""&&object["uid"]!==current_bank_user) {
                     stuIDs.push(object["uid"])
                 }
             })
@@ -333,7 +336,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                                 />
                             </label>
                             <label>
-                                Select transaction type
+                                Is this a purchase?
                                 <Select
                                     options={transactionTypes}
                                     onChange={(e) => {handleType(e) }}
