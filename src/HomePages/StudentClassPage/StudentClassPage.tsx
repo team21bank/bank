@@ -51,7 +51,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
         setShowTransactionModal(true)
         setShowDropDown(true)
         setAmount(0)
-        setEmail('')
+        setusername('')
         setType('')
     }
     function hideTransactions() {
@@ -78,8 +78,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
 
     const submitFormData = event => {
         event.preventDefault();
-        if (email === '' || amount > current_bank_user.balance ||type==='') {
-            if (email==='') {
+        if (username === '' || amount > current_bank_user.balance ||type==='') {
+            if (username==='') {
                 errors2(errClass2, "Students can't be empty")
             }
             if ( amount > current_bank_user.balance) {
@@ -111,13 +111,13 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 return Math.round(num * factor) / factor;
             };
             //use these fields for creating the transaction object, see them used below in transaction object
-            let receiverName = email
+            let receiverName = username
             let senderName = ''//calculated below, ready to use
             let receiverDescription = description
             let senderDescription = description
             let transferAmount = roundTo(Number(amount), 2) //roundTo here rounds weird decimal values to two decimal places, need this to avoid floating decimal problems
             let receiverBalance = 0 //calculated below, ready to use
-            let receiverID = myMap.get(email)
+            let receiverID = myMap.get(username)
             let shopPurchase = false;
                 if (type === "Yes") {
                     shopPurchase=true
@@ -145,7 +145,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
             var index2f = 0;
             var studBalf = 0;
             var studBal2f = 0;
-                studentID = myMap.get(email)
+                studentID = myMap.get(username)
                 for (let i = 0; i < submitJson.length; i++) {
                     //get info about receiver index in db and receiver balance
                     if (submitJson[i]["uid"] === studentID) {
@@ -155,16 +155,16 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     }
                     if (submitJson[i]["uid"] === current_user.hash) {
                         index2f = i;
-                        studBal2f = submitJson[i]["balance"] - Number(amount)
+                        studBal2f = submitJson[i]["balance"]
                         //set sender name
-                        senderName = submitJson[i]["emai"]
+                        senderName = submitJson[i]["username"]
                     }
                 }
 
                 let amount2 = roundTo(studBal2f - Number(amount), 2)
                 
                 //set receiver balance
-            receiverBalance = Number(amount) + studBalf
+            receiverBalance = roundTo(Number(amount) + studBalf,2)
 
             /***************************The transaction object */
             var transactionObject = makeStudentToStudentTransaction(current_user, current_bank_user, receiverAuthUser, receiverBankUser,
@@ -174,8 +174,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     
 
                 //updates the db with correct balance for sender and receiver, commented out because updating balances doesn't happen here
-                //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: receiverBalance });//update receiver balance
-                //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: amount2  }); //update sender balance
+                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: receiverBalance });//update receiver balance
+                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: amount2  }); //update sender balance
 
            
             
@@ -184,10 +184,10 @@ export function StudentClassPage({classCode}:{classCode:string}){
         setSubmitJson([])
     }
 
-    const [email, setEmail] = useState<string>('');
+    const [username, setusername] = useState<string>('');
     const handleSelect = (e) => {
-            setEmail(e["email"]);
-            console.log(e["email"]);
+            setusername(e["username"]);
+            console.log(e["username"]);
     };
 
     const [amount, setAmount] = React.useState(0)
@@ -226,7 +226,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
     const [students, setStudents] = React.useState<any[]>([]);
     const [myMap, setMyMap] = React.useState(new Map());
     const [parsedStudentsJson2, setParsedStudentsJson2] = React.useState<any[]>([]);//the string of studentList objects
-    const [userEmail, setUserEmail] = React.useState('')
+    const [userusername, setUserusername] = React.useState('')
 
 
     const displayGroups = () => {
@@ -253,7 +253,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 parsedStudentsJson2.push(m)
             })
             parsedStudentsJson2.forEach((object) => {
-                if (object["uid"] !== ""&&object["uid"]!==current_bank_user) {
+                if (object["uid"] !== ""&&object["uid"]!==current_bank_user.uid) {
                     stuIDs.push(object["uid"])
                 }
             })
@@ -264,13 +264,13 @@ export function StudentClassPage({classCode}:{classCode:string}){
             for (let i = 0; i < stuIDs.length + 1; i++) {
                 parsedJSonValues2.forEach((user) => {
                     if (user["userObj"]["hash"] === stuIDs[i]) {
-                        setMyMap(new Map(myMap.set(user["userObj"]["email"], user["userObj"]["hash"])));
+                        setMyMap(new Map(myMap.set(user["userObj"]["username"], user["userObj"]["hash"])));
                         setStudents((students) => {
                             return students.concat(user["userObj"])
                         })
                     }
                     if (user["userObj"]["hash"] === current_bank_user.uid) {
-                        setUserEmail(user["userObj"]["email"])
+                        setUserusername(user["userObj"]["username"])
                     }
                 })
             }
@@ -302,8 +302,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
                         Select recepient
                         <Select key="f"
                             options={students} // Options to display in the dropdown
-                            getOptionLabel={(option) => option.email}
-                            getOptionValue={(option) => option.email}
+                            getOptionLabel={(option) => option.username}
+                            getOptionValue={(option) => option.username}
                             onChange={(e) => { handleSelect(e) }}
 
                         />
