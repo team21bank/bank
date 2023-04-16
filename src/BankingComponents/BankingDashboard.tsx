@@ -49,13 +49,6 @@ export function BankingDashboard(info: {current_auth_user: AuthUser, current_ban
             <br />
 
             <ViewTransactions transactions={info.bank_transactions} uid={info.current_bank_user.uid}></ViewTransactions>
-            <span>The bank id is: {info.bank_id}</span>
-            <Button onClick={() => push_transaction_to_pending(info.bank_id, info.bank_transactions[0])}>Push sample transaction 0 to pending</Button>
-            <Button onClick={() => push_transaction_to_pending(info.bank_id, info.bank_transactions[1])}>Push sample transaction 1 to pending</Button>
-            <Button onClick={() => remove_transaction_from_pending(info.bank_id, info.bank_transactions[0])}>Remove sample transaction 0 from pending</Button>
-            <Button onClick={() => remove_transaction_from_pending(info.bank_id, info.bank_transactions[1])}>Remove sample transaction 1 from pending</Button>
-            <Button onClick={() => push_transaction_to_completed(info.bank_id, info.bank_transactions[0])}>Push sample transaction 0 to completed</Button>
-            <Button onClick={() => push_transaction_to_completed(info.bank_id, info.bank_transactions[1])}>Push sample transaction 1 to completed</Button>
         </div>
     );
 }
