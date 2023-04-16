@@ -4,7 +4,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, BankContext, BANK_STORAGE_KEY } from "../../Authentication/auth";
 import { Bank, DEFAULT_BANK } from '../../Interfaces/BankObject';
-import { DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
+import { DEFAULT_BANK_USER, getTitle } from '../../Interfaces/BankUser';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
 import "./StudentClassPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
@@ -16,6 +16,7 @@ import CurrencyInput from "react-currency-input-field";
 import { BankingDashboard } from '../../BankingComponents/BankingDashboard';
 import { sampleTransactions } from '../../Interfaces/Transaction';
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
+import { PendingTransactionModal } from './BankerTransactionsModal';
 
 export function StudentClassPage({classCode}:{classCode:string}){
     window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
@@ -266,7 +267,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
 
                 <th>Village name</th>
                 <th>Students</th>
-
                 {villages.map((village, index) => (
                     <tr data-index={index}>
                         <td>{village.name}</td>
@@ -295,7 +295,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/banking")}> Go to your Banking Dashboard</Button>
         </div>
         <br/>
+        {getTitle(current_bank_user.role).includes("Banker")?<PendingTransactionModal pendingList = {current_bank.pendingList}></PendingTransactionModal>:<></>}
         </div>
-
     )
 }

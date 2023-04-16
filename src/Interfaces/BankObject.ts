@@ -1,6 +1,7 @@
 import { BankUser } from "./BankUser";
 import { Subgroup } from "./Subgroup";
 import { Quiz } from "./Quiz";
+import { Transaction } from "./Transaction";
 
 export interface Bank {
     /** The ID of the bank*/
@@ -15,8 +16,11 @@ export interface Bank {
     subgroups: Subgroup[];
     /**List of quizzes for a class */
     quizzes: Quiz[];
+
+    pendingList: Transaction[];
+    completedList: Transaction[];
 }
 
 export const DEFAULT_BANK: Bank = {
-    bankId: "", teacherID: "", studentList: [], classTitle: "", quizzes: [], subgroups: []
+    bankId: "", teacherID: "", studentList: [], classTitle: "", quizzes: [], subgroups: [], pendingList: [], completedList: []
 }

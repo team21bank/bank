@@ -18,7 +18,9 @@ export function CreateClassPage(): JSX.Element {
         studentList: [DEFAULT_BANK_USER],
         classTitle: "",
         quizzes: [QUIZ_PLACEHOLDER],
-        subgroups: [SUBGROUPS_PLACEHOLDER]
+        subgroups: [SUBGROUPS_PLACEHOLDER],
+        pendingList: [],
+        completedList: []
     });
     
     if(newBank.teacherID === "" && auth.currentUser) setNewBank({...newBank, teacherID: auth.currentUser.uid}); //set the bank's teacherID when it is availabe from userObj
