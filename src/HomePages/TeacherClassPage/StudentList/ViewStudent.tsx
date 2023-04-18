@@ -9,33 +9,26 @@ import { AuthUser } from "../../../Interfaces/AuthUser";
 
 
 export function ViewStudent(
-    {bank_user, auth_user, bank, index}:
-    {bank_user: BankUser, auth_user: AuthUser, bank: Bank, index:number}
+    {user_pair, remove_student}:
+    {user_pair: [AuthUser, BankUser], remove_student: () => void}
 ): JSX.Element {
-    function remove_student() {
-        alert("TODO. Still needs to be implemented");
-        //delete_student_from_bank(bank.bankId, bank_user.uid);
-    }
-
-    return bank_user ? (
+    return (
         <div className="student-list-item">
             <Row className="student-list-row">
                 <Col>
-                    {auth_user.username}
+                    {user_pair[0].username}
                 </Col>
                 <Col style={{"display": "flex"}}>
-                    {getTitle(bank_user.role)}<EditRoleModal bank_user={bank_user}/>
+                    {getTitle(user_pair[1].role)}<EditRoleModal bank_user={user_pair[1]}/>
                 </Col>
                 <Col style={{"display": "flex"}}>
-                    balance:{bank_user.balance}<EditBalanceModal bank_user={bank_user}/>
+                    balance:{user_pair[1].balance}<EditBalanceModal bank_user={user_pair[1]}/>
                 </Col>
                 <Col>
-                    <RemoveStudentModal remove_student_function={remove_student} student_name={auth_user.username} />
+                    <RemoveStudentModal remove_student_function={remove_student} student_name={user_pair[0].username} />
                 </Col>
             </Row>
         </div>
-    ) : (
-        <></>
     )
 }
 
@@ -43,7 +36,6 @@ function RemoveStudentModal(
     {remove_student_function, student_name}: {remove_student_function: ()=>void, student_name: string}
 ): JSX.Element {
     const [showModal, setShowModal] = useState(false);
-
 
     return (
     <div>

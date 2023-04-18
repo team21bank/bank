@@ -42,17 +42,13 @@ export function get_auth_user_then(uid: string, func: (user: AuthUser) => void) 
     })
 }
 
-//Fetches a list of AuthUser objects
-//THIS IS ONLY SUPPOSED TO BE USED ON THE TEACHER CLASS PAGE
-//ONVALUE IS NOT USED SO UPDATES TO THE DATABASE ARE NOT REFLECTED ON THE WEBSITE UNTIL REFRESH
-export function get_auth_users(uids: string[], setter: (users: AuthUser[]) => void) {
+//Returns a list of AuthUser objects
+//Users that dont exist will not be present in the result
+//RETURN TYPE MUST BE GENERIC
+export async function get_auth_users(uids: string[]) {
     const database = getDatabase()
-    const users = uids.map(uid => get(ref(database, "/users/"+uid+"/userObj")))
-    Promise.all(users).then(settled_result => {
-        let users = settled_result.filter(snapshot => snapshot.exists()).map(snapshot => snapshot.val());
-        setter(users);
-    })
+    const users = await Promise.all(uids.map(uid => get(ref(database, "/users/"+uid+"/userObj"))))
+    return users.filter(snapshot => snapshot.exists()).map(snapshot => snapshot.val())
 }
 
 
-//TODO: Write function to remove dangling references to deleted bank objects in the groups array
