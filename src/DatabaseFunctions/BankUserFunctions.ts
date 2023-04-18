@@ -4,7 +4,7 @@ import { get, set, ref, getDatabase } from "firebase/database";
 
 ////////////////////////////// DATABASE MODIFYING FUNCTIONS //////////////////////////////
 
-//Sets the BankUser object at /groups/bank_id/bankObj/studentList/index_of(user_id) to new_bank_user
+/**Sets the BankUser object at /groups/bank_id/bankObj/studentList/index_of(user_id) to new_bank_user*/
 export function update_bank_user(bank_id: string, user_id: string, new_bank_user: BankUser) {
     let student_list_ref = ref(getDatabase(), "/groups/"+bank_id+"/bankObj/studentList");
     get(student_list_ref).then(student_list_snapshot => {
@@ -26,7 +26,11 @@ export function update_bank_user(bank_id: string, user_id: string, new_bank_user
     });
 }
 
-//Deletes the BankUser object at /groups/bank_id/studentList/index_of(user_id)
+/**
+ * Deletes the BankUser object at /groups/bank_id/studentList/index_of(user_id)
+
+ * THIS DOES NOT REMOVE THE ASSOCIATED AUTHUSER'S REFERENCE TO THE BANK
+*/
 export function delete_bank_user(bank_id: string, user_id: string) {
     let student_list_ref = ref(getDatabase(), "/groups/"+bank_id+"/bankObj/studentList");
     get(student_list_ref).then(student_list_snapshot => {
@@ -44,7 +48,7 @@ export function delete_bank_user(bank_id: string, user_id: string) {
     });
 }
 
-//Adds a new BankUser object with uid user_id to the end /groups/bank_id/studentList
+/**Adds a new BankUser object with uid user_id to the end /groups/bank_id/studentList*/
 export function create_default_bank_user(bank_id: string, user_id: string) {
     let student_list_ref = ref(getDatabase(), "/groups/"+bank_id+"/bankObj/studentList");
     get(student_list_ref).then(student_list_snapshot => {
@@ -67,8 +71,3 @@ export function create_default_bank_user(bank_id: string, user_id: string) {
 }
 
 
-//DATABASE READING FUNCTIONS
-
-export function get_bank_user_then(uid: string, bank_id: string, func: (bank_user: BankUser) => void) {
-    
-}

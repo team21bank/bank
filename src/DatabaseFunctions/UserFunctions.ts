@@ -1,10 +1,10 @@
 import { Unsubscribe } from "firebase/auth";
-import { get, onValue, set, ref, getDatabase, remove, DataSnapshot } from "firebase/database";
+import { get, onValue, set, ref, getDatabase, remove } from "firebase/database";
 import { AuthUser, DEFAULT_AUTH_USER } from "../Interfaces/AuthUser";
 
 //DATABASE READING FUNCTIONS
 
-//Sets the AuthUser object at /users/uid to new_object
+/**Sets the AuthUser object at /users/uid to new_object*/
 export function update_auth_user(uid: string, new_object: AuthUser) {
     set(ref(getDatabase(), "/users/"+uid+"/userObj"), new_object);
 }
