@@ -20,11 +20,12 @@ export function StudentList(
     
     //I dont like this, hopefully I'll change it later
     //Populates the studentList with AuthUsers and their associated BankUser
+    //A default AuthUser with "DELETED USER" username will take its place if the bankUser's associated AuthUser doesnt exist
     useEffect(() => {
         get_auth_users(current_bank.studentList.map(user => user.uid)).then((auth_users: AuthUser[]) => {
             const pairs: [AuthUser, BankUser][] = current_bank.studentList.map(bank_user => {
                 return [
-                    auth_users.find(user => user.hash === bank_user.uid) ?? {...DEFAULT_AUTH_USER, username: "DELETED_USER"},
+                    auth_users.find(user => user.hash === bank_user.uid) ?? {...DEFAULT_AUTH_USER, username: "DELETED USER"},
                     bank_user
                 ]
             })
