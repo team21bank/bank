@@ -21,6 +21,7 @@ export function StudentList(
     //I dont like this, hopefully I'll change it later
     //Populates the studentList with AuthUsers and their associated BankUser
     //A default AuthUser with "DELETED USER" username will take its place if the bankUser's associated AuthUser doesnt exist
+    //REALLY ONLY NEED TO GET USERNAMES HERE, MAYBE CHANGE TO REDUCE DATABASE READS
     useEffect(() => {
         get_auth_users(current_bank.studentList.map(user => user.uid)).then((auth_users: AuthUser[]) => {
             const pairs: [AuthUser, BankUser][] = current_bank.studentList.map(bank_user => {

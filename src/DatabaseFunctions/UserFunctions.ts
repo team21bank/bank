@@ -9,14 +9,21 @@ export function update_auth_user(uid: string, new_object: AuthUser) {
     set(ref(getDatabase(), "/users/"+uid+"/userObj"), new_object);
 }
 
-//Deletes AuthUser object at /users/uid
-//THIS FUNCTION DOES NOT DELETE THE BANKUSER OBJECT FROM BANKS
+/**
+ * Deletes AuthUser object at /users/uid
+
+ * THIS FUNCTION DOES NOT DELETE THE BANKUSER OBJECT FROM BANKS.
+   Instead the BankUser's username will appear as "DELETED_USER"
+*/
 export function delete_auth_user(uid: string) {
     remove(ref(getDatabase(), "/users/"+uid));
 }
 
-//Creates a new auth user object and inserts it into the database.
-//New AuthUser object is created under /users/uid
+/**
+ * Creates a new auth user object and inserts it into the database.
+
+*New AuthUser object is created under /users/uid
+*/
 export function create_auth_user(uid: string, user_object: AuthUser) {
     set(ref(getDatabase(), "/users/"+uid+"/userObj"), user_object);
 }
@@ -24,7 +31,7 @@ export function create_auth_user(uid: string, user_object: AuthUser) {
 
 //DATABASE WRITING FUNCTIONS
 
-//Fetches an AuthUser object from the database and uses it in the setter function
+/**Fetches an AuthUser object from the database and uses it in the setter function*/
 export function get_auth_user_updating(uid: string, setter: (AuthUser: AuthUser) => void): Unsubscribe {
     return onValue(ref(getDatabase(), "/users/"+uid+"/userObj"),
         snapshot => {
@@ -33,7 +40,7 @@ export function get_auth_user_updating(uid: string, setter: (AuthUser: AuthUser)
     )
 }
 
-//fetch the AuthUser object then use the callback function on it
+/**fetch the AuthUser object then use the callback function on it*/
 export function get_auth_user_then(uid: string, func: (user: AuthUser) => void) {
     get(ref(getDatabase(), "/users/"+uid+"/userObj")).then(data => {
         if(data.exists()) {
@@ -42,13 +49,16 @@ export function get_auth_user_then(uid: string, func: (user: AuthUser) => void) 
     })
 }
 
-//Returns a list of AuthUser objects
-//Users that dont exist will not be present in the result
-//RETURN TYPE MUST BE GENERIC
-export async function get_auth_users(uids: string[]) {
+/**
+*Returns a list of AuthUser objects.
+Users that dont exist will not be present in the result
+
+*If one promise is rejected, the entire returned promise will be rejected. This shouldn't be a problem unless database read rules are added 
+*/
+export async function get_auth_users(uids: string[]): Promise<AuthUser[]> {
     const database = getDatabase()
     const users = await Promise.all(uids.map(uid => get(ref(database, "/users/"+uid+"/userObj"))))
-    return users.filter(snapshot => snapshot.exists()).map(snapshot => snapshot.val())
+    return users.filter(snapshot => snapshot.exists()).map<AuthUser>(snapshot => snapshot.val())
 }
 
 

@@ -30,7 +30,11 @@ export function LoginForm(){
         signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
             window.sessionStorage.setItem(USER_STORAGE_KEY, currUser.user.uid); //Add current user to browser storage
             get_auth_user_updating(currUser.user.uid, userContext.setUser) //Get the logged in AuthUser and set the context using an updating fetch
-            get_auth_user_then(currUser.user.uid, user => navigate(user.isTeacher ? "/teachers/home" : "/students/home")) //Get the logged in user and navigate to home
+            
+            get_auth_user_then(currUser.user.uid, user => { //Get the logged in user and navigate to home
+                //Should probably remove dangling and unauthorized bank references here
+                navigate(user.isTeacher ? "/teachers/home" : "/students/home")
+            }) 
         }).catch(function(error){
             var errorCode = error.code;
             var errorMessage = error.message;
