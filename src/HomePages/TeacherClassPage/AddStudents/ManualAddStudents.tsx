@@ -105,6 +105,8 @@ function NewStudentForm({student, setStudent}: {student: NewStudent, setStudent:
 
 //create accounts for each student in the list and add them to the class
 function createStudentAccountsFromList(classID: string, studentList: NewStudent[]) {
+    alert("We found an issue with this feature. We're in the process of fixing it right now")
+    /*
     let failed_list: NewStudent[] = studentList.filter((student) => student.email==="" || student.password.length<6);
     let finished_list: string[] = [];
     let newStudentList = studentList.filter((student) => student.email!=="" && student.password.length>5);
@@ -149,4 +151,5 @@ function createStudentAccountsFromList(classID: string, studentList: NewStudent[
         }
     }
     check_finished();
+    */
 }
