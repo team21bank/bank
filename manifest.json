@@ -1,0 +1,15 @@
+{
+  "short_name": "Team21 Bank",
+  "name": "Team21 Banking Application",
+  "icons": [
+    {
+      "src": "UDMonogramC.jpg",
+      "type": "image/jpg",
+      "sizes": "1200x1200"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
