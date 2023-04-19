@@ -1,9 +1,7 @@
-import { getDatabase, onValue, ref } from "firebase/database";
 import React, {  useContext, useState } from "react";
 import { Button,  Stack } from "react-bootstrap";
 import { AuthContext, BankContext } from "../Authentication/auth";
-import { auth } from "../firebase";
-import { BankUser, DEFAULT_BANK_USER } from "../Interfaces/BankUser";
+import { DEFAULT_BANK_USER } from "../Interfaces/BankUser";
 import { update_bank_user } from "../DatabaseFunctions/BankUserFunctions";
 import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
@@ -28,7 +26,6 @@ export function QuestionList({
     const [currQuestionIndex, setCurrQuestionIndex] = useState<number>(0);
     const [choice, setChoice] = useState<string>("Select a Choice");
     const [score, setScore] = useState<number>(0);
-    const [bankUser, setBankUser] = useState<BankUser | undefined>();
 
     let bank_context = useContext(BankContext);
     let auth_context = useContext(AuthContext);
@@ -43,20 +40,6 @@ export function QuestionList({
             setCurrQuestionIndex(currQuestionIndex + 1);
             setChoice("Select a Choice");
         }
-    }
-
-    function getBankUser(classCode: string, setBankUser: (b)=>void) {
-        const classRef = ref(getDatabase(), "/groups/"+classCode.slice(0,6));
-        onValue(classRef, classSnapshot=>{
-            const classObj = classSnapshot.val();
-            if(classObj != null) {
-                classObj.bankObj.studentList.map(bank_user => {
-                    if(bank_user.uid === auth.currentUser?.uid) {
-                        setBankUser(bank_user);
-                    }
-                });
-            }
-        })
     }
 
     function finishedQuiz(classCode: string) {

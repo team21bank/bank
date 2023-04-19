@@ -33,6 +33,9 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         }
 
     }
+    dataArr.forEach((data)=>{
+            console.log(data)
+        })
     if (villages != null) {
         for (let i = 0; i < villages.length; i++) {
             if (villages[i]["name"] !== "placeholder") {
@@ -71,7 +74,8 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             var item = usersSnapshot.child('users').val();
             const JSonValues = Object.values(item);
             const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
-            for(let i = 0; i < stuIDs.length;i++){
+            console.log(parsedJSonValues)
+            for(let i = 0; i < stuIDs.length+1;i++){
                 parsedJSonValues.forEach((user)=>{
                     if(user["userObj"]["hash"]===stuIDs[i]){
                         studentsList.push(user)
@@ -81,6 +85,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             setCheck(studentsList)
         }
         getStudents();
+        console.log(check)
     }
 
 
