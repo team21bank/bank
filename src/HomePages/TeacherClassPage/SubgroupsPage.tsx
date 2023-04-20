@@ -91,14 +91,14 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
 
 
     const [showDropDown, setShowDropDown] = React.useState(false)
-    const [emails, setEmails] = useState<string[]>([]);
+    const [usernames, setusernames] = useState<string[]>([]);
     const [groupName, setgroupName] = useState<string>("")
     const handleSelect = (selectedList) => {
-        setEmails(selectedList);
+        setusernames(selectedList);
     };
 
     const handleRemove = (selectedList) => {
-        setEmails(selectedList);
+        setusernames(selectedList);
     };
 
     const [errmsg, setErrmsg] = useState("");
@@ -125,8 +125,8 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                 }
             }
         }
-        if (emails.length === 0||groupName===""||nameTaken) {
-        if(emails.length === 0)
+        if (usernames.length === 0||groupName===""||nameTaken) {
+        if(usernames.length === 0)
             errors2(errClass2, "Students can't be empty")
         else if(groupName==="")
             errors(errClass, "Village name can't be nothing");
@@ -144,10 +144,10 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             Select Students
             <Multiselect
                 options={dataArr} // Options to display in the dropdown
-                selectedValues={emails} // Preselected value to persist in dropdown
+                selectedValues={usernames} // Preselected value to persist in dropdown
                 onSelect={handleSelect} // Function will trigger on select event
                 onRemove={handleRemove} // Function will trigger on remove event
-                displayValue="email" // Property name to display in the dropdown options
+                displayValue="username" // Property name to display in the dropdown options
                 />
                 <div><small id="set"> {err}</small></div>
            
@@ -199,14 +199,14 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
     const handleSubmit = () => {
         if(!takenGroupNames.includes(groupName,0))
                setTakenGroupNames(takenGroupNames=>[...takenGroupNames,groupName])
-        const JValues = Object.values(emails);
+        const JValues = Object.values(usernames);
         const parsedJValues = JSON.parse(JSON.stringify(JValues))
         for (let i = 0; i < parsedJValues.length; i++) {
-            namesarr.push(parsedJValues[i]["email"])
+            namesarr.push(parsedJValues[i]["username"])
         }
         errors2(errClass2, "");
         errors(errClass, "");
-        setEmails([])
+        setusernames([])
         setgroupName("")
         setShowDropDown(false)
         setShowModal(false)
