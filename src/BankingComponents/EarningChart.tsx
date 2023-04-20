@@ -92,19 +92,19 @@ export function EarningChart(transactionsAndUID: {transactions: Transaction[], u
           "rgba(255, 0, 0, 0.8)",
           "rgba(255, 112, 0, 0.8)",
           "rgba(255, 201, 0, 0.8)",
-          "rgba(75, 192, 192, 0.4)",
-          "rgba(153, 102, 255, 0.4)",
-          "rgba(255, 159, 64, 0.4)"
+          "rgba(205, 192, 192, 0.8)",
+          "rgba(183, 102, 0, 0.8)",
+          "rgba(255, 64, 159, 0.8)"
         ],
         borderColor: [
-          "rgba(255, 0, 0, 1)",
-          "rgba(255, 112, 0, 1)",
-          "rgba(255, 201, 0, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)"
+          "rgba(235, 0, 0, 1)",
+          "rgba(235, 92, 0, 1)",
+          "rgba(235, 171, 0, 1)",
+          "rgba(175, 162, 162, 1)",
+          "rgba(183, 72, 0, 1)",
+          "rgba(225, 34, 129, 1)"
         ],
-        borderWidth: 1
+        borderWidth: 2
       }
     ]
   };
@@ -119,19 +119,19 @@ export function EarningChart(transactionsAndUID: {transactions: Transaction[], u
           "rgba(0, 255, 0, 0.8)",
           "rgba(0, 200, 120, 0.8)",
           "rgba(0, 250, 200, 0.8)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)"
+          "rgba(75, 192, 192, 0.8)",
+          "rgba(153, 102, 255, 0.8)",
+          "rgba(0, 159, 64, 0.8)"
         ],
         borderColor: [
-          "rgba(0, 255, 0, 1)",
-          "rgba(0, 200, 120, 1)",
-          "rgba(0, 250, 200, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)"
+          "rgba(0, 225, 0, 1)",
+          "rgba(0, 170, 90, 1)",
+          "rgba(0, 220, 170, 1)",
+          "rgba(45, 162, 162, 1)",
+          "rgba(123, 72, 225, 1)",
+          "rgba(0, 129, 34, 1)"
         ],
-        borderWidth: 1
+        borderWidth: 2
       }
     ]
   };
