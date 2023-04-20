@@ -1,7 +1,7 @@
 .transaction-history-gain {
-    background-color: chartreuse;
+    background-color: rgba(128, 255, 0, 0.662);
 }
 
 .transaction-history-loss {
-    background-color: rgb(247, 85, 85);
+    background-color: rgba(247, 85, 85, 0.621);
 }
