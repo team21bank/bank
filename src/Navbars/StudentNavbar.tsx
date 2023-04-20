@@ -14,13 +14,13 @@ export function StudentNavbar(): JSX.Element {
     <div>
       <Navbar bg="light" sticky="top" expand="lg" style={{"flexDirection": "column"}}>
         <Container>
-          <Navbar.Brand href="/students/home">Student</Navbar.Brand>
+          <Navbar.Brand href="#/students/home">Student</Navbar.Brand>
           <Nav>
-            <Nav.Link href="/students/home">Back to home</Nav.Link>
+            <Nav.Link href="#/students/home">Back to home</Nav.Link>
           </Nav>
           <Nav className='justify-content-end'>
             <NavDropdown title="Manage Account" className="student-navbar-dropdown">
-                <NavDropdown.Item href="/editprofile">Edit Profile</NavDropdown.Item>
+                <NavDropdown.Item href="#/editprofile">Edit Profile</NavDropdown.Item>
                 <NavDropdown.Item onClick={()=>{
                     signOut(auth);
                     window.sessionStorage.removeItem(USER_STORAGE_KEY);

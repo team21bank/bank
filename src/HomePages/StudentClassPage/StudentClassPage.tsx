@@ -383,9 +383,11 @@ export function StudentClassPage({classCode}:{classCode:string}){
             </div>
 
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
+        <div>
+            <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/banking")}> Go to your Banking Dashboard</Button>
+        </div>
         <br/>
         {getTitle(current_bank_user.role).includes("Banker")?<PendingTransactionModal pendingList = {current_bank.pendingList}></PendingTransactionModal>:<></>}
-        <BankingDashboard current_auth_user={current_user} current_bank_user={current_bank_user} bank_transactions={sampleTransactions} bank_name={current_bank.classTitle}></BankingDashboard>
         </div>
     )
 }
