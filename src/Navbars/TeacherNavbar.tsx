@@ -1,4 +1,4 @@
-import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown, NavLink } from 'react-bootstrap';
 import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import "../firebase";
@@ -15,15 +15,14 @@ export function TeacherNavbar(): JSX.Element {
     <div>
       <Navbar bg="light" sticky="top" expand="lg" style={{"flexDirection": "column"}}>
         <Container>
-          <Navbar.Brand href="/teachers/home">Teacher</Navbar.Brand>
+          <Navbar.Brand href="#/teachers/home">Teacher</Navbar.Brand>
           <Nav>
-            <Nav.Link href="/teachers/classes">View your classes</Nav.Link>
-            <Nav.Link href="/teachers/createclass">Create New Class</Nav.Link>
-            {/* <Nav.Link href="/teachers/quizzes">Quizzes</Nav.Link> */}
+            <NavLink href="#/teachers/classes">View your classes</NavLink>
+            <Nav.Link href="#/teachers/createclass">Create New Class</Nav.Link>
           </Nav>
           <Nav className='justify-content-end'>
             <NavDropdown title="Manage Account" className="teacher-nav-dropdown">
-                <NavDropdown.Item href="/editprofile">Edit Profile</NavDropdown.Item>
+                <NavDropdown.Item href="#/editprofile">Edit Profile</NavDropdown.Item>
                 <NavDropdown.Item onClick={()=>{
                     signOut(auth);
                     window.sessionStorage.removeItem(USER_STORAGE_KEY);

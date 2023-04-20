@@ -4,7 +4,7 @@ import './App.css';
 import "./firebase";
 import { RegistrationForm } from './Authentication/Registration/Reg';
 import ResetMessage from './Authentication/ResetPassword/ResetMessage';
-import {Route, BrowserRouter, Routes} from 'react-router-dom';
+import {Route, Routes, HashRouter, BrowserRouter} from 'react-router-dom';
 import { StudentNavbar } from './Navbars/StudentNavbar';
 import { TeacherNavbar } from './Navbars/TeacherNavbar';
 import { StudentHomePage } from './HomePages/StudentHomePage/StudentHomePage'
@@ -43,7 +43,7 @@ function AppBody(): JSX.Element {
   if(user.user) classes = [...(user.user.groups)];
 
   return <div>
-    <BrowserRouter>
+    <HashRouter basename="/"> 
       <Routes>
         <Route path="/" element={<DefaultHomePage />} />
         <Route path="/register" element={<RegistrationForm />} />
@@ -70,6 +70,6 @@ function AppBody(): JSX.Element {
           {classes.map(str => <Route path={str.slice(0,6)+"/banking"} element={<StudentBankingPage classCode={str}/>} />)}
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </div>
 }

@@ -37,6 +37,8 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
     }
 
     function makeChange() {
+        alert("We found an issue with this feature. We're in the process of fixing it right now")
+        /*
         const splitRow = contents.split(/\r?\n/);
         //holder bank, will be overwritten if expected bank exists
         let newBank: Bank = {
@@ -118,6 +120,7 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
             }
             setContents("");
         }, 1000*splitRow.length);
+        */
     }
 
     return (
