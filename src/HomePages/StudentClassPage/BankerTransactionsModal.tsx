@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Modal, Button, Row, Col } from "react-bootstrap";
 import { Transaction } from '../../Interfaces/Transaction';
+import { remove_transaction_from_pending } from "../../DatabaseFunctions/BankFunctions";
+import { push_transaction_to_completed } from "../../DatabaseFunctions/BankFunctions";
+import { BankContext } from "../../Authentication/auth";
+import { Bank, DEFAULT_BANK } from "../../Interfaces/BankObject";
+import { BankUser, DEFAULT_BANK_USER } from "../../Interfaces/BankUser";
+import { update_bank_user } from "../../DatabaseFunctions/BankUserFunctions";
+import { send } from "q";
 
 
 export function PendingTransactionModal({pendingList}: {pendingList:Transaction[]}){
     const [showModal, setShowModal] = useState(false);
+    const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
     if (pendingList===undefined){
         pendingList=[]
     }
@@ -19,14 +27,25 @@ export function PendingTransactionModal({pendingList}: {pendingList:Transaction[
                 <Col>Receiver</Col>
                 <Col>Receiver's Balance</Col>
             </Row>
-            {pendingList.map((trans:Transaction)=>individualTransaction(trans))}
+            {pendingList.map((trans:Transaction)=>individualTransaction(trans,current_bank))}
             
         </Modal>
         <form><Button onClick={() => setShowModal(true)}>View Pending Transactions</Button></form>
     </div>)
 }
 
-function individualTransaction(trans: Transaction){
+function confirmTransaction(trans: Transaction,currBank: Bank){
+    remove_transaction_from_pending(currBank.bankId,trans);
+    let sender: BankUser = currBank.studentList.find(val => val.uid === trans.sender_uid) ?? DEFAULT_BANK_USER;
+    sender.balance = sender.balance-trans.transfer_amount;
+    update_bank_user(currBank.bankId,sender.uid,sender);
+    let receiver: BankUser = currBank.studentList.find(val => val.uid === trans.receiver_uid) ?? DEFAULT_BANK_USER;
+    receiver.balance = receiver.balance + trans.transfer_amount;
+    update_bank_user(currBank.bankId,receiver.uid,receiver);
+    push_transaction_to_completed(currBank.bankId,trans)
+}
+
+function individualTransaction(trans: Transaction,currBank: Bank){
     return(
         <div>
             <Row>
