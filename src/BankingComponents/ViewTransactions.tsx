@@ -62,7 +62,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
             <th>Amount</th>
             <th>Balance</th>
             <th>Date</th>
-        {(transactionsAndUID.transactions).slice(0,5).map((transaction: Transaction): JSX.Element => {
+        {(transactionsAndUID.transactions).sort((a,b) => compareDates(b,a)).slice(0,5).map((transaction: Transaction): JSX.Element => {
         return transaction.receiver_uid === transactionsAndUID.uid ? (
         <tr>
             <td>{transaction.receiver_name}</td>
