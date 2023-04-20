@@ -8,7 +8,7 @@ import { DEFAULT_BANK_USER, getTitle } from '../../Interfaces/BankUser';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
 import "./StudentClassPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
-import { get_bank } from '../../DatabaseFunctions/BankFunctions';
+import { get_bank, push_transaction_to_pending } from '../../DatabaseFunctions/BankFunctions';
 import { app } from "../../firebase";
 import { Subgroup } from "../../Interfaces/Subgroup";
 import { Multiselect } from "multiselect-react-dropdown";
@@ -187,6 +187,8 @@ export function StudentClassPage({classCode}:{classCode:string}){
             var transactionObject = makeStudentToStudentTransaction(current_user, current_bank_user, receiverAuthUser, receiverBankUser,
                 transferAmount, shopPurchase, description, description)
             console.log(transactionObject)
+
+            push_transaction_to_pending(current_bank.bankId,transactionObject);
             /***************************
              * The transaction object *
              **************************/

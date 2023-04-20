@@ -26,6 +26,8 @@ export function PendingTransactionModal({pendingList}: {pendingList:Transaction[
                 <Col>Amount to Transfer</Col>
                 <Col>Receiver</Col>
                 <Col>Receiver's Balance</Col>
+                <Col>Confirm Transaction</Col>
+                <Col>Reject Transaction</Col>
             </Row>
             {pendingList.map((trans:Transaction)=>individualTransaction(trans,current_bank))}
             
@@ -45,6 +47,10 @@ function confirmTransaction(trans: Transaction,currBank: Bank){
     push_transaction_to_completed(currBank.bankId,trans)
 }
 
+function rejectTransaction(trans: Transaction,currBank: Bank){
+    remove_transaction_from_pending(currBank.bankId,trans);
+}
+
 function individualTransaction(trans: Transaction,currBank: Bank){
     return(
         <div>
@@ -54,6 +60,8 @@ function individualTransaction(trans: Transaction,currBank: Bank){
                 <Col>{trans.transfer_amount}</Col>
                 <Col>{trans.receiver_name}</Col>
                 <Col>{trans.receiver_balance}</Col>
+                <Col><Button onClick={()=>confirmTransaction(trans,currBank)}> Confirm This Transaction </Button></Col>
+                <Col><Button onClick={()=>rejectTransaction(trans,currBank)}>Reject This Transaction</Button></Col>
             </Row>
         </div>
     )
