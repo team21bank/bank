@@ -6,9 +6,12 @@ import { Row, Col, Form, Button } from "react-bootstrap";
 import { BsTrashFill } from "react-icons/bs";
 import { RiPlayListAddFill } from "react-icons/ri";
 import { firebaseConfig } from "../../../firebase";
-import { Bank } from "../../../Interfaces/BankObject";
+import { Bank, DEFAULT_BANK } from "../../../Interfaces/BankObject";
 import { BankUser, DEFAULT_BANK_USER } from "../../../Interfaces/BankUser";
 import { AuthUser } from "../../../Interfaces/AuthUser";
+import { validate } from "email-validator";
+import { get_bank } from "../../../DatabaseFunctions/BankFunctions";
+import { create_bank_users } from "../../../DatabaseFunctions/BankUserFunctions";
 
 /*
 I HAVE NO CLUE IF THIS IS A GOOD WAY TO GO ABOUT MAKING A LIST OF EDITABLE ITEMS.
@@ -104,8 +107,68 @@ function NewStudentForm({student, setStudent}: {student: NewStudent, setStudent:
 }
 
 //create accounts for each student in the list and add them to the class
-function createStudentAccountsFromList(classID: string, studentList: NewStudent[]) {
-    alert("We found an issue with this feature. We're in the process of fixing it right now")
+async function createStudentAccountsFromList(bank_id: string, student_list: NewStudent[]): Promise<void> {
+    //A list of failed NewStudents and a string explaining why they couldnt be created
+    let failed_list: [NewStudent, string][] = [];
+
+    //remove new users with invalid emails or passwords
+    //Also adds failed students to the failed_list
+    let new_student_list = student_list.filter((student) => {
+        if( validate(student.email) === false ) {
+            failed_list.push([student, "Invalid email"]);
+            return false;
+        }
+        if( student.password.length < 6 ) {
+            failed_list.push([student, "Password too short"]);
+            return false;
+        } 
+        return true;
+    });
+    
+    //Fail if a Bank object with bank_id cannot be found
+    let bank: Bank = await get_bank(bank_id) ?? DEFAULT_BANK;
+    if( bank === DEFAULT_BANK ) {
+        alert("Bank object not found while creating student accounts");
+        return;
+    }
+
+    //create firebase authenticated users and AuthUser objects for each new student
+    let success_list: string[] = []; 
+    const secondary_app = initializeApp(firebaseConfig, "secondary app");
+    for( let new_student of new_student_list ) {
+        try {
+            let new_user_credential = await createUserWithEmailAndPassword(getAuth(secondary_app), new_student.email, new_student.password);
+            const new_auth_user: AuthUser = {
+                username: new_student.email.split("@")[0],
+                email: new_student.email,
+                id: new_student.password,
+                avatar: "",
+                groups: ["placeholder", bank_id],
+                isTeacher: false,
+                hash: new_user_credential.user.uid
+            }
+            await set(ref(getDatabase(secondary_app), "/users/"+new_user_credential.user.uid+"/userObj/"), new_auth_user);
+            success_list.push(new_user_credential.user.uid);
+        } catch( error: any ) {
+            failed_list.push([new_student, error.code])
+        }
+    }
+
+    //Add BankUser objects to the bank object
+    await create_bank_users(bank_id, success_list);
+    
+    if( failed_list.length > 0) {
+        let err_str = "Failed to create the following student accounts: \n";
+        failed_list.forEach(failed_student => {
+            err_str += failed_student[0].email +": " + failed_student[1] +"\n";
+        })
+        alert(err_str);
+    }
+
+    return;
+
+
+
     /*
     let failed_list: NewStudent[] = studentList.filter((student) => student.email==="" || student.password.length<6);
     let finished_list: string[] = [];

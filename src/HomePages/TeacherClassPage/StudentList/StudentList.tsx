@@ -5,7 +5,7 @@ import { Bank } from "../../../Interfaces/BankObject";
 import { get_auth_users } from "../../../DatabaseFunctions/UserFunctions";
 import { AuthUser, DEFAULT_AUTH_USER } from "../../../Interfaces/AuthUser";
 import { BankUser } from "../../../Interfaces/BankUser";
-import { delete_bank_user } from "../../../DatabaseFunctions/BankUserFunctions";
+import { delete_bank_users } from "../../../DatabaseFunctions/BankUserFunctions";
 
 
 
@@ -39,7 +39,7 @@ export function StudentList(
             <h2 className="student-list-header">Students</h2>
             {studentList.map((user_pair, index) => {
                 return (
-                    <ViewStudent user_pair={user_pair} remove_student={() => delete_bank_user(current_bank.bankId, user_pair[1].uid)}/>
+                    <ViewStudent user_pair={user_pair} remove_student={() => delete_bank_users(current_bank.bankId, [user_pair[1].uid])}/>
                 )
             })}
         </div>

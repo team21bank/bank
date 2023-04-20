@@ -40,6 +40,11 @@ export function get_bank_updating(bank_id: string, setter: (bank: Bank) => void)
     );
 }
 
+export async function get_bank(bank_id: string): Promise<Bank | null> {
+    let bank_snapshot = await get(ref(getDatabase(), "/groups/"+bank_id+"/bankObj"));
+    return bank_snapshot.val();
+}
+
 /**
  * @param bank_id The bank the transaction will occur in
  * @param transaction The Transaction object representing the transaction that is being added to the pending list for approval from a banker

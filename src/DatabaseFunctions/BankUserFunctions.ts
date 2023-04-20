@@ -31,43 +31,45 @@ export function update_bank_user(bank_id: string, user_id: string, new_bank_user
 
  * THIS DOES NOT REMOVE THE ASSOCIATED AUTHUSER'S REFERENCE TO THE BANK
 */
-export function delete_bank_user(bank_id: string, user_id: string) {
+export async function delete_bank_users(bank_id: string, user_ids: string[]): Promise<void> {
     let student_list_ref = ref(getDatabase(), "/groups/"+bank_id+"/bankObj/studentList");
-    get(student_list_ref).then(student_list_snapshot => {
-        let student_list = student_list_snapshot.val();
-        if( student_list == null ) {
-            alert("Bank not found");
-            return;
-        }
+    let student_list_snapshot = await get(student_list_ref);
 
-        //Create new array with specified BankUser removed
-        let new_student_list = student_list.filter(bank_user => bank_user.uid!==user_id);
+    let student_list: BankUser[] = student_list_snapshot.val();
+    if( student_list == null ) {
+        alert("Bank not found");
+        return;
+    }
 
-        //update the studentList
-        set(student_list_ref, new_student_list);
-    });
+    //Create new array with specified BankUsers removed
+    let new_student_list = student_list.filter(bank_user => user_ids.findIndex(id => id===bank_user.uid) !== -1);
+
+    //update the studentList
+    await set(student_list_ref, new_student_list);
+    return;
 }
 
 /**Adds a new BankUser object with uid user_id to the end /groups/bank_id/studentList*/
-export function create_default_bank_user(bank_id: string, user_id: string) {
+export async function create_bank_users(bank_id: string, user_ids: string[]): Promise<void> {
     let student_list_ref = ref(getDatabase(), "/groups/"+bank_id+"/bankObj/studentList");
-    get(student_list_ref).then(student_list_snapshot => {
-        let student_list = student_list_snapshot.val();
-        if( student_list == null ) {
-            alert("Bank not found");
-            return;
-        }
-
-        //Push new BankUser to the end of studentList
+    let student_list_snapshot = await get(student_list_ref);
+    let student_list = student_list_snapshot.val();
+    if( student_list == null ) {
+        alert("Bank not found");
+        return;
+    }
+    
+    //Push new BankUser to the end of studentList
+    user_ids.forEach(user_id => {
         student_list.push({
-                uid: user_id,
-                isBanker: false,
-                balance: 0
+            uid: user_id,
+            isBanker: false,
+            balance: 0
         });
-
-        //update the studentList
-        set(student_list_ref, student_list);
-    });
+    })
+    //update the studentList
+    await set(student_list_ref, student_list);
+    return;
 }
 
 
