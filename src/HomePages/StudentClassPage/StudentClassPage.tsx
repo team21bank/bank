@@ -1,5 +1,5 @@
 import { getDatabase, onValue, ref, get, update, set, push, remove } from 'firebase/database';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState  } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, BankContext, BANK_STORAGE_KEY } from "../../Authentication/auth";
@@ -14,9 +14,12 @@ import { Subgroup } from "../../Interfaces/Subgroup";
 import { Multiselect } from "multiselect-react-dropdown";
 import CurrencyInput from "react-currency-input-field";
 import { BankingDashboard } from '../../BankingComponents/BankingDashboard';
-import { sampleTransactions } from '../../Interfaces/Transaction';
+import { sampleTransactions, makeStudentToStudentTransaction } from '../../Interfaces/Transaction';
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 import { PendingTransactionModal } from './BankerTransactionsModal';
+import Select from 'react-select';
+import { BankUser } from "../../Interfaces/BankUser";
+import { get_auth_users } from '../../DatabaseFunctions/UserFunctions';
 
 export function StudentClassPage({classCode}:{classCode:string}){
     window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
@@ -31,16 +34,13 @@ export function StudentClassPage({classCode}:{classCode:string}){
 
 
     //Get AuthUser objects for each student in the class
-    //const [studentAuthUserList, setStudentAuthUserList] = useState<AuthUser[]>([]);
+    const [studentAuthUserList, setStudentAuthUserList] = useState<AuthUser[]>([]);
 
     const bank_context = useContext(BankContext);
     useEffect(() => { //Update the bank context if this page is navigated to
-        
+        get_auth_users(current_bank.studentList.map(user => user.uid), setStudentAuthUserList)
         displayGroups();
-        //move the two below into a function
-
-        get_bank(classCode.slice(0,6),bank_context.setBank)
-
+        get_bank(classCode.slice(0, 6), bank_context.setBank)
     }, []);
 
     const current_bank_user = current_bank.studentList.find(val => val.uid === current_user.hash) ?? DEFAULT_BANK_USER;
@@ -51,9 +51,14 @@ export function StudentClassPage({classCode}:{classCode:string}){
         setShowTransactionModal(true)
         setShowDropDown(true)
         setAmount(0)
-        setEmails([])
+        setusername('')
+        setType('')
     }
     function hideTransactions() {
+
+        setErr('')
+        setErrmsg('')
+        setTypeErr('')
         setShowTransactionModal(false)
         setShowDropDown(false)
         
@@ -61,22 +66,31 @@ export function StudentClassPage({classCode}:{classCode:string}){
     }
     const [errmsg, setErrmsg] = useState("");
     const [err, setErr] = useState("");
+    const [typeErr, setTypeErr] = useState("");
     const errors = (errClass, errmsg) => {
         setErrmsg(errmsg);
     };
     const errors2 = (errClass2, err) => {
         setErr(err);
     };
+    const errors3 = (errClass3, typeErr) => {
+        setTypeErr(typeErr);
+    }
     const errClass = "form-control error";
-    const errClass2 = "form-control error"
+    const errClass2 = "form-control error";
+    const errClass3 = "form-control error"; 
+
     const submitFormData = event => {
         event.preventDefault();
-        if (emails.length === 0 || emails.length * amount > current_bank_user.balance) {
-            if (emails.length === 0) {
+        if (username === '' || amount > current_bank_user.balance ||type==='') {
+            if (username==='') {
                 errors2(errClass2, "Students can't be empty")
             }
-            if (emails.length * amount > current_bank_user.balance) {
+            if ( amount > current_bank_user.balance) {
                 errors(errClass, "Insufficient funds in bank account")
+            }
+            if (type === '') {
+                errors3(errClass3, "Enter transaction type!")
             }
 
         }
@@ -85,82 +99,113 @@ export function StudentClassPage({classCode}:{classCode:string}){
         }
     }
 
-
-
-
     const [submitJson, setSubmitJson] = React.useState<any[]>([]);//the string of studentList objects
     const handleSubmit = () => {
+        console.log(`The senderDescription is ${description} and the receiverDescription is ${description}`)
         const object = async () => {
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
+            //get ids of students in class
             let stuIDs: string[] = []
-            let studentsList: any[] = []
+            //get studentlist object
             var studs = usersSnapshot.child(`groups/${classCode.slice(0, 6)}/bankObj/studentList`).val();
             const studentsJson = Object.values(studs)
 
+            //use this when subtracting!!!!!! See below for example on how to use to update value in db (commented out)
+            const roundTo = function (num: number, places: number) {
+                const factor = 10 ** places;
+                return Math.round(num * factor) / factor;
+            };
+
+            //declare fields for creating the transaction object, see them used below in transaction object
+            let receiverName = username
+            let senderName = current_user.username//calculated below, ready to use
+            let receiverDescription = description
+            let senderDescription = description
+            let transferAmount = roundTo(Number(amount), 2) //roundTo here rounds weird decimal values to two decimal places, need this to avoid floating decimal problems
+            let receiverBalance = 0 //calculated below, ready to use
+            let receiverID = myMap.get(username)
+            let shopPurchase = false;
+                if (type === "Yes") {
+                    shopPurchase=true
+                }
+            let receiverAuthUser: AuthUser = DEFAULT_AUTH_USER  
+            let receiverBankUser = current_bank.studentList.find(val => val.uid === receiverID) ?? DEFAULT_BANK_USER
+
+            //initialize receiverAuthUser (for transaction object)
+            studentAuthUserList.forEach(student => {
+                if (student.hash === receiverID)
+                    receiverAuthUser=student
+            })
+
+            //parse studentsJson values and push each value to submitJson, which will be used to find sender and receiver information
+            //also add each student to the submitJson
             const l = JSON.parse(JSON.stringify(studentsJson))
             l.forEach((m) => {
                 submitJson.push(m)
             })
+
+            //add id of student if not null, to the stuIDs array
             submitJson.forEach((object) => {
                 if (object["uid"] !== "") {
                     stuIDs.push(object["uid"])
                 }
             })
-            setShowDropDown(false)
-            setShowTransactionModal(false)
-            var studentID = '';
+            
+            hideTransactions()
+
+            //fields for finding the balance for sender and receiver for calculation of balance to be put in the indices for updating the balance in the db (commented out below) 
+            /*var studentID = '';
             var indexf = 0;
             var index2f = 0;
             var studBalf = 0;
             var studBal2f = 0;
-
-            let count = 0;
-            const roundTo = function (num: number, places: number) {
-                const factor = 10 ** places;
-                return Math.round(num * factor) / factor;
-            };
-            emails.forEach((email) => {
-                count += 1;
-                let e = (email["email"])
-
-                studentID = myMap.get(e)
+                studentID = myMap.get(username)
                 for (let i = 0; i < submitJson.length; i++) {
-
+                    //get info about receiver index in db and receiver balance
                     if (submitJson[i]["uid"] === studentID) {
                         indexf = i
-
                         studBalf = submitJson[i]["balance"]
                     }
+                    //get info about sender index and sender balance
                     if (submitJson[i]["uid"] === current_user.hash) {
                         index2f = i;
-                        studBal2f = submitJson[i]["balance"]-(count*Number(amount))
+                        studBal2f = submitJson[i]["balance"]
                     }
                 }
-                console.log(`I am taking ${amount} from ${current_user.email} and giving ${amount} to ${studentID}`)
-                let amount1 = Number(amount) + studBalf
-                let amount2 = studBal2f - Number(amount)
-                console.log(amount1)
-                console.log(amount2)
 
-                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: roundTo(Number(amount),2) + roundTo(studBalf,2) });
-                update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: roundTo(studBal2f,2)  });
+            //amount2 is the remaining balance of sender, used this in the now commented out update stuff here
+                let amount2 = roundTo(studBal2f - Number(amount), 2)
+                
+            //set receiver balance for transaction object
+            receiverBalance = roundTo(Number(amount) + studBalf, 2)
+            **/
 
-            })
-            
+            /***************************
+             * The transaction object *
+             **************************/
+            var transactionObject = makeStudentToStudentTransaction(current_user, current_bank_user, receiverAuthUser, receiverBankUser,
+                transferAmount, shopPurchase, description, description)
+            console.log(transactionObject)
+            /***************************
+             * The transaction object *
+             **************************/
+                    
+
+                //updates the db with correct balance for sender and receiver with our calcualted indices, commented out because updating balances doesn't happen here
+                //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + indexf), { balance: receiverBalance });//update receiver balance
+                //update(ref(getDatabase(), "/groups/" + classCode.slice(0, 6) + "/bankObj/studentList/" + index2f), { balance: amount2  }); //update sender balance
         }
         object()
         setSubmitJson([])
     }
 
-    const [emails, setEmails] = useState<string[]>([]);
-    const handleSelect = (selectedList) => {
-        setEmails(selectedList);
+    const [username, setusername] = useState<string>('');
+    const handleSelect = (e) => {
+            setusername(e["username"]);
+            console.log(e["username"]);
     };
 
-    const handleRemove = (selectedList) => {
-        setEmails(selectedList);
-    };
     const [amount, setAmount] = React.useState(0)
 
 
@@ -172,47 +217,32 @@ export function StudentClassPage({classCode}:{classCode:string}){
             setAmount(event);
         }
     };
-    const DropDown = () => (
-        <div key = "D" className="App">
-            <form key ="f" onSubmit={submitFormData}>
-                Select Students
-                <Multiselect key = "SSS"
-                    options={students} // Options to display in the dropdown
-                    selectedValues={emails} // Preselected value to persist in dropdown
-                    onSelect={handleSelect} // Function will trigger on select event
-                    onRemove={handleRemove} // Function will trigger on remove event
-                    displayValue="email" // Property name to display in the dropdown options
 
-                />
-                <div><small id="set"> {err}</small></div>
-                Enter amount name
-                <br></br>
-                <CurrencyInput key="SSSDD"
-                    allowDecimals
-                    decimalSeparator="."
-                    prefix="$"
-                    decimalsLimit={2}
-                    value={amount}
-                    defaultValue={0}
-                    allowNegativeValue={false}
-                    onValueChange={updateFormData}
-                    step={1}
-                    ///autoFocus
-                />
+    //react usestates for sender and receiver messages
+    const [description, setDescription] = React.useState<string>()
+    const getTransactionDescription = event => {
+        if (event !== undefined) {
+            setDescription(event.target.value)
+        }
+    }
+    const [type,setType] = React.useState<string>()
+    const transactionTypes = [
+        { value: 'Yes', label: 'Yes' },
+        { value: 'No', label: 'No' }
+    ]
+    const handleType = (e) => {
+        if (e !== undefined) {
+            setType(e["value"])
+        }
+    }
 
-                <div>
-                    <small id="set"> {errmsg}</small>
-                </div>
-                <br></br>
-                <button type="submit">Submit</button>
-            </form>
-        </div>)
 
 
     const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
     const [students, setStudents] = React.useState<any[]>([]);
     const [myMap, setMyMap] = React.useState(new Map());
     const [parsedStudentsJson2, setParsedStudentsJson2] = React.useState<any[]>([]);//the string of studentList objects
+    const [userusername, setUserusername] = React.useState('')
 
 
     const displayGroups = () => {
@@ -221,10 +251,12 @@ export function StudentClassPage({classCode}:{classCode:string}){
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
             var item1 = usersSnapshot.child('groups/' + classCode.slice(0, 6) + '/bankObj/subgroups').val();
+            
             const jsonValues = Object.values(item1);
             const parsedjsonValues = (JSON.parse(JSON.stringify(jsonValues)))
             setVillages(parsedjsonValues)
             setVillages((current) => current.filter((fruit) => fruit.name !== "placeholder"));
+
 
             //set student list
             let stuIDs: string[] = []
@@ -237,7 +269,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 parsedStudentsJson2.push(m)
             })
             parsedStudentsJson2.forEach((object) => {
-                if (object["uid"] !== "") {
+                if (object["uid"] !== ""&&object["uid"]!==current_bank_user.uid) {
                     stuIDs.push(object["uid"])
                 }
             })
@@ -248,10 +280,13 @@ export function StudentClassPage({classCode}:{classCode:string}){
             for (let i = 0; i < stuIDs.length + 1; i++) {
                 parsedJSonValues2.forEach((user) => {
                     if (user["userObj"]["hash"] === stuIDs[i]) {
-                        setMyMap(new Map(myMap.set(user["userObj"]["email"], user["userObj"]["hash"])));
+                        setMyMap(new Map(myMap.set(user["userObj"]["username"], user["userObj"]["hash"])));
                         setStudents((students) => {
                             return students.concat(user["userObj"])
                         })
+                    }
+                    if (user["userObj"]["hash"] === current_bank_user.uid) {
+                        setUserusername(user["userObj"]["username"])
                     }
                 })
             }
@@ -275,11 +310,68 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 ))}
             </table>
             <Modal show={showTransactionModal} onHide={hideTransactions}>
-                <Modal.Header closeButton><h2>Create Transactions</h2></Modal.Header>
+                <Modal.Header closeButton><h2>Create Payment Request</h2></Modal.Header>
                 <Modal.Body>
                     <br /><br />
                     { }
-                    {showDropDown ? <DropDown /> : null}
+                    {showDropDown ? <form onSubmit={submitFormData}>
+                        <b>Select recepient</b>
+                        <Select key="f"
+                            options={students} // Options to display in the dropdown
+                            getOptionLabel={(option) => option.username}
+                            getOptionValue={(option) => option.username}
+                            onChange={(e) => { handleSelect(e) }}
+                            />
+                        <div><small id="set"> {err}</small></div>
+                        <br></br>
+                        <b>Enter amount name</b>
+                        <br></br>
+                        <div>
+                            <CurrencyInput id="myText" key="f"
+                                allowDecimals
+                                decimalSeparator="."
+                                prefix="$"
+                                decimalsLimit={2}
+                                value={amount}
+                                defaultValue={0}
+                                allowNegativeValue={false}
+                                onValueChange={updateFormData}
+                                step={1}
+                            /></div>
+                        <div>
+                            <br></br>
+                            <label>
+                                <b>What is this for?</b>
+                                <br></br>
+                            <input
+                                    key="f" id="myText2"
+                                    maxLength={65 }
+                                type="text"
+                                onChange={e => getTransactionDescription(e)}
+                                placeholder="What is this for?"
+                                    value={description}
+                                    style={{ width: "450px", height:"50px" }}
+                                />
+                            </label>
+                            <br></br>
+                            <br></br>
+                            <label>
+                                <b>Is this a purchase?</b>
+                                <Select
+                                    options={transactionTypes}
+                                    onChange={(e) => {handleType(e) }}
+                                    
+                                />
+                            </label>
+                            <div>{typeErr}</div>
+                        </div>
+
+                        <div>
+                            <small id="set"> {errmsg}</small>
+                        </div>
+                        <br></br>
+                        <button type="submit">Submit</button>
+                    </form> : null}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={hideTransactions}>Cancel</Button>
@@ -287,7 +379,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
             </Modal>
             <div>your total balance is {current_bank_user.balance}</div>
             <div>
-                <Button onClick={showTransactions}>Pay/Create Transaction</Button>
+                <Button onClick={showTransactions}>Pay/Create Payment Request</Button>
             </div>
 
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
