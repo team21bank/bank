@@ -21,29 +21,33 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
             <th>Description</th>
             <th>Amount</th>
             <th>Balance</th>
-        {(transactionsAndUID.transactions).sort((a,b) => compareDates(a,b)).map((transaction: Transaction): JSX.Element => {
+            <th>Date</th>
+        {(transactionsAndUID.transactions).sort((a,b) => compareDates(b,a)).map((transaction: Transaction): JSX.Element => {
         return transaction.receiver_uid === transactionsAndUID.uid ? (
         <tr>
             <td>{transaction.receiver_name}</td>
-            <td>{transaction.sender_name}</td>
+            <td>{"From " + transaction.sender_name}</td>
             <td>{transaction.receiver_description}</td>
             <td className="transaction-history-gain">{transaction.transfer_amount.toFixed(2)}</td>
             <td>{transaction.receiver_balance.toFixed(2)}</td>
+            <td>{new Date(Date.parse(transaction.date)).toLocaleString()}</td>
         </tr>
         )
         :
         (
         <tr>
             <td>{transaction.sender_name}</td>
-            <td>{transaction.receiver_name}</td>
+            <td>{"To " + transaction.receiver_name}</td>
             <td>{transaction.sender_description}</td>
             <td className="transaction-history-loss">{(transaction.transfer_amount * -1).toFixed(2)}</td>
             <td>{(transaction.sender_balance || 0).toFixed(2)}</td>
+            <td>{new Date(Date.parse(transaction.date)).toLocaleString()}</td>
         </tr>
         )
         })}
         </tbody>
         </table>
+        <br />
         <Button onClick={() => setViewAll(false)}>Collapse Transactions</Button>
     </div>
     : 
@@ -57,29 +61,33 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
             <th>Description</th>
             <th>Amount</th>
             <th>Balance</th>
+            <th>Date</th>
         {(transactionsAndUID.transactions).slice(0,5).map((transaction: Transaction): JSX.Element => {
         return transaction.receiver_uid === transactionsAndUID.uid ? (
         <tr>
             <td>{transaction.receiver_name}</td>
-            <td>{transaction.sender_name}</td>
+            <td>{"To " + transaction.sender_name}</td>
             <td>{transaction.receiver_description}</td>
-            <td>{transaction.transfer_amount.toFixed(2)}</td>
+            <td className="transaction-history-gain">{transaction.transfer_amount.toFixed(2)}</td>
             <td>{transaction.receiver_balance.toFixed(2)}</td>
+            <td>{new Date(Date.parse(transaction.date)).toLocaleString()}</td>
         </tr>
         )
         :
         (
         <tr>
             <td>{transaction.sender_name}</td>
-            <td>{transaction.receiver_name}</td>
+            <td>{"From " + transaction.receiver_name}</td>
             <td>{transaction.sender_description}</td>
-            <td>{(transaction.transfer_amount * -1).toFixed(2)}</td>
+            <td className="transaction-history-loss">{(transaction.transfer_amount * -1).toFixed(2)}</td>
             <td>{(transaction.sender_balance || 0).toFixed(2)}</td>
+            <td>{new Date(Date.parse(transaction.date)).toLocaleString()}</td>
         </tr>
         )
         })}
         </tbody>
         </table>
+        <br />
         <Button onClick={() => setViewAll(true)}>Expand Transactions</Button>
     </div>
 }
