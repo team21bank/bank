@@ -1,32 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { ref, getDatabase, onValue, set } from '@firebase/database';
+import { ref, getDatabase, set } from '@firebase/database';
 import { Quiz } from "../Interfaces/Quiz";  
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
-import { Bank } from "../Interfaces/BankObject";
+import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
+import { BankContext } from "../Authentication/auth";
 
 export function ImportQuiz({classCode}: {classCode: string}): JSX.Element {
-    const [currClass, setCurrClass] = useState<Bank>({
-        bankId:'',
-        teacherID:'',
-        studentList:[],
-        classTitle:'',
-        quizzes:[],
-        subgroups:[]
-    });
     
-    useEffect(() => {
-        onValue(ref(getDatabase(),"/groups/"+classCode.slice(0,6)+"/bankObj"),ss=>{
-            if(currClass !== ss.val()) {
-                setCurrClass(ss.val());
-            }
-        })
-    }, [classCode, currClass]);
+    const currClass: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
 
     const [contents, setContents] = useState<string>("");
     const [view, toggleView] = useState<boolean>(false);
 
-    let groupRef = ref(getDatabase(), '/groups/' + classCode.slice(0,6) + '/bankObj/');
+    let groupRef = ref(getDatabase(), '/groups/' + currClass.bankId + '/bankObj/');
 
     function importFile(event: React.ChangeEvent<HTMLInputElement>) {
         // Might have removed the file, need to check that the files exist
@@ -112,16 +99,9 @@ export function ImportQuiz({classCode}: {classCode: string}): JSX.Element {
         newQuiz.questions = questions;
         newQuiz.questionTotal = questions.length;
         console.log(newQuiz);
-
-        //temporary for testing purposes, replace with storage to firebase
-        if (currClass.quizzes[0].title ===''){
-            currClass.quizzes[0] = newQuiz
-        }
-        else{
-            currClass.quizzes.push(newQuiz);
-        }
+        
+        currClass.quizzes.push(newQuiz)
         set(groupRef,currClass)
-
 
         setContents("");
     }

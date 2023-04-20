@@ -24,7 +24,7 @@ function ClassButton({classString}: {classString: string}): JSX.Element {
 
     return (
         <div>
-            <Link to={"../"+id}><Button>Go To {name}</Button></Link>
+            <Link to={"../"+id}><Button>Go To {id.slice(0,6)}</Button></Link>
         </div>
     )
 }

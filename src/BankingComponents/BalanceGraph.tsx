@@ -50,7 +50,7 @@ export function BalanceGraph(transactionsAndUID: {transactions: Transaction[], u
     return transaction.receiver_uid === transactionsAndUID.uid ? transaction.receiver_balance : transaction.sender_balance || 0;
   })
   const dataPoints = transactionsAndUID.transactions.map((transaction: Transaction): string => {
-    return transaction.date.toString().slice(0, 25);
+    return Date.parse(transaction.date).toString().slice(0, 25);
   })
   const newData = {
     labels: dataPoints,

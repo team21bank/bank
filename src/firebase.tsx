@@ -26,6 +26,19 @@ export const firebaseConfig = {
 };
 */
 
+/*
+const firebaseConfig = {
+  apiKey: "AIzaSyDI-ny6LCkkHdEi64_gzZWL52x_MIWxgb4",
+  authDomain: "deployed-banking-application.firebaseapp.com",
+  databaseURL: "https://deployed-banking-application-default-rtdb.firebaseio.com",
+  projectId: "deployed-banking-application",
+  storageBucket: "deployed-banking-application.appspot.com",
+  messagingSenderId: "1039217853491",
+  appId: "1:1039217853491:web:5e816dc45a1da302670f46",
+  measurementId: "G-CKMWMFHC94"
+};
+*/
+
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);
