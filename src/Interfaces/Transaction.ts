@@ -113,3 +113,53 @@ export function makeStudentToStudentTransaction(
     };
     return transaction;
 }
+
+const LaterDate = new Date();
+LaterDate.setHours(20);
+export const sampleTransactions:Transaction[] = [
+    {
+    date: new Date(),
+    receiver_name: "testUser" || "user",
+    sender_name: "system",
+    receiver_description: "starting balance",
+    sender_description: "paid out starting balance",
+    transfer_amount: 500,
+    receiver_balance: 500,
+    receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2" || "0",
+    type: "misc"
+    },
+    {
+        date: new Date(),
+        receiver_name: "testUser" || "user",
+        sender_name: "system",
+        receiver_description: "weekly earnings",
+        sender_description: "paid out weekly earnings",
+        transfer_amount: 150,
+        receiver_balance: 650,
+        receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2" || "0",
+        type: "misc"
+    },
+    {
+        date: LaterDate,
+        receiver_name: "testUser" || "user",
+        sender_name: "system",
+        receiver_description: "quiz earnings",
+        sender_description: "paid out quiz earnings",
+        transfer_amount: 75,
+        receiver_balance: 700,
+        receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2" || "0",
+        type: "academics"
+    },
+    {
+        date: new Date(),
+        receiver_name: "candle merchant",
+        sender_name: "testUser" || "user",
+        receiver_description: "sold candles",
+        sender_description: "bought candles",
+        transfer_amount: 25,
+        sender_balance: 625,
+        receiver_balance: 1025,
+        receiver_uid: "0",
+        type: "commerce"
+    }
+]
