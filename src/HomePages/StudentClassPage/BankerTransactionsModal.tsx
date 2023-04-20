@@ -7,7 +7,6 @@ import { BankContext } from "../../Authentication/auth";
 import { Bank, DEFAULT_BANK } from "../../Interfaces/BankObject";
 import { BankUser, DEFAULT_BANK_USER } from "../../Interfaces/BankUser";
 import { update_bank_user } from "../../DatabaseFunctions/BankUserFunctions";
-import { send } from "q";
 
 
 export function PendingTransactionModal({pendingList}: {pendingList:Transaction[]}){
@@ -18,7 +17,7 @@ export function PendingTransactionModal({pendingList}: {pendingList:Transaction[
     }
     return(
     <div>
-        <Modal show={showModal} onHide={()=>setShowModal(false)}>
+        <Modal size='lg' show={showModal} onHide={()=>setShowModal(false)}>
             <Modal.Header closeButton><h2>Accept or Reject Transactions</h2></Modal.Header>
             <Row>
                 <Col>Sender</Col>
