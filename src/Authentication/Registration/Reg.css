@@ -43,3 +43,14 @@
     padding-bottom: 20px;
     text-align: end;
 }
+
+.form-input {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+}
+
+.form-info-text {
+    width: 25%;
+}

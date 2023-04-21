@@ -4,13 +4,13 @@ import './App.css';
 import "./firebase";
 import { RegistrationForm } from './Authentication/Registration/Reg';
 import ResetMessage from './Authentication/ResetPassword/ResetMessage';
-import {Route, Routes, HashRouter, BrowserRouter, useNavigate} from 'react-router-dom';
+import { Route, Routes, HashRouter } from 'react-router-dom';
 import { StudentNavbar } from './Navbars/StudentNavbar';
 import { TeacherNavbar } from './Navbars/TeacherNavbar';
 import { StudentHomePage } from './HomePages/StudentHomePage/StudentHomePage'
 import { TeacherHomePage } from './HomePages/TeacherHomePage/TeacherHomePage';
 import { LoginForm } from './Authentication/Login/Login';
-import { AuthContext, ContextProvider, USER_STORAGE_KEY } from './Authentication/auth';
+import { AuthContext, ContextProvider } from './Authentication/auth';
 import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { StudentClassPage } from './HomePages/StudentClassPage/StudentClassPage';
 import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
@@ -19,12 +19,9 @@ import { CreateClassPage } from './ClassCode/CreateClassPage';
 import { QuizPage } from './Quizzes/QuizPage';
 import { StudentQuizMain } from './Quizzes/StudentQuiz';
 import { SubgroupsPage } from './HomePages/TeacherClassPage/SubgroupsPage';
-import { UserTransaction } from './BankingComponents/UserTransaction';
-import { BankingDashboard } from './BankingComponents/BankingDashboard';
+
 import { StudentBankingPage } from './HomePages/StudentBankingPage/StudentBankingPage';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
-import { get_auth_user_then } from './DatabaseFunctions/UserFunctions';
+
 
 function App() {
     return (
