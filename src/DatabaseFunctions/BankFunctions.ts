@@ -31,14 +31,6 @@ export function get_bank_then(bank_id: string, func: (bank: Bank) => void) {
     });
 }
 
-/**Fetches a bank object using onvalue and uses setter whenever the database state changes*/
-export function get_bank_updating(bank_id: string, setter: (bank: Bank) => void): Unsubscribe {
-    return onValue(ref(getDatabase(), "/groups/"+bank_id+"/bankObj"),
-        bank_snapshot => {
-            setter(bank_snapshot.val() ?? DEFAULT_BANK);
-        }
-    );
-}
 
 export async function get_bank(bank_id: string): Promise<Bank | null> {
     let bank_snapshot = await get(ref(getDatabase(), "/groups/"+bank_id+"/bankObj"));

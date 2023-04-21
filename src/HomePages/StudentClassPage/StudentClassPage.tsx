@@ -2,7 +2,7 @@ import { getDatabase, onValue, ref, get, update, set, push, remove } from 'fireb
 import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext, BankContext, BANK_STORAGE_KEY } from "../../Authentication/auth";
+import { AuthContext, BankContext, BANK_STORAGE_KEY, change_bank } from "../../Authentication/auth";
 import { Bank, DEFAULT_BANK } from '../../Interfaces/BankObject';
 import { DEFAULT_BANK_USER, getTitle } from '../../Interfaces/BankUser';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
@@ -30,18 +30,15 @@ export function StudentClassPage({classCode}:{classCode:string}){
     //Real transactions will eventually be saved in the database under a BankUser object
 
 
-    //Get AuthUser objects for each student in the class
-    //const [studentAuthUserList, setStudentAuthUserList] = useState<AuthUser[]>([]);
+    useEffect(() => {
+        if(current_bank.bankId === classCode.slice(0,6)) {return;}
+        change_bank(classCode.slice(0,6));
+    }, []);
 
     const bank_context = useContext(BankContext);
     useEffect(() => { //Update the bank context if this page is navigated to
-        get_bank_then(classCode.slice(0,6), bank_context.setBank)
-        
         displayGroups();
         //move the two below into a function
-
-        get_bank_then(classCode.slice(0,6),bank_context.setBank)
-
     }, []);
 
     const current_bank_user = current_bank.studentList.find(val => val.uid === current_user.hash) ?? DEFAULT_BANK_USER;

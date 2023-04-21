@@ -2,17 +2,18 @@ import React, { useContext, useState } from 'react';
 import {Button, Form} from 'react-bootstrap'
 import "../../firebase";
 import { auth } from '../../firebase';
-import {signInWithEmailAndPassword } from 'firebase/auth';
+import {AuthError, User, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import './Login.css';
 import { useNavigate, Link} from 'react-router-dom';
-import { AuthContext, USER_STORAGE_KEY } from '../auth';
-import { get_auth_user_then, get_auth_user_updating } from '../../DatabaseFunctions/UserFunctions';
+import { AuthContext, USER_STORAGE_KEY, change_user } from '../auth';
+import { get_auth_user_then } from '../../DatabaseFunctions/UserFunctions';
 
 export function LoginForm(){
     //Email and password variable holding log in information
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
     const navigate = useNavigate();
+
 
     //Setters for email and pass
     function updateEmail(event: React.ChangeEvent<HTMLInputElement>){
@@ -23,24 +24,15 @@ export function LoginForm(){
         setPass(event.target.value)
     }
 
-    const userContext = useContext(AuthContext);
 
     //Function allowing user to login after clicking the login button
     function login(){
-        signInWithEmailAndPassword(auth,email,pass).then(currUser=>{
-            window.sessionStorage.setItem(USER_STORAGE_KEY, currUser.user.uid); //Add current user to browser storage
-            get_auth_user_updating(currUser.user.uid, userContext.setUser) //Get the logged in AuthUser and set the context using an updating fetch
-            
-            get_auth_user_then(currUser.user.uid, user => { //Get the logged in user and navigate to home
-                //Should probably remove dangling and unauthorized bank references here
-                navigate(user.isTeacher ? "/teachers/home" : "/students/home")
-            }) 
-        }).catch(function(error){
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
-            alert("Wrong email/password")
+        signInWithEmailAndPassword(auth,email,pass).then(user_cred => {
+            change_user(user_cred.user.uid);
+            get_auth_user_then(user_cred.user.uid, (user) => navigate(user.isTeacher ? "/teachers/home" : "/students/home"));
+        }).catch((error: AuthError) => {
+            console.log(error.code);
+            alert(error.message);
         });
     }
 

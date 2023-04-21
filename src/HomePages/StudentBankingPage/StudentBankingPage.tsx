@@ -27,13 +27,7 @@ export function StudentBankingPage({classCode}:{classCode:string}){
     //Real transactions will eventually be saved in the database under a BankUser object
 
     
-    //Get AuthUser objects for each student in the class
-    //const [studentAuthUserList, setStudentAuthUserList] = useState<AuthUser[]>([]);
-
-    const bank_context = useContext(BankContext);
-    useEffect(() => { //Update the bank context if this page is navigated to
-        get_bank_then(classCode.slice(0,6), bank_context.setBank)
-    }, []);
+    
 
     const current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? DEFAULT_BANK_USER;
 

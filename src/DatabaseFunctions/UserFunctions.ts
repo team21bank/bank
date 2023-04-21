@@ -5,8 +5,8 @@ import { AuthUser, DEFAULT_AUTH_USER } from "../Interfaces/AuthUser";
 //DATABASE READING FUNCTIONS
 
 /**Sets the AuthUser object at /users/uid to new_object*/
-export function update_auth_user(uid: string, new_object: AuthUser) {
-    set(ref(getDatabase(), "/users/"+uid+"/userObj"), new_object);
+export async function update_auth_user(uid: string, new_object: AuthUser) {
+    await set(ref(getDatabase(), "/users/"+uid+"/userObj"), new_object);
 }
 
 /**
@@ -15,8 +15,8 @@ export function update_auth_user(uid: string, new_object: AuthUser) {
  * THIS FUNCTION DOES NOT DELETE THE BANKUSER OBJECT FROM BANKS.
    Instead the BankUser's username will appear as "DELETED_USER"
 */
-export function delete_auth_user(uid: string) {
-    remove(ref(getDatabase(), "/users/"+uid));
+export async function delete_auth_user(uid: string) {
+    await remove(ref(getDatabase(), "/users/"+uid));
 }
 
 /**
@@ -24,21 +24,11 @@ export function delete_auth_user(uid: string) {
 
 *New AuthUser object is created under /users/uid
 */
-export function create_auth_user(uid: string, user_object: AuthUser) {
-    set(ref(getDatabase(), "/users/"+uid+"/userObj"), user_object);
+export async function create_auth_user(uid: string, user_object: AuthUser) {
+    await set(ref(getDatabase(), "/users/"+uid+"/userObj"), user_object);
 }
 
 
-//DATABASE WRITING FUNCTIONS
-
-/**Fetches an AuthUser object from the database and uses it in the setter function*/
-export function get_auth_user_updating(uid: string, setter: (AuthUser: AuthUser) => void): Unsubscribe {
-    return onValue(ref(getDatabase(), "/users/"+uid+"/userObj"),
-        snapshot => {
-            setter(snapshot.val() ?? DEFAULT_AUTH_USER)
-        }
-    )
-}
 
 /**fetch the AuthUser object then use the callback function on it*/
 export function get_auth_user_then(uid: string, func: (user: AuthUser) => void) {
