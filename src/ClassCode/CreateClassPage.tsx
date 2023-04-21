@@ -1,4 +1,4 @@
-import { onValue, ref, getDatabase, update, set } from "firebase/database";
+import { ref, getDatabase, update, set } from "firebase/database";
 import React, { useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { AuthContext } from "../Authentication/auth";
@@ -26,7 +26,8 @@ export function CreateClassPage(): JSX.Element {
     if(newBank.teacherID === "" && auth.currentUser) setNewBank({...newBank, teacherID: auth.currentUser.uid}); //set the bank's teacherID when it is availabe from userObj
 
     const createCode = () => {
-        if (newBank.classTitle===''){
+        alert("This feature is still in the works. Sorry :(")
+        /*if (newBank.classTitle===''){
             alert("Please enter a class name")
             return 
         }
@@ -52,6 +53,7 @@ export function CreateClassPage(): JSX.Element {
            set(ref(getDatabase(),"/users/"+auth.currentUser.uid+"/userObj/groups"),user.user.groups);
         }
         window.location.reload()
+        */
     }
 
 

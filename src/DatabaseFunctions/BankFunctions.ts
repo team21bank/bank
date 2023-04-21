@@ -1,4 +1,4 @@
-import { onValue, ref, getDatabase, get, set, remove, Unsubscribe } from "firebase/database";
+import { ref, getDatabase, get, set, remove, Unsubscribe } from "firebase/database";
 import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
 import { Transaction } from "../Interfaces/Transaction";
 
