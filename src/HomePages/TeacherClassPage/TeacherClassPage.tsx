@@ -16,8 +16,8 @@ export function TeacherClassPage({classCode}:{classCode:string}){
 
     const navigate = useNavigate();
 
-    const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
-    const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
+    const current_user: AuthUser = useContext(AuthContext).user;
+    const current_bank: Bank = useContext(BankContext).bank;
 
     useEffect(() => {
         if(current_bank.bankId === classCode.slice(0,6)) {return;}

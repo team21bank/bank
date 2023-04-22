@@ -10,8 +10,8 @@ export function StudentQuizMain(): JSX.Element{
     const bank_context = useContext(BankContext);
     let auth_context = useContext(AuthContext);
 
-    const current_bank: Bank = bank_context.bank ? bank_context.bank : DEFAULT_BANK;
-    const current_user = auth_context.user ? auth_context.user : DEFAULT_AUTH_USER;
+    const current_bank = bank_context.bank;
+    const current_user = auth_context.user;
     let current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash);
     console.log(current_bank_user?.uid)
     let dbquizzes = current_bank.quizzes

@@ -9,7 +9,7 @@ import { get_bank } from "../../../DatabaseFunctions/BankFunctions";
 import { create_bank_users } from "../../../DatabaseFunctions/BankUserFunctions";
 import { create_auth_user } from "../../../DatabaseFunctions/UserFunctions";
 import { AuthUser } from "../../../Interfaces/AuthUser";
-import { Bank, DEFAULT_BANK } from "../../../Interfaces/BankObject";
+import { Bank, DEFAULT_BANK, copy_bank } from "../../../Interfaces/BankObject";
 import { firebaseConfig } from "../../../firebase";
 
 export interface NewStudent{
@@ -97,7 +97,7 @@ export async function createStudentAccountsFromList(bank_id: string, student_lis
     });
     
     //Fail if a Bank object with bank_id cannot be found
-    let bank: Bank = await get_bank(bank_id) ?? DEFAULT_BANK;
+    let bank: Bank = await get_bank(bank_id) ?? copy_bank(DEFAULT_BANK);
     if( bank === DEFAULT_BANK ) {
         alert("Bank object not found while creating student accounts. Maybe refresh the page and try again. :(");
         return student_list.map(student => [student, "Error accessing bank object"]);

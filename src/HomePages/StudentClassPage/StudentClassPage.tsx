@@ -24,8 +24,8 @@ import { get_auth_users } from '../../DatabaseFunctions/UserFunctions';
 export function StudentClassPage({classCode}:{classCode:string}){
     window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
 
-    const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
-    const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
+    const current_user: AuthUser = useContext(AuthContext).user;
+    const current_bank: Bank = useContext(BankContext).bank;
 
     const navigate = useNavigate();
 

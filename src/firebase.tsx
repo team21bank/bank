@@ -29,7 +29,7 @@ export const firebaseConfig = {
 */
 
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyDI-ny6LCkkHdEi64_gzZWL52x_MIWxgb4",
   authDomain: "deployed-banking-application.firebaseapp.com",
   databaseURL: "https://deployed-banking-application-default-rtdb.firebaseio.com",

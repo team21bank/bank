@@ -1,4 +1,4 @@
-import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
+import { Bank, DEFAULT_BANK, copy_bank } from "../Interfaces/BankObject";
 import { BankUser, DEFAULT_BANK_USER } from "../Interfaces/BankUser";
 import { get, set, ref, getDatabase } from "firebase/database";
 import { get_bank, update_bank } from "./BankFunctions";
@@ -9,7 +9,7 @@ import { get_bank, update_bank } from "./BankFunctions";
 /**Sets the BankUser object at /groups/bank_id/bankObj/studentList/index_of(user_id) to new_bank_user*/
 export async function update_bank_user(bank: string | Bank, user_id: string, new_bank_user: BankUser) {
     if(typeof bank === "string") {
-        let bank_obj = await get_bank(bank) ?? DEFAULT_BANK;
+        let bank_obj = await get_bank(bank) ?? copy_bank(DEFAULT_BANK);
         if(bank_obj === DEFAULT_BANK) {return Promise.reject("Bank does not exist");}
         
         //get index of the BankUser with same uid as user_id
@@ -74,7 +74,7 @@ export async function delete_bank_users(bank: string | Bank, ...user_ids: string
 export async function create_bank_users(bank: string | Bank, ...user_ids: string[]): Promise<void> {
     if(typeof bank === "string") {
         //bank is string object
-        let bank_obj = await get_bank(bank) ?? DEFAULT_BANK;
+        let bank_obj = await get_bank(bank) ?? copy_bank(DEFAULT_BANK);
 
         if(bank_obj === DEFAULT_BANK) {
             return Promise.reject("Class does not exist")

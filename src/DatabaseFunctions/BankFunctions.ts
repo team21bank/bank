@@ -1,5 +1,5 @@
 import { ref, getDatabase, get, set, remove } from "firebase/database";
-import { Bank, DEFAULT_BANK, resolve_nullish_bank } from "../Interfaces/BankObject";
+import { Bank, DEFAULT_BANK, copy_bank, resolve_nullish_bank } from "../Interfaces/BankObject";
 import { Transaction } from "../Interfaces/Transaction";
 import { FirebaseApp } from "firebase/app";
 
@@ -57,7 +57,7 @@ export async function create_new_bank(bank_id: string, teacher_id: string, bank_
     }
 
     let bank_reference = ref(getDatabase(app), "/groups/"+bank_id+"/bankObj/");
-    set(bank_reference, {...DEFAULT_BANK, teacherID: teacher_id, bankId: bank_id, classTitle: bank_name, description: bank_description??""})
+    set(bank_reference, {...copy_bank(DEFAULT_BANK), teacherID: teacher_id, bankId: bank_id, classTitle: bank_name, description: bank_description??""})
 }
  
 /**

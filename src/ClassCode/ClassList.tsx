@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { get_bank } from "../DatabaseFunctions/BankFunctions";
-import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
+import { Bank, DEFAULT_BANK, copy_bank } from "../Interfaces/BankObject";
 import "./ClassList.css";
 import { AuthContext } from "../Authentication/auth";
 
@@ -16,7 +16,7 @@ export function ClassList({classes}: {classes: string[]}): JSX.Element {
 }
 
 function ClassButton({bank_id}: {bank_id: string}): JSX.Element {
-    const [bank, set_bank] = useState<Bank>(DEFAULT_BANK);
+    const [bank, set_bank] = useState<Bank>(copy_bank(DEFAULT_BANK));
 
     const user = useContext(AuthContext).user;
 

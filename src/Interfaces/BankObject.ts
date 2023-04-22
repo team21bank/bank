@@ -27,16 +27,21 @@ export const DEFAULT_BANK: Bank = {
     bankId: "", teacherID: "", studentList: [], classTitle: "", description: "", quizzes: [], subgroups: [], pendingList: [], completedList: []
 }
 
+export function copy_bank(bank: Bank): Bank {
+    return JSON.parse(JSON.stringify(bank));
+}
+
+
 export function resolve_nullish_bank(bank: Bank): Bank {
     return {
-        bankId: bank.bankId ?? DEFAULT_BANK.bankId,
-        teacherID: bank.teacherID ?? DEFAULT_BANK.teacherID,
-        studentList: bank.studentList ?? DEFAULT_BANK.studentList,
-        classTitle: bank.classTitle ?? DEFAULT_BANK.classTitle,
-        description: bank.description ?? DEFAULT_BANK.description,
-        subgroups: bank.subgroups ?? DEFAULT_BANK.subgroups,
-        quizzes: bank.quizzes ?? DEFAULT_BANK.quizzes,
-        pendingList: bank.pendingList ?? DEFAULT_BANK.pendingList,
-        completedList: bank.completedList ?? DEFAULT_BANK.completedList
+        bankId: bank.bankId ?? "",
+        teacherID: bank.teacherID ?? "",
+        studentList: bank.studentList ?? [],
+        classTitle: bank.classTitle ?? "",
+        description: bank.description ?? "",
+        subgroups: bank.subgroups ?? [],
+        quizzes: bank.quizzes ?? [],
+        pendingList: bank.pendingList ?? [],
+        completedList: bank.completedList ?? []
     }
 }

@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { Bank, DEFAULT_BANK, resolve_nullish_bank } from "../Interfaces/BankObject";
+import { Bank, DEFAULT_BANK, copy_bank, resolve_nullish_bank } from "../Interfaces/BankObject";
 import { AuthUser, DEFAULT_AUTH_USER, resolve_nullish_authuser } from "../Interfaces/AuthUser";
 import { Unsubscribe } from "firebase/auth";
 import { getDatabase, onValue, ref } from "firebase/database";
@@ -9,16 +9,16 @@ import { getDatabase, onValue, ref } from "firebase/database";
 
 
 //React context to store the current user state and a function to modify it
-export const AuthContext = React.createContext({user: DEFAULT_AUTH_USER});
-export const BankContext = React.createContext({bank: DEFAULT_BANK})
+export const AuthContext = React.createContext({user: {...DEFAULT_AUTH_USER}});
+export const BankContext = React.createContext({bank: copy_bank(DEFAULT_BANK)})
 
 export const USER_STORAGE_KEY = "CurrentUser";
 export const BANK_STORAGE_KEY = "CurrentBank";
 
 
 export function ContextProvider({children}: {children: ReactNode}): JSX.Element {
-    const [user, set_user] = useState<AuthUser>(DEFAULT_AUTH_USER);
-    const [bank, set_bank] = useState<Bank>(DEFAULT_BANK);
+    const [user, set_user] = useState<AuthUser>({...DEFAULT_AUTH_USER});
+    const [bank, set_bank] = useState<Bank>(copy_bank(DEFAULT_BANK));
 
     let handle_change_user = () => {
         let new_user_id = window.sessionStorage.getItem(USER_STORAGE_KEY);
@@ -36,7 +36,7 @@ export function ContextProvider({children}: {children: ReactNode}): JSX.Element 
         }
 
         if(new_bank_id === null) {
-            set_bank(DEFAULT_BANK);
+            set_bank(copy_bank(DEFAULT_BANK));
         } else {
             get_bank_updating(new_bank_id, set_bank);
         }
@@ -103,8 +103,8 @@ function get_auth_user_updating(uid: string, setter: (AuthUser: AuthUser) => voi
 function get_bank_updating(bank_id: string, setter: (bank: Bank) => void): Unsubscribe {
     return onValue(ref(getDatabase(), "/groups/"+bank_id+"/bankObj"),
         bank_snapshot => {
-            console.log("Setting bank: ", bank_snapshot.val() ?? DEFAULT_BANK);
-            setter(resolve_nullish_bank(bank_snapshot.val() ?? DEFAULT_BANK));
+            console.log("Setting bank: ", bank_snapshot.val() ?? copy_bank(DEFAULT_BANK));
+            setter(resolve_nullish_bank(bank_snapshot.val() ?? copy_bank(DEFAULT_BANK)));
         }
     );
 }

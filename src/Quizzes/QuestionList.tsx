@@ -30,10 +30,9 @@ export function QuestionList({
     let bank_context = useContext(BankContext);
     let auth_context = useContext(AuthContext);
 
-    const current_user = auth_context.user ? auth_context.user : DEFAULT_AUTH_USER;
-    const current_bank: Bank = bank_context.bank ? bank_context.bank : DEFAULT_BANK;
-    let current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash);
-    current_bank_user ??= DEFAULT_BANK_USER;
+    const current_user = auth_context.user;
+    const current_bank = bank_context.bank;
+    let current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? {...DEFAULT_BANK_USER};
 
     function moveToNextQuestion(): void {
         if (currQuestionIndex < questions.length-1) {

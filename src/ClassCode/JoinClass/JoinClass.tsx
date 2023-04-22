@@ -1,11 +1,6 @@
 import {Button,Col,Container,Form, InputGroup, Modal, Row } from 'react-bootstrap'
-import { ref, getDatabase, set} from '@firebase/database';
 import React, { useContext, useState } from 'react';
 import { AuthContext } from "../../Authentication/auth";
-import { auth } from '../../firebase';
-import { get } from 'firebase/database';
-import { Bank } from '../../Interfaces/BankObject';
-import { DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 import { create_bank_users } from '../../DatabaseFunctions/BankUserFunctions';
 import { update_auth_user } from '../../DatabaseFunctions/UserFunctions';

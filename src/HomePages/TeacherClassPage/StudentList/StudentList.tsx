@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ViewStudent } from "./ViewStudent";
 import "./StudentList.css";
 import { Bank } from "../../../Interfaces/BankObject";
 import { get_auth_users } from "../../../DatabaseFunctions/UserFunctions";
