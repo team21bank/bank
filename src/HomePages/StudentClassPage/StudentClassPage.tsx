@@ -1,4 +1,4 @@
-import { getDatabase, onValue, ref, get, update, set, push, remove } from 'firebase/database';
+import { getDatabase, ref, get, update, set, push, remove } from 'firebase/database';
 import React, { useContext, useEffect, useState  } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -27,20 +27,11 @@ export function StudentClassPage({classCode}:{classCode:string}){
     const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
     const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
 
-
     const navigate = useNavigate();
-
-    //Real transactions will eventually be saved in the database under a BankUser object
-
-
-    //Get AuthUser objects for each student in the class
-    const [studentAuthUserList, setStudentAuthUserList] = useState<AuthUser[]>([]);
 
     const bank_context = useContext(BankContext);
     useEffect(() => { //Update the bank context if this page is navigated to
-        get_auth_users(current_bank.studentList.map(user => user.uid), setStudentAuthUserList)
         displayGroups();
-        get_bank(classCode.slice(0, 6), bank_context.setBank)
     }, []);
 
     const current_bank_user = current_bank.studentList.find(val => val.uid === current_user.hash) ?? DEFAULT_BANK_USER;
@@ -129,11 +120,12 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 if (type === "Yes") {
                     shopPurchase=true
                 }
-            let receiverAuthUser: AuthUser = DEFAULT_AUTH_USER  
-            let receiverBankUser = current_bank.studentList.find(val => val.uid === receiverID) ?? DEFAULT_BANK_USER
+            let receiverAuthUser: AuthUser = DEFAULT_AUTH_USER  ;
+            let receiverBankUser = current_bank.studentList.find(val => val.uid === receiverID) ?? DEFAULT_BANK_USER;
 
             //initialize receiverAuthUser (for transaction object)
-            studentAuthUserList.forEach(student => {
+            //studentAuthUserList
+            ([] as AuthUser[]).forEach(student => {
                 if (student.hash === receiverID)
                     receiverAuthUser=student
             })

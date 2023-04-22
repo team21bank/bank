@@ -1,29 +1,29 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext, BankContext, BANK_STORAGE_KEY } from "../../Authentication/auth";
+import { AuthContext, BankContext, BANK_STORAGE_KEY, change_bank } from "../../Authentication/auth";
 import { AddStudentsModal } from "./AddStudents/AddStudentsModal";
 import {Bank, DEFAULT_BANK} from "../../Interfaces/BankObject"
 import "./TeacherClassPage.css";
 import { Button, Modal } from 'react-bootstrap';
-import { delete_bank } from '../EditProfilePage/DeleteAccount';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { StudentList } from './StudentList/StudentList';
 import { Subgroups } from './Subgroups';
-import { get_bank } from '../../DatabaseFunctions/BankFunctions';
+import { delete_bank } from '../../DatabaseFunctions/BankFunctions';
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
-    window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
+
+
+
     const navigate = useNavigate();
 
     const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
     const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
 
-    const bank_context = useContext(BankContext);
     useEffect(() => {
-        get_bank(classCode.slice(0,6), bank_context.setBank)
+        if(current_bank.bankId === classCode.slice(0,6)) {return;}
+        change_bank(classCode.slice(0,6));
     }, []);
     
-
     return (
         <div className="teacher-class-page">
             Welcome back to your class: {classCode.slice(6)}
@@ -32,9 +32,9 @@ export function TeacherClassPage({classCode}:{classCode:string}){
             <Subgroups classID={classCode}></Subgroups>
             <DeleteBankModal 
                 delete_bank_function={()=>{
-                    delete_bank(current_bank.bankId, current_user.id);
-                    navigate("/teachers/home");
-                    alert("class successfully deleted");
+                    delete_bank(current_bank.bankId).then(() =>{
+                        navigate("/teachers/home");
+                    });
                 }}
                 bank_name={classCode.slice(6)}
             />

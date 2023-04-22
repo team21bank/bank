@@ -1,18 +1,65 @@
-import { onValue, ref, getDatabase, get, set } from "firebase/database";
-import { Bank } from "../Interfaces/BankObject";
+import { ref, getDatabase, get, set, remove } from "firebase/database";
+import { Bank, DEFAULT_BANK, resolve_nullish_bank } from "../Interfaces/BankObject";
 import { Transaction } from "../Interfaces/Transaction";
+import { FirebaseApp } from "firebase/app";
 
-export function get_bank(bank_id: string, setter: (bank: Bank) => void) {
-    onValue(ref(getDatabase(), "/groups/"+bank_id+"/bankObj"), bank_snapshot => {
-        if(bank_snapshot.exists() === false) {
-            alert("Bank does not exist");
-            return;
+/** */
+export async function update_bank(bank_id: string, new_bank: Bank, app?: FirebaseApp): Promise<void> {
+    await set(ref(getDatabase(app), "/groups/"+bank_id+"/bankObj/"), new_bank);
+    return;
+}
+
+/**
+ * Deletes the bank object at /groups/bank_id
+ * 
+ * THIS DOES NOT DELETE AUTHUSER'S REFERENCES TO THE BANK
+*/
+export function delete_bank(bank_id: string): Promise<void> {
+    return remove(ref(getDatabase(), "/groups/"+bank_id));
+}
+
+/**
+ * Deletes multiple banks
+ * 
+ * DOES NOT DELETE AUTHUSER'S REFERENCES TO THE BANKS
+ */
+export function delete_banks(bank_ids: string[]): Promise<void[]> {
+    let promises = bank_ids.map(id => delete_bank(id));
+    return Promise.all(promises);
+}
+
+
+/**Gets a bank object then calls func
+*/
+export function get_bank_then(bank_id: string, func: (bank: Bank | null) => void) {
+    get(ref(getDatabase(), "/groups/"+bank_id+"/bankObj")).then(bank_snapshot => {
+        if(bank_snapshot.exists()) {
+            func(resolve_nullish_bank(bank_snapshot.val()));
+        } else {
+            func(null);
         }
-        setter(bank_snapshot.val());
+
     });
 }
 
 
+export async function get_bank(bank_id: string, app?: FirebaseApp): Promise<Bank | null> {
+    let bank_snapshot = await get(ref(getDatabase(app), "/groups/"+bank_id+"/bankObj"));
+    if(bank_snapshot.exists()) {
+        return resolve_nullish_bank(bank_snapshot.val())
+    }
+    return null;
+}
+
+export async function create_new_bank(bank_id: string, teacher_id: string, bank_name: string, bank_description?: string, app?: FirebaseApp): Promise<void> {
+    if((await get_bank(bank_id, app)) !== null) {
+        return Promise.reject("Bank already exists")
+    }
+
+    let bank_reference = ref(getDatabase(app), "/groups/"+bank_id+"/bankObj/");
+    set(bank_reference, {...DEFAULT_BANK, teacherID: teacher_id, bankId: bank_id, classTitle: bank_name, description: bank_description??""})
+}
+ 
 /**
  * @param bank_id The bank the transaction will occur in
  * @param transaction The Transaction object representing the transaction that is being added to the pending list for approval from a banker

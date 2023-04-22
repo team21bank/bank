@@ -8,7 +8,7 @@ import { DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
 import "./StudentBankingPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
-import { get_bank } from '../../DatabaseFunctions/BankFunctions';
+import { get_bank_then } from '../../DatabaseFunctions/BankFunctions';
 import { app } from "../../firebase";
 import { Subgroup } from "../../Interfaces/Subgroup";
 import { BankingDashboard } from '../../BankingComponents/BankingDashboard';
@@ -27,13 +27,7 @@ export function StudentBankingPage({classCode}:{classCode:string}){
     //Real transactions will eventually be saved in the database under a BankUser object
 
     
-    //Get AuthUser objects for each student in the class
-    //const [studentAuthUserList, setStudentAuthUserList] = useState<AuthUser[]>([]);
-
-    const bank_context = useContext(BankContext);
-    useEffect(() => { //Update the bank context if this page is navigated to
-        get_bank(classCode.slice(0,6), bank_context.setBank)
-    }, []);
+    
 
     const current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? DEFAULT_BANK_USER;
 

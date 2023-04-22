@@ -6,6 +6,7 @@ import { signOut } from 'firebase/auth';
 import { USER_STORAGE_KEY } from '../Authentication/auth';
 import { auth } from '../firebase';
 import "./TeacherNavbar.css";
+import { LogoutButton } from '../Authentication/Logout/Logout';
 
 
 export function TeacherNavbar(): JSX.Element {
@@ -23,11 +24,7 @@ export function TeacherNavbar(): JSX.Element {
           <Nav className='justify-content-end'>
             <NavDropdown title="Manage Account" className="teacher-nav-dropdown">
                 <NavDropdown.Item href="#/editprofile">Edit Profile</NavDropdown.Item>
-                <NavDropdown.Item onClick={()=>{
-                    signOut(auth);
-                    window.sessionStorage.removeItem(USER_STORAGE_KEY);
-                    navigate("/");
-                }}>Log Out</NavDropdown.Item>
+                <LogoutButton/>
             </NavDropdown>
           </Nav>
         </Container>

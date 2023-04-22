@@ -4,7 +4,6 @@ import { SubgroupsPage } from './SubgroupsPage';
 import { AuthContext } from "../../Authentication/auth";
 import { useContext } from 'react';
 import { Button } from "react-bootstrap";
-import { ref, getDatabase, onValue } from '@firebase/database';
 
 
 

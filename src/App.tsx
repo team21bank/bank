@@ -4,32 +4,30 @@ import './App.css';
 import "./firebase";
 import { RegistrationForm } from './Authentication/Registration/Reg';
 import ResetMessage from './Authentication/ResetPassword/ResetMessage';
-import {Route, Routes, HashRouter, BrowserRouter} from 'react-router-dom';
+import { Route, Routes, HashRouter } from 'react-router-dom';
 import { StudentNavbar } from './Navbars/StudentNavbar';
 import { TeacherNavbar } from './Navbars/TeacherNavbar';
 import { StudentHomePage } from './HomePages/StudentHomePage/StudentHomePage'
 import { TeacherHomePage } from './HomePages/TeacherHomePage/TeacherHomePage';
 import { LoginForm } from './Authentication/Login/Login';
-import { AuthContext, CurrentBankProvider, CurrentUserProvider } from './Authentication/auth';
+import { AuthContext, ContextProvider } from './Authentication/auth';
 import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { StudentClassPage } from './HomePages/StudentClassPage/StudentClassPage';
 import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
 import { EditProfile } from './HomePages/EditProfilePage/EditProfilePage';
-import { CreateClassPage } from './ClassCode/CreateClassPage';
+import { CreateClassModal } from './ClassCode/CreateClassModal';
 import { QuizPage } from './Quizzes/QuizPage';
 import { StudentQuizMain } from './Quizzes/StudentQuiz';
 import { SubgroupsPage } from './HomePages/TeacherClassPage/SubgroupsPage';
-import { UserTransaction } from './BankingComponents/UserTransaction';
-import { BankingDashboard } from './BankingComponents/BankingDashboard';
+
 import { StudentBankingPage } from './HomePages/StudentBankingPage/StudentBankingPage';
+
 
 function App() {
     return (
-    <CurrentUserProvider> {/*Provider wrapping the entire app to give components access to the current user context */}
-      <CurrentBankProvider> {/*Provider wrapping the entire app to give components access to the current bank context */}
-        <AppBody></AppBody>
-      </CurrentBankProvider>
-    </CurrentUserProvider>
+    <ContextProvider> {/*Provider wrapping the entire app to give components access to user and bank contexts */}
+      <AppBody></AppBody>
+    </ContextProvider>
   );
 }
 
@@ -41,6 +39,7 @@ function AppBody(): JSX.Element {
 
   const user = useContext(AuthContext);
   if(user.user) classes = [...(user.user.groups)];
+
 
   return <div>
     <HashRouter basename="/"> 
@@ -57,17 +56,17 @@ function AppBody(): JSX.Element {
           {classes.map(str => {
             return <Route path={str.slice(0, 6)+"/groups"} key={str} element={<SubgroupsPage classCode={str} />}></Route>
           })}
-          <Route path="createclass" element={<CreateClassPage/>}/>
+          <Route path="createclass" element={<CreateClassModal/>}/>
           {/*Render the class pages*/}
           {classes.map(str => <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}/>)}
           {/*Render the quiz pages. This needs to be done in a separate map because nested routes also render their parent element*/}
-          {classes.map(str => <Route path={str.slice(0,6)+"/quizzes"} element={<QuizPage/>}/>)}
+          {classes.map(str => <Route path={str.slice(0,6)+"/quizzes"} key={str} element={<QuizPage/>}/>)}
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
           {classes.map(str => <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>)}
-          {classes.map(str => <Route path={str.slice(0,6)+"/quizzes"} element={<StudentQuizMain/>} />)}
-          {classes.map(str => <Route path={str.slice(0,6)+"/banking"} element={<StudentBankingPage classCode={str}/>} />)}
+          {classes.map(str => <Route path={str.slice(0,6)+"/quizzes"} key={str} element={<StudentQuizMain/>} />)}
+          {classes.map(str => <Route path={str.slice(0,6)+"/banking"} key={str} element={<StudentBankingPage classCode={str}/>} />)}
         </Route>
       </Routes>
     </HashRouter>

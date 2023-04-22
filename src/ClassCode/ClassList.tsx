@@ -1,30 +1,49 @@
 
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
+import { get_bank } from "../DatabaseFunctions/BankFunctions";
+import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
+import "./ClassList.css";
+import { AuthContext } from "../Authentication/auth";
 
 export function ClassList({classes}: {classes: string[]}): JSX.Element {
     return (
         <div>
-            {classes.map((classString: string) => (
-                classString !== "placeholder" ? (
-                    <ClassButton classString={classString}/>
-                ) : (
-                    <></>
-                )
-            ))}
+            {classes.map(bank_id => <ClassButton key={bank_id} bank_id={bank_id}/>)}
         </div>
     )
 }
 
-function ClassButton({classString}: {classString: string}): JSX.Element {
-    const name = classString.slice(6);
-    const id = classString.slice(0, 6);
+function ClassButton({bank_id}: {bank_id: string}): JSX.Element {
+    const [bank, set_bank] = useState<Bank>(DEFAULT_BANK);
 
-    return (
+    const user = useContext(AuthContext).user;
+
+    useEffect(() => {
+        get_bank(bank_id).then(b => {
+            if(b !== null) {set_bank(b);}
+        })
+    }, []);
+
+    //Only render the button if the AuthUser has a BankUser im the bank
+    return bank.studentList.find((bank_user) => bank_user.uid===user.hash) || bank.teacherID === user.hash ? (
         <div>
-            <Link to={"../"+id}><Button>Go To {id.slice(0,6)}</Button></Link>
+            <Link to={"../"+bank_id}>
+                <Button
+                    className="class-button"
+                    variant="success"
+                    size="lg"
+                >
+                    <h2>{bank.classTitle}</h2>
+                    <div>
+                        {bank.description !== "" ? (<p className="info-text">{bank.description}</p>) : <></>}
+                        <p className="info-text">{bank.studentList.length} students</p>
+                    </div>
+                </Button>
+            </Link>
         </div>
+    ) : (
+        <></>
     )
 }

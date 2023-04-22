@@ -1,0 +1,19 @@
+.create-class-page {
+    text-align: center;
+}
+
+.input-box {
+    width: 90%;
+    max-width: 60em;
+    margin: 0 auto;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.button-bar {
+    text-align: center;
+}
+
+.submit-button {
+    margin-inline: 1em;
+}

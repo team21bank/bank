@@ -8,6 +8,8 @@ export interface BankUser {
 
     role: [Role, MasteryLevel],
 
+    alias: string,
+
     finishedQuizzes : Array<number>
 }
 
@@ -28,10 +30,10 @@ export enum MasteryLevel {
     Master
 }
 
-export const DEFAULT_BANK_USER: BankUser = {uid: "", isBanker: false, balance: 0, role: [Role.None, MasteryLevel.None], finishedQuizzes: []};
+export const DEFAULT_BANK_USER: BankUser = {uid: "", isBanker: false, balance: 0, role: [Role.None, MasteryLevel.None], alias: "", finishedQuizzes: []};
 
 export function getTitle(role: [Role, MasteryLevel]): String {
-    if(role == undefined) {return "None";}
+    if(role === undefined) {return "None";}
     let title = "";
     
     switch(role[1]) {
