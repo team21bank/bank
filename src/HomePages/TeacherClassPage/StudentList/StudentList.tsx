@@ -4,8 +4,9 @@ import "./StudentList.css";
 import { Bank } from "../../../Interfaces/BankObject";
 import { get_auth_users } from "../../../DatabaseFunctions/UserFunctions";
 import { AuthUser, DEFAULT_AUTH_USER } from "../../../Interfaces/AuthUser";
-import { BankUser } from "../../../Interfaces/BankUser";
+import { BankUser, getTitle } from "../../../Interfaces/BankUser";
 import { delete_bank_users } from "../../../DatabaseFunctions/BankUserFunctions";
+import { Table } from "react-bootstrap";
 
 
 
@@ -38,13 +39,30 @@ export function StudentList(
     }, [current_bank]);
 
     return (
-        <div className="student-list">
+        <div>
             <h2 className="student-list-header">Students</h2>
-            {studentList.map((user_pair) => {
-                return (
-                    <ViewStudent user_pair={user_pair} remove_student_function={() => delete_bank_users(current_bank, user_pair.bank_user.uid)}/>
-                )
-            })}
+            <Table striped hover bordered>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {studentList.map((user_pair) => <StudentRow user_pair={user_pair}/>)}
+                </tbody>
+            </Table>
         </div>
+    )
+}
+
+function StudentRow({user_pair}: {user_pair: UserPair}): JSX.Element {
+    return (
+        <tr>
+            <td>{user_pair.auth_user.username}</td>
+            <td>{getTitle(user_pair.bank_user.role)}</td>
+            <td>{user_pair.bank_user.balance}</td>
+        </tr>
     )
 }

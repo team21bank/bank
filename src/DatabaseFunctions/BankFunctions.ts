@@ -3,6 +3,12 @@ import { Bank, DEFAULT_BANK, resolve_nullish_bank } from "../Interfaces/BankObje
 import { Transaction } from "../Interfaces/Transaction";
 import { FirebaseApp } from "firebase/app";
 
+/** */
+export async function update_bank(bank_id: string, new_bank: Bank, app?: FirebaseApp): Promise<void> {
+    await set(ref(getDatabase(app), "/groups/"+bank_id+"/bankObj/"), new_bank);
+    return;
+}
+
 /**
  * Deletes the bank object at /groups/bank_id
  * 

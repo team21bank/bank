@@ -1,6 +1,6 @@
 import { ref, getDatabase, update, set } from "firebase/database";
 import React, { useContext, useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, InputGroup, Modal } from "react-bootstrap";
 import { AuthContext } from "../Authentication/auth";
 import { auth } from "../firebase";
 import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
@@ -17,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 export function CreateClassPage(): JSX.Element {
     const user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
     const [bank_name, set_bank_name] = useState("")
+
+    const [show, setShow] = useState(false);
     
     const navigate = useNavigate()
 
@@ -35,49 +37,45 @@ export function CreateClassPage(): JSX.Element {
                 return code;
             } finally {}
         }
-        
-
-        /*if (newBank.classTitle===''){
-            alert("Please enter a class name")
-            return 
-        }
-        let codeExists=true
-        let characters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
-        let code=""
-        while(codeExists)
-            codeExists=false
-            for (var i=0;i<6;i++){
-                code+=characters.charAt(Math.floor(Math.random()*characters.length))
-            }
-            onValue(ref(getDatabase(),"/groups"),ss=>{
-                let groupObj=ss.val();
-                if (groupObj!==null){
-                    let groupIDS=Object.keys(groupObj);
-                    groupIDS.forEach(key => {if(key===code) codeExists=true})
-                }
-            })
-        alert(code)
-        user.user ? user.user.groups.push(code+newBank.classTitle): code='';
-        update(ref(getDatabase(),"/groups/"+code),{bankObj:{...newBank, bankId: code}});
-        if(user.user && auth.currentUser){
-           set(ref(getDatabase(),"/users/"+auth.currentUser.uid+"/userObj/groups"),user.user.groups);
-        }
-        window.location.reload()
-        */
     }
 
 
     return (
-        <div className="create-class-page">
-            <h1>Create new class</h1>
-            <Form.Group controlId="createClass">
-                <Form.Label>Class Name: </Form.Label>
-                <Form.Control
-                    style={{"width": "600px", "marginLeft": "auto", "marginRight": "auto"}}
-                    value={bank_name}
-                    onChange={(e) => set_bank_name(e.target.value)}/>
-                <Button onClick={() => createCode().then((code) => navigate("/teachers/"+code))} style={{"marginTop": "20px"}}>Create Class Code</Button>
-            </Form.Group>
+        <div className="new-class-modal">
+            <Modal show={show} onHide={()=>setShow(false)} size="lg">
+                <Modal.Header closeButton><h1>Create new class</h1></Modal.Header>
+                <Modal.Body>
+                    <div className="create-class-page">
+                        <InputGroup className="input-box" size="lg">
+                            <InputGroup.Text>Class Name: </InputGroup.Text>
+                            <Form.Control
+                                value={bank_name}
+                                type="text"
+                                onChange={(e) => set_bank_name(e.target.value)}
+                        />
+                        </InputGroup>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <div className="button-bar">
+                        <Button
+                            onClick={() => {set_bank_name(""); setShow(false);}}
+                            variant="secondary"
+                            className="submit-button"
+                        >
+                            Cancel
+                        </Button>
+                        <Button 
+                            onClick={() => createCode().then((code) => navigate("/teachers/"+code))}
+                            className="submit-button"
+                            variant="success"
+                        >
+                            Create Class Code
+                        </Button>
+                    </div>
+                </Modal.Footer>
+            </Modal>
+            <Button onClick={()=>setShow(true)}>Create new class</Button>
         </div>
     )
 }

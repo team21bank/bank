@@ -39,7 +39,7 @@ export function RegistrationForm(){
                 email:email,
                 id:"",
                 avatar:'',
-                groups:['placeholder'],
+                groups:[],
                 isTeacher: true,
                 hash: somedata.user.uid
             }

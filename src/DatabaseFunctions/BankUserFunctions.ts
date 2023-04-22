@@ -1,6 +1,7 @@
-import { Bank } from "../Interfaces/BankObject";
+import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
 import { BankUser, DEFAULT_BANK_USER } from "../Interfaces/BankUser";
 import { get, set, ref, getDatabase } from "firebase/database";
+import { get_bank, update_bank } from "./BankFunctions";
 
 
 ////////////////////////////// DATABASE MODIFYING FUNCTIONS //////////////////////////////
@@ -62,24 +63,22 @@ export async function delete_bank_users(bank: string | Bank, ...user_ids: string
  * @param user_ids The new BankUsers' uids
 */
 export async function create_bank_users(bank: string | Bank, ...user_ids: string[]): Promise<void> {
-    if(typeof bank === "string" || bank instanceof String) {
+    if(typeof bank === "string") {
         //bank is string object
-        let student_list_ref = ref(getDatabase(), "/groups/"+bank+"/bankObj/studentList");
-        let student_list_snapshot = await get(student_list_ref);
-        let student_list = student_list_snapshot.val();
-        if( student_list == null ) {
-            alert("Bank not found");
-            return;
+        let bank_obj = await get_bank(bank) ?? DEFAULT_BANK;
+
+        if(bank_obj === DEFAULT_BANK) {
+            return Promise.reject("Class does not exist")
         }
         
         //Push new BankUsers to the end of studentList
-        student_list.push(...user_ids.map(
+        bank_obj.studentList.push(...user_ids.map(
             (id): BankUser => {
                 return {...DEFAULT_BANK_USER, uid: id}
             }
         ));
         //update the studentList
-        await set(student_list_ref, student_list);
+        update_bank(bank_obj.bankId, bank_obj)
     } else {
         //bank is Bank object
         //Add the new bank users onto the end of the studentList
