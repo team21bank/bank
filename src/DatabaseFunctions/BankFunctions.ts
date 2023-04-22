@@ -51,13 +51,13 @@ export async function get_bank(bank_id: string, app?: FirebaseApp): Promise<Bank
     return null;
 }
 
-export async function create_new_bank(bank_id: string, teacher_id: string, bank_name: string, app?: FirebaseApp): Promise<void> {
+export async function create_new_bank(bank_id: string, teacher_id: string, bank_name: string, bank_description?: string, app?: FirebaseApp): Promise<void> {
     if((await get_bank(bank_id, app)) !== null) {
         return Promise.reject("Bank already exists")
     }
 
     let bank_reference = ref(getDatabase(app), "/groups/"+bank_id+"/bankObj/");
-    set(bank_reference, {...DEFAULT_BANK, teacherID: teacher_id, bankId: bank_id, classTitle: bank_name})
+    set(bank_reference, {...DEFAULT_BANK, teacherID: teacher_id, bankId: bank_id, classTitle: bank_name, description: bank_description??""})
 }
  
 /**

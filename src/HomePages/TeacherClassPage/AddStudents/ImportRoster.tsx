@@ -36,19 +36,6 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
 
     function makeChange() {
         alert("We found an issue with this feature. We're in the process of fixing it right now")
-        
-        const splitRow = contents.split(/\r?\n/);
-        //holder bank, will be overwritten if expected bank exists
-        let newBank: Bank = {
-            bankId: "000000",
-            teacherID: "111111",
-            studentList: [DEFAULT_BANK_USER],
-            classTitle: "",
-            quizzes:[],
-            subgroups:[],
-            pendingList:[],
-            completedList:[]
-        };
         /*
         //database reference for bank object
         let groupRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/');

@@ -12,6 +12,8 @@ export interface Bank {
     studentList: BankUser[];
     /**The title of the class */
     classTitle: string;
+    /**A small description of the class */
+    description: string;
     /** An array of subgroups and their students */
     subgroups: Subgroup[];
     /**List of quizzes for a class */
@@ -22,7 +24,7 @@ export interface Bank {
 }
 
 export const DEFAULT_BANK: Bank = {
-    bankId: "", teacherID: "", studentList: [], classTitle: "", quizzes: [], subgroups: [], pendingList: [], completedList: []
+    bankId: "", teacherID: "", studentList: [], classTitle: "", description: "", quizzes: [], subgroups: [], pendingList: [], completedList: []
 }
 
 export function resolve_nullish_bank(bank: Bank): Bank {
@@ -31,6 +33,7 @@ export function resolve_nullish_bank(bank: Bank): Bank {
         teacherID: bank.teacherID ?? DEFAULT_BANK.teacherID,
         studentList: bank.studentList ?? DEFAULT_BANK.studentList,
         classTitle: bank.classTitle ?? DEFAULT_BANK.classTitle,
+        description: bank.description ?? DEFAULT_BANK.description,
         subgroups: bank.subgroups ?? DEFAULT_BANK.subgroups,
         quizzes: bank.quizzes ?? DEFAULT_BANK.quizzes,
         pendingList: bank.pendingList ?? DEFAULT_BANK.pendingList,

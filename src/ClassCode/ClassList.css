@@ -1,0 +1,12 @@
+
+.class-button {
+    margin-inline: 0.25em;
+    margin: 0.5em;
+    max-width: 25vw;
+}
+
+.info-text {
+    font-size: 75%;
+    margin-top: 10px;
+    margin-bottom: 10px
+}

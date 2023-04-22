@@ -1,22 +1,17 @@
-import { ref, getDatabase, update, set } from "firebase/database";
 import React, { useContext, useState } from "react";
 import { Form, Button, InputGroup, Modal } from "react-bootstrap";
 import { AuthContext } from "../Authentication/auth";
-import { auth } from "../firebase";
-import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
-import { DEFAULT_BANK_USER } from "../Interfaces/BankUser";
-import { QUIZ_PLACEHOLDER } from "../Interfaces/Quiz";
-import { SUBGROUPS_PLACEHOLDER } from "../Interfaces/Subgroup";
-import "./CreateClassPage.css";
+import "./CreateClassModal.css";
 import { create_new_bank } from "../DatabaseFunctions/BankFunctions";
 import { DEFAULT_AUTH_USER } from "../Interfaces/AuthUser";
 import { update_auth_user } from "../DatabaseFunctions/UserFunctions";
 import { useNavigate } from "react-router-dom";
 
 
-export function CreateClassPage(): JSX.Element {
+export function CreateClassModal(): JSX.Element {
     const user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
-    const [bank_name, set_bank_name] = useState("")
+    const [bank_name, set_bank_name] = useState("");
+    const [description, set_description] = useState("");
 
     const [show, setShow] = useState(false);
     
@@ -32,7 +27,7 @@ export function CreateClassPage(): JSX.Element {
                 code+=characters.charAt(Math.floor(Math.random()*characters.length))
             }
             try {
-                await create_new_bank(code, user.hash, bank_name)
+                await create_new_bank(code, user.hash, bank_name, description)
                 await update_auth_user(user.hash, {...user, groups: [...user.groups, code]})
                 return code;
             } finally {}
@@ -46,12 +41,24 @@ export function CreateClassPage(): JSX.Element {
                 <Modal.Header closeButton><h1>Create new class</h1></Modal.Header>
                 <Modal.Body>
                     <div className="create-class-page">
-                        <InputGroup className="input-box" size="lg">
+                        <InputGroup className="input-box" size="lg" hasValidation>
                             <InputGroup.Text>Class Name: </InputGroup.Text>
                             <Form.Control
                                 value={bank_name}
                                 type="text"
                                 onChange={(e) => set_bank_name(e.target.value)}
+                                isInvalid={bank_name.length === 0}
+                            />
+                            <Form.Control.Feedback type="invalid">Class must have a name</Form.Control.Feedback>
+                        </InputGroup>
+                        <InputGroup className="input-box" size="lg">
+                            <InputGroup.Text>Class Description: </InputGroup.Text>
+                            <Form.Control
+                                value={description}
+                                type="text"
+                                onChange={(e) => set_description(e.target.value)}
+                                as="textarea"
+                                rows={3}
                         />
                         </InputGroup>
                     </div>
@@ -75,7 +82,7 @@ export function CreateClassPage(): JSX.Element {
                     </div>
                 </Modal.Footer>
             </Modal>
-            <Button onClick={()=>setShow(true)}>Create new class</Button>
+            <Button size="lg" onClick={()=>setShow(true)}>Create new class</Button>
         </div>
     )
 }

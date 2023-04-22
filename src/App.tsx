@@ -15,7 +15,7 @@ import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { StudentClassPage } from './HomePages/StudentClassPage/StudentClassPage';
 import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
 import { EditProfile } from './HomePages/EditProfilePage/EditProfilePage';
-import { CreateClassPage } from './ClassCode/CreateClassPage';
+import { CreateClassModal } from './ClassCode/CreateClassModal';
 import { QuizPage } from './Quizzes/QuizPage';
 import { StudentQuizMain } from './Quizzes/StudentQuiz';
 import { SubgroupsPage } from './HomePages/TeacherClassPage/SubgroupsPage';
@@ -56,7 +56,7 @@ function AppBody(): JSX.Element {
           {classes.map(str => {
             return <Route path={str.slice(0, 6)+"/groups"} key={str} element={<SubgroupsPage classCode={str} />}></Route>
           })}
-          <Route path="createclass" element={<CreateClassPage/>}/>
+          <Route path="createclass" element={<CreateClassModal/>}/>
           {/*Render the class pages*/}
           {classes.map(str => <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}/>)}
           {/*Render the quiz pages. This needs to be done in a separate map because nested routes also render their parent element*/}
