@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { BsTrashFill } from "react-icons/bs";
 import { RiPlayListAddFill } from "react-icons/ri";
@@ -26,6 +26,13 @@ export function AddStudentList(
         }
     }
 
+    useEffect(() => {
+        if(studentList.length === 0 || (studentList[studentList.length-1].email !== "" && studentList[studentList.length-1].password !== "")) {
+            setStudentList([...studentList, {email: "", password: ""}])
+        }
+    }, [studentList, setStudentList]);
+    
+
     return(
     <div>
         <Row>
@@ -41,15 +48,6 @@ export function AddStudentList(
                 />
             )
         })}
-        <Col className="text-center">
-            <Button
-                onClick={()=>setStudentList([...studentList, {email:"", password:""}])}
-                style={{"marginTop": "10px"}}
-            >
-                <RiPlayListAddFill/>{" "}
-                New Student
-            </Button>
-        </Col>
         <br/>
     </div>
     )

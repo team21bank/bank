@@ -1,16 +1,10 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { get_bank } from "../DatabaseFunctions/BankFunctions";
 import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
 import "./ClassList.css";
-
-//TODO:
-//MAKE IT SO CLASS LIST DOES NOT WORRY ABOUT PLACEHOLDER ELEMENT
-//MAKE IT SO CLASSLIST SHOULD FETCH SOME INFORMATION ABOUT THE CLASS INSTEAD OF USING NAME PAST CODE
-
-
 
 export function ClassList({classes}: {classes: string[]}): JSX.Element {
     return (

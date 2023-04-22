@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Alert } from "react-bootstrap";
 import { ImportRoster } from "./ImportRoster";
 import { AddStudentList } from "./ManualAddStudents";
 import { validate } from "email-validator";
@@ -19,12 +19,14 @@ export interface NewStudent{
 
 export function AddStudentsModal({classID}: {classID: string}): JSX.Element {
     const [showModal, setShowModal] = useState(false);
+    function hide() {setStudentList([]); setShowModal(false);}
     const [showImportCSV, setShowImportCSV] = useState(false)
     const [studentList, setStudentList] = useState<NewStudent[]>([{email: "", password: ""}]);
+    const [errors, set_errors] = useState<[NewStudent, string][]>([]);
 
     return(
     <div>
-        <Modal show={showModal} onHide={()=>setShowModal(false)} size="lg">
+        <Modal show={showModal} onHide={hide} size="lg">
             <Modal.Header closeButton><h2>Create Student Accounts</h2></Modal.Header>
             <Modal.Body>
                 {/*<Button onClick={()=>setShowImportCSV(!showImportCSV)}>
@@ -36,6 +38,17 @@ export function AddStudentsModal({classID}: {classID: string}): JSX.Element {
                 ) : (
                     <AddStudentList studentList={studentList} setStudentList={setStudentList}/>
                 )}
+                {errors.length > 0 ? (
+                    <Alert variant="danger">
+                        <h3>The following student accounts could not be created: </h3>
+                        {errors.map(e => {
+                            return <p>{e[0].email+", "+e[0].password+": "+e[1]}</p>
+                        })}
+                    </Alert>
+                ) : (
+                    <></>
+                )}
+
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={()=>setShowModal(false)}>Cancel</Button>
@@ -43,7 +56,14 @@ export function AddStudentsModal({classID}: {classID: string}): JSX.Element {
                     className="confirm-button"
                     variant="success"
                     onClick={()=>{
-                        createStudentAccountsFromList(classID.slice(0,6), studentList);
+                        createStudentAccountsFromList(classID, studentList).then((errors) => {
+                            if(errors.length > 0) {
+                                set_errors(errors);
+                                setStudentList(errors.map(e => e[0]));
+                            } else {
+                                hide()
+                            }
+                        });
                     }}
                 >
                     Create Student Accounts
@@ -64,6 +84,7 @@ export async function createStudentAccountsFromList(bank_id: string, student_lis
     //remove new users with invalid emails or passwords
     //Also adds failed students to the failed_list
     let new_student_list = student_list.filter((student) => {
+        if(student.email==="" && student.password==="") {return false;}
         if( validate(student.email) === false ) {
             failed_list.push([student, "Invalid email"]);
             return false;
