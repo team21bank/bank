@@ -93,6 +93,13 @@ export function compareDates(a: Transaction, b: Transaction) {
  * @returns A transaction object corresponding to the given transaction information.
  */
 
+/*********************/
+//use this when adding/subtracting decimals!!!!!!
+const roundTo = function (num: number, places: number) {
+    const factor = 10 ** places;
+    return Math.round(num * factor) / factor;
+};
+
 export function makeStudentToStudentTransaction(
     senderAuth: AuthUser, senderBank: BankUser, 
     receiverAuth: AuthUser, receiverBank: BankUser, 
@@ -101,11 +108,11 @@ export function makeStudentToStudentTransaction(
     ): Transaction {
     const transaction: Transaction = {
         date: new Date().toISOString(),
-        receiver_balance: receiverBank.balance + amount,
+        receiver_balance: roundTo(receiverBank.balance + amount, 2),
         receiver_description: senderDesc || "got paid by" + senderAuth.username,
         receiver_name: receiverAuth.username,
         receiver_uid: receiverBank.uid,
-        sender_balance: senderBank.balance - amount,
+        sender_balance: roundTo(senderBank.balance - amount, 2),
         sender_description: receiverDesc || "paid" + receiverAuth.username,
         sender_name: senderAuth.username,
         sender_uid: senderBank.uid,
@@ -148,8 +155,8 @@ const LaterDate = new Date();
 LaterDate.setHours(20);
 export const sampleTransactions:Transaction[] = [
     {
-    date: "2023-04-14T03:16:46.782Z",
-    receiver_balance: 500,
+    date: "2023-04-16T03:16:46.782Z",
+    receiver_balance: 650,
     receiver_description: "starting balance",
     receiver_name: "testUser" || "user",
     receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2" || "0",
@@ -159,37 +166,145 @@ export const sampleTransactions:Transaction[] = [
     type: "misc"
     },
     {
-        date: new Date().toISOString(),
-        receiver_name: "testUser" || "user",
-        sender_name: "system",
+        date: "2023-04-14T12:16:46.782Z",
+        receiver_balance: 150,
         receiver_description: "weekly earnings",
-        sender_description: "paid out weekly earnings",
-        transfer_amount: 150,
-        receiver_balance: 650,
+        receiver_name: "testUser" || "user",
         receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2" || "0",
+        sender_description: "paid out weekly earnings",
+        sender_name: "system",
+        transfer_amount: 150,
         type: "misc"
     },
     {
-        date: LaterDate.toISOString(),
-        receiver_name: "testUser" || "user",
-        sender_name: "system",
+        date: "2023-04-17T07:43:46.782Z",
+        receiver_balance: 725,
         receiver_description: "quiz earnings",
-        sender_description: "paid out quiz earnings",
-        transfer_amount: 75,
-        receiver_balance: 700,
+        receiver_name: "testUser" || "user",
         receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2" || "0",
+        sender_description: "paid out quiz earnings",
+        sender_name: "system",
+        transfer_amount: 75,
         type: "academics"
     },
     {
-        date: new Date().toISOString(),
-        receiver_name: "candle merchant",
-        sender_name: "testUser" || "user",
-        receiver_description: "sold candles",
-        sender_description: "bought candles",
-        transfer_amount: 25,
-        sender_balance: 625,
+        date: "2023-04-21T12:16:46.722Z",
         receiver_balance: 1025,
+        receiver_description: "sold candles",
+        receiver_name: "candle merchant",
         receiver_uid: "0",
+        sender_balance: 700,
+        sender_description: "bought candles",
+        sender_name: "testUser" || "user",
+        transfer_amount: 25,
         type: "commerce"
+    },
+    {
+        date: "2023-04-25T12:16:46.722Z",
+        receiver_balance: 725,
+        receiver_description: "got paid by TEST",
+        receiver_name: "TEST",
+        receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2",
+        sender_balance: 1000,
+        sender_description: "paid TEST",
+        sender_name: "TEST" || "user",
+        transfer_amount: 25,
+        type: "transfer"
+    },
+    {
+        date: "2023-04-25T12:16:49.722Z",
+        receiver_balance: 1025,
+        receiver_description: "got paid by TEST",
+        receiver_name: "TEST",
+        receiver_uid: "0",
+        sender_balance: 700,
+        sender_description: "paid TEST",
+        sender_name: "testUser" || "user",
+        transfer_amount: 25,
+        type: "transfer"
+    },
+    {
+        date: "2023-05-21T12:16:46.722Z",
+        receiver_balance: 725,
+        receiver_description: "got ??? by TEST",
+        receiver_name: "TEST",
+        receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2",
+        sender_balance: 1000,
+        sender_description: "??? TEST",
+        sender_name: "TEST" || "user",
+        transfer_amount: 25,
+        type: "newCategory"
+    },
+    {
+        date: "2023-05-21T12:16:49.722Z",
+        receiver_balance: 1025,
+        receiver_description: "got ??? by TEST",
+        receiver_name: "TEST",
+        receiver_uid: "0",
+        sender_balance: 700,
+        sender_description: "??? TEST",
+        sender_name: "testUser" || "user",
+        transfer_amount: 25,
+        type: "newCategory"
+    },
+    {
+        date: "2023-05-21T12:16:46.722Z",
+        receiver_balance: 725,
+        receiver_description: "got ??? by TEST",
+        receiver_name: "TEST",
+        receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2",
+        sender_balance: 1000,
+        sender_description: "??? TEST",
+        sender_name: "TEST" || "user",
+        transfer_amount: 25,
+        type: "newCategory2"
+    },
+    {
+        date: "2023-05-21T12:16:49.722Z",
+        receiver_balance: 1025,
+        receiver_description: "got ??? by TEST",
+        receiver_name: "TEST",
+        receiver_uid: "0",
+        sender_balance: 700,
+        sender_description: "??? TEST",
+        sender_name: "testUser" || "user",
+        transfer_amount: 25,
+        type: "newCategory2"
+    },
+    {
+        date: "2023-05-21T12:16:46.722Z",
+        receiver_balance: 725,
+        receiver_description: "got ??? by TEST",
+        receiver_name: "TEST",
+        receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2",
+        sender_balance: 1000,
+        sender_description: "??? TEST",
+        sender_name: "TEST" || "user",
+        transfer_amount: 25,
+        type: "newCategory3"
+    },
+    {
+        date: "2023-05-21T12:16:49.722Z",
+        receiver_balance: 1025,
+        receiver_description: "got ??? by TEST",
+        receiver_name: "TEST",
+        receiver_uid: "0",
+        sender_balance: 700,
+        sender_description: "??? TEST",
+        sender_name: "testUser" || "user",
+        transfer_amount: 25,
+        type: "newCategory3"
+    },
+    {
+        date: "2023-05-21T12:16:49.722Z",
+        receiver_balance: 1025,
+        receiver_description: "got ??? by TEST",
+        receiver_name: "TEST",
+        receiver_uid: "0",
+        sender_balance: 700,
+        sender_description: "??? TEST",
+        sender_name: "testUser" || "user",
+        transfer_amount: 25,
+        type: "newCategory4"
     }
 ]

@@ -1,10 +1,5 @@
-import { getDatabase, ref, set } from 'firebase/database';
-import React, { useContext} from 'react';
-import { Button } from 'react-bootstrap';
-import { AuthContext } from '../Authentication/auth';
-import { auth } from '../firebase';
-import { ImageViewer } from './ImageViewer';
-import { image_map } from './README';
+import React from 'react';
+
 import "./ImageGallery.css";
 
 export function ImageGallery(): JSX.Element {
