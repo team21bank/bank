@@ -70,6 +70,7 @@ export function RegistrationForm(){
                     onChange={(e: InputEvent) => setEmail(e.target.value)}
                     required
                     isInvalid={!validate(email)}
+                    isValid={validate(email)}
                 />
                 <Form.Control.Feedback type="invalid">Email must be valid</Form.Control.Feedback>
             </InputGroup>
@@ -89,7 +90,8 @@ export function RegistrationForm(){
                     value={p1}
                     onChange={(e: InputEvent) => setP1(e.target.value)}
                     required
-                    isInvalid={p1!==p2}
+                    isInvalid={is_password_invalid(p1, p2)[0]}
+                    isValid={!is_password_invalid(p1, p2)[0]}
                 />
                 <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
             </InputGroup>
@@ -100,10 +102,11 @@ export function RegistrationForm(){
                     value={p2}
                     onChange={(e: InputEvent) => setP2(e.target.value)}
                     required
-                    isInvalid={p1!==p2}
+                    isInvalid={is_password_invalid(p1, p2)[0]}
+                    isValid={!is_password_invalid(p1, p2)[0]}
                 />
                 <Form.Control.Feedback type="invalid">
-                    Passwords must match
+                    {is_password_invalid(p1, p2)[1]}
                 </Form.Control.Feedback>
             </InputGroup>
             <br/>
@@ -111,5 +114,17 @@ export function RegistrationForm(){
             <Link to="/"><Button className="register-form-button">Back To Home</Button></Link>
         </Form>
     </div>);
+}
 
+
+function is_password_invalid(password1: string, password2: string): [boolean, string] {
+    let message: string = ""
+    if(password1.length < 6 && password2.length < 6) {
+        message += "Password must be at least 6 characters long. "
+    }
+    if(password1 !== password2) {
+        message += "Passwords must match."
+    }
+
+    return message.length>0 ? [true, message] : [false, message]
 }
