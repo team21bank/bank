@@ -1,9 +1,7 @@
-.student-list {
-    outline: 1px solid black;
-    
-    padding-inline: 50px;
-    padding-block: 20px;
-    width: 75%;
-    margin-inline: auto;
-    border-radius: 20px;
+.student-table {
+    width: 75%
+}
+
+.student-row {
+    height: 3em;
 }

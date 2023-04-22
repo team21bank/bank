@@ -6,7 +6,7 @@ import { get_auth_users } from "../../../DatabaseFunctions/UserFunctions";
 import { AuthUser, DEFAULT_AUTH_USER } from "../../../Interfaces/AuthUser";
 import { BankUser, getTitle } from "../../../Interfaces/BankUser";
 import { delete_bank_users } from "../../../DatabaseFunctions/BankUserFunctions";
-import { Table } from "react-bootstrap";
+import { Button, Modal, Table } from "react-bootstrap";
 
 
 
@@ -41,7 +41,7 @@ export function StudentList(
     return (
         <div>
             <h2 className="student-list-header">Students</h2>
-            <Table striped hover bordered>
+            <Table striped hover bordered className="student-table">
                 <thead>
                     <tr>
                         <th>Username</th>
@@ -58,11 +58,30 @@ export function StudentList(
 }
 
 function StudentRow({user_pair}: {user_pair: UserPair}): JSX.Element {
+    const [showModal, setShowModal] = useState(false);
+    function hide() {setShowModal(false);}
+
+    function save_changes() {
+        alert("TODO: This feature is still being worked on");
+    }
+
     return (
-        <tr>
-            <td>{user_pair.auth_user.username}</td>
-            <td>{getTitle(user_pair.bank_user.role)}</td>
-            <td>{user_pair.bank_user.balance}</td>
-        </tr>
+        <>
+            <tr onClick={() => setShowModal(true)} className="student-row">
+                <td>{user_pair.auth_user.username}</td>
+                <td>{getTitle(user_pair.bank_user.role)}</td>
+                <td>{user_pair.bank_user.balance}</td>
+            </tr>
+            <Modal show={showModal} onHide={hide} size="lg">
+                <Modal.Header><h1>Editing student {user_pair.auth_user.username}</h1></Modal.Header>
+                <Modal.Body>
+
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={hide}>Cancel</Button>
+                    <Button variant="success" onClick={save_changes}>Save Changes</Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     )
 }
