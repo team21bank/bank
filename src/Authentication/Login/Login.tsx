@@ -41,7 +41,6 @@ export function LoginForm(){
             login()
         }
     }
-
     return <div className="login-page">
         <h1>Login</h1>
         <br/>
@@ -51,7 +50,9 @@ export function LoginForm(){
                 <Form.Control
                     className="login-text-box"
                     value={email}
-                    onChange={updateEmail}/>
+                    onChange={updateEmail}
+                    onKeyUp={handle_key_press}
+                    />
             </div>
             <br/>
             <div className="login-field">

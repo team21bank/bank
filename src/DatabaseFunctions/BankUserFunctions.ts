@@ -7,25 +7,34 @@ import { get_bank, update_bank } from "./BankFunctions";
 ////////////////////////////// DATABASE MODIFYING FUNCTIONS //////////////////////////////
 
 /**Sets the BankUser object at /groups/bank_id/bankObj/studentList/index_of(user_id) to new_bank_user*/
-export function update_bank_user(bank_id: string, user_id: string, new_bank_user: BankUser) {
-    let student_list_ref = ref(getDatabase(), "/groups/"+bank_id+"/bankObj/studentList");
-    get(student_list_ref).then(student_list_snapshot => {
-        let student_list = student_list_snapshot.val();
-        if( student_list == null ) {
-            alert("Bank not found");
-            return;
-        }
-
+export async function update_bank_user(bank: string | Bank, user_id: string, new_bank_user: BankUser) {
+    if(typeof bank === "string") {
+        let bank_obj = await get_bank(bank) ?? DEFAULT_BANK;
+        if(bank_obj === DEFAULT_BANK) {return Promise.reject("Bank does not exist");}
+        
         //get index of the BankUser with same uid as user_id
-        let bank_user_index = student_list.findIndex(e => e.uid === user_id);
+        let bank_user_index = bank_obj.studentList.findIndex(e => e.uid === user_id);
         if( bank_user_index===-1 ) {
             alert("Bank user not found");
             return;
         }
 
         //update the value of the bank user object
-        set(ref(getDatabase(), "/groups/"+bank_id+"/bankObj/studentList/"+bank_user_index), new_bank_user);
-    });
+        set(ref(getDatabase(), "/groups/"+bank+"/bankObj/studentList/"+bank_user_index), new_bank_user);
+        return
+    } else {
+        //get index of the BankUser with same uid as user_id
+        let bank_user_index = bank.studentList.findIndex(e => e.uid === user_id);
+        if( bank_user_index===-1 ) {
+            alert("Bank user not found");
+            return;
+        }
+
+        //update the value of the bank user object
+        set(ref(getDatabase(), "/groups/"+bank.bankId+"/bankObj/studentList/"+bank_user_index), new_bank_user);
+        return
+    }
+    
 }
 
 /**

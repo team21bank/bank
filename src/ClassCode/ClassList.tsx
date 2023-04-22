@@ -1,15 +1,16 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { get_bank } from "../DatabaseFunctions/BankFunctions";
 import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
 import "./ClassList.css";
+import { AuthContext } from "../Authentication/auth";
 
 export function ClassList({classes}: {classes: string[]}): JSX.Element {
     return (
         <div>
-            {classes.map(bank_id => <ClassButton bank_id={bank_id}/>)}
+            {classes.map(bank_id => <ClassButton key={bank_id} bank_id={bank_id}/>)}
         </div>
     )
 }
@@ -17,13 +18,16 @@ export function ClassList({classes}: {classes: string[]}): JSX.Element {
 function ClassButton({bank_id}: {bank_id: string}): JSX.Element {
     const [bank, set_bank] = useState<Bank>(DEFAULT_BANK);
 
+    const user = useContext(AuthContext).user;
+
     useEffect(() => {
         get_bank(bank_id).then(b => {
             if(b !== null) {set_bank(b);}
         })
-    }, [])
+    }, []);
 
-    return bank !== DEFAULT_BANK ? (
+    //Only render the button if the AuthUser has a BankUser im the bank
+    return bank.studentList.find((bank_user) => bank_user.uid===user.hash) || bank.teacherID === user.hash ? (
         <div>
             <Link to={"../"+bank_id}>
                 <Button

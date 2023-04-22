@@ -20,31 +20,35 @@ export function ContextProvider({children}: {children: ReactNode}): JSX.Element 
     const [user, set_user] = useState<AuthUser>(DEFAULT_AUTH_USER);
     const [bank, set_bank] = useState<Bank>(DEFAULT_BANK);
 
-    useEffect(() => {
-        window.addEventListener("change user", _ => {
-            let new_user_id = window.sessionStorage.getItem(USER_STORAGE_KEY);
-            if(new_user_id === null) {
-                set_user(DEFAULT_AUTH_USER);
-            } else {
-                if(new_user_id === user.hash) {return;}
-                get_auth_user_updating(new_user_id, set_user);
-            }
-        });
-    
-        window.addEventListener("change bank", _ => {
-            let new_bank_id = window.sessionStorage.getItem(BANK_STORAGE_KEY);
-            if((new_bank_id??"") === bank.bankId) {
-                return;
-            }
-    
-            if(new_bank_id === null) {
-                set_bank(DEFAULT_BANK);
-            } else {
-                get_bank_updating(new_bank_id, set_bank);
-            }
-        });
+    let handle_change_user = () => {
+        let new_user_id = window.sessionStorage.getItem(USER_STORAGE_KEY);
+        if(new_user_id === null) {
+            set_user(DEFAULT_AUTH_USER);
+        } else {
+            if(new_user_id === user.hash) {return;}
+            get_auth_user_updating(new_user_id, set_user);
+        }
+    }
+    let handle_change_bank = () => {
+        let new_bank_id = window.sessionStorage.getItem(BANK_STORAGE_KEY);
+        if((new_bank_id??"") === bank.bankId) {
+            return;
+        }
 
+        if(new_bank_id === null) {
+            set_bank(DEFAULT_BANK);
+        } else {
+            get_bank_updating(new_bank_id, set_bank);
+        }
+    }
+
+    useEffect(() => {
+        window.removeEventListener("change_user", handle_change_user);
+        window.addEventListener("change user", handle_change_user);
         change_user(window.sessionStorage.getItem(USER_STORAGE_KEY));
+
+        window.removeEventListener("change bank", handle_change_bank);
+        window.addEventListener("change bank", handle_change_bank);
         change_bank(window.sessionStorage.getItem(BANK_STORAGE_KEY));
     }, [])
     

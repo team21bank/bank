@@ -14,11 +14,13 @@ import { BankContext } from "../../../Authentication/auth";
 export function ViewStudent(
     {user_pair, remove_student_function}: {user_pair: UserPair, remove_student_function: () => void}
 ): JSX.Element {
+    const bank_user = user_pair.bank_user;
+    const auth_user = user_pair.auth_user;
     return (
         <div className="student-list-item">
             <Row className="student-list-row">
                 <Col>
-                    {user_pair.auth_user.username}
+                    {(bank_user.alias??"")==="" ? auth_user.username : bank_user.alias}
                 </Col>
                 <Col style={{"display": "flex"}}>
                     {getTitle(user_pair.bank_user.role)}<EditRoleModal bank_user={user_pair.bank_user}/>

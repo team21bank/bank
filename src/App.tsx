@@ -60,13 +60,13 @@ function AppBody(): JSX.Element {
           {/*Render the class pages*/}
           {classes.map(str => <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}/>)}
           {/*Render the quiz pages. This needs to be done in a separate map because nested routes also render their parent element*/}
-          {classes.map(str => <Route path={str.slice(0,6)+"/quizzes"} element={<QuizPage/>}/>)}
+          {classes.map(str => <Route path={str.slice(0,6)+"/quizzes"} key={str} element={<QuizPage/>}/>)}
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
           {classes.map(str => <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>)}
-          {classes.map(str => <Route path={str.slice(0,6)+"/quizzes"} element={<StudentQuizMain/>} />)}
-          {classes.map(str => <Route path={str.slice(0,6)+"/banking"} element={<StudentBankingPage classCode={str}/>} />)}
+          {classes.map(str => <Route path={str.slice(0,6)+"/quizzes"} key={str} element={<StudentQuizMain/>} />)}
+          {classes.map(str => <Route path={str.slice(0,6)+"/banking"} key={str} element={<StudentBankingPage classCode={str}/>} />)}
         </Route>
       </Routes>
     </HashRouter>
