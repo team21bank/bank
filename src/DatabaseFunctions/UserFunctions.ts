@@ -1,5 +1,4 @@
-import { Unsubscribe } from "firebase/auth";
-import { get, onValue, set, ref, getDatabase, remove } from "firebase/database";
+import { get, set, ref, getDatabase, remove } from "firebase/database";
 import { AuthUser, DEFAULT_AUTH_USER, resolve_nullish_authuser } from "../Interfaces/AuthUser";
 import { FirebaseApp } from "firebase/app";
 
