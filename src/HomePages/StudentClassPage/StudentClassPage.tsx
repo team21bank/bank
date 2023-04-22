@@ -1,4 +1,4 @@
-import { getDatabase, ref, get, update, set, push, remove } from 'firebase/database';
+import { getDatabase, ref, get } from 'firebase/database';
 import React, { useContext, useEffect, useState  } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';

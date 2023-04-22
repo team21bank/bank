@@ -66,7 +66,10 @@ function StudentRow({user_pair}: {user_pair: UserPair}): JSX.Element {
     const [showModal, setShowModal] = useState(false);
     function hide() {setShowModal(false);}
 
-    const [new_bank_user, set_new_bank_user] = useState<BankUser>({...bank_user});
+    const [new_bank_user, set_new_bank_user] = useState<BankUser>(bank_user);
+    useEffect(() => {
+        set_new_bank_user(bank_user);
+    }, [bank_user])
 
     const bank = useContext(BankContext).bank;
     function save_changes() {
