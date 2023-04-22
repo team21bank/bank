@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap";
 import { Bank } from "../../../Interfaces/BankObject";
 import { BankUser, getTitle } from "../../../Interfaces/BankUser";
@@ -6,26 +6,28 @@ import "./ViewStudent.css";
 import { EditBalanceModal } from "./EditBalanceModal";
 import { EditRoleModal } from "./EditRoleModal";
 import { AuthUser } from "../../../Interfaces/AuthUser";
+import { UserPair } from "./StudentList";
+import { delete_bank_users } from "../../../DatabaseFunctions/BankUserFunctions";
+import { BankContext } from "../../../Authentication/auth";
 
 
 export function ViewStudent(
-    {user_pair, remove_student}:
-    {user_pair: [AuthUser, BankUser], remove_student: () => void}
+    {user_pair, remove_student_function}: {user_pair: UserPair, remove_student_function: () => void}
 ): JSX.Element {
     return (
         <div className="student-list-item">
             <Row className="student-list-row">
                 <Col>
-                    {user_pair[0].username}
+                    {user_pair.auth_user.username}
                 </Col>
                 <Col style={{"display": "flex"}}>
-                    {getTitle(user_pair[1].role)}<EditRoleModal bank_user={user_pair[1]}/>
+                    {getTitle(user_pair.bank_user.role)}<EditRoleModal bank_user={user_pair.bank_user}/>
                 </Col>
                 <Col style={{"display": "flex"}}>
-                    balance:{user_pair[1].balance}<EditBalanceModal bank_user={user_pair[1]}/>
+                    balance:{user_pair.bank_user.balance}<EditBalanceModal bank_user={user_pair.bank_user}/>
                 </Col>
                 <Col>
-                    <RemoveStudentModal remove_student_function={remove_student} student_name={user_pair[0].username} />
+                    <RemoveStudentModal remove_student_function={remove_student_function} student_name={user_pair.auth_user.username} />
                 </Col>
             </Row>
         </div>

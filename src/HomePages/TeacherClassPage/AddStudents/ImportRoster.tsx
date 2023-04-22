@@ -3,11 +3,9 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { auth, firebaseConfig } from "../../../firebase";
 import { initializeApp, deleteApp } from "firebase/app";
-import { ref, getDatabase, set } from '@firebase/database';
 import { Bank } from "../../../Interfaces/BankObject";
-import { BankUser, DEFAULT_BANK_USER } from "../../../Interfaces/BankUser";
-import { getAuth } from "firebase/auth";
-import { AuthUser } from "../../../Interfaces/AuthUser";
+import { DEFAULT_BANK_USER } from "../../../Interfaces/BankUser";
+
 
 export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string, setShowModal: (b)=>void}): JSX.Element {
     const [contents, setContents] = useState<string>("");
@@ -38,7 +36,7 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
 
     function makeChange() {
         alert("We found an issue with this feature. We're in the process of fixing it right now")
-        /*
+        
         const splitRow = contents.split(/\r?\n/);
         //holder bank, will be overwritten if expected bank exists
         let newBank: Bank = {
@@ -51,6 +49,7 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
             pendingList:[],
             completedList:[]
         };
+        /*
         //database reference for bank object
         let groupRef = ref(getDatabase(), '/groups/' + currentGroup.slice(0,6) + '/bankObj/');
         //database reference for list of students within bank object
@@ -65,7 +64,7 @@ export function ImportRoster({currentGroup, setShowModal}: {currentGroup: string
             if(split.length === 2 && split[0].includes("@")){
                 createUserWithEmailAndPassword(getAuth(secondary_app),split[0],split[1]).then(somedata=>{
                     let uid=somedata.user.uid;
-                    let userRef=ref(getDatabase(),'/users/'+uid)
+                    let userRef=ref(getDatabase(secondary_app),'/users/'+uid)
                     const newUser: AuthUser={
                         username:split[0].split("@")[0],
                         email:split[0],

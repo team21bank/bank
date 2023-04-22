@@ -1,4 +1,4 @@
-import {Button,Form, Modal } from 'react-bootstrap'
+import {Button,Form, InputGroup, Modal } from 'react-bootstrap'
 import { ref, getDatabase, set} from '@firebase/database';
 import React, { useContext, useState } from 'react';
 import { AuthContext } from "../../Authentication/auth";
@@ -57,13 +57,20 @@ export function JoinClassButton(){
             <Modal show={showModal} onHide={()=>setShowModal(false)}>
                 <Modal.Header closeButton><h1>Join Class</h1></Modal.Header>
                 <Modal.Body>
-                    <Form.Group controlId="addClass">
-                        <Form.Label>Enter Class Code</Form.Label>
+                    <InputGroup hasValidation>
+                        <InputGroup.Text>Enter Class Code </InputGroup.Text>
                         <Form.Control
+                            type="text"
                             value={bankCode}
-                            onChange={updateBank}/>
-                            <br />
-                    </Form.Group>
+                            onChange={updateBank}
+                            required
+                            isInvalid={bankCode.length!==6}
+                            isValid={bankCode.length===6}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            Class Codes are 6 characters long
+                        </Form.Control.Feedback>
+                    </InputGroup>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={addClass}>Add Class</Button>

@@ -10,11 +10,11 @@ export function AddStudentsModal({classID}: {classID: string}): JSX.Element {
     return(
     <div>
         <Modal show={showModal} onHide={()=>setShowModal(false)}>
-        <Modal.Header closeButton><h2>Create Student Accounts</h2></Modal.Header>
+            <Modal.Header closeButton><h2>Create Student Accounts</h2></Modal.Header>
             <Modal.Body>
-                <Button onClick={()=>setShowImportCSV(!showImportCSV)}>
+                {/*<Button onClick={()=>setShowImportCSV(!showImportCSV)}>
                     {showImportCSV ? "Manually add students instead" : "Import as CSV instead"}
-                </Button>
+                </Button>*/}
                 <br/><br/>
                 {showImportCSV ? (
                     <ImportRoster currentGroup={classID} setShowModal={setShowModal}/>
@@ -25,7 +25,7 @@ export function AddStudentsModal({classID}: {classID: string}): JSX.Element {
             <Modal.Footer>
                 <Button onClick={()=>setShowModal(false)}>Cancel</Button>
             </Modal.Footer>
-            </Modal>
+        </Modal>
             <form><Button onClick={() => setShowModal(true)}>Create Student Accounts</Button></form>
     </div>
     )

@@ -1,6 +1,7 @@
-import { ref, getDatabase, get, set, remove, Unsubscribe } from "firebase/database";
-import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
+import { ref, getDatabase, get, set, remove } from "firebase/database";
+import { Bank, DEFAULT_BANK, resolve_nullish_bank } from "../Interfaces/BankObject";
 import { Transaction } from "../Interfaces/Transaction";
+import { FirebaseApp } from "firebase/app";
 
 /**
  * Deletes the bank object at /groups/bank_id
@@ -22,21 +23,37 @@ export function delete_banks(bank_ids: string[]): Promise<void[]> {
 }
 
 
-/**Gets a bank object then calls func on it if it exists*/
-export function get_bank_then(bank_id: string, func: (bank: Bank) => void) {
+/**Gets a bank object then calls func
+*/
+export function get_bank_then(bank_id: string, func: (bank: Bank | null) => void) {
     get(ref(getDatabase(), "/groups/"+bank_id+"/bankObj")).then(bank_snapshot => {
         if(bank_snapshot.exists()) {
-            func(bank_snapshot.val());
+            func(resolve_nullish_bank(bank_snapshot.val()));
+        } else {
+            func(null);
         }
+
     });
 }
 
 
-export async function get_bank(bank_id: string): Promise<Bank | null> {
-    let bank_snapshot = await get(ref(getDatabase(), "/groups/"+bank_id+"/bankObj"));
-    return bank_snapshot.val();
+export async function get_bank(bank_id: string, app?: FirebaseApp): Promise<Bank | null> {
+    let bank_snapshot = await get(ref(getDatabase(app), "/groups/"+bank_id+"/bankObj"));
+    if(bank_snapshot.exists()) {
+        return resolve_nullish_bank(bank_snapshot.val())
+    }
+    return null;
 }
 
+export async function create_new_bank(bank_id: string, teacher_id: string, bank_name: string, app?: FirebaseApp): Promise<void> {
+    if((await get_bank(bank_id, app)) !== null) {
+        return Promise.reject("Bank already exists")
+    }
+
+    let bank_reference = ref(getDatabase(app), "/groups/"+bank_id+"/bankObj/");
+    set(bank_reference, {...DEFAULT_BANK, teacherID: teacher_id, bankId: bank_id, classTitle: bank_name})
+}
+ 
 /**
  * @param bank_id The bank the transaction will occur in
  * @param transaction The Transaction object representing the transaction that is being added to the pending list for approval from a banker

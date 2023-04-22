@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
-import { AuthUser, DEFAULT_AUTH_USER } from "../Interfaces/AuthUser";
+import { Bank, DEFAULT_BANK, resolve_nullish_bank } from "../Interfaces/BankObject";
+import { AuthUser, DEFAULT_AUTH_USER, resolve_nullish_authuser } from "../Interfaces/AuthUser";
 import { Unsubscribe } from "firebase/auth";
 import { getDatabase, onValue, ref } from "firebase/database";
 
@@ -19,7 +19,6 @@ export const BANK_STORAGE_KEY = "CurrentBank";
 export function ContextProvider({children}: {children: ReactNode}): JSX.Element {
     const [user, set_user] = useState<AuthUser>(DEFAULT_AUTH_USER);
     const [bank, set_bank] = useState<Bank>(DEFAULT_BANK);
-    let [bank_unsub, _] = useState<Unsubscribe | null>(null);
 
     useEffect(() => {
         window.addEventListener("change user", _ => {
@@ -28,7 +27,6 @@ export function ContextProvider({children}: {children: ReactNode}): JSX.Element 
                 set_user(DEFAULT_AUTH_USER);
             } else {
                 if(new_user_id === user.hash) {return;}
-                //The onValue subscriber is automatically invalidated when the user logs out so there is not reason to unsubscribe
                 get_auth_user_updating(new_user_id, set_user);
             }
         });
@@ -39,16 +37,10 @@ export function ContextProvider({children}: {children: ReactNode}): JSX.Element 
                 return;
             }
     
-            //unsubscribe from previous onValue call
-            if(bank_unsub !== null) {bank_unsub();}
-    
             if(new_bank_id === null) {
-                bank_unsub = null;
                 set_bank(DEFAULT_BANK);
             } else {
-                //I know state is supposed to be updated with the function, but I dont want it to rerender here.
-                //Using a state setter directly after an onValue call seems to erase the onValue call from existence
-                bank_unsub = get_bank_updating(new_bank_id, set_bank);
+                get_bank_updating(new_bank_id, set_bank);
             }
         });
 
@@ -98,7 +90,7 @@ function get_auth_user_updating(uid: string, setter: (AuthUser: AuthUser) => voi
     return onValue(ref(getDatabase(), "/users/"+uid+"/userObj"),
         snapshot => {
             console.log("Setting user: ", snapshot.val() ?? DEFAULT_AUTH_USER);
-            setter(snapshot.val() ?? DEFAULT_AUTH_USER)
+            setter(resolve_nullish_authuser(snapshot.val() ?? DEFAULT_AUTH_USER))
         }
     )
 }
@@ -108,7 +100,7 @@ function get_bank_updating(bank_id: string, setter: (bank: Bank) => void): Unsub
     return onValue(ref(getDatabase(), "/groups/"+bank_id+"/bankObj"),
         bank_snapshot => {
             console.log("Setting bank: ", bank_snapshot.val() ?? DEFAULT_BANK);
-            setter(bank_snapshot.val() ?? DEFAULT_BANK);
+            setter(resolve_nullish_bank(bank_snapshot.val() ?? DEFAULT_BANK));
         }
     );
 }

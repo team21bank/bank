@@ -24,3 +24,16 @@ export interface Bank {
 export const DEFAULT_BANK: Bank = {
     bankId: "", teacherID: "", studentList: [], classTitle: "", quizzes: [], subgroups: [], pendingList: [], completedList: []
 }
+
+export function resolve_nullish_bank(bank: Bank): Bank {
+    return {
+        bankId: bank.bankId ?? DEFAULT_BANK.bankId,
+        teacherID: bank.teacherID ?? DEFAULT_BANK.teacherID,
+        studentList: bank.studentList ?? DEFAULT_BANK.studentList,
+        classTitle: bank.classTitle ?? DEFAULT_BANK.classTitle,
+        subgroups: bank.subgroups ?? DEFAULT_BANK.subgroups,
+        quizzes: bank.quizzes ?? DEFAULT_BANK.quizzes,
+        pendingList: bank.pendingList ?? DEFAULT_BANK.pendingList,
+        completedList: bank.completedList ?? DEFAULT_BANK.completedList
+    }
+}

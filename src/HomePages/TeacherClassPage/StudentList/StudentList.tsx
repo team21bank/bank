@@ -9,14 +9,17 @@ import { delete_bank_users } from "../../../DatabaseFunctions/BankUserFunctions"
 
 
 
-
+export interface UserPair {
+    auth_user: AuthUser,
+    bank_user: BankUser
+}
 
 export function StudentList(
         {current_bank}: {current_bank: Bank}
     ): JSX.Element {
         
     //Each BankUser in the class with its associated AuthUser
-    const [studentList, setStudentList] = useState<[AuthUser, BankUser][]>([]);
+    const [studentList, setStudentList] = useState<UserPair[]>([]);
     
     //I dont like this, hopefully I'll change it later
     //Populates the studentList with AuthUsers and their associated BankUser
@@ -24,11 +27,11 @@ export function StudentList(
     //REALLY ONLY NEED TO GET USERNAMES HERE, MAYBE CHANGE TO REDUCE DATABASE READS
     useEffect(() => {
         get_auth_users(current_bank.studentList.map(user => user.uid)).then((auth_users: AuthUser[]) => {
-            const pairs: [AuthUser, BankUser][] = current_bank.studentList.map(bank_user => {
-                return [
-                    auth_users.find(user => user.hash === bank_user.uid) ?? {...DEFAULT_AUTH_USER, username: "DELETED USER"},
-                    bank_user
-                ]
+            const pairs: UserPair[] = current_bank.studentList.map(bank_user => {
+                return {
+                    auth_user: auth_users.find(user => user.hash === bank_user.uid) ?? {...DEFAULT_AUTH_USER, username: "DELETED USER"},
+                   bank_user: bank_user
+                }
             })
             setStudentList(pairs);
         })
@@ -37,9 +40,9 @@ export function StudentList(
     return (
         <div className="student-list">
             <h2 className="student-list-header">Students</h2>
-            {studentList.map((user_pair, index) => {
+            {studentList.map((user_pair) => {
                 return (
-                    <ViewStudent user_pair={user_pair} remove_student={() => delete_bank_users(current_bank.bankId, [user_pair[1].uid])}/>
+                    <ViewStudent user_pair={user_pair} remove_student_function={() => delete_bank_users(current_bank, user_pair.bank_user.uid)}/>
                 )
             })}
         </div>

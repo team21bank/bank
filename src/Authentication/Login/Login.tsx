@@ -29,7 +29,7 @@ export function LoginForm(){
     function login(){
         signInWithEmailAndPassword(auth,email,pass).then(user_cred => {
             change_user(user_cred.user.uid);
-            get_auth_user_then(user_cred.user.uid, (user) => navigate(user.isTeacher ? "/teachers/home" : "/students/home"));
+            get_auth_user_then(user_cred.user.uid, (user) => user ? navigate(user.isTeacher ? "/teachers/home" : "/students/home") : alert("Error"));
         }).catch((error: AuthError) => {
             console.log(error.code);
             alert(error.message);

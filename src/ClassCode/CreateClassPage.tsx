@@ -3,30 +3,40 @@ import React, { useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { AuthContext } from "../Authentication/auth";
 import { auth } from "../firebase";
-import { Bank } from "../Interfaces/BankObject";
+import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
 import { DEFAULT_BANK_USER } from "../Interfaces/BankUser";
 import { QUIZ_PLACEHOLDER } from "../Interfaces/Quiz";
 import { SUBGROUPS_PLACEHOLDER } from "../Interfaces/Subgroup";
 import "./CreateClassPage.css";
+import { create_new_bank } from "../DatabaseFunctions/BankFunctions";
+import { DEFAULT_AUTH_USER } from "../Interfaces/AuthUser";
+import { update_auth_user } from "../DatabaseFunctions/UserFunctions";
+import { useNavigate } from "react-router-dom";
 
 
 export function CreateClassPage(): JSX.Element {
-    const user = useContext(AuthContext);
-    const [newBank, setNewBank] = useState<Bank>({
-        bankId: "",
-        teacherID: "",
-        studentList: [DEFAULT_BANK_USER],
-        classTitle: "",
-        quizzes: [QUIZ_PLACEHOLDER],
-        subgroups: [SUBGROUPS_PLACEHOLDER],
-        pendingList: [],
-        completedList: []
-    });
+    const user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
+    const [bank_name, set_bank_name] = useState("")
     
-    if(newBank.teacherID === "" && auth.currentUser) setNewBank({...newBank, teacherID: auth.currentUser.uid}); //set the bank's teacherID when it is availabe from userObj
+    const navigate = useNavigate()
 
-    const createCode = () => {
-        alert("This feature is still in the works. Sorry :(")
+    async function createCode() {  
+        if(bank_name==="") {return Promise.reject("Bank name cannot be empty")}
+        
+        while(true) {
+            let characters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+            let code = ""
+            for (var i=0;i<6;i++){
+                code+=characters.charAt(Math.floor(Math.random()*characters.length))
+            }
+            try {
+                await create_new_bank(code, user.hash, bank_name)
+                await update_auth_user(user.hash, {...user, groups: [...user.groups, code]})
+                return code;
+            } finally {}
+        }
+        
+
         /*if (newBank.classTitle===''){
             alert("Please enter a class name")
             return 
@@ -64,9 +74,9 @@ export function CreateClassPage(): JSX.Element {
                 <Form.Label>Class Name: </Form.Label>
                 <Form.Control
                     style={{"width": "600px", "marginLeft": "auto", "marginRight": "auto"}}
-                    value={newBank.classTitle}
-                    onChange={(e) => setNewBank({...newBank, classTitle: e.target.value})}/>
-                <Button onClick={createCode} style={{"marginTop": "20px"}}>Create Class Code</Button>
+                    value={bank_name}
+                    onChange={(e) => set_bank_name(e.target.value)}/>
+                <Button onClick={() => createCode().then((code) => navigate("/teachers/"+code))} style={{"marginTop": "20px"}}>Create Class Code</Button>
             </Form.Group>
         </div>
     )
