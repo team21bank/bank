@@ -60,7 +60,7 @@ export function RegistrationForm(){
         </div>
         <Form className='register-forms'>
             <InputGroup hasValidation size="lg" className='form-input'>
-                <InputGroup.Text className="form-info-text">Enter Password</InputGroup.Text>
+                <InputGroup.Text className="form-info-text">Enter Email</InputGroup.Text>
                 <Form.Control
                     type="email"
                     value={email}
