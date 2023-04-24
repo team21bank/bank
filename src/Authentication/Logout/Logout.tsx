@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import {Button} from 'react-bootstrap'
+import {Button, NavDropdown} from 'react-bootstrap'
 import "../../firebase";
 import { auth } from '../../firebase';
 import {signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext, USER_STORAGE_KEY } from '../auth';
+import { AuthContext, USER_STORAGE_KEY, change_bank, change_user } from '../auth';
 
 export function LogoutButton(){
     const navigate = useNavigate();
@@ -13,16 +13,19 @@ export function LogoutButton(){
 
     //Function for button click logging out current user
     function logout(){
-        let sign_out_promise = signOut(auth);
-        user.setUser(null);
-        window.sessionStorage.removeItem(USER_STORAGE_KEY)
-        alert("Successfully logged out!");
-        
-        sign_out_promise.finally(() => navigate("/"));
+        signOut(auth).then(() => {
+            change_user(null);
+            change_bank(null);
+        })
     }
 
     //HTML holding logout button
-    return (<div>
-        <Button onClick={logout}>Logout</Button>
-    </div>)
+    return (
+        <NavDropdown.Item onClick={()=>{
+            signOut(auth);
+            change_user(null);
+            change_bank(null);
+            navigate("/");
+        }}>Log Out</NavDropdown.Item>
+    )
 }

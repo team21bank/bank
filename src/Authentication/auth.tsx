@@ -1,73 +1,111 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { Bank } from "../Interfaces/BankObject";
-import { get_auth_user_updating } from "../DatabaseFunctions/UserFunctions";
-import { get_bank } from "../DatabaseFunctions/BankFunctions";
-import { AuthUser } from "../Interfaces/AuthUser";
+import { Bank, DEFAULT_BANK, copy_bank, resolve_nullish_bank } from "../Interfaces/BankObject";
+import { AuthUser, DEFAULT_AUTH_USER, resolve_nullish_authuser } from "../Interfaces/AuthUser";
+import { Unsubscribe } from "firebase/auth";
+import { getDatabase, onValue, ref } from "firebase/database";
 
 
-//--------------- HOW TO USE ---------------\\
-/*
-    AuthContext is essentially a global state accessible from any component rendered under CurrentUserProvider.
-    In App.tsx. Everything renders under CurrentUserProvider so it is accessible everywhere.
 
-    To access this state in your code use:
-        const user: AuthUser = useContext(AuthContext) ?? DEFAULT_AUTH_USER;
-    
-    user.user is the actual AuthUser object that exists in the database.
-    user.setUser allows you to set this user object.
-    NOTE THAT IF THE OBJECT IS UPDATED IN THE USERBASE, THE CHANGES WILL BE IMMEDIATELY BE REFLECTED IN THE BROWSER
-
-    If you need to get the uid of the logged in user, use:
-        auth.currentUser.uid
-*/
 
 
 //React context to store the current user state and a function to modify it
-export const AuthContext = React.createContext({
-    user: null as AuthUser | null,
-    setUser: {} as (n: AuthUser | null) => void
-});
+export const AuthContext = React.createContext({user: {...DEFAULT_AUTH_USER}});
+export const BankContext = React.createContext({bank: copy_bank(DEFAULT_BANK)})
 
 export const USER_STORAGE_KEY = "CurrentUser";
-
-//Provider component to wrap the entire app
-export function CurrentUserProvider({children}: {children: ReactNode}): JSX.Element {
-    const [CurrentAuthUser, setCurrentAuthUser] = useState<AuthUser | null>(null);
-
-    //AuthContext is reset every time the page reloads so we need to get it from local storage here to stay logged in across links
-    const currUserString = window.sessionStorage.getItem(USER_STORAGE_KEY);
-    useEffect(() => { //update currentAuthUser if the state in the database changes
-        if(currUserString != null) {
-            get_auth_user_updating(currUserString, setCurrentAuthUser)
-        }
-    }, [currUserString]);    
-
-    return (<AuthContext.Provider value={{user: CurrentAuthUser, setUser: setCurrentAuthUser}}>{children}</AuthContext.Provider>);
-}
-
-
-
-//Provides global access to the currently selected bank
-//This is set when you navigate to a class home page
-export const BankContext = React.createContext({
-    bank: null as Bank | null,
-    setBank: {} as (n: Bank | null) => void
-});
-
 export const BANK_STORAGE_KEY = "CurrentBank";
 
-export function CurrentBankProvider({children}: {children: ReactNode}): JSX.Element {
-    const [currentBank, setCurrentBank] = useState<Bank | null>(null);
 
-    const currBankString = window.sessionStorage.getItem(BANK_STORAGE_KEY);
-    useEffect(() => {
-        if(currBankString != null) {
-            get_bank(currBankString, setCurrentBank)
+export function ContextProvider({children}: {children: ReactNode}): JSX.Element {
+    const [user, set_user] = useState<AuthUser>({...DEFAULT_AUTH_USER});
+    const [bank, set_bank] = useState<Bank>(copy_bank(DEFAULT_BANK));
+
+    let handle_change_user = () => {
+        let new_user_id = window.sessionStorage.getItem(USER_STORAGE_KEY);
+        if(new_user_id === null) {
+            set_user(DEFAULT_AUTH_USER);
+        } else {
+            if(new_user_id === user.hash) {return;}
+            get_auth_user_updating(new_user_id, set_user);
         }
-    }, [currBankString]);
+    }
+    let handle_change_bank = () => {
+        let new_bank_id = window.sessionStorage.getItem(BANK_STORAGE_KEY);
+        if((new_bank_id??"") === bank.bankId) {
+            return;
+        }
 
-    return (<BankContext.Provider value={{bank: currentBank, setBank: setCurrentBank}}>{children}</BankContext.Provider>);
+        if(new_bank_id === null) {
+            set_bank(copy_bank(DEFAULT_BANK));
+        } else {
+            get_bank_updating(new_bank_id, set_bank);
+        }
+    }
+
+    useEffect(() => {
+        window.removeEventListener("change_user", handle_change_user);
+        window.addEventListener("change user", handle_change_user);
+        change_user(window.sessionStorage.getItem(USER_STORAGE_KEY));
+
+        window.removeEventListener("change bank", handle_change_bank);
+        window.addEventListener("change bank", handle_change_bank);
+        change_bank(window.sessionStorage.getItem(BANK_STORAGE_KEY));
+    }, [])
+    
+
+    return (
+        <AuthContext.Provider value={{user: user}}>
+            <BankContext.Provider value={{bank: bank}}>
+                {children}
+            </BankContext.Provider>
+        </AuthContext.Provider>
+    )
 }
 
 
+export function change_user(new_uid: string | null) {
+    //if the new user is null, remove the storage key. Otherwise overwrite the value
+    if(new_uid === null) {
+        window.sessionStorage.removeItem(USER_STORAGE_KEY);
+    } else {
+        window.sessionStorage.setItem(USER_STORAGE_KEY, new_uid);
+    }
+
+    //Throw an event to update the auth context onvalue call
+    let e = new CustomEvent("change user");
+    window.dispatchEvent(e);
+}
+
+export function change_bank(new_bank_id: string | null) {
+    if(new_bank_id === null) {
+        window.sessionStorage.removeItem(BANK_STORAGE_KEY);
+    } else {
+        window.sessionStorage.setItem(BANK_STORAGE_KEY, new_bank_id);
+    }
+
+    //Throw an event to update the auth context onvalue call
+    let e = new CustomEvent("change bank");
+    window.dispatchEvent(e);
+}
+
+
+/**Fetches an AuthUser object from the database and uses it in the setter function*/
+function get_auth_user_updating(uid: string, setter: (AuthUser: AuthUser) => void): Unsubscribe {
+    return onValue(ref(getDatabase(), "/users/"+uid+"/userObj"),
+        snapshot => {
+            console.log("Setting user: ", snapshot.val() ?? DEFAULT_AUTH_USER);
+            setter(resolve_nullish_authuser(snapshot.val() ?? DEFAULT_AUTH_USER))
+        }
+    )
+}
+
+/**Fetches a bank object using onvalue and uses setter whenever the database state changes*/
+function get_bank_updating(bank_id: string, setter: (bank: Bank) => void): Unsubscribe {
+    return onValue(ref(getDatabase(), "/groups/"+bank_id+"/bankObj"),
+        bank_snapshot => {
+            console.log("Setting bank: ", bank_snapshot.val() ?? copy_bank(DEFAULT_BANK));
+            setter(resolve_nullish_bank(bank_snapshot.val() ?? copy_bank(DEFAULT_BANK)));
+        }
+    );
+}
 

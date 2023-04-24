@@ -1,14 +1,8 @@
-import { initializeApp } from "firebase/app";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { get, getDatabase, ref, set } from "firebase/database";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { BsTrashFill } from "react-icons/bs";
 import { RiPlayListAddFill } from "react-icons/ri";
-import { firebaseConfig } from "../../../firebase";
-import { Bank } from "../../../Interfaces/BankObject";
-import { BankUser, DEFAULT_BANK_USER } from "../../../Interfaces/BankUser";
-import { AuthUser } from "../../../Interfaces/AuthUser";
+import { NewStudent } from "./AddStudentsModal";
 
 /*
 I HAVE NO CLUE IF THIS IS A GOOD WAY TO GO ABOUT MAKING A LIST OF EDITABLE ITEMS.
@@ -17,13 +11,11 @@ I SHOULD PROBABLY REFACTOR THIS IN THE FUTURE.
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 
-interface NewStudent{
-    email: string;
-    password: string;
-}
 
-export function AddStudentList({classID, setShowModal}: {classID: string, setShowModal: (b)=>void}): JSX.Element {
-    const [studentList, setStudentList] = useState<NewStudent[]>([{email: "", password: ""}]);
+
+export function AddStudentList(
+    {studentList, setStudentList}: {studentList: NewStudent[], setStudentList: (n: NewStudent[]) => void}
+): JSX.Element {
 
     //sets the value of the 
     function setStudentAtIndex(index_to_edit: number, new_student_object: NewStudent | null) {
@@ -33,6 +25,13 @@ export function AddStudentList({classID, setShowModal}: {classID: string, setSho
             setStudentList(studentList.map((student, index) => index_to_edit===index ? new_student_object : student));
         }
     }
+
+    useEffect(() => {
+        if(studentList.length === 0 || (studentList[studentList.length-1].email !== "" && studentList[studentList.length-1].password !== "")) {
+            setStudentList([...studentList, {email: "", password: ""}])
+        }
+    }, [studentList, setStudentList]);
+    
 
     return(
     <div>
@@ -49,24 +48,7 @@ export function AddStudentList({classID, setShowModal}: {classID: string, setSho
                 />
             )
         })}
-        <Col className="text-center">
-            <Button
-                onClick={()=>setStudentList([...studentList, {email:"", password:""}])}
-                style={{"marginTop": "10px"}}
-            >
-                <RiPlayListAddFill/>{" "}
-                New Student
-            </Button>
-        </Col>
         <br/>
-        <Button
-            className="confirm-button"
-            variant="success"
-            onClick={()=>{
-                createStudentAccountsFromList(classID.slice(0,6), studentList);
-                setShowModal(false);
-            }}
-        >Create Student Accounts</Button>
     </div>
     )
 }
@@ -103,53 +85,3 @@ function NewStudentForm({student, setStudent}: {student: NewStudent, setStudent:
     )
 }
 
-//create accounts for each student in the list and add them to the class
-function createStudentAccountsFromList(classID: string, studentList: NewStudent[]) {
-    alert("We found an issue with this feature. We're in the process of fixing it right now")
-    /*
-    let failed_list: NewStudent[] = studentList.filter((student) => student.email==="" || student.password.length<6);
-    let finished_list: string[] = [];
-    let newStudentList = studentList.filter((student) => student.email!=="" && student.password.length>5);
-
-    let class_reference = ref(getDatabase(), "/groups/"+classID);
-    const secondary_app = initializeApp(firebaseConfig, "secondary app");
-    newStudentList.forEach((new_student, index) => {
-        createUserWithEmailAndPassword(getAuth(secondary_app), new_student.email, new_student.password).then((new_credential) => {
-            let user_reference = ref(getDatabase(), "/users/"+new_credential.user.uid);
-            const new_auth_user: AuthUser = {
-                username: new_student.email.split("@")[0],
-                email: new_student.email,
-                id: new_student.password,
-                avatar: "",
-                groups: ["placeholder", classID],
-                isTeacher: false,
-                hash: new_credential.user.uid
-            }
-            set(user_reference, {userObj:new_auth_user});
-            finished_list.push(new_credential.user.uid);
-        }).catch((reason) => {
-            failed_list.push(new_student);
-        });
-    });
-
-    //weird stuff to wait until finished creating accounts
-    function check_finished() {
-        if(finished_list.length+failed_list.length < studentList.length) {
-            window.setTimeout(check_finished, 100);
-        } else {
-            get(class_reference).then((snapshot) => {
-                if(snapshot.val() == null) return;
-                let bank_obj: Bank = snapshot.val().bankObj;
-                finished_list.forEach((new_uid) => {
-                    bank_obj.studentList.push(
-                        {...DEFAULT_BANK_USER, uid: new_uid}
-                    )
-                });
-        
-                set(class_reference, {bankObj: {...bank_obj}});
-            });
-        }
-    }
-    check_finished();
-    */
-}

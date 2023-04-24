@@ -3,12 +3,12 @@ import React, { useContext, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, BankContext, BANK_STORAGE_KEY } from "../../Authentication/auth";
-import { Bank, DEFAULT_BANK } from '../../Interfaces/BankObject';
+import { Bank, DEFAULT_BANK, copy_bank } from '../../Interfaces/BankObject';
 import { DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
 import "./StudentBankingPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
-import { get_bank } from '../../DatabaseFunctions/BankFunctions';
+import { get_bank_then } from '../../DatabaseFunctions/BankFunctions';
 import { app } from "../../firebase";
 import { Subgroup } from "../../Interfaces/Subgroup";
 import { BankingDashboard } from '../../BankingComponents/BankingDashboard';
@@ -18,22 +18,14 @@ import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 export function StudentBankingPage({classCode}:{classCode:string}){
     window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
 
-    const current_user: AuthUser = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
-    const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
+    const current_user: AuthUser = useContext(AuthContext).user;
+    const current_bank: Bank = useContext(BankContext).bank;
     
     
-    const navigate = useNavigate();
-
     //Real transactions will eventually be saved in the database under a BankUser object
 
     
-    //Get AuthUser objects for each student in the class
-    //const [studentAuthUserList, setStudentAuthUserList] = useState<AuthUser[]>([]);
-
-    const bank_context = useContext(BankContext);
-    useEffect(() => { //Update the bank context if this page is navigated to
-        get_bank(classCode.slice(0,6), bank_context.setBank)
-    }, []);
+    
 
     const current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? DEFAULT_BANK_USER;
 

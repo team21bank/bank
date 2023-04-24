@@ -6,7 +6,7 @@ import { AvatarForm } from "./Avatar/Avatar";
 import { AuthContext } from "../../Authentication/auth";
 import { ChangeUsernameButton } from "./ChangeUsername/ChangeUsername";
 import "./EditProfilePage.css";
-import { DeleteAccountModal } from "./DeleteAccount";
+import { DeleteAccountModal } from "./DeleteAccountModal";
 import { auth } from "../../firebase";
 import { ImageGallery } from "../../AvatarPool/ImageGallery";
 import { DEFAULT_AUTH_USER } from "../../Interfaces/AuthUser";
@@ -16,7 +16,7 @@ import { update_auth_user } from "../../DatabaseFunctions/UserFunctions";
 export function EditProfile(): JSX.Element {
     const user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
 
-    const [new_user, set_new_user] = useState(user);
+    const [new_user, set_new_user] = useState({...user, groups: [...user.groups]});
 
     //updates the database instance of currUser
     function saveToDatabase() {

@@ -18,7 +18,7 @@ export function ChangeUsernameButton(){
     }
 
     function confirm() {
-        if(auth.currentUser && user.user) user.setUser({...user.user, username});
+        alert("Functionality not yet implemented");
         setUsername("");
         setShowModal(false);
     }

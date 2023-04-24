@@ -4,6 +4,7 @@ import { AuthContext, BankContext } from "../../Authentication/auth";
 import { ClassList } from "../../ClassCode/ClassList";
 import { QuizPage } from '../../Quizzes/QuizPage';
 import { DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
+import { CreateClassModal } from '../../ClassCode/CreateClassModal';
 
 export function TeacherHomePage(){
     const current_user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
@@ -15,6 +16,7 @@ export function TeacherHomePage(){
             <br />
             <div>Classes: </div>
             <ClassList classes={current_user.groups}/>
+            <CreateClassModal/>
         </div>
     )
 

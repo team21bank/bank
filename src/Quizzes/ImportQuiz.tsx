@@ -8,7 +8,7 @@ import { BankContext } from "../Authentication/auth";
 
 export function ImportQuiz({classCode}: {classCode: string}): JSX.Element {
     
-    const currClass: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
+    const currClass: Bank = useContext(BankContext).bank;
 
     const [contents, setContents] = useState<string>("");
     const [view, toggleView] = useState<boolean>(false);

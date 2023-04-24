@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { BankContext } from "../Authentication/auth";
-import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
+import { Bank } from "../Interfaces/BankObject";
 import { Quiz } from "../Interfaces/Quiz";
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
 import { ImportQuiz } from "./ImportQuiz";
@@ -14,7 +14,7 @@ const allQuizzes = quizzes.map((myquiz): Quiz => ({ ...myquiz}));
 export function QuizPage(): JSX.Element{
 
     const bank_context = useContext(BankContext);
-    const current_bank: Bank = bank_context.bank ? bank_context.bank : DEFAULT_BANK;
+    const current_bank: Bank = bank_context.bank;
 
     let dbquizzes = current_bank.quizzes
 

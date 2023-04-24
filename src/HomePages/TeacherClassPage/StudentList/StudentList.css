@@ -1,9 +1,34 @@
-.student-list {
-    outline: 1px solid black;
-    
-    padding-inline: 50px;
-    padding-block: 20px;
-    width: 75%;
-    margin-inline: auto;
-    border-radius: 20px;
+.student-table {
+    width: 75%
+}
+.student-table td {
+    border-left-color: lightgray;
+    border-right-color: lightgray;
+}
+
+
+.student-row {
+    height: 3em;
+}
+
+
+.student-table-header {
+    border-bottom: 5px;
+}
+.student-table-header th {
+    border-left-color: lightgray;
+    border-right-color: lightgray;
+}
+
+.edit-text-form {
+    min-width: 100px;
+}
+
+.edit-form-container {
+    width: 85%;
+    min-width: 400px;
+}
+
+.edit-form-row {
+    margin-top: 10px;
 }

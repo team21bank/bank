@@ -4,14 +4,14 @@ import { Transaction } from '../../Interfaces/Transaction';
 import { remove_transaction_from_pending } from "../../DatabaseFunctions/BankFunctions";
 import { push_transaction_to_completed } from "../../DatabaseFunctions/BankFunctions";
 import { BankContext } from "../../Authentication/auth";
-import { Bank, DEFAULT_BANK } from "../../Interfaces/BankObject";
+import { Bank, DEFAULT_BANK, copy_bank } from "../../Interfaces/BankObject";
 import { BankUser, DEFAULT_BANK_USER } from "../../Interfaces/BankUser";
 import { update_bank_user } from "../../DatabaseFunctions/BankUserFunctions";
 
 
 export function PendingTransactionModal({pendingList}: {pendingList:Transaction[]}){
     const [showModal, setShowModal] = useState(false);
-    const current_bank: Bank = useContext(BankContext).bank ?? DEFAULT_BANK;
+    const current_bank: Bank = useContext(BankContext).bank;
     if (pendingList===undefined){
         pendingList=[]
     }
