@@ -22,8 +22,6 @@ import { BankUser } from "../../Interfaces/BankUser";
 import { get_auth_users } from '../../DatabaseFunctions/UserFunctions';
 
 export function StudentClassPage({classCode}:{classCode:string}){
-    
-
     const current_user: AuthUser = useContext(AuthContext).user;
     const current_bank: Bank = useContext(BankContext).bank;
 
@@ -31,6 +29,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
 
     const bank_context = useContext(BankContext);
     useEffect(() => { //Update the bank context if this page is navigated to
+        displayGroups();
         if(window.sessionStorage.getItem(BANK_STORAGE_KEY) === classCode.slice(0,6)) {return;}
         change_bank(classCode);
     }, []);
@@ -251,6 +250,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
             const parsedjsonValues = (JSON.parse(JSON.stringify(jsonValues)))
             setVillages(parsedjsonValues)
             setVillages((current) => current.filter((fruit) => fruit.name !== "placeholder"));
+            console.log("AAAAAAAAAAAAAAAAAA"+villages)
 
 
             //set student list
@@ -292,15 +292,15 @@ export function StudentClassPage({classCode}:{classCode:string}){
 
     return (
         <div className="student-class-page">
-            Welcome to {classCode.slice(6)}
-            <table align="center">
+            Welcome to {classCode}
+            <table id = "table-line" align="center" >
 
-                <th>Village name</th>
-                <th>Students</th>
+                <th id = "th-width">Village name</th>
+                <th id = "th-width">Students</th>
                 {villages.map((village, index) => (
                     <tr data-index={index}>
-                        <td>{village.name}</td>
-                        <td>{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
+                        <td id = "table-line">{village.name}</td>
+                        <td id = "table-line">{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
                     </tr>
                 ))}
             </table>
