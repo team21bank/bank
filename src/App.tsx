@@ -35,10 +35,7 @@ function App() {
 export default App;
 
 function AppBody(): JSX.Element {
-  let classes: string[] = [];
-
-  const user = useContext(AuthContext);
-  if(user.user) classes = [...(user.user.groups)];
+  const user = useContext(AuthContext).user;
 
 
   return <div>
@@ -53,20 +50,20 @@ function AppBody(): JSX.Element {
           <Route path="groups" element={<TeacherHomePage/>}/>
           <Route path="home" element={<TeacherHomePage />}/>
           <Route path="classes" element={<TeacherHomePage/>}/>
-          {classes.map(str => {
+          {user.groups.map(str => {
             return <Route path={str.slice(0, 6)+"/groups"} key={str} element={<SubgroupsPage classCode={str} />}></Route>
           })}
           <Route path="createclass" element={<CreateClassModal/>}/>
           {/*Render the class pages*/}
-          {classes.map(str => <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}/>)}
+          {user.groups.map(str => <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}/>)}
           {/*Render the quiz pages. This needs to be done in a separate map because nested routes also render their parent element*/}
-          {classes.map(str => <Route path={str.slice(0,6)+"/quizzes"} key={str} element={<QuizPage/>}/>)}
+          {user.groups.map(str => <Route path={str.slice(0,6)+"/quizzes"} key={str} element={<QuizPage/>}/>)}
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
-          {classes.map(str => <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>)}
-          {classes.map(str => <Route path={str.slice(0,6)+"/quizzes"} key={str} element={<StudentQuizMain/>} />)}
-          {classes.map(str => <Route path={str.slice(0,6)+"/banking"} key={str} element={<StudentBankingPage classCode={str}/>} />)}
+          {user.groups.map(str => <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>)}
+          {user.groups.map(str => <Route path={str.slice(0,6)+"/quizzes"} key={str} element={<StudentQuizMain/>} />)}
+          {user.groups.map(str => <Route path={str.slice(0,6)+"/banking"} key={str} element={<StudentBankingPage classCode={str}/>} />)}
         </Route>
       </Routes>
     </HashRouter>

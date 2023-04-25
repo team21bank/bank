@@ -40,7 +40,7 @@ export function StudentList(
     }, [current_bank]);
 
     return (
-        <div>
+        <Container fluid>
             <h2 className="student-list-header">Students</h2>
             <Table striped hover bordered className="student-table">
                 <thead className="student-table-header">
@@ -54,7 +54,7 @@ export function StudentList(
                     {studentList.map((user_pair, index) => <StudentRow key={index} user_pair={user_pair}/>)}
                 </tbody>
             </Table>
-        </div>
+        </Container>
     )
 }
 
