@@ -13,3 +13,15 @@ export interface QuizQuestion{
 
     expected: string; //correct answer
 }
+
+export function default_quizquestion(): QuizQuestion {
+    return {
+        id: 0,
+        name: "",
+        body: "",
+        points: 0,
+        type: "",
+        options: [],
+        expected: ""
+    }
+}

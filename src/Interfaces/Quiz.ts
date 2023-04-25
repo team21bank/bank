@@ -15,3 +15,14 @@ export interface Quiz{
 }
 
 export const QUIZ_PLACEHOLDER: Quiz = {id: 0, title: '', description: '', questionTotal: 0, money: 0, questions: [] };
+
+export function default_quiz(): Quiz {
+    return {
+        id: 0,
+        title: "",
+        description: "",
+        questionTotal: 0,
+        money: 0,
+        questions: []
+    }
+}

@@ -21,6 +21,7 @@ import { StudentQuizMain } from './Quizzes/StudentQuiz';
 import { SubgroupsPage } from './HomePages/TeacherClassPage/SubgroupsPage';
 
 import { StudentBankingPage } from './HomePages/StudentBankingPage/StudentBankingPage';
+import { CreateQuizPage } from './Quizzes/CreateQuizPage';
 
 
 function App() {
@@ -50,14 +51,14 @@ function AppBody(): JSX.Element {
           <Route path="groups" element={<TeacherHomePage/>}/>
           <Route path="home" element={<TeacherHomePage />}/>
           <Route path="classes" element={<TeacherHomePage/>}/>
-          {user.groups.map(str => {
-            return <Route path={str.slice(0, 6)+"/groups"} key={str} element={<SubgroupsPage classCode={str} />}></Route>
-          })}
-          <Route path="createclass" element={<CreateClassModal/>}/>
-          {/*Render the class pages*/}
-          {user.groups.map(str => <Route path={str.slice(0,6)} key={str} element={<TeacherClassPage classCode={str} />}/>)}
-          {/*Render the quiz pages. This needs to be done in a separate map because nested routes also render their parent element*/}
-          {user.groups.map(str => <Route path={str.slice(0,6)+"/quizzes"} key={str} element={<QuizPage/>}/>)}
+          {/*class pages*/}
+          {user.groups.map(str => <Route path={str} key={str} element={<TeacherClassPage classCode={str} />}/>)}
+          {/*Subgroups pages*/}
+          {user.groups.map(str => <Route path={str+"/groups"} key={str} element={<SubgroupsPage classCode={str} />}/>)}
+          {/*create quiz pages*/}
+          {user.groups.map(str => <Route path={str+"/createquiz"} key={str} element={<CreateQuizPage/>}/>)}
+          {/*quiz pages*/}
+          {user.groups.map(str => <Route path={str+"/quizzes"} key={str} element={<QuizPage/>}/>)}
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
