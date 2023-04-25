@@ -10,3 +10,15 @@
     margin-top: 10px;
     margin-bottom: 10px
 }
+
+.class-card-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.class-card {
+    width: 18rem;
+    margin: 1rem
+}
