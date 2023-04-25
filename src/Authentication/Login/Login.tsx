@@ -56,6 +56,7 @@ export function LoginForm(){
                     onKeyUp={handle_key_press}
                     isInvalid={showError}
                 />
+                <Form.Control.Feedback></Form.Control.Feedback>
             </InputGroup>
             <InputGroup size="lg" className="text-input-group" hasValidation>
                 <InputGroup.Text className="text-input-info">Password:</InputGroup.Text>

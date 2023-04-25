@@ -20,7 +20,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
     const current_bank: Bank = useContext(BankContext).bank;
 
     useEffect(() => {
-        if(current_bank.bankId === classCode.slice(0,6)) {return;}
+        if(window.sessionStorage.getItem(BANK_STORAGE_KEY) === classCode.slice(0,6)) {return;}
         change_bank(classCode.slice(0,6));
     }, []);
     
@@ -30,14 +30,6 @@ export function TeacherClassPage({classCode}:{classCode:string}){
             <AddStudentsModal classID={classCode} />
             <StudentList current_bank={current_bank} />
             <Subgroups classID={classCode}></Subgroups>
-            <DeleteBankModal 
-                delete_bank_function={()=>{
-                    delete_bank(current_bank.bankId).then(() =>{
-                        navigate("/teachers/home");
-                    });
-                }}
-                bank_name={classCode.slice(6)}
-            />
             <Button onClick={()=>navigate("/teachers/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
             <Outlet></Outlet>
         </div>
@@ -45,6 +37,9 @@ export function TeacherClassPage({classCode}:{classCode:string}){
 }
 
 
+
+//Add this in somewhere else at some point
+//we dont really need it right now
 function DeleteBankModal(
     {delete_bank_function, bank_name}: {delete_bank_function: ()=>void, bank_name: string}
 ): JSX.Element {

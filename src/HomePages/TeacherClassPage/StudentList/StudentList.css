@@ -1,5 +1,8 @@
 .student-table {
-    width: 75%
+    justify-self: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 80%;
 }
 .student-table td {
     border-left-color: lightgray;
@@ -32,3 +35,4 @@
 .edit-form-row {
     margin-top: 10px;
 }
+
