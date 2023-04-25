@@ -274,7 +274,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
             const parsedJSonValues2 = JSON.parse(JSON.stringify(JSonValues2))
             for (let i = 0; i < stuIDs.length + 1; i++) {
                 parsedJSonValues2.forEach((user) => {
-                    if (user["userObj"]["hash"] === stuIDs[i]) {
+                    if (user["userObj"]["hash"] === stuIDs[i] && user["userObj"]["hash"] !== current_bank_user.uid) {
                         setMyMap(new Map(myMap.set(user["userObj"]["username"], user["userObj"]["hash"])));
                         setStudents((students) => {
                             return students.concat(user["userObj"])
