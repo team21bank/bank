@@ -7,11 +7,8 @@ export interface QuizQuestion{
 
     points: number; //question points
 
-    type: string; //only MultipleChoice
 
-    options: string[]; //options exist if MultipleChoice type
-
-    expected: string; //correct answer
+    options: [string, boolean][]; //options exist if MultipleChoice type
 }
 
 export function default_quizquestion(): QuizQuestion {
@@ -20,8 +17,6 @@ export function default_quizquestion(): QuizQuestion {
         name: "",
         body: "",
         points: 0,
-        type: "",
         options: [],
-        expected: ""
     }
 }

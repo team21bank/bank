@@ -43,7 +43,8 @@ export function QuestionList({
 
     function finishedQuiz(classCode: string) {
         //push score from here onto the database
-        
+        alert("This is broken")
+        /*
         if (currQuestionIndex === questions.length-1 && current_bank_user) {
             //console.log("Test 1")
             current_bank_user.balance += score;
@@ -63,12 +64,16 @@ export function QuestionList({
             setScore(0);
             viewQuiz();
         }
+        */
     }
 
     function updateScore(){
+        alert("This is broken")
+        /*
         if (choice === questions[currQuestionIndex].expected) {
             setScore(score + questions[currQuestionIndex].points)
         }
+        */
     }
 
     function scoreTracker(): void{

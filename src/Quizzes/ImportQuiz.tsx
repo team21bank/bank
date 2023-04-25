@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { ref, getDatabase, set } from '@firebase/database';
-import { Quiz } from "../Interfaces/Quiz";  
+import { Quiz, default_quiz } from "../Interfaces/Quiz";  
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
 import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
 import { BankContext } from "../Authentication/auth";
@@ -45,6 +45,8 @@ export function ImportQuiz({classCode}: {classCode: string}): JSX.Element {
     }
 
     function makeChange() {
+        alert("This is broken");
+        /*
         toggleView(false);
         //parsing CSV rows
         const splitRow = contents.split(/\r?\n/);
@@ -104,6 +106,7 @@ export function ImportQuiz({classCode}: {classCode: string}): JSX.Element {
         set(groupRef,currClass)
 
         setContents("");
+        */
     }
 
     return (

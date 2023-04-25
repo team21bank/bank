@@ -8,7 +8,7 @@ import { ImportQuiz } from "./ImportQuiz";
 import quizzes from "./quizData.json";
 import { QuizList } from "./QuizList";
 
-const allQuizzes = quizzes.map((myquiz): Quiz => ({ ...myquiz}));
+//const allQuizzes = quizzes.map((myquiz): Quiz => ({ ...myquiz}));
 
 //make an import JSON feature
 export function QuizPage(): JSX.Element{
