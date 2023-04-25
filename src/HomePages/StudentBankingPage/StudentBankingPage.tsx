@@ -1,7 +1,7 @@
 import { getDatabase, ref, get } from 'firebase/database';
 import React, { useContext, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext, BankContext, BANK_STORAGE_KEY } from "../../Authentication/auth";
 import { Bank, DEFAULT_BANK, copy_bank } from '../../Interfaces/BankObject';
 import { DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
@@ -23,35 +23,12 @@ export function StudentBankingPage({classCode}:{classCode:string}){
     
     
     //Real transactions will eventually be saved in the database under a BankUser object
-
-    
-    
-
     const current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? DEFAULT_BANK_USER;
-
-    const [villages, setVillages] = React.useState<any[]>([]);//for storing list of subgroups from database, AKA villages
-    const [villageArr, setVillageArr] = React.useState<any[]>([]);
-    let villageA: any[] = []
-    const displayGroups = () => {
-
-        const object = async () => {
-            const db = await getDatabase(app);
-            const usersSnapshot = await get(ref(db, '/'))
-            var item = usersSnapshot.child('groups/' + classCode.slice(0, 6) + '/bankObj/subgroups').val();
-            const JSonValues = Object.values(item);
-            const parsedJSonValues = (JSON.parse(JSON.stringify(JSonValues)))
-            setVillages(parsedJSonValues)
-            setVillages((current) =>current.filter((fruit) => fruit.name !== "placeholder"));
-        }
-        object();
-        
-    
-        
-    }
 
     return (
         <div className="student-banking-page">
-        <BankingDashboard current_auth_user={current_user} current_bank_user={current_bank_user} bank_transactions={sampleTransactions} bank_name={current_bank.classTitle} bank_id={classCode.slice(0,6)}></BankingDashboard>
+            <Link to={"/students/"+current_bank.bankId}><Button>Back to class</Button></Link>
+            <BankingDashboard current_auth_user={current_user} current_bank_user={current_bank_user} bank_transactions={sampleTransactions} bank_name={current_bank.classTitle} bank_id={classCode.slice(0,6)}></BankingDashboard>
         </div>
         
     )

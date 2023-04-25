@@ -20,7 +20,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
     const current_bank: Bank = useContext(BankContext).bank;
 
     useEffect(() => {
-        if(current_bank.bankId === classCode.slice(0,6)) {return;}
+        if(window.sessionStorage.getItem(BANK_STORAGE_KEY) === classCode.slice(0,6)) {return;}
         change_bank(classCode.slice(0,6));
     }, []);
     
