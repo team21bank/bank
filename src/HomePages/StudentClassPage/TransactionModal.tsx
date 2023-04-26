@@ -250,7 +250,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
 
     return (
         <div className="student-class-page">
-            Students in Village: {current_bank.classTitle}
+            Students in City: {current_bank.classTitle}
             <table id="table-line" align="center" >
             
                 <th id="th-width">Village name</th>
