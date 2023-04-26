@@ -7,6 +7,7 @@ import { BankContext } from "../../Authentication/auth";
 import { Bank, DEFAULT_BANK, copy_bank } from "../../Interfaces/BankObject";
 import { BankUser, DEFAULT_BANK_USER } from "../../Interfaces/BankUser";
 import { update_bank_user } from "../../DatabaseFunctions/BankUserFunctions";
+import { DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
 
 export function PendingTransactionModal({pendingList}: {pendingList:Transaction[]}){
