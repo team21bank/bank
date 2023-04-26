@@ -16,12 +16,13 @@ import { StudentClassPage } from './HomePages/StudentClassPage/StudentClassPage'
 import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
 import { EditProfile } from './HomePages/EditProfilePage/EditProfilePage';
 import { CreateClassModal } from './ClassCode/CreateClassModal';
-import { QuizPage } from './Quizzes/QuizPage';
+import { ClassQuizPage } from './Quizzes/ClassQuizPage';
 import { StudentQuizMain } from './Quizzes/StudentQuiz';
 import { SubgroupsPage } from './HomePages/TeacherClassPage/SubgroupsPage';
 
 import { StudentBankingPage } from './HomePages/StudentBankingPage/StudentBankingPage';
 import { CreateQuizPage } from './Quizzes/CreateQuizPage';
+import { UserQuizPage } from './Quizzes/UserQuizPage';
 
 
 function App() {
@@ -51,14 +52,15 @@ function AppBody(): JSX.Element {
           <Route path="groups" element={<TeacherHomePage/>}/>
           <Route path="home" element={<TeacherHomePage />}/>
           <Route path="classes" element={<TeacherHomePage/>}/>
+          <Route path="createquiz" element={<CreateQuizPage/>}/>
+          {/*Quizzes owned by a user*/}
+          <Route path="quizzes" element={<UserQuizPage/>}/>
           {/*class pages*/}
           {user.groups.map(str => <Route path={str} key={str} element={<TeacherClassPage classCode={str} />}/>)}
           {/*Subgroups pages*/}
           {user.groups.map(str => <Route path={str+"/groups"} key={str} element={<SubgroupsPage classCode={str} />}/>)}
-          {/*create quiz pages*/}
-          {user.groups.map(str => <Route path={str+"/createquiz"} key={str} element={<CreateQuizPage/>}/>)}
-          {/*quiz pages*/}
-          {user.groups.map(str => <Route path={str+"/quizzes"} key={str} element={<QuizPage/>}/>)}
+          {/*quizzes assigned to a class*/}
+          {user.groups.map(str => <Route path={str+"/quizzes"} key={str} element={<ClassQuizPage/>}/>)}
         </Route>
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>

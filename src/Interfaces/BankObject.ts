@@ -17,7 +17,7 @@ export interface Bank {
     /** An array of subgroups and their students */
     subgroups: Subgroup[];
     /**List of quizzes for a class */
-    quizzes: Quiz[];
+    quizzes: string[];
 
     pendingList: Transaction[];
     completedList: Transaction[];

@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import "./TeacherHomePage.css";
 import { AuthContext, BankContext } from "../../Authentication/auth";
 import { ClassList } from "../../ClassCode/ClassList";
-import { QuizPage } from '../../Quizzes/QuizPage';
 import { DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 import { CreateClassModal } from '../../ClassCode/CreateClassModal';
 

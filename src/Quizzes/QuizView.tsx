@@ -24,6 +24,8 @@ export function QuizView({
     }
 
     return (
+        <h1>Under construction</h1>
+        /*
         <div>
             <p>{quiz.title}</p>
             <h4>{"Total Questions: " + quiz.questionTotal}</h4>
@@ -49,5 +51,6 @@ export function QuizView({
                 )}
             </div>
         </div>
+        */
     );
 }

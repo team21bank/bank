@@ -6,7 +6,8 @@ import { DEFAULT_AUTH_USER } from "../Interfaces/AuthUser";
 
 //make an import JSON feature
 export function StudentQuizMain(): JSX.Element{
-    
+    return <h1>Under construction</h1>
+    /*
     const bank_context = useContext(BankContext);
     let auth_context = useContext(AuthContext);
 
@@ -30,8 +31,8 @@ export function StudentQuizMain(): JSX.Element{
         )
     }
     else{
-        let unfinishedQuizzes = dbquizzes.filter((quiz) => !(current_bank_user?.finishedQuizzes.includes(quiz.id)))
-        let finishedQuizzes = dbquizzes.filter((quiz) => current_bank_user?.finishedQuizzes.includes(quiz.id))
+        //let unfinishedQuizzes = dbquizzes.filter((quiz) => !(current_bank_user?.finishedQuizzes.includes(quiz.id)))
+        //let finishedQuizzes = dbquizzes.filter((quiz) => current_bank_user?.finishedQuizzes.includes(quiz.id))
         return(
             <div>
                 <h1>Unfinished Quizzes</h1>
@@ -52,6 +53,7 @@ export function StudentQuizMain(): JSX.Element{
             
         );
     }
+    */
 
     
 }
