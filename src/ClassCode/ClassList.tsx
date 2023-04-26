@@ -16,6 +16,7 @@ export function ClassList({ classes }: { classes: string[] }): JSX.Element {
     )
 }
 
+
 function ClassButton({ bank_id }: { bank_id: string }): JSX.Element {
     const [bank, set_bank] = useState<Bank>(copy_bank(DEFAULT_BANK));
 
