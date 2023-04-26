@@ -21,9 +21,8 @@ export function TransactionModal({ classCode }: { classCode: string }) {
     const navigate = useNavigate();
 
     const bank_context = useContext(BankContext);
-    useEffect(() => { //Update the bank context if this page is navigated to
-        displayGroups();
-    }, []);
+
+    useEffect(() => displayGroups);
 
     const current_bank_user = current_bank.studentList.find(val => val.uid === current_user.hash) ?? DEFAULT_BANK_USER;
 
@@ -251,7 +250,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
 
     return (
         <div className="student-class-page">
-            Students in Group: {classCode}
+            Students in Village: {classCode}
             <table id="table-line" align="center" >
             
                 <th id="th-width">Village name</th>
@@ -333,7 +332,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
                 </Modal.Footer>
             </Modal>
             <div>
-                <Button onClick={showTransactions}>Pay/Create Payment Request</Button>
+                <Button onClick={showTransactions}>Create Payment Request</Button>
             </div>
             <br />
             

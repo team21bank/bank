@@ -42,7 +42,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
             <br></br>
             <div>
                 <br></br>
-                <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/banking")}> Go to your Banking Dashboard</Button>
+                <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/banking")}> Go to Banking Dashboard</Button>
             </div>
             
             <br/>
