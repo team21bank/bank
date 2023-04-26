@@ -38,11 +38,11 @@ export function StudentClassPage({classCode}:{classCode:string}){
             <br></br>
             <TransactionModal classCode={bank.bankId} />
             
-            <Button onClick={() => navigate("/students/" + classCode.slice(0, 6) + "/quizzes")}> Go to Quizzes </Button>
+            <Button style={{backgroundColor: '#FF2E2E'}} onClick={() => navigate("/students/" + classCode.slice(0, 6) + "/quizzes")}> Go to Quizzes </Button>
             <br></br>
             <div>
                 <br></br>
-                <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/banking")}> Go to Banking Dashboard</Button>
+                <Button  onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/banking")}> Go to Banking Dashboard</Button>
             </div>
             
             <br/>

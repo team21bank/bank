@@ -332,7 +332,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
                 </Modal.Footer>
             </Modal>
             <div>
-                <Button onClick={showTransactions}>Create Payment Request</Button>
+                <Button style={{ backgroundColor: '#299861' }}  onClick={showTransactions}>Create Payment Request</Button>
             </div>
             <br />
             
