@@ -7,7 +7,7 @@ import { get_bank, update_bank } from "./BankFunctions";
 ////////////////////////////// DATABASE MODIFYING FUNCTIONS //////////////////////////////
 
 /**Sets the BankUser object at /groups/bank_id/bankObj/studentList/index_of(user_id) to new_bank_user*/
-export async function update_bank_user(bank: string | Bank, user_id: string, new_bank_user: BankUser) {
+export async function update_bank_user(bank: string | Bank, user_id: string, new_bank_user: BankUser): Promise<void> {
     if(typeof bank === "string") {
         let bank_obj = await get_bank(bank) ?? copy_bank(DEFAULT_BANK);
         if(bank_obj === DEFAULT_BANK) {return Promise.reject("Bank does not exist");}
@@ -32,7 +32,7 @@ export async function update_bank_user(bank: string | Bank, user_id: string, new
 
         //update the value of the bank user object
         set(ref(getDatabase(), "/groups/"+bank.bankId+"/bankObj/studentList/"+bank_user_index), new_bank_user);
-        return
+        return;
     }
     
 }

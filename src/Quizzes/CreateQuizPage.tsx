@@ -37,7 +37,6 @@ export function CreateQuizPage(): JSX.Element {
             <Row><EditForm quiz={new_quiz} set_quiz={set_new_quiz}/></Row>
             <Col style={{marginTop: "3rem"}}>
                 <Button variant="success" onClick={()=>{
-                    console.log(new_quiz);
                     save_quiz();
                 }}>Save</Button>
             </Col>

@@ -15,11 +15,8 @@ import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { StudentClassPage } from './HomePages/StudentClassPage/StudentClassPage';
 import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
 import { EditProfile } from './HomePages/EditProfilePage/EditProfilePage';
-import { CreateClassModal } from './ClassCode/CreateClassModal';
 import { StudentQuizPage } from './Quizzes/StudentQuizPage';
-import { StudentQuizMain } from './Quizzes/StudentQuiz';
 import { SubgroupsPage } from './HomePages/TeacherClassPage/SubgroupsPage';
-
 import { StudentBankingPage } from './HomePages/StudentBankingPage/StudentBankingPage';
 import { CreateQuizPage } from './Quizzes/CreateQuizPage';
 import { UserQuizPage } from './Quizzes/UserQuizPage';

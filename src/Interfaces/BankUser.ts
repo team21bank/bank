@@ -20,7 +20,7 @@ export function resolve_nullish_bankuser(b: BankUser): BankUser {
         balance: b.balance ?? 0,
         role: b.role ?? [Role.None, MasteryLevel.None],
         alias: b.alias ?? "",
-        finishedQuizzes: b.finishedQuizzes ?? ""
+        finishedQuizzes: b.finishedQuizzes ?? []
     }
 }
 
