@@ -1,17 +1,40 @@
-import { QuizQuestion } from "./QuizQuestion"
+import { QuizQuestion, resolve_nullish_quizquestion } from "./QuizQuestion"
 
 export interface Quiz{
-    id: number; //use to delete
+    owner: string; //hash id of the teacher who created the quiz
 
     title: string; //name of quiz
 
     description: string; //what quiz is on
 
-    questionTotal: number; //how many questions in quiz
-
     money: number; //how much money a student earns for earning a 100% on the quiz
     
     questions: QuizQuestion[]; //the actual questions in the quiz
+
+    hash: string
 }
 
-export const QUIZ_PLACEHOLDER: Quiz = {id: 0, title: '', description: '', questionTotal: 0, money: 0, questions: [] };
+
+export function default_quiz(): Quiz {
+    return {
+        owner: "",
+        title: "",
+        description: "",
+        money: 0,
+        questions: [],
+        hash: ""
+    }
+}
+
+export function resolve_nullish_quiz(quiz: Quiz): Quiz {
+    return {
+        owner: quiz.owner ?? "",
+        title: quiz.title ?? "",
+        description: quiz.description ?? "",
+        money: quiz.money ?? 0,
+        questions: quiz.questions===undefined ? [] : (
+            quiz.questions.map((q: QuizQuestion) => resolve_nullish_quizquestion(q))
+        ),
+        hash: quiz.hash ?? []
+    }
+}

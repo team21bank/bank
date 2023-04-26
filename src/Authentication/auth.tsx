@@ -93,7 +93,6 @@ export function change_bank(new_bank_id: string | null) {
 function get_auth_user_updating(uid: string, setter: (AuthUser: AuthUser) => void): Unsubscribe {
     return onValue(ref(getDatabase(), "/users/"+uid+"/userObj"),
         snapshot => {
-            console.log("Setting user: ", snapshot.val() ?? DEFAULT_AUTH_USER);
             setter(resolve_nullish_authuser(snapshot.val() ?? DEFAULT_AUTH_USER))
         }
     )
@@ -103,7 +102,6 @@ function get_auth_user_updating(uid: string, setter: (AuthUser: AuthUser) => voi
 function get_bank_updating(bank_id: string, setter: (bank: Bank) => void): Unsubscribe {
     return onValue(ref(getDatabase(), "/groups/"+bank_id+"/bankObj"),
         bank_snapshot => {
-            console.log("Setting bank: ", bank_snapshot.val() ?? copy_bank(DEFAULT_BANK));
             setter(resolve_nullish_bank(bank_snapshot.val() ?? copy_bank(DEFAULT_BANK)));
         }
     );

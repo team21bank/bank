@@ -1,4 +1,4 @@
-import { BankUser } from "./BankUser";
+import { BankUser, resolve_nullish_bankuser } from "./BankUser";
 import { Subgroup } from "./Subgroup";
 import { Quiz } from "./Quiz";
 import { Transaction } from "./Transaction";
@@ -17,7 +17,7 @@ export interface Bank {
     /** An array of subgroups and their students */
     subgroups: Subgroup[];
     /**List of quizzes for a class */
-    quizzes: Quiz[];
+    quizzes: string[];
 
     pendingList: Transaction[];
     completedList: Transaction[];
@@ -36,7 +36,9 @@ export function resolve_nullish_bank(bank: Bank): Bank {
     return {
         bankId: bank.bankId ?? "",
         teacherID: bank.teacherID ?? "",
-        studentList: bank.studentList ?? [],
+        studentList: bank.studentList===undefined ? [] : (
+            bank.studentList.map(b => resolve_nullish_bankuser(b))
+        ),
         classTitle: bank.classTitle ?? "",
         description: bank.description ?? "",
         subgroups: bank.subgroups ?? [],

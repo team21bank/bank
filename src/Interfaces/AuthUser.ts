@@ -7,19 +7,34 @@ export interface AuthUser {
     groups: string[]
     isTeacher: boolean
     hash: string
+    quizzes: string[]
 }
 export const DEFAULT_AUTH_USER: AuthUser = {
-    email: "", username: "", id: "", avatar: "", groups: [], isTeacher: false, hash: ""
+    email: "", username: "", id: "", avatar: "", groups: [], isTeacher: false, hash: "", quizzes: []
 } 
+
+export function default_authuser(): AuthUser {
+    return {
+        email: "",
+        username: "",
+        id: "",
+        avatar: "", 
+        groups: [],
+        isTeacher: false,
+        hash: "",
+        quizzes: []
+    }
+}
 
 export function resolve_nullish_authuser(user: AuthUser): AuthUser {
     return {
-        email: user.email ?? DEFAULT_AUTH_USER.email,
-        username: user.username ?? DEFAULT_AUTH_USER.username,
-        id: user.id ?? DEFAULT_AUTH_USER.id,
-        avatar: user.avatar ?? DEFAULT_AUTH_USER.avatar,
-        groups: user.groups ?? DEFAULT_AUTH_USER.groups,
-        isTeacher: user.isTeacher ?? DEFAULT_AUTH_USER.isTeacher,
-        hash: user.hash ?? DEFAULT_AUTH_USER.hash
+        email: user.email ?? "",
+        username: user.username ?? "",
+        id: user.id ?? "",
+        avatar: user.avatar ?? "",
+        groups: user.groups ?? [],
+        isTeacher: user.isTeacher ?? false,
+        hash: user.hash ?? "",
+        quizzes: user.quizzes ?? []
     }
 }

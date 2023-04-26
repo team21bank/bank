@@ -9,6 +9,7 @@ import { StudentList } from './StudentList/StudentList';
 import { Subgroups } from './Subgroups';
 import { delete_bank } from '../../DatabaseFunctions/BankFunctions';
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
+import { AssignQuizzesModal } from './AssignQuizzesModal';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
 
@@ -31,6 +32,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
             <StudentList current_bank={current_bank} />
             <Subgroups classID={classCode}></Subgroups>
             <Button onClick={()=>navigate("/teachers/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
+            <AssignQuizzesModal />
             <Outlet></Outlet>
         </div>
     )
