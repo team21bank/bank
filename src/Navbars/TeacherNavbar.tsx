@@ -18,6 +18,7 @@ export function TeacherNavbar(): JSX.Element {
               <Nav className='me-auto' >
                 <NavLink href="#/teachers/classes">View classes</NavLink>
                 {bank.bankId!=="" ? (<Nav.Link href={"#/teachers/"+bank.bankId}>Back to Class</Nav.Link>) : (<></>)}
+                <Nav.Link href="#/teachers/quizzes">Quizzes</Nav.Link>
               </Nav>
               <NavDropdown title="Manage Account" className="justify-content-end">
                   <NavDropdown.Item href="#/editprofile">Edit Profile</NavDropdown.Item>

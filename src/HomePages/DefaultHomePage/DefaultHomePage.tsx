@@ -2,7 +2,6 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import React from "react";
 import "./DefaultHomePage.css";
-import { QuizPage } from "../../Quizzes/QuizPage";
 
 export function DefaultHomePage(): JSX.Element {
   return (

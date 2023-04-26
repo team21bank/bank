@@ -7,7 +7,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Link } from 'react-router-dom';
 import { create_auth_user } from '../../DatabaseFunctions/UserFunctions';
 import { useNavigate } from 'react-router-dom';
-import { AuthUser } from '../../Interfaces/AuthUser';
+import { AuthUser, default_authuser } from '../../Interfaces/AuthUser';
 import { validate } from 'email-validator';
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
@@ -34,11 +34,9 @@ export function RegistrationForm(){
         }
         createUserWithEmailAndPassword(auth,email,p1).then(somedata=>{
             const newUser: AuthUser={
+                ...default_authuser(),
                 username:username,
                 email:email,
-                id:"",
-                avatar:'',
-                groups:[],
                 isTeacher: true,
                 hash: somedata.user.uid
             }

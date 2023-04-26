@@ -1,15 +1,31 @@
 export interface QuizQuestion{
-    id: number; //unique id for the question; useful for deleting questions
-
     name: string; //question title
 
     body: string; //more details about the question
 
-    points: number; //question points
+    picture_url: string;
 
-    type: string; //only MultipleChoice
+    points: number; //number of points the question is worth
 
-    options: string[]; //options exist if MultipleChoice type
+    options: [string, boolean][]; //answer options paired with whether they're correct or not
+}
 
-    expected: string; //correct answer
+export function default_quizquestion(): QuizQuestion {
+    return {
+        name: "",
+        body: "",
+        picture_url: "",
+        points: 0,
+        options: [],
+    }
+}
+
+export function resolve_nullish_quizquestion(q: QuizQuestion): QuizQuestion {
+    return {
+        name: q.name ?? "",
+        body: q.body ?? "",
+        picture_url: q.picture_url ?? "",
+        points: q.points ?? "",
+        options: q.options ?? []
+    }
 }

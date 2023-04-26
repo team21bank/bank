@@ -8,7 +8,7 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { get_bank } from "../../../DatabaseFunctions/BankFunctions";
 import { create_bank_users } from "../../../DatabaseFunctions/BankUserFunctions";
 import { create_auth_user } from "../../../DatabaseFunctions/UserFunctions";
-import { AuthUser } from "../../../Interfaces/AuthUser";
+import { AuthUser, default_authuser } from "../../../Interfaces/AuthUser";
 import { Bank, DEFAULT_BANK, copy_bank } from "../../../Interfaces/BankObject";
 import { firebaseConfig } from "../../../firebase";
 
@@ -110,10 +110,9 @@ export async function createStudentAccountsFromList(bank_id: string, student_lis
         try {
             let new_user_credential = await createUserWithEmailAndPassword(getAuth(secondary_app), new_student.email, new_student.password);
             const new_auth_user: AuthUser = {
+                ...default_authuser(),
                 username: new_student.email.split("@")[0],
                 email: new_student.email,
-                id: "",
-                avatar: "",
                 groups: [bank_id],
                 isTeacher: false,
                 hash: new_user_credential.user.uid

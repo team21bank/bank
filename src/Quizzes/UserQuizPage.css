@@ -1,0 +1,16 @@
+
+.user-quiz-page {
+    text-align: center;
+}
+
+.quiz-card {
+    width: 18rem;
+    margin: 1em 1em;
+}
+
+.quiz-list {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
