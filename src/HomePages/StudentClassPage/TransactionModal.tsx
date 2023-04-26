@@ -251,9 +251,9 @@ export function TransactionModal({ classCode }: { classCode: string }) {
 
     return (
         <div className="student-class-page">
-            Welcome to {classCode}
+            Students in Group: {classCode}
             <table id="table-line" align="center" >
-
+            
                 <th id="th-width">Village name</th>
                 <th id="th-width">Students</th>
                 {villages.map((village, index) => (
@@ -263,6 +263,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
                     </tr>
                 ))}
             </table>
+            <br></br>
             <Modal show={showTransactionModal} onHide={hideTransactions}>
                 <Modal.Header closeButton><h2>Create Payment Request</h2></Modal.Header>
                 <Modal.Body>

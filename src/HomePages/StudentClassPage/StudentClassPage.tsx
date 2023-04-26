@@ -35,12 +35,16 @@ export function StudentClassPage({classCode}:{classCode:string}){
         <Container className="student-class-page">
             Welcome to {bank.classTitle}
             <h3>Your total balance is ${bank_user.balance}</h3>
+            <br></br>
             <TransactionModal classCode={bank.bankId} />
-
-            <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
+            
+            <Button onClick={() => navigate("/students/" + classCode.slice(0, 6) + "/quizzes")}> Go to Quizzes </Button>
+            <br></br>
             <div>
+                <br></br>
                 <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/banking")}> Go to your Banking Dashboard</Button>
             </div>
+            
             <br/>
             {bank_user.role[0]===Role.Banker ? <PendingTransactionModal pendingList = {bank.pendingList} /> : <></>}
         </Container>
