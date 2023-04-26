@@ -26,7 +26,7 @@ export function UserQuizPage(): JSX.Element {
         <Container fluid className="user-quiz-page">
             <h1>User quiz page</h1>
             <div className="quiz-list">
-                {quizzes.map((q, index) => <DisplayQuiz key={index} quiz={q} set_quiz={(new_quiz)=>set_quiz_at_index(index, new_quiz)}/>)}
+                {quizzes.map((q, index) => <QuizCard key={index} quiz={q} set_quiz={(new_quiz)=>set_quiz_at_index(index, new_quiz)}/>)}
             </div>
             <Link to="/teachers/createquiz"><Button>Create A New Quiz</Button></Link>
         </Container>
@@ -34,7 +34,7 @@ export function UserQuizPage(): JSX.Element {
 }
 
 
-function DisplayQuiz({quiz, set_quiz}: {quiz: Quiz, set_quiz: (new_quiz: Quiz)=>void}): JSX.Element {
+function QuizCard({quiz, set_quiz}: {quiz: Quiz, set_quiz: (new_quiz: Quiz)=>void}): JSX.Element {
     function save_quiz(quiz: Quiz) {
         //save quiz to database then update the quizzes state since onValue isn't used
         update_quiz(quiz).then(() => {

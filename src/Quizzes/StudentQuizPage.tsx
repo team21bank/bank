@@ -6,7 +6,7 @@ import { Container } from "react-bootstrap";
 
 
 //make an import JSON feature
-export function ClassQuizPage(): JSX.Element{
+export function StudentQuizPage(): JSX.Element{
     const bank = useContext(BankContext).bank;
     const user = useContext(AuthContext).user;
 

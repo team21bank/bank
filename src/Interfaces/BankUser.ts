@@ -10,7 +10,18 @@ export interface BankUser {
 
     alias: string,
 
-    finishedQuizzes : Array<number>
+    finishedQuizzes: string[]
+}
+
+export function resolve_nullish_bankuser(b: BankUser): BankUser {
+    return {
+        uid: b.uid ?? "",
+        isBanker: b.isBanker ?? false,
+        balance: b.balance ?? 0,
+        role: b.role ?? [Role.None, MasteryLevel.None],
+        alias: b.alias ?? "",
+        finishedQuizzes: b.finishedQuizzes ?? ""
+    }
 }
 
 export enum Role {
