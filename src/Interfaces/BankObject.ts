@@ -18,13 +18,13 @@ export interface Bank {
     subgroups: Subgroup[];
     /**List of quizzes for a class */
     quizzes: Quiz[];
-
+    color: string;
     pendingList: Transaction[];
     completedList: Transaction[];
 }
 
 export const DEFAULT_BANK: Bank = {
-    bankId: "", teacherID: "", studentList: [], classTitle: "", description: "", quizzes: [], subgroups: [], pendingList: [], completedList: []
+    bankId: "", teacherID: "", studentList: [], classTitle: "", description: "", quizzes: [], color: 'FFFFFF', subgroups: [], pendingList: [], completedList: []
 }
 
 export function copy_bank(bank: Bank): Bank {
@@ -41,6 +41,7 @@ export function resolve_nullish_bank(bank: Bank): Bank {
         description: bank.description ?? "",
         subgroups: bank.subgroups ?? [],
         quizzes: bank.quizzes ?? [],
+        color: bank.color ?? 'FFFFFF',
         pendingList: bank.pendingList ?? [],
         completedList: bank.completedList ?? []
     }
