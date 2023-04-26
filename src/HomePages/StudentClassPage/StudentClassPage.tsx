@@ -14,6 +14,7 @@ import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 import { PendingTransactionModal } from './BankerTransactionsModal';
 import Select from 'react-select';
 import { BankUser } from "../../Interfaces/BankUser";
+import { TransactionModal } from "./TransactionModal";
 
 export function StudentClassPage({classCode}:{classCode:string}){
     
@@ -34,6 +35,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
         <Container className="student-class-page">
             Welcome to {bank.classTitle}
             <h3>Your total balance is ${bank_user.balance}</h3>
+            <TransactionModal classCode={bank.bankId} />
 
             <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
             <div>
