@@ -31,7 +31,7 @@ export function PendingTransactionModal({pendingList}: {pendingList:Transaction[
             {pendingList.map((trans:Transaction)=>individualTransaction(trans,current_bank))}
             
         </Modal>
-            <form><Button style={{ backgroundColor: '#592693' }} onClick={() => setShowModal(true)}>View Pending Transactions</Button></form>
+            <form><Button className="stuButton" style={{ backgroundColor: '#592693' }} onClick={() => setShowModal(true)}>View Pending Transactions</Button></form>
     </div>)
 }
 

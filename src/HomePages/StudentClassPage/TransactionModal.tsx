@@ -21,8 +21,9 @@ export function TransactionModal({ classCode }: { classCode: string }) {
     const navigate = useNavigate();
 
     const bank_context = useContext(BankContext);
-
-    useEffect(() => displayGroups);
+    useEffect(() => { //Update the bank context if this page is navigated to
+        displayGroups();
+    }, []);
 
     const current_bank_user = current_bank.studentList.find(val => val.uid === current_user.hash) ?? DEFAULT_BANK_USER;
 
@@ -147,7 +148,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
             /***************************
              * The transaction object *
              **************************/
-     }
+        }
         object()
         setSubmitJson([])
     }
@@ -250,9 +251,9 @@ export function TransactionModal({ classCode }: { classCode: string }) {
 
     return (
         <div className="student-class-page">
-            Students in City: {current_bank.classTitle}
+            Students in Group: {classCode}
             <table id="table-line" align="center" >
-            
+
                 <th id="th-width">Village name</th>
                 <th id="th-width">Students</th>
                 {villages.map((village, index) => (
@@ -332,10 +333,10 @@ export function TransactionModal({ classCode }: { classCode: string }) {
                 </Modal.Footer>
             </Modal>
             <div>
-                <Button style={{ backgroundColor: '#299861' }}  onClick={showTransactions}>Create Payment Request</Button>
+                <Button className="stuButton" style={{ backgroundColor:"#118C4F"}} onClick={showTransactions}>Pay/Create Payment Request</Button>
             </div>
             <br />
-            
+
         </div>
     )
 }
