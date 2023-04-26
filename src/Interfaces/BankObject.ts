@@ -17,14 +17,15 @@ export interface Bank {
     /** An array of subgroups and their students */
     subgroups: Subgroup[];
     /**List of quizzes for a class */
-    quizzes: Quiz[];
-    color: string;
+    quizzes: string[];
+
     pendingList: Transaction[];
     completedList: Transaction[];
+    color: string;
 }
 
 export const DEFAULT_BANK: Bank = {
-    bankId: "", teacherID: "", studentList: [], classTitle: "", description: "", quizzes: [], color: 'FFFFFF', subgroups: [], pendingList: [], completedList: []
+    bankId: "", teacherID: "", studentList: [], classTitle: "", description: "", quizzes: [], subgroups: [], pendingList: [], completedList: [], color: '#FFFFFF'
 }
 
 export function copy_bank(bank: Bank): Bank {
@@ -36,15 +37,15 @@ export function resolve_nullish_bank(bank: Bank): Bank {
     return {
         bankId: bank.bankId ?? "",
         teacherID: bank.teacherID ?? "",
-        studentList: bank.studentList===undefined ? [] : (
+        studentList: bank.studentList === undefined ? [] : (
             bank.studentList.map(b => resolve_nullish_bankuser(b))
         ),
         classTitle: bank.classTitle ?? "",
         description: bank.description ?? "",
         subgroups: bank.subgroups ?? [],
         quizzes: bank.quizzes ?? [],
-        color: bank.color ?? '#FFFFFF',
         pendingList: bank.pendingList ?? [],
-        completedList: bank.completedList ?? []
+        completedList: bank.completedList ?? [],
+        color: bank.color ?? '#FFFFFF'
     }
 }
