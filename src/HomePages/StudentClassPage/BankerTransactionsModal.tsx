@@ -7,7 +7,6 @@ import { BankContext } from "../../Authentication/auth";
 import { Bank, DEFAULT_BANK, copy_bank } from "../../Interfaces/BankObject";
 import { BankUser, DEFAULT_BANK_USER } from "../../Interfaces/BankUser";
 import { update_bank_user } from "../../DatabaseFunctions/BankUserFunctions";
-import { DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
 
 export function PendingTransactionModal({pendingList}: {pendingList:Transaction[]}){
@@ -32,7 +31,7 @@ export function PendingTransactionModal({pendingList}: {pendingList:Transaction[
             {pendingList.map((trans:Transaction)=>individualTransaction(trans,current_bank))}
             
         </Modal>
-            <form><Button className="stuButton" style={{ backgroundColor: '#592693' }} onClick={() => setShowModal(true)}>View Pending Transactions</Button></form>
+            <form><Button style={{ backgroundColor: '#592693' }} onClick={() => setShowModal(true)}>View Pending Transactions</Button></form>
     </div>)
 }
 
@@ -60,8 +59,8 @@ function individualTransaction(trans: Transaction,currBank: Bank){
                 <Col>{trans.transfer_amount}</Col>
                 <Col>{trans.receiver_name}</Col>
                 <Col>{trans.receiver_balance}</Col>
-                <Col><Button onClick={()=>confirmTransaction(trans,currBank)}> Confirm This Transaction </Button></Col>
-                <Col><Button onClick={()=>rejectTransaction(trans,currBank)}>Reject This Transaction</Button></Col>
+                <Col><Button className = "tButton" onClick={()=>confirmTransaction(trans,currBank)}> Confirm </Button></Col>
+                <Col><Button className="tButton" onClick={()=>rejectTransaction(trans,currBank)}>Reject </Button></Col>
             </Row>
         </div>
     )
