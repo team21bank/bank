@@ -31,7 +31,6 @@ export function TeacherClassPage({classCode}:{classCode:string}){
             <AddStudentsModal classID={classCode} />
             <StudentList current_bank={current_bank} />
             <Subgroups classID={classCode}></Subgroups>
-            <Button onClick={()=>navigate("/teachers/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
             <AssignQuizzesModal />
             <Outlet></Outlet>
         </div>
