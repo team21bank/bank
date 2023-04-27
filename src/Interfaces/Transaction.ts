@@ -101,11 +101,11 @@ export function makeStudentToStudentTransaction(
     ): Transaction {
     const transaction: Transaction = {
         date: new Date().toISOString(),
-        receiver_balance: Number((receiverBank.balance + Number(amount)).toFixed(2)),
+        receiver_balance: Math.round(((receiverBank.balance + Number(Number(amount).toFixed(2)))+Number.EPSILON)*100)/100,
         receiver_description: senderDesc || "got paid by" + senderAuth.username,
         receiver_name: receiverAuth.username,
         receiver_uid: receiverBank.uid,
-        sender_balance: Number((senderBank.balance - Number(amount)).toFixed(2)),
+        sender_balance: Math.round(((senderBank.balance - Number(Number(amount).toFixed(2)))+Number.EPSILON)*100)/100,
         sender_description: receiverDesc || "paid" + receiverAuth.username,
         sender_name: senderAuth.username,
         sender_uid: senderBank.uid,
