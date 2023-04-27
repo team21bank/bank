@@ -72,7 +72,7 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
         const JValues = Object.values(emails);
         const parsedJValues = JSON.parse(JSON.stringify(JValues))
         for (let i = 0; i < parsedJValues.length; i++) {
-            namesarr.push(parsedJValues[i]["email"])
+            namesarr.push(parsedJValues[i]["username"])
         }
         console.log(`key is ${key}`)
         update(ref(getDatabase(), "/groups/" + code.slice(0, 6) + "/bankObj/subgroups/"+key), {name:groupName,studentList: namesarr });
@@ -91,7 +91,7 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
                 selectedValues={emails} // Preselected value to persist in dropdown
                 onSelect={handleSelect} // Function will trigger on select event
                 onRemove={handleRemove} // Function will trigger on remove event
-                displayValue="email" // Property name to display in the dropdown options
+                displayValue="username" // Property name to display in the dropdown options
                 />
                 <div><small id="set"> {err}</small></div>
            
@@ -144,7 +144,7 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
                 if(subgroup["name"]===group){
                 for(let i = 0; i<subgroup["studentList"].length;i++)
                     parsedJSonValues.forEach((user)=>{
-                    if(user["userObj"]["email"]===subgroup["studentList"][i]){
+                    if(user["userObj"]["username"]===subgroup["studentList"][i]){
                         emails.push(user["userObj"])
                     }
                 })
