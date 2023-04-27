@@ -93,13 +93,6 @@ export function compareDates(a: Transaction, b: Transaction) {
  * @returns A transaction object corresponding to the given transaction information.
  */
 
-/*********************/
-//use this when adding/subtracting decimals!!!!!!
-const roundTo = function (num: number, places: number) {
-    const factor = 10 ** places;
-    return Math.round(num * factor) / factor;
-};
-
 export function makeStudentToStudentTransaction(
     senderAuth: AuthUser, senderBank: BankUser, 
     receiverAuth: AuthUser, receiverBank: BankUser, 
@@ -108,11 +101,11 @@ export function makeStudentToStudentTransaction(
     ): Transaction {
     const transaction: Transaction = {
         date: new Date().toISOString(),
-        receiver_balance: roundTo(receiverBank.balance,2) + (roundTo(Number(amount), 2)),
+        receiver_balance: Number((receiverBank.balance + Number(amount)).toFixed(2)),
         receiver_description: senderDesc || "got paid by" + senderAuth.username,
         receiver_name: receiverAuth.username,
         receiver_uid: receiverBank.uid,
-        sender_balance: roundTo(senderBank.balance, 2) - (roundTo(Number(amount), 2)),
+        sender_balance: Number((senderBank.balance - Number(amount)).toFixed(2)),
         sender_description: receiverDesc || "paid" + receiverAuth.username,
         sender_name: senderAuth.username,
         sender_uid: senderBank.uid,
