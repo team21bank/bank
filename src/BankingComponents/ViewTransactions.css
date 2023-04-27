@@ -5,3 +5,27 @@
 .transaction-history-loss {
     background-color: rgba(247, 85, 85, 0.621);
 }
+
+table {
+    all: inherit;
+    align-self: center;
+    align-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+tbody {
+    width: auto;
+    align-self: center;
+    align-content: center;
+}
+td {
+    width: auto;
+    align-self: center;
+    align-content: center;
+}
+th {
+    width: auto;
+    align-self: center;
+    align-content: center;
+}

@@ -50,9 +50,6 @@ export function BankingDashboard(info: {current_auth_user: AuthUser, current_ban
             <br />
 
             <ViewTransactions transactions={info.bank_transactions} uid={info.current_bank_user.uid}></ViewTransactions>
-            <Button onClick={()=>push_transaction_to_completed(info.bank_id, sampleTransactions[0])}>Push sample 0</Button>
-            <Button onClick={()=>push_transaction_to_completed(info.bank_id, sampleTransactions[1])}>Push sample 1</Button>
-            <Button onClick={()=>push_transaction_to_completed(info.bank_id, sampleTransactions[2])}>Push sample 2</Button>
         </div>
     );
 }

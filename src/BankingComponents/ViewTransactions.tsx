@@ -12,9 +12,9 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
     const [viewAll, setViewAll] = useState<Boolean>(false);
     return viewAll ? 
     //Uses html table to display all the passed in transaction information by mapping the relevant fields of the transaction into the cells of the table.
-    <div style={{display: "wrap", justifyContent: "center", alignItems: "stretch", width: "50%", margin: "auto"}}>
+    <div style={{display: "wrap", justifyContent: "center", justifySelf: "center", alignItems: "stretch", width: "50%", margin: "auto"}}>
         <h4>Your Transactions:</h4>
-        <table>
+        <table style={{all: "inherit"}}>
         <tbody>
             <th>Account</th>
             <th>To/From</th>
