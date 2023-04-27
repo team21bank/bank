@@ -14,6 +14,7 @@ import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 import { PendingTransactionModal } from './BankerTransactionsModal';
 import Select from 'react-select';
 import { BankUser } from "../../Interfaces/BankUser";
+import { TransactionModal } from "./TransactionModal";
 
 export function StudentClassPage({classCode}:{classCode:string}){
     
@@ -34,11 +35,16 @@ export function StudentClassPage({classCode}:{classCode:string}){
         <Container className="student-class-page">
             Welcome to {bank.classTitle}
             <h3>Your total balance is ${bank_user.balance}</h3>
-
-            <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
+            <br></br>
+            <TransactionModal classCode={bank.bankId} />
+            
+            <Button className = "stuButton" style={{backgroundColor: '#FF2E2E'}} onClick={() => navigate("/students/" + classCode.slice(0, 6) + "/quizzes")}> Go to Quizzes </Button>
+            <br></br>
             <div>
-                <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/banking")}> Go to your Banking Dashboard</Button>
+                <br></br>
+                <Button className="stuButton" onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/banking")}> Go to Banking Dashboard</Button>
             </div>
+            
             <br/>
             {bank_user.role[0]===Role.Banker ? <PendingTransactionModal pendingList = {bank.pendingList} /> : <></>}
         </Container>

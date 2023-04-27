@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { SubgroupsPage } from './SubgroupsPage';
-import { AuthContext } from "../../Authentication/auth";
+import { AuthContext, BankContext } from "../../Authentication/auth";
 import { useContext } from 'react';
 import { Button } from "react-bootstrap";
+import { Bank } from '../../Interfaces/BankObject';
 
 
 
@@ -11,6 +12,7 @@ export function Subgroups({ classID }: { classID: string }): JSX.Element {
     const [contents, setContents] = useState<string>("");
     const [view, toggleView] = useState<boolean>(false);
     const navigate = useNavigate();
+    const bank: Bank = useContext(BankContext).bank;
      //let groupRef = ref(getDatabase(), '/groups/' + classID.slice(0,6) + '/bankObj/');
     //let subgroupsRef = ref(getDatabase(), '/groups/' + classID.slice(0, 6) + '/groups/');
 
@@ -31,7 +33,7 @@ export function Subgroups({ classID }: { classID: string }): JSX.Element {
         <div className="teacher-home">
             <br />
             <div>
-                <Button className="groups-button" onClick={reloadPage}>Groups</Button>
+                <Button className="groups-button" onClick={reloadPage}>Villagi di {bank.classTitle }</Button>
             </div>
         </div>
     )

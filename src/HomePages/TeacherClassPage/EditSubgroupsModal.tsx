@@ -10,6 +10,7 @@ import "./styles.css";
 import { Subgroups } from './Subgroups';
 import { Multiselect } from "multiselect-react-dropdown";
 import { BiEdit } from "react-icons/bi";
+import { DEFAULT_BANK_USER, Role, getTitle } from '../../Interfaces/BankUser';
 
 export function EditSubgroupsModal({ code, group }: { code: string , group: string}) {
 
@@ -54,7 +55,8 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
     };
     const errClass = "form-control error";
     const errClass2 = "form-control error"
-    const submitFormData = event => {
+    const submitFormData = e => {
+        e.preventDefault();
         let nameTaken = false;
         if (emails.length === 0||groupName===""||nameTaken) {
         if(emails.length === 0)
@@ -64,20 +66,17 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
             }
         }
         else {
-            handleSubmit()
+            let namesarr: string[] = []
+            const JValues = Object.values(emails);
+            const parsedJValues = JSON.parse(JSON.stringify(JValues))
+            for (let i = 0; i < parsedJValues.length; i++) {
+                namesarr.push(parsedJValues[i]["username"])
+            }
+            console.log(`key is ${key}`)
+            update(ref(getDatabase(), "/groups/" + code.slice(0, 6) + "/bankObj/subgroups/" + key), { name: groupName, studentList: namesarr });
+            hidemodals()
         }
     }
-    const handleSubmit=()=>{
-        let namesarr: string[] = []
-        const JValues = Object.values(emails);
-        const parsedJValues = JSON.parse(JSON.stringify(JValues))
-        for (let i = 0; i < parsedJValues.length; i++) {
-            namesarr.push(parsedJValues[i]["email"])
-        }
-        console.log(`key is ${key}`)
-        update(ref(getDatabase(), "/groups/" + code.slice(0, 6) + "/bankObj/subgroups/"+key), {name:groupName,studentList: namesarr });
-    
-        }
     const updateFormData = event => {
         setgroupName(event.target.value);
     };
@@ -91,7 +90,7 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
                 selectedValues={emails} // Preselected value to persist in dropdown
                 onSelect={handleSelect} // Function will trigger on select event
                 onRemove={handleRemove} // Function will trigger on remove event
-                displayValue="email" // Property name to display in the dropdown options
+                displayValue="username" // Property name to display in the dropdown options
                 />
                 <div><small id="set"> {err}</small></div>
            
@@ -130,33 +129,50 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
             const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
             for(let i = 0; i < stuIDs.length;i++){
                 parsedJSonValues.forEach((user)=>{
-                    if(user["userObj"]["hash"]===stuIDs[i]){
+                    if (user["userObj"]["hash"] === stuIDs[i]) {
+
+                        parsedStudentsJson.forEach((object) => {
+                            if (object["uid"] === stuIDs[i]) {
+                                user["userObj"]["username"] = user["userObj"]["username"] + ":" + Role[(object["role"][0])]
+                            }
+                        })
+
                         studentsList.push(user["userObj"])
                     }
                 })
             }
             setStudents(studentsList)
-
-            var item2 = usersSnapshot.child('groups/' + code.slice(0, 6)+"/bankObj/subgroups" ).val();
-            const JSonValues2 = Object.values(item2);
-            const parsedJSonValues2 = JSON.parse(JSON.stringify(JSonValues2))
+            console.log("AAAAAAAAAAAAAAAAAA")
+            var item2 = usersSnapshot.child('groups/' + code.slice(0, 6) + "/bankObj/subgroups").val();
+            if (item2 !== null) {
+                const JSonValues2 = Object.values(item2);
+                const parsedJSonValues2 = JSON.parse(JSON.stringify(JSonValues2))
+            
             parsedJSonValues2.forEach((subgroup)=>{
                 if(subgroup["name"]===group){
                 for(let i = 0; i<subgroup["studentList"].length;i++)
                     parsedJSonValues.forEach((user)=>{
-                    if(user["userObj"]["email"]===subgroup["studentList"][i]){
-                        emails.push(user["userObj"])
+                        if (user["userObj"]["username"] === subgroup["studentList"][i]) {
+
+                            
+                        console.log("AAAAAAAAAAAAAAAAAA"+user["userObj"])
+                            emails.push(user["userObj"])
                     }
                 })
                 }
             })
+            }
+            else {
+                setEmails([])
+            }
             
 
 
             var item3 = usersSnapshot.child('groups/' + code.slice(0, 6)+"/bankObj").val();
             const JSonValues3 = Object.values(item3);
             const parsedJSonValues3 = JSON.parse(JSON.stringify(JSonValues3))
-            var result = Object.keys(parsedJSonValues3[4]).map((key) => [key.toString(),parsedJSonValues3[4][key]]);
+            console.log(parsedJSonValues3)
+            var result = Object.keys(parsedJSonValues3[6]).map((key) => [key.toString(),parsedJSonValues3[6][key]]);
             result.forEach((object)=>{
                 if(object[1]["name"]===group){
                     setKey(object[0])
