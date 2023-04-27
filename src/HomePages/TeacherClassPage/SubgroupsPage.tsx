@@ -11,6 +11,7 @@ import { Subgroups } from './Subgroups';
 import { Multiselect } from "multiselect-react-dropdown";
 import { EditSubgroupsModal } from './EditSubgroupsModal';
 import { BsTrashFill } from "react-icons/bs";
+import { DEFAULT_BANK_USER, Role, getTitle } from '../../Interfaces/BankUser';
 
 
 export function SubgroupsPage({ classCode }: { classCode: string }) {
@@ -77,7 +78,12 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             console.log(parsedJSonValues)
             for(let i = 0; i < stuIDs.length+1;i++){
                 parsedJSonValues.forEach((user)=>{
-                    if(user["userObj"]["hash"]===stuIDs[i]){
+                    if (user["userObj"]["hash"] === stuIDs[i]) {
+                        parsedStudentsJson.forEach((object) => {
+                            if (object["uid"] === stuIDs[i]) {
+                                user["userObj"]["username"] = user["userObj"]["username"] + ":" + Role[(object["role"][0])]
+                            }
+                        })
                         studentsList.push(user)
                     }
                 })
