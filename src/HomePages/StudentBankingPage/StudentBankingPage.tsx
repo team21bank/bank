@@ -1,4 +1,4 @@
-import { getDatabase, ref, get } from 'firebase/database';
+import { getDatabase, ref, get, set } from 'firebase/database';
 import React, { useContext, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -28,7 +28,15 @@ export function StudentBankingPage({classCode}:{classCode:string}){
     return (
         <div className="student-banking-page">
             <Link to={"/students/"+current_bank.bankId}><Button>Back to class</Button></Link>
-            <BankingDashboard current_auth_user={current_user} current_bank_user={current_bank_user} bank_transactions={sampleTransactions} bank_name={current_bank.classTitle} bank_id={classCode.slice(0,6)}></BankingDashboard>
+            <BankingDashboard 
+            current_auth_user={current_user} 
+            current_bank_user={current_bank_user} 
+            bank_transactions={
+                current_bank.completedList.filter((transaction: Transaction) => 
+                transaction.receiver_uid === current_bank_user.uid  || transaction.sender_uid === current_bank_user.uid)
+            } 
+            bank_name={current_bank.classTitle} 
+            bank_id={classCode.slice(0,6)}></BankingDashboard>
         </div>
         
     )

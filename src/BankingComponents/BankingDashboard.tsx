@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import { BankUser } from '../Interfaces/BankUser';
 import { AuthUser } from '../Interfaces/AuthUser';
 import { push_transaction_to_completed, push_transaction_to_pending, remove_transaction_from_pending } from '../DatabaseFunctions/BankFunctions';
+import { sampleTransactions } from '../Interfaces/Transaction';
 
 /**
  * Takes in bank and user information alongside transactions to display to the student information about how they've earned/used money
