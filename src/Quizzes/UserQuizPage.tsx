@@ -6,6 +6,8 @@ import { Quiz } from "../Interfaces/Quiz";
 import { get_quizzes, update_quiz } from "../DatabaseFunctions/QuizFunctions";
 import "./UserQuizPage.css"
 import { EditQuizModal } from "./EditQuiz";
+import { ImportQuiz } from "./ImportQuiz";
+import { DownloadTemplate } from "./DownloadTemplate";
 
 
 export function UserQuizPage(): JSX.Element {
@@ -28,11 +30,12 @@ export function UserQuizPage(): JSX.Element {
             <div className="quiz-list">
                 {quizzes.map((q, index) => <QuizCard key={index} quiz={q} set_quiz={(new_quiz)=>set_quiz_at_index(index, new_quiz)}/>)}
             </div>
+            <ImportQuiz></ImportQuiz>
+            <DownloadTemplate></DownloadTemplate>
             <Link to="/teachers/createquiz"><Button>Create A New Quiz</Button></Link>
         </Container>
     )
 }
-
 
 function QuizCard({quiz, set_quiz}: {quiz: Quiz, set_quiz: (new_quiz: Quiz)=>void}): JSX.Element {
     function save_quiz(quiz: Quiz) {
