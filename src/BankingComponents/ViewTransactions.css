@@ -1,12 +1,18 @@
 .transaction-history-gain {
     background-color: rgba(128, 255, 0, 0.662);
+    width: auto;
+    align-self: center;
+    align-content: center;
 }
 
 .transaction-history-loss {
     background-color: rgba(247, 85, 85, 0.621);
+    width: auto;
+    align-self: center;
+    align-content: center;
 }
 
-table {
+table.viewtransactions {
     all: inherit;
     align-self: center;
     align-content: center;
@@ -14,17 +20,7 @@ table {
     flex-wrap: wrap;
 }
 
-tbody {
-    width: auto;
-    align-self: center;
-    align-content: center;
-}
-td {
-    width: auto;
-    align-self: center;
-    align-content: center;
-}
-th {
+.viewtransactions_inner{
     width: auto;
     align-self: center;
     align-content: center;
