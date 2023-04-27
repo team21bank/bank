@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Button, Card, Container } from "react-bootstrap";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../Authentication/auth";
 import { Quiz } from "../Interfaces/Quiz";
@@ -30,9 +30,10 @@ export function UserQuizPage(): JSX.Element {
             <div className="quiz-list">
                 {quizzes.map((q, index) => <QuizCard key={index} quiz={q} set_quiz={(new_quiz)=>set_quiz_at_index(index, new_quiz)}/>)}
             </div>
-            <ImportQuiz></ImportQuiz>
-            <DownloadTemplate></DownloadTemplate>
-            <Link to="/teachers/createquiz"><Button>Create A New Quiz</Button></Link>
+            <Row>
+                <Col style={{textAlign: "right"}}><ImportQuiz/></Col>
+                <Col style={{textAlign: "left"}}><Link to="/teachers/createquiz"><Button size="lg">Create A New Quiz</Button></Link></Col>
+            </Row>
         </Container>
     )
 }

@@ -23,7 +23,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
     const bank_context = useContext(BankContext);
     useEffect(() => { //Update the bank context if this page is navigated to
         displayGroups();
-    }, []);
+    }, [classCode]);
 
     const current_bank_user = current_bank.studentList.find(val => val.uid === current_user.hash) ?? DEFAULT_BANK_USER;
 
@@ -114,12 +114,17 @@ export function TransactionModal({ classCode }: { classCode: string }) {
             let receiverAuthUser: AuthUser = DEFAULT_AUTH_USER;
             let receiverBankUser = current_bank.studentList.find(val => val.uid === receiverID) ?? DEFAULT_BANK_USER;
 
+            let snapshot = await get(ref(getDatabase(app), "/users/" + receiverID + "/userObj"));
+            if (snapshot.exists()) {
+                receiverAuthUser= snapshot.val();
+            }
             //initialize receiverAuthUser (for transaction object)
             //studentAuthUserList
-            ([] as AuthUser[]).forEach(student => {
+            /*([] as AuthUser[]).forEach(student => {
                 if (student.hash === receiverID)
                     receiverAuthUser = student
-            })
+                console.log("AAAAAAAAAAAAAAAAAAAA"+receiverAuthUser.username)
+            })*/
 
             //parse studentsJson values and push each value to submitJson, which will be used to find sender and receiver information
             //also add each student to the submitJson
@@ -250,8 +255,8 @@ export function TransactionModal({ classCode }: { classCode: string }) {
 
     return (
         <div className="student-class-page">
-            Students in City: {classCode}
-            <Table id="table-line" align="center" >
+            Students in City: {current_bank.classTitle}
+            <table id="table-line" align="center" >
 
                 <th id="th-width">Village name</th>
                 <th id="th-width">Students</th>
@@ -261,7 +266,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
                         <td id="table-line">{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
                     </tr>
                 ))}
-            </Table>
+            </table>
             <br></br>
             <Modal show={showTransactionModal} onHide={hideTransactions}>
                 <Modal.Header closeButton><h2>Create Payment Request</h2></Modal.Header>

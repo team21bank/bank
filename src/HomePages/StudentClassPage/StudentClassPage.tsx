@@ -56,7 +56,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                         <StudentBankingPage classCode={bank.bankId}/>
                     </Container>
                 </Tab>
-                <Tab eventKey="Pay" title="Pay Your Classmates">
+                <Tab eventKey="Pay" title="Classmates">
                     <Container fluid className="tab-page-container">
                         <TransactionModal classCode={bank.bankId} />
                     </Container>

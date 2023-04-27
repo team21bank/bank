@@ -39,10 +39,10 @@ export function PendingTransactionModal({pendingList}: {pendingList:Transaction[
 function confirmTransaction(trans: Transaction,currBank: Bank){
     remove_transaction_from_pending(currBank.bankId,trans);
     let sender: BankUser = currBank.studentList.find(val => val.uid === trans.sender_uid) ?? DEFAULT_BANK_USER;
-    sender.balance = sender.balance-trans.transfer_amount;
+    sender.balance = Number(Number(sender.balance-Number(trans.transfer_amount.toFixed(2))).toFixed(2));
     update_bank_user(currBank.bankId,sender.uid,sender);
     let receiver: BankUser = currBank.studentList.find(val => val.uid === trans.receiver_uid) ?? DEFAULT_BANK_USER;
-    receiver.balance = receiver.balance + trans.transfer_amount;
+    receiver.balance = Number(Number(receiver.balance + Number(trans.transfer_amount.toFixed(2))).toFixed(2));
     update_bank_user(currBank.bankId,receiver.uid,receiver);
     push_transaction_to_completed(currBank.bankId,trans)
 }

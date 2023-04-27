@@ -1,4 +1,4 @@
-import { Container, Form, InputGroup, Accordion, Row, Button, Table, Modal, Col } from "react-bootstrap";
+import { Container, Form, InputGroup, Accordion, Row, Button, Table, Modal, Col, Image } from "react-bootstrap";
 import { Quiz } from "../Interfaces/Quiz";
 import { default_quizquestion, QuizQuestion } from "../Interfaces/QuizQuestion";
 import { useContext, useState } from "react";
@@ -144,6 +144,7 @@ function QuestionForm({question, set_question, index}: {question: QuizQuestion, 
                             placeholder=""
                         />
                     </InputGroup>
+                    <Image thumbnail src={question.picture_url} style={{maxHeight: "200px"}}/>
                     <OptionsTable options={question.options} set_options={set_options}/>
                 </Form>
                 <Button variant="danger" onClick={()=>set_question(null)}>Delete Question<BsTrash/></Button>
