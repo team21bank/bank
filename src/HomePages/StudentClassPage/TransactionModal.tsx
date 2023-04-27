@@ -23,7 +23,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
     const bank_context = useContext(BankContext);
     useEffect(() => { //Update the bank context if this page is navigated to
         displayGroups();
-    }, []);
+    }, [classCode]);
 
     const current_bank_user = current_bank.studentList.find(val => val.uid === current_user.hash) ?? DEFAULT_BANK_USER;
 
