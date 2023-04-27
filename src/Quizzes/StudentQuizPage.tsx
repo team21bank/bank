@@ -10,6 +10,8 @@ import { QuizQuestion } from "../Interfaces/QuizQuestion";
 import { Link } from "react-router-dom";
 import { update_bank_user } from "../DatabaseFunctions/BankUserFunctions";
 import { Bank } from "../Interfaces/BankObject";
+import { push_transaction_to_completed } from "../DatabaseFunctions/BankFunctions";
+import { makeSystemToStudentTransaction } from "../Interfaces/Transaction";
 
 
 //make an import JSON feature
@@ -101,7 +103,7 @@ function TakingQuiz({quiz, close_quiz}: {quiz: Quiz, close_quiz: ()=>void}): JSX
         const money = Math.floor(quiz.money * (answer_arr.length===0 ? 1 : total/answer_arr.length));
         set_total_earned(money);
         
-        submit_quiz(bank, user.hash, quiz, answer_arr).then(() => {
+        submit_quiz(user, bank, user.hash, quiz, answer_arr).then(() => {
             set_submitted(true);
         });
     }
@@ -185,7 +187,9 @@ function DisplayQuestions({questions, set_answer, index}: {questions: QuizQuesti
 }
 
 
-function submit_quiz(bank: Bank, uid: string, quiz: Quiz, answer_arr: boolean[]): Promise<void> {
+function submit_quiz(
+    user: {email: string; username: string; id: string; avatar: string; groups: string[]; isTeacher: boolean; hash: string; quizzes: string[];}, 
+    bank: Bank, uid: string, quiz: Quiz, answer_arr: boolean[]): Promise<void> {
     let total = 0;
     answer_arr.forEach(b => {if(b){total+=1}});
 
@@ -194,5 +198,15 @@ function submit_quiz(bank: Bank, uid: string, quiz: Quiz, answer_arr: boolean[])
 
     const bank_user = bank.studentList.find(val => val.uid === uid);
     if(bank_user===undefined) {return Promise.reject("Error submitting quiz")}
+    //Hooked up to transactions in the database; Rounds money to be consistent with what we do when students pay eachother.
+    roundTo(Number(money), 2)
+    push_transaction_to_completed(bank.bankId, makeSystemToStudentTransaction(user, bank_user, money, "academics", "quizzes", "Earned " + money + " from taking " + quiz.title))
     return update_bank_user(bank, bank_user.uid, {...bank_user, balance: bank_user.balance+money, finishedQuizzes: [...bank_user.finishedQuizzes, quiz.hash]});
 }
+
+//Originally from TransactionModel.tsx
+//use this when subtracting!!!!!! See below for example on how to use to update value in db (commented out)
+const roundTo = function (num: number, places: number) {
+    const factor = 10 ** places;
+    return Math.round(num * factor) / factor;
+};
