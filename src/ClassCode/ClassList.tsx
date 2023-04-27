@@ -73,7 +73,7 @@ function ClassButton({ bank_id }: { bank_id: string }): JSX.Element {
         { label: "Yellow", value: 5, color: "#FFFF00" },
         { label: "Purple", value: 6, color: "#A45EE9" },
         { label: "Gold", value: 7, color: "#F7E78A" },
-        { label: "Silver", value: 8, color: "#DCDCDC" },
+        { label: "Silver", value: 8, color: "#C0C0C0" },
         { label: "White", value: 9, color: "#FFFFFF" },
         { label: "Black", value: 10, color: "#454545" },
         { label: "Brown", value: 11, color: "#795C34" },
