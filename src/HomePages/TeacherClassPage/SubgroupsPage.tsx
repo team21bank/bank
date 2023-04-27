@@ -259,17 +259,17 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             <Button onClick={showmodals}>Add Group</Button>
             <br></br>
             <br></br>
-            <table align="center">
+            <table id="table-line" align="center">
                 <th></th>
-                <th>Village name</th>
-                <th>Students</th>
+                <th id="th-width">Village name</th>
+                <th id="th-width">Students</th>
 
                 {villageArr.map((village, index) => (
                     <tr data-index={index}>
-                        <td><Button style={{ background: 'gray' }} onClick={()=>deleteGroup(village.name)}><BsTrashFill color="red"/></Button></td>
-                        <td>{village.name}</td>
-                        <td>{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
-                        <td><EditSubgroupsModal code = {classCode} group = {village.name}/></td>
+                        <td id="table-line"><Button style={{ background: 'gray' }} onClick={()=>deleteGroup(village.name)}><BsTrashFill color="red"/></Button></td>
+                        <td id="table-line">{village.name}</td>
+                        <td id="table-line">{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
+                        <td id="table-line"><EditSubgroupsModal code = {classCode} group = {village.name}/></td>
                     </tr>
                 ))}
             </table>
