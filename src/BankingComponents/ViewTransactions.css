@@ -12,7 +12,7 @@
     align-content: center;
 }
 
-table .viewtransactions {
+table.viewtransactions {
     all: inherit;
     align-self: center;
     align-content: center;

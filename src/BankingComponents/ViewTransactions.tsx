@@ -14,7 +14,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
     //Uses html table to display all the passed in transaction information by mapping the relevant fields of the transaction into the cells of the table.
     <div style={{display: "wrap", justifyContent: "center", justifySelf: "center", alignItems: "stretch", width: "50%", margin: "auto"}}>
         <h4>Your Transactions:</h4>
-        <table className="viewtransactions"style={{all: "inherit"}}>
+        <table className="viewtransactions">
         <tbody className="viewtransactions_inner">
             <th className="viewtransactions_inner">Account</th>
             <th className="viewtransactions_inner">To/From</th>
@@ -24,7 +24,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
             <th className="viewtransactions_inner">Date</th>
         {(transactionsAndUID.transactions).sort((a,b) => compareDates(b,a)).map((transaction: Transaction): JSX.Element => {
         return transaction.receiver_uid === transactionsAndUID.uid ? (
-        <tr>
+        <tr className="viewtransactions_inner">
             <td className="viewtransactions">{transaction.receiver_name}</td>
             <td className="viewtransactions">{"From " + transaction.sender_name}</td>
             <td className="viewtransactions">{transaction.receiver_description}</td>
@@ -35,7 +35,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
         )
         :
         (
-        <tr>
+        <tr className="viewtransactions_inner">
             <td className="viewtransactions">{transaction.sender_name}</td>
             <td className="viewtransactions">{"To " + transaction.receiver_name}</td>
             <td className="viewtransactions">{transaction.sender_description}</td>
@@ -64,7 +64,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
             <th className="viewtransactions_inner">Date</th>
         {(transactionsAndUID.transactions).sort((a,b) => compareDates(b,a)).slice(0,5).map((transaction: Transaction): JSX.Element => {
         return transaction.receiver_uid === transactionsAndUID.uid ? (
-        <tr>
+        <tr className="viewtransactions_inner">
             <td className="viewtransactions">{transaction.receiver_name}</td>
             <td className="viewtransactions">{"To " + transaction.sender_name}</td>
             <td className="viewtransactions">{transaction.receiver_description}</td>
@@ -75,7 +75,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
         )
         :
         (
-        <tr>
+        <tr className="viewtransactions_inner">
             <td className="viewtransactions">{transaction.sender_name}</td>
             <td className="viewtransactions">{"From " + transaction.receiver_name}</td>
             <td className="viewtransactions">{transaction.sender_description}</td>
