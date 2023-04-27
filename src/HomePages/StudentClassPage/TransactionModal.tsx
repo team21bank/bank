@@ -266,7 +266,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
                         <td id="table-line">{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
                     </tr>
                 ))}
-            </Table>
+            </table>
             <br></br>
             <Modal show={showTransactionModal} onHide={hideTransactions}>
                 <Modal.Header closeButton><h2>Create Payment Request</h2></Modal.Header>
