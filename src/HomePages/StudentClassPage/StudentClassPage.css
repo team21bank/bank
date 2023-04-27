@@ -1,15 +1,11 @@
 .student-class-page {
     text-align: center;
 }
-#table-line {
-    
-    border-width: 1px;
-    border-color: #aaaaaa;
-    border-style: solid;
+
+.button-row {
+    width: 60em
 }
-#th-width {
-    width: 150px;
-    border-width: 1px;
-    border-color: #aaaaaa;
-    border-style: solid;
+
+.tab-page-container {
+    padding-top: 4vh;
 }

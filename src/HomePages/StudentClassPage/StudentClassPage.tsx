@@ -1,6 +1,5 @@
-import { getDatabase, ref, get } from 'firebase/database';
 import React, { useContext, useEffect, useState  } from 'react';
-import { Modal, Button, Container } from 'react-bootstrap';
+import { Modal, Button, Container, Row, Col, Tab, Tabs } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, BankContext, BANK_STORAGE_KEY, change_bank } from "../../Authentication/auth";
 import { Bank } from '../../Interfaces/BankObject';
@@ -14,6 +13,10 @@ import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 import { PendingTransactionModal } from './BankerTransactionsModal';
 import Select from 'react-select';
 import { BankUser } from "../../Interfaces/BankUser";
+import { TransactionModal } from "./TransactionModal";
+import { UserQuizPage } from '../../Quizzes/UserQuizPage';
+import { StudentQuizPage } from '../../Quizzes/StudentQuizPage';
+import { StudentBankingPage } from '../StudentBankingPage/StudentBankingPage';
 
 export function StudentClassPage({classCode}:{classCode:string}){
     
@@ -31,16 +34,41 @@ export function StudentClassPage({classCode}:{classCode:string}){
 
 
     return (
-        <Container className="student-class-page">
-            Welcome to {bank.classTitle}
-            <h3>Your total balance is ${bank_user.balance}</h3>
-
-            <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/quizzes")}> Go to Quizzes </Button>
-            <div>
-                <Button onClick={()=>navigate("/students/"+classCode.slice(0,6)+"/banking")}> Go to your Banking Dashboard</Button>
-            </div>
-            <br/>
-            {bank_user.role[0]===Role.Banker ? <PendingTransactionModal pendingList = {bank.pendingList} /> : <></>}
+        <Container fluid className="student-class-page">
+            <h1 style={{backgroundColor: bank.color, paddingBottom: ".5em", paddingTop: ".5em", fontSize: "70px"}}>{bank.classTitle}</h1>
+            <Tabs
+                fill
+                defaultActiveKey="Home"
+            >
+                
+                <Tab eventKey="Home" title="Home">
+                    <Container fluid className="tab-page-container">
+                        <h3>Your total balance is ${bank_user.balance}</h3>
+                    </Container>
+                </Tab>
+                <Tab eventKey="Quizzes" title="Quizzes">
+                    <Container fluid className="tab-page-container">
+                        <StudentQuizPage/>
+                    </Container>
+                </Tab>
+                <Tab eventKey="Banking" title="Banking">
+                    <Container fluid className="tab-page-container">
+                        <StudentBankingPage classCode={bank.bankId}/>
+                    </Container>
+                </Tab>
+                <Tab eventKey="Pay" title="Pay Your Classmates">
+                    <Container fluid className="tab-page-container">
+                        <TransactionModal classCode={bank.bankId} />
+                    </Container>
+                </Tab>
+                {bank_user.role[0]===Role.Banker ? (
+                    <Tab eventKey="banker" title="PendingTransactions">
+                        <Container fluid className="tab-page-container">
+                            <PendingTransactionModal pendingList = {bank.pendingList} />
+                        </Container>
+                    </Tab>
+                ) : (<></>)}
+            </Tabs>
         </Container>
     )
 }

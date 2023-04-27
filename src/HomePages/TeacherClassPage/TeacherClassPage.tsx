@@ -27,7 +27,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
     
     return (
         <div className="teacher-class-page">
-            Welcome back to your class: {classCode.slice(6)}
+            Welcome back to your class: {current_bank.classTitle}
             <AddStudentsModal classID={classCode} />
             <StudentList current_bank={current_bank} />
             <Subgroups classID={classCode}></Subgroups>

@@ -74,3 +74,16 @@
             background-color: #f2f9fc;
             color: #333;
         }
+
+#table-line {
+    border-width: 1px;
+    border-color: #aaaaaa;
+    border-style: solid;
+}
+
+#th-width {
+    width: 150px;
+    border-width: 1px;
+    border-color: #aaaaaa;
+    border-style: solid;
+}

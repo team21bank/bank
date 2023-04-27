@@ -11,6 +11,7 @@ import { Subgroups } from './Subgroups';
 import { Multiselect } from "multiselect-react-dropdown";
 import { EditSubgroupsModal } from './EditSubgroupsModal';
 import { BsTrashFill } from "react-icons/bs";
+import { DEFAULT_BANK_USER, Role, getTitle } from '../../Interfaces/BankUser';
 
 
 export function SubgroupsPage({ classCode }: { classCode: string }) {
@@ -77,7 +78,12 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             console.log(parsedJSonValues)
             for(let i = 0; i < stuIDs.length+1;i++){
                 parsedJSonValues.forEach((user)=>{
-                    if(user["userObj"]["hash"]===stuIDs[i]){
+                    if (user["userObj"]["hash"] === stuIDs[i]) {
+                        parsedStudentsJson.forEach((object) => {
+                            if (object["uid"] === stuIDs[i]) {
+                                user["userObj"]["username"] = user["userObj"]["username"] + ":" + Role[(object["role"][0])]
+                            }
+                        })
                         studentsList.push(user)
                     }
                 })
@@ -173,9 +179,14 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
             var item = usersSnapshot.child('groups/' + classCode.slice(0, 6) + '/bankObj/subgroups').val();
-            const JSonValues = Object.values(item);
-            const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
-            setVillages(parsedJSonValues)
+            if (item !== null) {
+                const JSonValues = Object.values(item);
+                const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
+                setVillages(parsedJSonValues)
+            }
+            else {
+                setVillages([])
+            }
             var item2 = usersSnapshot.child('groups/' + classCode.slice(0, 6) ).val();
             const JSonValues2 = Object.values(item2);
             const parsedJSonValues2 = JSON.parse(JSON.stringify(JSonValues2))
@@ -248,17 +259,17 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             <Button onClick={showmodals}>Add Group</Button>
             <br></br>
             <br></br>
-            <table align="center">
+            <table id="table-line" align="center">
                 <th></th>
-                <th>Village name</th>
-                <th>Students</th>
+                <th id="th-width">Village name</th>
+                <th id="th-width">Students</th>
 
                 {villageArr.map((village, index) => (
                     <tr data-index={index}>
-                        <td><Button style={{ background: 'gray' }} onClick={()=>deleteGroup(village.name)}><BsTrashFill color="red"/></Button></td>
-                        <td>{village.name}</td>
-                        <td>{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
-                        <td><EditSubgroupsModal code = {classCode} group = {village.name}/></td>
+                        <td id="table-line"><Button style={{ background: 'gray' }} onClick={()=>deleteGroup(village.name)}><BsTrashFill color="red"/></Button></td>
+                        <td id="table-line">{village.name}</td>
+                        <td id="table-line">{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
+                        <td id="table-line"><EditSubgroupsModal code = {classCode} group = {village.name}/></td>
                     </tr>
                 ))}
             </table>

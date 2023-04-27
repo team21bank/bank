@@ -10,6 +10,7 @@ import { ColorModal } from "../HomePages/TeacherHomePage/ColorModal"
 import Select from 'react-select';
 import { getDatabase, ref, get, update, set, push, remove } from 'firebase/database';
 import { app } from "../firebase";
+import { DEFAULT_AUTH_USER } from '../Interfaces/AuthUser';
 
 export function ClassList({ classes }: { classes: string[] }): JSX.Element {
     return (
@@ -22,6 +23,7 @@ export function ClassList({ classes }: { classes: string[] }): JSX.Element {
 
 function ClassButton({ bank_id }: { bank_id: string }): JSX.Element {
     const [bank, set_bank] = useState<Bank>(copy_bank(DEFAULT_BANK));
+    const current_user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
 
     const user = useContext(AuthContext).user;
     useEffect(() => {
@@ -43,7 +45,10 @@ function ClassButton({ bank_id }: { bank_id: string }): JSX.Element {
     }
     const [showModal, setShowModal] = React.useState(false)
     function test(classcode: string) {
-        setShowModal(!showModal)
+        if (current_user.isTeacher)
+            setShowModal(!showModal)
+        else
+            setShowModal(false)
     }
 
     const handleSelect = (e) => {
