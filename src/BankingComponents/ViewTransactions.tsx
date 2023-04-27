@@ -15,7 +15,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
     <div style={{display: "wrap", justifyContent: "center", justifySelf: "center", alignItems: "stretch", width: "50%", margin: "auto"}}>
         <h4>Your Transactions:</h4>
         <table className="viewtransactions"style={{all: "inherit"}}>
-        <tbody>
+        <tbody className="viewtransactions_inner">
             <th className="viewtransactions_inner">Account</th>
             <th className="viewtransactions_inner">To/From</th>
             <th className="viewtransactions_inner">Description</th>
@@ -55,7 +55,7 @@ export function ViewTransactions(transactionsAndUID: {transactions: Transaction[
     <div style={{display: "wrap", justifyContent: "center", alignItems: "stretch", width: "50%", margin: "auto"}}>
         <h4>Your Transactions:</h4>
         <table className="viewtransactions">
-        <tbody>
+        <tbody className="viewtransactions_inner">
             <th className="viewtransactions_inner">Account</th>
             <th className="viewtransactions_inner">To/From</th>
             <th className="viewtransactions_inner">Description</th>
