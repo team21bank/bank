@@ -16,23 +16,24 @@ export function PendingTransactionModal({pendingList}: {pendingList:Transaction[
         pendingList=[]
     }
     return(
-    <div>
-        <Modal size='lg' show={showModal} onHide={()=>setShowModal(false)}>
-            <Modal.Header closeButton><h2>Accept or Reject Transactions</h2></Modal.Header>
-            <Row>
-                <Col>Sender</Col>
-                <Col>Sender's Balance</Col>
-                <Col>Amount to Transfer</Col>
-                <Col>Receiver</Col>
-                <Col>Receiver's Balance</Col>
-                <Col>Confirm Transaction</Col>
-                <Col>Reject Transaction</Col>
-            </Row>
-            {pendingList.map((trans:Transaction)=>individualTransaction(trans,current_bank))}
-            
-        </Modal>
-            <form><Button style={{ backgroundColor: '#592693' }} onClick={() => setShowModal(true)}>View Pending Transactions</Button></form>
-    </div>)
+        <div>
+            <Modal size='lg' show={showModal} onHide={()=>setShowModal(false)}>
+                <Modal.Header closeButton><h2>Accept or Reject Transactions</h2></Modal.Header>
+                <Row>
+                    <Col>Sender</Col>
+                    <Col>Sender's Balance</Col>
+                    <Col>Amount to Transfer</Col>
+                    <Col>Receiver</Col>
+                    <Col>Receiver's Balance</Col>
+                    <Col>Confirm Transaction</Col>
+                    <Col>Reject Transaction</Col>
+                </Row>
+                {pendingList.map((trans:Transaction)=>individualTransaction(trans,current_bank))}
+                
+            </Modal>
+            <Button size="lg" variant="secondary" onClick={() => setShowModal(true)}>View Pending Transactions</Button>
+        </div>
+    )
 }
 
 function confirmTransaction(trans: Transaction,currBank: Bank){

@@ -1,6 +1,6 @@
 import { getDatabase, ref, get } from 'firebase/database';
 import React, { useContext, useEffect, useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, BankContext, BANK_STORAGE_KEY, change_bank } from "../../Authentication/auth";
 import { Bank, DEFAULT_BANK } from '../../Interfaces/BankObject';
@@ -209,7 +209,6 @@ export function TransactionModal({ classCode }: { classCode: string }) {
             const parsedjsonValues = (JSON.parse(JSON.stringify(jsonValues)))
             setVillages(parsedjsonValues)
             setVillages((current) => current.filter((fruit) => fruit.name !== "placeholder"));
-            console.log("AAAAAAAAAAAAAAAAAA" + villages)
 
 
             //set student list
@@ -252,7 +251,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
     return (
         <div className="student-class-page">
             Students in City: {classCode}
-            <table id="table-line" align="center" >
+            <Table id="table-line" align="center" >
 
                 <th id="th-width">Village name</th>
                 <th id="th-width">Students</th>
@@ -262,7 +261,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
                         <td id="table-line">{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
                     </tr>
                 ))}
-            </table>
+            </Table>
             <br></br>
             <Modal show={showTransactionModal} onHide={hideTransactions}>
                 <Modal.Header closeButton><h2>Create Payment Request</h2></Modal.Header>
@@ -332,11 +331,7 @@ export function TransactionModal({ classCode }: { classCode: string }) {
                     <Button onClick={hideTransactions}>Cancel</Button>
                 </Modal.Footer>
             </Modal>
-            <div>
-                <Button className="stuButton" style={{ backgroundColor:"#118C4F"}} onClick={showTransactions}>Pay/Create Payment Request</Button>
-            </div>
-            <br />
-
+            <Button variant="success" size="lg" onClick={showTransactions}>Pay/Create Payment Request</Button>
         </div>
     )
 }
