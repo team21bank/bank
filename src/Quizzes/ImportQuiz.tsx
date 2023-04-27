@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { ref, getDatabase, set } from '@firebase/database';
 import { Quiz } from "../Interfaces/Quiz";  
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
@@ -9,6 +9,7 @@ import { AuthContext } from "../Authentication/auth";
 import { create_new_quiz } from "../DatabaseFunctions/QuizFunctions";
 import { update_auth_user } from "../DatabaseFunctions/UserFunctions";
 import { useNavigate } from "react-router-dom";
+import { DownloadTemplate } from "./DownloadTemplate";
 
 export function ImportQuiz(/*{classCode}: {classCode: string}*/): JSX.Element {
     
@@ -16,7 +17,7 @@ export function ImportQuiz(/*{classCode}: {classCode: string}*/): JSX.Element {
     const navigate = useNavigate();
 
     const [contents, setContents] = useState<string>("");
-    const [view, toggleView] = useState<boolean>(false);
+    const [show, set_show] = useState<boolean>(false);
 
     //let groupRef = ref(getDatabase(), '/groups/' + currClass.bankId + '/bankObj/');
     const user = useContext(AuthContext).user;
@@ -52,12 +53,10 @@ export function ImportQuiz(/*{classCode}: {classCode: string}*/): JSX.Element {
         }
     }
 
-    function changeToggle() {
-        toggleView(true);
-    }
+    
 
     function makeChange() {
-        toggleView(false);
+        set_show(false);
         //parsing CSV rows
         const splitRow = contents.split(/\r?\n/);
         let split = splitRow.map((aString: string): string[] => aString.replace("\\\"", "\"").split(","));
@@ -121,20 +120,21 @@ export function ImportQuiz(/*{classCode}: {classCode: string}*/): JSX.Element {
 
     return (
         <div>
-            {!view && <Button onClick={changeToggle}>Import Quiz File</Button>}
-            {view && (
-                <div>
-                    <table width="40%" align="center">
-                        <td>
-                            <Form.Group controlId="exampleForm">
-                                <Form.Label>Upload a quiz CSV</Form.Label>
-                                <Form.Control type="file" onChange={importFile} />
-                            </Form.Group>
-                            <Button onClick={makeChange}>Create New Quiz</Button>
-                        </td>
-                    </table>
-                </div>
-            )}
+            <Modal show={show} onHide={() => set_show(false)}>
+                <Modal.Header closeButton><h2>Import Quiz File</h2></Modal.Header>
+                <Modal.Body>
+                    <Form.Group controlId="exampleForm">
+                        <Form.Label>Upload a quiz CSV</Form.Label>
+                        <Form.Control type="file" onChange={importFile} />
+                    </Form.Group>
+                    <br/>
+                    <Row>
+                        <Col><DownloadTemplate/></Col>
+                        <Col style={{textAlign: "right"}}><Button variant="success" disabled={contents===""} onClick={makeChange}>Create New Quiz</Button></Col>
+                    </Row>
+                </Modal.Body>
+            </Modal>
+            <Button size="lg" onClick={() => set_show(true)}>Import Quiz File</Button>
         </div>
     );
 }
