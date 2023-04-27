@@ -173,9 +173,14 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             const db = await getDatabase(app);
             const usersSnapshot = await get(ref(db, '/'))
             var item = usersSnapshot.child('groups/' + classCode.slice(0, 6) + '/bankObj/subgroups').val();
-            const JSonValues = Object.values(item);
-            const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
-            setVillages(parsedJSonValues)
+            if (item !== null) {
+                const JSonValues = Object.values(item);
+                const parsedJSonValues = JSON.parse(JSON.stringify(JSonValues))
+                setVillages(parsedJSonValues)
+            }
+            else {
+                setVillages([])
+            }
             var item2 = usersSnapshot.child('groups/' + classCode.slice(0, 6) ).val();
             const JSonValues2 = Object.values(item2);
             const parsedJSonValues2 = JSON.parse(JSON.stringify(JSonValues2))
