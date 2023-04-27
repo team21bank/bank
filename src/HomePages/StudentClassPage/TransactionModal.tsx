@@ -114,12 +114,17 @@ export function TransactionModal({ classCode }: { classCode: string }) {
             let receiverAuthUser: AuthUser = DEFAULT_AUTH_USER;
             let receiverBankUser = current_bank.studentList.find(val => val.uid === receiverID) ?? DEFAULT_BANK_USER;
 
+            let snapshot = await get(ref(getDatabase(app), "/users/" + receiverID + "/userObj"));
+            if (snapshot.exists()) {
+                receiverAuthUser= snapshot.val();
+            }
             //initialize receiverAuthUser (for transaction object)
             //studentAuthUserList
-            ([] as AuthUser[]).forEach(student => {
+            /*([] as AuthUser[]).forEach(student => {
                 if (student.hash === receiverID)
                     receiverAuthUser = student
-            })
+                console.log("AAAAAAAAAAAAAAAAAAAA"+receiverAuthUser.username)
+            })*/
 
             //parse studentsJson values and push each value to submitJson, which will be used to find sender and receiver information
             //also add each student to the submitJson
