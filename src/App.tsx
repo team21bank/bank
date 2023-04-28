@@ -61,9 +61,6 @@ function AppBody(): JSX.Element {
         <Route path="/students" element={<StudentNavbar />}>
           <Route path="home" element={<StudentHomePage />}/>
           {user.groups.map(str => <Route path={str.slice(0,6)} key={str} element={<StudentClassPage classCode={str} />}></Route>)}
-          {/*quizzes assigned to a class*/}
-          {user.groups.map(str => <Route path={str+"/quizzes"} key={str} element={<StudentQuizPage/>}/>)}
-          {user.groups.map(str => <Route path={str.slice(0,6)+"/banking"} key={str} element={<StudentBankingPage classCode={str}/>} />)}
         </Route>
       </Routes>
     </HashRouter>

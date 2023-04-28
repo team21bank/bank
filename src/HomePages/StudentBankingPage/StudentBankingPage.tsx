@@ -15,28 +15,26 @@ import { BankingDashboard } from '../../BankingComponents/BankingDashboard';
 import { sampleTransactions } from '../../Interfaces/Transaction';
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
-export function StudentBankingPage({classCode}:{classCode:string}){
-    window.sessionStorage.setItem(BANK_STORAGE_KEY, classCode.slice(0,6));
-
-    const current_user: AuthUser = useContext(AuthContext).user;
-    const current_bank: Bank = useContext(BankContext).bank;
+export function StudentBankingPage(){
+    const user: AuthUser = useContext(AuthContext).user;
+    const bank: Bank = useContext(BankContext).bank;
     
     
     //Real transactions will eventually be saved in the database under a BankUser object
-    const current_bank_user = current_bank.studentList.find(val => val.uid===current_user.hash) ?? DEFAULT_BANK_USER;
+    const bank_user = bank.studentList.find(val => val.uid===user.hash) ?? DEFAULT_BANK_USER;
 
     return (
         <div className="student-banking-page">
-            <Link to={"/students/"+current_bank.bankId}><Button>Back to class</Button></Link>
+            <Link to={"/students/"+bank.bankId}><Button>Back to class</Button></Link>
             <BankingDashboard 
-            current_auth_user={current_user} 
-            current_bank_user={current_bank_user} 
+            current_auth_user={user} 
+            current_bank_user={bank_user} 
             bank_transactions={
-                current_bank.completedList.filter((transaction: Transaction) => 
-                transaction.receiver_uid === current_bank_user.uid  || transaction.sender_uid === current_bank_user.uid)
+                bank.completedList.filter((transaction: Transaction) => 
+                transaction.receiver_uid === bank_user.uid  || transaction.sender_uid === bank_user.uid)
             } 
-            bank_name={current_bank.classTitle} 
-            bank_id={classCode.slice(0,6)}></BankingDashboard>
+            bank_name={bank.classTitle} 
+            bank_id={bank.bankId}></BankingDashboard>
         </div>
         
     )
