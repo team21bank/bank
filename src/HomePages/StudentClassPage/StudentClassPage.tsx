@@ -40,7 +40,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 fill
                 defaultActiveKey="Home"
             >
-                
                 <Tab eventKey="Home" title="Home">
                     <Container fluid className="tab-page-container">
                         <h3>Your total balance is ${bank_user.balance}</h3>
@@ -53,12 +52,12 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 </Tab>
                 <Tab eventKey="Banking" title="Banking">
                     <Container fluid className="tab-page-container">
-                        <StudentBankingPage classCode={bank.bankId}/>
+                        <StudentBankingPage />
                     </Container>
                 </Tab>
                 <Tab eventKey="Pay" title="Classmates">
                     <Container fluid className="tab-page-container">
-                        <TransactionModal classCode={bank.bankId} />
+                        <TransactionModal />
                     </Container>
                 </Tab>
                 {bank_user.role[0]===Role.Banker ? (
