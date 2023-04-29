@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Modal, Button, Row, Col } from "react-bootstrap";
+import { Modal, Button, Row, Col, Table, Container } from "react-bootstrap";
 import { Transaction } from '../../Interfaces/Transaction';
 import { remove_transaction_from_pending } from "../../DatabaseFunctions/BankFunctions";
 import { push_transaction_to_completed } from "../../DatabaseFunctions/BankFunctions";
@@ -10,29 +10,41 @@ import { update_bank_user } from "../../DatabaseFunctions/BankUserFunctions";
 
 
 export function PendingTransactionModal({pendingList}: {pendingList:Transaction[]}){
-    const [showModal, setShowModal] = useState(false);
-    const current_bank: Bank = useContext(BankContext).bank;
+    const bank: Bank = useContext(BankContext).bank;
     if (pendingList===undefined){
         pendingList=[]
     }
+
     return(
-        <div>
-            <Modal size='lg' show={showModal} onHide={()=>setShowModal(false)}>
-                <Modal.Header closeButton><h2>Accept or Reject Transactions</h2></Modal.Header>
-                <Row>
-                    <Col>Sender</Col>
-                    <Col>Sender's Balance</Col>
-                    <Col>Amount to Transfer</Col>
-                    <Col>Receiver</Col>
-                    <Col>Receiver's Balance</Col>
-                    <Col>Confirm Transaction</Col>
-                    <Col>Reject Transaction</Col>
-                </Row>
-                {pendingList.map((trans:Transaction)=>individualTransaction(trans,current_bank))}
-                
-            </Modal>
-            <Button size="lg" variant="secondary" onClick={() => setShowModal(true)}>View Pending Transactions</Button>
-        </div>
+        <Container fluid style={{display: "flex", justifyContent: "center"}}>
+            <Table striped bordered style={{maxWidth: "80%"}}>
+                <thead style={{fontSize: "130%"}}>
+                    <tr>
+                        <th>Sender</th>
+                        <th>Sender's Balance</th>
+                        <th>Amount to Transfer</th>
+                        <th>Receiver</th>
+                        <th>Receiver's Balance</th>
+                        <th>Confirm or Reject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {pendingList.map((trans:Transaction, index) => 
+                        <tr key={index}>
+                            <td>{trans.sender_name}</td>
+                            <td>{trans.sender_balance}</td>
+                            <td>{trans.transfer_amount}</td>
+                            <td>{trans.receiver_name}</td>
+                            <td>{trans.receiver_balance}</td>
+                            <td>
+                                <Button variant="success" onClick={()=>confirmTransaction(trans,bank)}> Confirm </Button>
+                                <Button variant="danger" onClick={()=>rejectTransaction(trans,bank)} style={{marginLeft: "5px"}}>Reject </Button>
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </Table>
+        </Container>
     )
 }
 
@@ -49,20 +61,4 @@ function confirmTransaction(trans: Transaction,currBank: Bank){
 
 function rejectTransaction(trans: Transaction,currBank: Bank){
     remove_transaction_from_pending(currBank.bankId,trans);
-}
-
-function individualTransaction(trans: Transaction,currBank: Bank){
-    return(
-        <div>
-            <Row>
-                <Col>{trans.sender_name}</Col>
-                <Col>{trans.sender_balance}</Col>
-                <Col>{trans.transfer_amount}</Col>
-                <Col>{trans.receiver_name}</Col>
-                <Col>{trans.receiver_balance}</Col>
-                <Col><Button className = "tButton" onClick={()=>confirmTransaction(trans,currBank)}> Confirm </Button></Col>
-                <Col><Button className="tButton" onClick={()=>rejectTransaction(trans,currBank)}>Reject </Button></Col>
-            </Row>
-        </div>
-    )
 }

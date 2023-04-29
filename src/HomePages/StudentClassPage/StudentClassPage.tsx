@@ -55,13 +55,13 @@ export function StudentClassPage({classCode}:{classCode:string}){
                         <StudentBankingPage />
                     </Container>
                 </Tab>
-                <Tab eventKey="Pay" title="Classmates">
+                <Tab eventKey="Pay" title="Pay Your Classmates">
                     <Container fluid className="tab-page-container">
                         <TransactionModal />
                     </Container>
                 </Tab>
                 {bank_user.role[0]===Role.Banker ? (
-                    <Tab eventKey="banker" title="PendingTransactions">
+                    <Tab eventKey="banker" title="Pending Transactions">
                         <Container fluid className="tab-page-container">
                             <PendingTransactionModal pendingList = {bank.pendingList} />
                         </Container>
