@@ -3,10 +3,6 @@ import { AuthContext } from "../../Authentication/auth";
 import "./StudentHomePage.css";
 import { JoinClassButton } from "../../ClassCode/JoinClass/JoinClass"
 import { ClassList } from '../../ClassCode/ClassList';
-import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
-import { Transaction } from '../../Interfaces/Transaction';
-import { BalanceGraph } from '../../BankingComponents/BalanceGraph';
-import { EarningChart } from '../../BankingComponents/EarningChart';
 import { DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 
 
