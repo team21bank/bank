@@ -25,7 +25,6 @@ export function StudentBankingPage(){
 
     return (
         <div className="student-banking-page">
-            <Link to={"/students/"+bank.bankId}><Button>Back to class</Button></Link>
             <BankingDashboard 
             current_auth_user={user} 
             current_bank_user={bank_user} 
