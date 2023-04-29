@@ -46,7 +46,7 @@ ChartJS.register(
 export function BalanceGraph(): JSX.Element {
   const user = useContext(AuthContext).user;
   const bank = useContext(BankContext).bank;
-  const transactions = bank.completedList.filter(t => t.receiver_uid === user.hash || t.sender_uid === user.hash).sort((a, b) => compareDates(a, b))
+  const transactions = (bank.completedList as Record<string, Transaction[]>)[user.hash].sort((a, b) => compareDates(a, b));
 
   const balanceHistory: number[] = transactions.map(t => t.receiver_uid === user.hash ? t.receiver_balance : t.sender_balance || 0)
   const dataPoints = transactions.map((transaction: Transaction): string => {

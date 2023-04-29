@@ -72,7 +72,7 @@ function EarningsChart() {
   const user = useContext(AuthContext).user;
   const bank = useContext(BankContext).bank;
 
-  const earnings = bank.completedList.filter(t => t.receiver_uid === user.hash);
+  const earnings = (bank.completedList as Record<string, Transaction[]>)[user.hash].filter(t => t.receiver_uid === user.hash);
 
   const earnData = {
     labels: getCategories(earnings),
@@ -112,7 +112,7 @@ function SpendingChart() {
   const user = useContext(AuthContext).user;
   const bank = useContext(BankContext).bank;
 
-  const losses = bank.completedList.filter(t => t.sender_uid === user.hash);
+  const losses = (bank.completedList as Record<string, Transaction[]>)[user.hash].filter(t => t.sender_uid === user.hash);
 
   const spendData = {
     labels: getCategories(losses),
