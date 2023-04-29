@@ -1,13 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { Button, Container, Table } from 'react-bootstrap';
+import { Alert, Button, Container, Table } from 'react-bootstrap';
 import { compareDates, Transaction } from '../Interfaces/Transaction'; //Used to sort the passed in Transactions by date
 import './ViewTransactions.css'
 import { AuthContext, BankContext } from '../Authentication/auth';
 
-/**
- * Takes in the student's transactions, as well as their BankUser ID (BankUser.uid) and displays the transactions in a table.
- * @param transactionsAndUID An object with 2 fields; transactions, an Array of transactions, and uid, a string for the BankUser's id.
- */
 export function ViewTransactions(): JSX.Element {
     //State variable to be able to expand/contract transactions
     const [viewAll, setViewAll] = useState<Boolean>(false);
@@ -47,10 +43,14 @@ export function ViewTransactions(): JSX.Element {
                     )}
                     <tr>
                         <td colSpan={6}>
-                            {viewAll ? (
-                                <Button onClick={()=>setViewAll(false)}>Collapse transactions</Button>
+                            {transactions.length===0 ? (
+                                <Alert variant="info">No transactions!</Alert>
                             ) : (
-                                <Button onClick={()=>setViewAll(true)}>View all transactions</Button>
+                                viewAll ? (
+                                    <Button onClick={()=>setViewAll(false)}>Collapse transactions</Button>
+                                ) : (
+                                    <Button onClick={()=>setViewAll(true)}>View all transactions</Button>
+                                )
                             )}
                         </td>
                     </tr>

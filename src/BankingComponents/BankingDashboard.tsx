@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ViewTransactions } from './ViewTransactions';
 import { BalanceGraph } from './BalanceGraph';
 import { EarningChart } from './EarningChart';
 import { Transaction } from '../Interfaces/Transaction';
 import { Button } from 'react-bootstrap';
-import { BankUser } from '../Interfaces/BankUser';
+import { BankUser, DEFAULT_BANK_USER } from '../Interfaces/BankUser';
 import { AuthUser } from '../Interfaces/AuthUser';
 import { push_transaction_to_completed, push_transaction_to_pending, remove_transaction_from_pending } from '../DatabaseFunctions/BankFunctions';
 import { sampleTransactions } from '../Interfaces/Transaction';
+import { AuthContext, BankContext } from '../Authentication/auth';
 
-/**
- * Takes in bank and user information alongside transactions to display to the student information about how they've earned/used money
- * @param info The current information pertaining to the current student and bank  @property {AuthUser} current_auth_user, @property {BankUser} current_bank_user, @property {Transaction[]} bank_transactions, @property {string} bank_name
- */
-export function BankingDashboard(info: {current_auth_user: AuthUser, current_bank_user: BankUser, bank_transactions: Transaction[], bank_name: string, bank_id: string}){
+
+export function BankingDashboard(){
+    const user = useContext(AuthContext).user;
+    const bank = useContext(BankContext).bank;
+    const bank_user = bank.studentList.find(val => val.uid===user.hash) ?? DEFAULT_BANK_USER;
+    
     const [showPie, setShowPie] = useState<boolean>(false);
     const [showGraph, setShowGraph] = useState<boolean>(false);
     return (
@@ -25,7 +27,7 @@ export function BankingDashboard(info: {current_auth_user: AuthUser, current_ban
                 <br />
 
                 {showPie && 
-                    <EarningChart transactions={info.bank_transactions} uid={info.current_bank_user.uid}></EarningChart>
+                    <EarningChart transactions={bank.completedList} uid={user.hash}></EarningChart>
                 }
 
                 <Button style={{margin: "1px"}} onClick={() => setShowGraph(!showGraph)}>
@@ -34,7 +36,7 @@ export function BankingDashboard(info: {current_auth_user: AuthUser, current_ban
                 <br />
 
                 {showGraph && 
-                <BalanceGraph transactions={info.bank_transactions} uid={info.current_bank_user.uid}></BalanceGraph>
+                <BalanceGraph transactions={bank.completedList} uid={user.hash}></BalanceGraph>
                 }
             </div>
             <br />

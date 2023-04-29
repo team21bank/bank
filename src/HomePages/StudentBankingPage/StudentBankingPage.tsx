@@ -25,15 +25,7 @@ export function StudentBankingPage(){
 
     return (
         <div className="student-banking-page">
-            <BankingDashboard 
-            current_auth_user={user} 
-            current_bank_user={bank_user} 
-            bank_transactions={
-                bank.completedList.filter((transaction: Transaction) => 
-                transaction.receiver_uid === bank_user.uid  || transaction.sender_uid === bank_user.uid)
-            } 
-            bank_name={bank.classTitle} 
-            bank_id={bank.bankId}></BankingDashboard>
+            <BankingDashboard />
         </div>
         
     )

@@ -63,7 +63,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 {bank_user.role[0]===Role.Banker ? (
                     <Tab eventKey="banker" title="Pending Transactions">
                         <Container fluid className="tab-page-container">
-                            <PendingTransactionPage pendingList = {bank.pendingList} />
+                            <PendingTransactionPage />
                         </Container>
                     </Tab>
                 ) : (<></>)}
