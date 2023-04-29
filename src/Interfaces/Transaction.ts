@@ -149,12 +149,13 @@ LaterDate.setHours(20);
 export const sampleTransactions:Transaction[] = [
     {
     date: "2023-04-16T03:16:46.782Z",
-    receiver_balance: 650,
+    receiver_balance: 65000,
     receiver_description: "starting balance",
-    receiver_name: "testUser" || "user",
-    receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2" || "0",
+    receiver_name: "testUser" || "user2222",
+    receiver_uid: "hhQ3wIiLFVU1xMHm9lIjBGemjw73",
     sender_description: "paid out starting balance",
     sender_name: "system",
+    sender_uid: "wJ5TlBFTDUWzlybo0Tt8yD67Rfh2",
     transfer_amount: 500,
     type: "misc"
     },
@@ -163,7 +164,7 @@ export const sampleTransactions:Transaction[] = [
         receiver_balance: 150,
         receiver_description: "weekly earnings",
         receiver_name: "testUser" || "user",
-        receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2" || "0",
+        receiver_uid: "4FLcNX4wNMXnmIIcf5Dp6QY1Vas2",
         sender_description: "paid out weekly earnings",
         sender_name: "system",
         transfer_amount: 150,
@@ -289,14 +290,15 @@ export const sampleTransactions:Transaction[] = [
         type: "newCategory3"
     },
     {
-        date: "2023-05-21T12:16:49.722Z",
+        date: "2023-06-21T12:16:49.722Z",
         receiver_balance: 1025,
         receiver_description: "got ??? by TEST",
         receiver_name: "TEST",
-        receiver_uid: "0",
+        receiver_uid: "hhQ3wIiLFVU1xMHm9lIjBGemjw73",
         sender_balance: 700,
         sender_description: "??? TEST",
         sender_name: "testUser" || "user",
+        sender_uid: "wJ5TlBFTDUWzlybo0Tt8yD67Rfh2",
         transfer_amount: 25,
         type: "newCategory4"
     }

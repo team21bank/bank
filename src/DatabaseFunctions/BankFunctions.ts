@@ -2,6 +2,7 @@ import { ref, getDatabase, get, set, remove } from "firebase/database";
 import { Bank, DEFAULT_BANK, copy_bank, resolve_nullish_bank } from "../Interfaces/BankObject";
 import { Transaction } from "../Interfaces/Transaction";
 import { FirebaseApp } from "firebase/app";
+import { BankUser } from "../Interfaces/BankUser";
 
 /** */
 export async function update_bank(bank_id: string, new_bank: Bank, app?: FirebaseApp): Promise<void> {
@@ -70,8 +71,8 @@ export function push_transaction_to_pending(bank_id: string, transaction: Transa
     get(pending_list_ref).then(pending_list_snapshot => {
         let pending_list = pending_list_snapshot.val();
         if( pending_list == null ) {
-            pending_list = [transaction]
-            set(pending_list_ref, pending_list)
+            pending_list = [transaction];
+            set(pending_list_ref, pending_list);
             return;
         }
 
@@ -100,35 +101,68 @@ export function remove_transaction_from_pending(bank_id: string, transaction: Tr
         let indexRemove = pending_list.findIndex((pending_transaction: Transaction) => JSON.stringify(pending_transaction) == JSON.stringify(transaction));
         //If the transaction isn't in the array, do nothing
         if(indexRemove == -1) {
-            alert("There was no transaction ")
+            alert("There was no transaction ");
             return;
         }
         //Removes the matching transaction from the array
-        pending_list.splice(indexRemove, 1)
+        pending_list.splice(indexRemove, 1);
         //update the pendingList
         set(pending_list_ref, pending_list);
     });
 }
 
-/**
- * @param bank_id The bank the transaction is occurring in
- * @param transaction The Transaction object representing the transaction that is being added to the completed transaction list
- */
-//Adds the Transaction object provided to the end of /groups/bank_id/completedList
+
 export function push_transaction_to_completed(bank_id: string, transaction: Transaction) {
-    let completed_list_ref = ref(getDatabase(), "/groups/"+bank_id+"/bankObj/completedList");
-    get(completed_list_ref).then(completed_list_snapshot => {
+    //Get reference to the completedList for the receiver
+    let receiver_completed_list_ref = ref(getDatabase(), "/groups/"+bank_id+"/bankObj/completedList/" + transaction.receiver_uid);
+
+    //Gets snapshot of the given path
+    get(receiver_completed_list_ref).then(completed_list_snapshot => {
+
+        //Local variable for the completedList 
         let completed_list = completed_list_snapshot.val();
+
+        //If nothing there yet, just create the list and finish the get block
         if( completed_list == null ) {
-            completed_list = [transaction]
-            set(completed_list_ref, completed_list)
+            completed_list = [transaction];
+            set(receiver_completed_list_ref, completed_list);
             return;
         }
 
-        //Push new Transaction to the end of pendingList
+        //Push new Transaction to the end of completedList
         completed_list.push(transaction);
 
-        //update the pendingList
-        set(completed_list_ref, completed_list);
+        //update the completedList
+        set(receiver_completed_list_ref, completed_list);
+    });
+
+    //If there's a sender student, repeat the above process for the sender's completedList
+    if(transaction.sender_uid) {
+        let sender_completed_list_ref = ref(getDatabase(), "/groups/"+bank_id+"/bankObj/completedList/" + transaction.sender_uid);
+        get(sender_completed_list_ref).then(completed_list_snapshot => {
+            let completed_list = completed_list_snapshot.val();
+            if( completed_list == null ) {
+                completed_list = [transaction];
+                set(sender_completed_list_ref, completed_list);
+                return;
+            }
+
+            //Push new Transaction to the end of completedList
+            completed_list.push(transaction);
+
+            //update the actual completedList
+            set(sender_completed_list_ref, completed_list);
+        });
+    }
+
+}
+
+export function display_type_of_thing(bank_id: String) {
+    let bank_completed_list_ref = ref(getDatabase(), "/groups/"+bank_id+"/bankObj/completedList/")
+    get(bank_completed_list_ref).then(completed_list_snapshot => {
+        let completed_list = completed_list_snapshot.val();
+        console.log(completed_list);
+        console.log(typeof(completed_list));
+        console.log(Object.keys(completed_list.fields))
     });
 }

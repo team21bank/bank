@@ -8,7 +8,7 @@ import { DEFAULT_BANK_USER } from '../../Interfaces/BankUser';
 import { ViewTransactions } from '../../BankingComponents/ViewTransactions';
 import "./StudentBankingPage.css";
 import { Transaction } from '../../Interfaces/Transaction';
-import { get_bank_then } from '../../DatabaseFunctions/BankFunctions';
+import { display_type_of_thing, get_bank_then } from '../../DatabaseFunctions/BankFunctions';
 import { app } from "../../firebase";
 import { Subgroup } from "../../Interfaces/Subgroup";
 import { BankingDashboard } from '../../BankingComponents/BankingDashboard';
@@ -30,9 +30,8 @@ export function StudentBankingPage(){
             current_auth_user={user} 
             current_bank_user={bank_user} 
             bank_transactions={
-                bank.completedList.filter((transaction: Transaction) => 
-                transaction.receiver_uid === bank_user.uid  || transaction.sender_uid === bank_user.uid)
-            } 
+                (bank.completedList as Record<string, Transaction[]>)[bank_user.uid] || []
+            }
             bank_name={bank.classTitle} 
             bank_id={bank.bankId}></BankingDashboard>
         </div>
