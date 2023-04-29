@@ -17,8 +17,8 @@ export function ViewTransactions(): JSX.Element {
                             .slice(0, viewAll ? undefined : 5)
 
     return (
-        <Container>
-            <h4>Your Transactions:</h4>
+        <Container style={{paddingTop: "8vh"}}>
+            <h2>Your Transactions:</h2>
             <Table striped>
                 <thead>
                     <tr>

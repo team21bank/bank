@@ -1,22 +1,15 @@
-import React, { useContext, useEffect, useState  } from 'react';
-import { Modal, Button, Container, Row, Col, Tab, Tabs } from 'react-bootstrap';
+import React, { useContext, useEffect } from 'react';
+import { Container, Tab, Tabs } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, BankContext, BANK_STORAGE_KEY, change_bank } from "../../Authentication/auth";
 import { Bank } from '../../Interfaces/BankObject';
-import { DEFAULT_BANK_USER, Role, getTitle } from '../../Interfaces/BankUser';
+import { DEFAULT_BANK_USER, Role } from '../../Interfaces/BankUser';
 import "./StudentClassPage.css";
-import { push_transaction_to_pending } from '../../DatabaseFunctions/BankFunctions';
-import { app } from "../../firebase";
-import CurrencyInput from "react-currency-input-field";
-
-import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
+import { AuthUser } from '../../Interfaces/AuthUser';
 import { PendingTransactionPage } from './BankerTransactionsModal';
-import Select from 'react-select';
-import { BankUser } from "../../Interfaces/BankUser";
 import { TransactionModal } from "./TransactionModal";
-import { UserQuizPage } from '../../Quizzes/UserQuizPage';
 import { StudentQuizPage } from '../../Quizzes/StudentQuizPage';
-import { StudentBankingPage } from '../StudentBankingPage/StudentBankingPage';
+import { StudentClassHomePage } from './StudentClassHomePage';
 
 export function StudentClassPage({classCode}:{classCode:string}){
     
@@ -39,20 +32,16 @@ export function StudentClassPage({classCode}:{classCode:string}){
             <Tabs
                 fill
                 defaultActiveKey="Home"
+                style={{fontSize: "1.4vw"}}
             >
                 <Tab eventKey="Home" title="Home">
                     <Container fluid className="tab-page-container">
-                        <h3>Your total balance is ${bank_user.balance}</h3>
+                        <StudentClassHomePage/>
                     </Container>
                 </Tab>
                 <Tab eventKey="Quizzes" title="Quizzes">
                     <Container fluid className="tab-page-container">
                         <StudentQuizPage/>
-                    </Container>
-                </Tab>
-                <Tab eventKey="Banking" title="Banking">
-                    <Container fluid className="tab-page-container">
-                        <StudentBankingPage />
                     </Container>
                 </Tab>
                 <Tab eventKey="Pay" title="Pay Your Classmates">
