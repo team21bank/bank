@@ -10,7 +10,7 @@ import { app } from "../../firebase";
 import CurrencyInput from "react-currency-input-field";
 
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
-import { PendingTransactionModal } from './BankerTransactionsModal';
+import { PendingTransactionPage } from './BankerTransactionsModal';
 import Select from 'react-select';
 import { BankUser } from "../../Interfaces/BankUser";
 import { TransactionModal } from "./TransactionModal";
@@ -63,7 +63,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
                 {bank_user.role[0]===Role.Banker ? (
                     <Tab eventKey="banker" title="Pending Transactions">
                         <Container fluid className="tab-page-container">
-                            <PendingTransactionModal pendingList = {bank.pendingList} />
+                            <PendingTransactionPage pendingList = {bank.pendingList} />
                         </Container>
                     </Tab>
                 ) : (<></>)}

@@ -9,7 +9,7 @@ import { BankUser, DEFAULT_BANK_USER } from "../../Interfaces/BankUser";
 import { update_bank_user } from "../../DatabaseFunctions/BankUserFunctions";
 
 
-export function PendingTransactionModal({pendingList}: {pendingList:Transaction[]}){
+export function PendingTransactionPage({pendingList}: {pendingList:Transaction[]}){
     const bank: Bank = useContext(BankContext).bank;
     if (pendingList===undefined){
         pendingList=[]
@@ -20,11 +20,10 @@ export function PendingTransactionModal({pendingList}: {pendingList:Transaction[
             <Table striped bordered style={{maxWidth: "80%"}}>
                 <thead style={{fontSize: "130%"}}>
                     <tr>
-                        <th>Sender</th>
-                        <th>Sender's Balance</th>
-                        <th>Amount to Transfer</th>
-                        <th>Receiver</th>
-                        <th>Receiver's Balance</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Amount</th>
+                        <th>Reason</th>
                         <th>Confirm or Reject</th>
                     </tr>
                 </thead>
@@ -32,10 +31,9 @@ export function PendingTransactionModal({pendingList}: {pendingList:Transaction[
                     {pendingList.map((trans:Transaction, index) => 
                         <tr key={index}>
                             <td>{trans.sender_name}</td>
-                            <td>{trans.sender_balance}</td>
-                            <td>{trans.transfer_amount}</td>
                             <td>{trans.receiver_name}</td>
-                            <td>{trans.receiver_balance}</td>
+                            <td>{trans.transfer_amount}</td>
+                            <td>{trans.sender_description}</td>
                             <td>
                                 <Button variant="success" onClick={()=>confirmTransaction(trans,bank)}> Confirm </Button>
                                 <Button variant="danger" onClick={()=>rejectTransaction(trans,bank)} style={{marginLeft: "5px"}}>Reject </Button>
