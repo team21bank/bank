@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { Transaction, compareDates } from '../Interfaces/Transaction';
-import { Button } from "react-bootstrap";
+import { Button, Row } from "react-bootstrap";
+import { AuthContext, BankContext } from "../Authentication/auth";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -66,48 +67,12 @@ export function getCategories(transactions: Transaction[]): string[] {
     return Array.from(new Set(categoryList));
 }
 
-export function EarningChart(transactionsAndUID: {transactions: Transaction[], uid: string}): JSX.Element {
-    //State variables to handle hiding/showing the 2 individual pie charts.
-    const [showSpending, setShowSpending] = useState<boolean>(true);
-    //Sorts the passed in transactions
-    transactionsAndUID.transactions.sort((a, b) => compareDates(a, b)).map((transaction: Transaction): number => {
-    return transaction.receiver_uid === transactionsAndUID.uid ? transaction.receiver_balance : transaction.sender_balance || 0;
-  })
-  //Gets the transactions where the given user gained money 
-  const earnings = transactionsAndUID.transactions.filter((transaction: Transaction): boolean => {
-      return transaction.receiver_uid === transactionsAndUID.uid;
-  });
-  //Gets the transactions where the given user lost money
-  const losses = transactionsAndUID.transactions.filter((transaction: Transaction) => {
-      return transaction.receiver_uid !== transactionsAndUID.uid;
-  });
 
-  const spendData = {
-    labels: getCategories(losses),
-    datasets: [
-      {
-        label: "Amount of Money spent on",
-        data: getSpendingPerCategory(losses),
-        backgroundColor: [
-          "rgba(255, 0, 0, 0.8)",
-          "rgba(255, 112, 0, 0.8)",
-          "rgba(255, 201, 0, 0.8)",
-          "rgba(205, 192, 192, 0.8)",
-          "rgba(183, 102, 0, 0.8)",
-          "rgba(255, 64, 159, 0.8)"
-        ],
-        borderColor: [
-          "rgba(235, 0, 0, 1)",
-          "rgba(235, 92, 0, 1)",
-          "rgba(235, 171, 0, 1)",
-          "rgba(175, 162, 162, 1)",
-          "rgba(183, 72, 0, 1)",
-          "rgba(225, 34, 129, 1)"
-        ],
-        borderWidth: 2
-      }
-    ]
-  };
+function EarningsChart() {
+  const user = useContext(AuthContext).user;
+  const bank = useContext(BankContext).bank;
+
+  const earnings = (bank.completedList as Record<string, Transaction[]>)[user.hash].filter(t => t.receiver_uid === user.hash);
 
   const earnData = {
     labels: getCategories(earnings),
@@ -136,30 +101,72 @@ export function EarningChart(transactionsAndUID: {transactions: Transaction[], u
     ]
   };
   return (
-    <div style={{width: "auto", justifySelf: "center", margin: "1px"}}>
-        <h2>Pie Charts</h2>
-        {showSpending && 
-            <div>
-                <h4>Spending</h4>
-                <div style={{width: "auto", marginLeft: "auto", display: "inline-flex"}}>
-                    <Pie data={spendData}/>
-                </div>
-            </div>}
-        {!showSpending && 
-            <p>
-                <h4>Earnings</h4>
-                <div style={{width: "auto", marginLeft: "auto", display: "inline-flex"}}> 
-                    <Pie data={earnData}/>
-                </div>
-            </p>}
-        <Button style={{marginRight: "2px"}} onClick={() => setShowSpending(!showSpending)}>
-            Swap to {showSpending ? "Earnings " : "Spending "} Chart
-        </Button>
+    <div>
+      <h3>Earnings</h3>
+      <Pie data={earnData}/>
     </div>
   )
 }
-/*
-export function BalanceGraph({transactions}: {transactions: Transaction[]}): JSX.Element {
-  return <Line options={options} data={data} />;
+
+function SpendingChart() {
+  const user = useContext(AuthContext).user;
+  const bank = useContext(BankContext).bank;
+
+  const losses = (bank.completedList as Record<string, Transaction[]>)[user.hash].filter(t => t.sender_uid === user.hash);
+
+  const spendData = {
+    labels: getCategories(losses),
+    datasets: [
+      {
+        label: "Amount of Money spent on",
+        data: getSpendingPerCategory(losses),
+        backgroundColor: [
+          "rgba(255, 0, 0, 0.8)",
+          "rgba(255, 112, 0, 0.8)",
+          "rgba(255, 201, 0, 0.8)",
+          "rgba(205, 192, 192, 0.8)",
+          "rgba(183, 102, 0, 0.8)",
+          "rgba(255, 64, 159, 0.8)"
+        ],
+        borderColor: [
+          "rgba(235, 0, 0, 1)",
+          "rgba(235, 92, 0, 1)",
+          "rgba(235, 171, 0, 1)",
+          "rgba(175, 162, 162, 1)",
+          "rgba(183, 72, 0, 1)",
+          "rgba(225, 34, 129, 1)"
+        ],
+        borderWidth: 2
+      }
+    ]
+  };
+
+  return (
+    <div>
+      <h3>Spending</h3>
+      <Pie data={spendData}/>
+    </div>
+  )
 }
-*/
+
+
+export function PieCharts() {
+  const [view_spending, set_view_spending] = useState(false);
+  return (
+    <div style={{paddingTop: "5vh"}}>
+      {view_spending ? (
+        <div>
+          <SpendingChart/>
+          <br/>
+          <Button size="lg" onClick={()=>set_view_spending(false)}>View earnings instead</Button>
+        </div>
+      ) : (
+        <div>
+          <EarningsChart/>
+          <br/>
+          <Button size="lg" onClick={()=>set_view_spending(true)}>View spending instead</Button>
+        </div>
+      )}
+    </div>
+  )
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -11,6 +11,8 @@ import {
   } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Transaction, compareDates } from '../Interfaces/Transaction';
+import { Container } from 'react-bootstrap';
+import { AuthContext, BankContext } from '../Authentication/auth';
 
 //Registers the ChartJS elements, consistent with the library's demos.
 ChartJS.register(
@@ -31,25 +33,23 @@ ChartJS.register(
     plugins: {
       legend: {
         position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'Balance History',
-      },
+      }
     },
   }
 
 
 /**
- * Given a BankUser's uid as well as transactions they were involved with, displays a chart with balance history for that user. 
- * @param transactionsAndUID @property {Transaction[]} transactions, @property {string} uid
+ * Displays a chart with balance history for that user. 
+ *
  * @returns JSX visuals of the user's balance history over the period of the passed in transactions
  */
-export function BalanceGraph(transactionsAndUID: {transactions: Transaction[], uid: string}): JSX.Element {
-  const balanceHistory = transactionsAndUID.transactions.sort((a, b) => compareDates(a, b)).map((transaction: Transaction): number => {
-    return transaction.receiver_uid === transactionsAndUID.uid ? transaction.receiver_balance : transaction.sender_balance || 0;
-  })
-  const dataPoints = transactionsAndUID.transactions.map((transaction: Transaction): string => {
+export function BalanceGraph(): JSX.Element {
+  const user = useContext(AuthContext).user;
+  const bank = useContext(BankContext).bank;
+  const transactions = (bank.completedList as Record<string, Transaction[]>)[user.hash].sort((a, b) => compareDates(a, b));
+
+  const balanceHistory: number[] = transactions.map(t => t.receiver_uid === user.hash ? t.receiver_balance : t.sender_balance || 0)
+  const dataPoints = transactions.map((transaction: Transaction): string => {
     return new Date(Date.parse(transaction.date)).toLocaleString();
   })
   const newData = {
@@ -63,5 +63,10 @@ export function BalanceGraph(transactionsAndUID: {transactions: Transaction[], u
     }
   ]
 };
-  return <Line options={options} data={newData} />;
+  return (
+    <Container fluid>
+      <h3>Balance History:</h3>
+      <Line options={options} data={newData} />
+    </Container>
+  );
 }

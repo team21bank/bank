@@ -15,9 +15,7 @@ import { DefaultHomePage } from './HomePages/DefaultHomePage/DefaultHomePage';
 import { StudentClassPage } from './HomePages/StudentClassPage/StudentClassPage';
 import {TeacherClassPage} from './HomePages/TeacherClassPage/TeacherClassPage'
 import { EditProfile } from './HomePages/EditProfilePage/EditProfilePage';
-import { StudentQuizPage } from './Quizzes/StudentQuizPage';
 import { SubgroupsPage } from './HomePages/TeacherClassPage/SubgroupsPage';
-import { StudentBankingPage } from './HomePages/StudentBankingPage/StudentBankingPage';
 import { CreateQuizPage } from './Quizzes/CreateQuizPage';
 import { UserQuizPage } from './Quizzes/UserQuizPage';
 
