@@ -20,7 +20,7 @@ export function EditProfile(): JSX.Element {
 
     //updates the database instance of currUser
     function saveToDatabase() {
-        update_auth_user(user.id, new_user)
+        update_auth_user(user.hash, new_user)
     }
 
     const home_page = user.isTeacher ? "/teachers/home" : "/students/home";
