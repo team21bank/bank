@@ -5,8 +5,9 @@ import { get_auth_users } from "../../../DatabaseFunctions/UserFunctions";
 import { AuthUser, DEFAULT_AUTH_USER } from "../../../Interfaces/AuthUser";
 import { BankUser, MasteryLevel, Role, getTitle } from "../../../Interfaces/BankUser";
 import { delete_bank_users, update_bank_user } from "../../../DatabaseFunctions/BankUserFunctions";
-import { Button, Container, Form, InputGroup, Modal, Row, Table } from "react-bootstrap";
+import { Button, Container, Form, Image, InputGroup, Modal, Row, Table } from "react-bootstrap";
 import { BankContext } from "../../../Authentication/auth";
+import { Icon } from "../../../Avatar/Icon";
 
 
 //This file is kind of a mess, sorry everyone
@@ -79,7 +80,10 @@ function StudentRow({user_pair}: {user_pair: UserPair}): JSX.Element {
     return (
         <>
             <tr onClick={() => setShowModal(true)} className="student-row">
-                <td>{bank_user.alias==="" ? auth_user.username : bank_user.alias}</td>
+                <td>
+                    <Icon avatar={auth_user.avatar}></Icon>
+                    {bank_user.alias==="" ? auth_user.username : bank_user.alias}
+                </td>
                 <td>{getTitle(bank_user.role)}</td>
                 <td>{bank_user.balance}</td>
             </tr>
