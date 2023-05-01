@@ -1,13 +1,29 @@
 import React from 'react';
+import { Icon } from '../Avatar/Icon';
+import { AuthUser } from '../Interfaces/AuthUser';
+import { image_map } from './README';
 
-import "./ImageGallery.css";
-
-export function ImageGallery(): JSX.Element {
 
 
-    alert("Sorry, this feature is still being implemented.");
+export function ImageGallery({set_new_user, user}: {set_new_user: (AuthUser)=>void, user: AuthUser}): JSX.Element {
 
-    return <div>We're sorry :(</div>
+    function update(user: AuthUser, avatar: string) {
+        set_new_user({...user, groups: [...user.groups], avatar: avatar});
+    
+    }
+
+    return <div>
+        <h5>Click a shape to select it as your profile picture!</h5>
+        {image_map.map((avatar: number) =>
+        <span onClick={() => update(user, avatar.toString())}>
+        <Icon avatar={avatar.toString()}></Icon>
+        </span>
+        )}
+        <br></br>
+        <br></br>
+        <h5>Current Selection:</h5>
+        {<Icon avatar={user.avatar}></Icon>}
+    </div>
     //Component to display the entire pool of images to the teacher so that they can make sure all of the avatars look good
 
     //Try catch block that'll display the user's profile picture if it exists; The default profile otherwises.

@@ -32,7 +32,7 @@ export function EditProfile(): JSX.Element {
 
             <ChangeUsernameButton />
             <br />
-            <ImageGallery></ImageGallery>
+            <ImageGallery set_new_user={set_new_user} user={new_user}></ImageGallery>
             <AvatarForm />
 
             <br />
