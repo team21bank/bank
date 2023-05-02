@@ -11,7 +11,7 @@ export function ViewTransactions(): JSX.Element {
     const user = useContext(AuthContext).user;
 
     //filter transactions to only contained ones where the current user is a receiver or sender, then sort the result, and slice it if viewAll is false
-    const transactions = (bank.completedList as Record<string, Transaction[]>)[user.hash].sort((a, b) => compareDates(a, b));
+    const transactions = bank.completedList[user.hash] ? (bank.completedList as Record<string, Transaction[]>)[user.hash].sort((a, b) => compareDates(a, b)) : [];
 
     return (
         <Container style={{paddingTop: "8vh"}}>
