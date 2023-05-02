@@ -26,7 +26,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
     
 
     return (
-        <Container fluid className="student-class-page">
+        <Container id="parchmentBackdrop" fluid className="student-class-page" style={{height:"100%"}}>
             <h1 style={{backgroundColor: bank.color, paddingBottom: ".5em", paddingTop: ".5em", fontSize: "70px"}}>
                 {bank.classTitle}
             </h1>
@@ -34,7 +34,7 @@ export function StudentClassPage({classCode}:{classCode:string}){
             <Tabs
                 fill
                 defaultActiveKey="Home"
-                style={{fontSize: "1.4vw"}}
+                style={{ fontSize: "1.4vw", backgroundColor: '#FCF5E5'}}
             >
                 <Tab eventKey="Home" title="Home">
                     <Container fluid className="tab-page-container">
@@ -42,18 +42,18 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     </Container>
                 </Tab>
                 <Tab eventKey="Quizzes" title="Quizzes">
-                    <Container fluid className="tab-page-container">
+                    <Container  fluid className="tab-page-container">
                         <StudentQuizPage/>
                     </Container>
                 </Tab>
                 <Tab eventKey="Pay" title="Pay Your Classmates">
-                    <Container fluid className="tab-page-container">
+                    <Container  fluid className="tab-page-container">
                         <TransactionModal />
                     </Container>
                 </Tab>
                 {bank_user.role[0]===Role.Banker ? (
                     <Tab eventKey="banker" title="Pending Transactions">
-                        <Container fluid className="tab-page-container">
+                        <Container style={{height:"100vh"}} className="tab-page-container">
                             <PendingTransactionPage />
                         </Container>
                     </Tab>

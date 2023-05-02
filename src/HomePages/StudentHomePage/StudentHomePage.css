@@ -2,3 +2,10 @@
 .student-home {
     text-align: center;
 }
+#schoolBackdrop {
+    background-image: url("../../Images/_The_School_of_Athens__by_Raffaello_Sanzio_da_Urbino.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height:100vh;
+}
