@@ -3,7 +3,19 @@
 code {
     font-family: 'MedievalSharp'
 }
+html {
+    height: 100%;
+}
 
 body {
     font-family: 'MedievalSharp';
+}
+.container-fluid {
+    padding-right: 0;
+    padding-left: 0;
+    padding-bottom: 0;
+    height: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    overflow-y: hidden;
 }
