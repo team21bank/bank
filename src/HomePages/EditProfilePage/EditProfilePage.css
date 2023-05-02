@@ -1,3 +1,20 @@
 .edit-profile-page {
     text-align: center;
+    width: 33.33%;
+    float: left;
+    padding: 10px;
+    height:100vh;
+}
+
+.edit-profile-page-row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#parchmentBackground {
+    background-image: url("../../Images/back.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }

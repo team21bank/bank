@@ -9,10 +9,9 @@ import { DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 export function StudentHomePage(){
     const current_user = useContext(AuthContext).user ?? DEFAULT_AUTH_USER;
     return (
-        <div className="student-home">
-            <h2>Hello {current_user.username}</h2>
+        <div id = "schoolBackdrop" className="student-home">
+            <h2 style={{ backgroundColor: "white" }}>Hello {current_user.username}</h2>
             <br />
-            <div>My Classes:</div>
             <ClassList classes={current_user.groups}/>
             <br />
             <JoinClassButton />
