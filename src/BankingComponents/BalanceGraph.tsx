@@ -64,7 +64,7 @@ export function BalanceGraph(): JSX.Element {
   ]
 };
   return (
-      <Container style={{ backgroundColor:'#FCF5E5'}} fluid>
+    <Container fluid>
       <h3>Balance History:</h3>
       <Line options={options} data={newData} />
     </Container>

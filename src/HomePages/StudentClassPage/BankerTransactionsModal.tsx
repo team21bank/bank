@@ -13,10 +13,9 @@ export function PendingTransactionPage(){
     const bank: Bank = useContext(BankContext).bank;
 
     return(
-        <Container fluid style={{
-            display: "flex", justifyContent: "center"}}>
-            <Table striped bordered style={{ maxWidth: "80%"}}>
-                <thead style={{ border: "black", fontSize: "130%"}}>
+        <Container fluid style={{display: "flex", justifyContent: "center"}}>
+            <Table striped bordered style={{maxWidth: "80%"}}>
+                <thead style={{fontSize: "130%"}}>
                     <tr>
                         <th>From</th>
                         <th>To</th>
@@ -27,9 +26,7 @@ export function PendingTransactionPage(){
                 </thead>
                 <tbody>
                     {bank.pendingList.map((trans:Transaction, index) => 
-                        <tr style={{
-                            border: "black"
-                        }} key={index}>
+                        <tr key={index}>
                             <td>{trans.sender_name}</td>
                             <td>{trans.receiver_name}</td>
                             <td>{trans.transfer_amount}</td>
