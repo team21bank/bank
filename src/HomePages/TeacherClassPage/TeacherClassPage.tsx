@@ -1,39 +1,118 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext, BankContext, BANK_STORAGE_KEY, change_bank } from "../../Authentication/auth";
+import { BankContext, BANK_STORAGE_KEY, change_bank } from "../../Authentication/auth";
 import { AddStudentsModal } from "./AddStudents/AddStudentsModal";
-import {Bank, DEFAULT_BANK} from "../../Interfaces/BankObject"
+import { Bank, DEFAULT_BANK } from "../../Interfaces/BankObject"
 import "./TeacherClassPage.css";
-import { Button, Modal } from 'react-bootstrap';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Button, Col, Container, Form, InputGroup, Modal, Tab, Tabs } from 'react-bootstrap';
 import { StudentList } from './StudentList/StudentList';
-import { Subgroups } from './Subgroups';
-import { delete_bank } from '../../DatabaseFunctions/BankFunctions';
-import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
-import { AssignQuizzesModal } from './AssignQuizzesModal';
+import { AssignQuizzesPage } from './AssignQuizzesPage';
+import { PendingTransactionPage } from '../StudentClassPage/BankerTransactionsModal';
+import { update_bank } from '../../DatabaseFunctions/BankFunctions';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
-
-
-
-    const navigate = useNavigate();
-
-    const current_user: AuthUser = useContext(AuthContext).user;
-    const current_bank: Bank = useContext(BankContext).bank;
+    const bank: Bank = useContext(BankContext).bank;
 
     useEffect(() => {
         if(window.sessionStorage.getItem(BANK_STORAGE_KEY) === classCode.slice(0,6)) {return;}
         change_bank(classCode.slice(0,6));
     }, []);
+
+    const [show_edit_modal, set_show_edit_modal] = useState(false);
     
     return (
         <div className="teacher-class-page">
-            Welcome back to your class: {current_bank.classTitle}
-            <AddStudentsModal classID={classCode} />
-            <StudentList current_bank={current_bank} />
-            <Subgroups classID={classCode}></Subgroups>
-            <AssignQuizzesModal />
-            <Outlet></Outlet>
+            <h1
+                style={{backgroundColor: bank.color, paddingBottom: ".5em", paddingTop: ".5em", fontSize: "70px"}}
+                className="class-header"
+                onClick={() => set_show_edit_modal(true)}
+            >
+                {bank.classTitle}
+            </h1>
+
+            <Tabs
+                fill
+                defaultActiveKey="Students"
+                style={{fontSize: "1.4vw"}}
+            >
+                <Tab eventKey="Students" title="Students">
+                    <Container fluid className="tab-page-container">
+                        <StudentList current_bank={bank} />
+                        <AddStudentsModal classID={classCode} />
+                    </Container>
+                </Tab>
+                <Tab eventKey="Class Quizzes" title="Class Quizzes">
+                    <Container fluid className="tab-page-container">
+                        <AssignQuizzesPage />
+                    </Container>
+                </Tab>
+                <Tab eventKey="Pending Transactions" title="Pending Transactions">
+                    <Container fluid className="tab-page-container">
+                        <PendingTransactionPage />
+                    </Container>
+                </Tab>
+            </Tabs>
+            <EditClassModal show={show_edit_modal} set_show={set_show_edit_modal}/>
         </div>
+    )
+}
+
+
+function EditClassModal({show, set_show}: {show: boolean, set_show: (b: boolean)=>void}): JSX.Element {
+    const bank: Bank = useContext(BankContext).bank;
+    const [class_name, set_class_name] = useState<null | string>(null);
+    const [class_description, set_class_description] = useState<null | string>(null);
+    const [class_color, set_class_color] = useState<null | string>(null);
+
+    function hide() {
+        set_show(false)
+        set_class_name(null);
+        set_class_description(null);
+        set_class_color(null);
+    }
+    function save() {
+        const new_bank: Bank = {...bank, classTitle: class_name??bank.classTitle, description: class_description??bank.description, color: class_color??bank.color};
+        update_bank(bank.bankId, new_bank).then(() => hide());
+    }
+
+    return (
+        <Modal show={show} onHide={hide} size="lg">
+            <Modal.Header closeButton><h1>Edit Class Info</h1></Modal.Header>
+            <Modal.Body>
+                <InputGroup size="lg" style={{paddingTop: "10px"}}>
+                    <InputGroup.Text>Class Name</InputGroup.Text>
+                    <Form.Control
+                        type="text"
+                        value={class_name ?? bank.classTitle}
+                        onChange={e => set_class_name(e.target.value)}
+                    />
+                </InputGroup>
+                <InputGroup size="lg" style={{paddingTop: "10px"}}>
+                    <InputGroup.Text>Class Description</InputGroup.Text>
+                    <Form.Control
+                        type="text"
+                        as="textarea"
+                        rows={2}
+                        value={class_description ?? bank.description}
+                        onChange={e => set_class_description(e.target.value)}
+                    />
+                </InputGroup>
+                <InputGroup size="lg" style={{paddingTop: "10px"}}>
+                    <InputGroup.Text>Class Color</InputGroup.Text>
+                    <Form.Control
+                        size="lg"
+                        type="color"
+                        value={class_color ?? bank.color}
+                        onChange={e => set_class_color(e.target.value)}
+                    />
+                </InputGroup>
+            </Modal.Body>
+            <Modal.Footer>
+                <Col>
+                    <Button size="lg" variant="danger" onClick={hide}>Cancel</Button>
+                </Col>
+                <Button size="lg" variant="success" onClick={save}>Save</Button>
+            </Modal.Footer>
+        </Modal>
     )
 }
 

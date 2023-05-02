@@ -1,0 +1,10 @@
+.assign-quizzes-page {
+    text-align: center;
+}
+
+.quiz-list {
+    display: "flex";
+    flex-direction: "row";
+    flex-wrap: "wrap";
+    justify-content: "center";
+}

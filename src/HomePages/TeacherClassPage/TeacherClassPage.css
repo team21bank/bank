@@ -1,3 +1,11 @@
 .teacher-class-page {
     text-align: center;
 }
+
+.tab-page-container {
+    padding-top: 4vh;
+}
+
+.class-header:hover {
+    cursor: pointer;
+}

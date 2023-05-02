@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Container, Tab, Tabs } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, BankContext, BANK_STORAGE_KEY, change_bank } from "../../Authentication/auth";
@@ -18,17 +18,19 @@ export function StudentClassPage({classCode}:{classCode:string}){
     const bank: Bank = useContext(BankContext).bank;
     const bank_user = bank.studentList.find(val => val.uid === user.hash) ?? DEFAULT_BANK_USER;
 
-    const navigate = useNavigate();
-
     useEffect(() => { //Update the bank context if this page is navigated to
         if(window.sessionStorage.getItem(BANK_STORAGE_KEY) === classCode.slice(0,6)) {return;}
         change_bank(classCode);
     }, []);
 
+    
 
     return (
         <Container fluid className="student-class-page">
-            <h1 style={{backgroundColor: bank.color, paddingBottom: ".5em", paddingTop: ".5em", fontSize: "70px"}}>{bank.classTitle}</h1>
+            <h1 style={{backgroundColor: bank.color, paddingBottom: ".5em", paddingTop: ".5em", fontSize: "70px"}}>
+                {bank.classTitle}
+            </h1>
+            
             <Tabs
                 fill
                 defaultActiveKey="Home"
