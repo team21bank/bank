@@ -12,7 +12,7 @@ export function ImageGallery({set_new_user, user}: {set_new_user: (AuthUser)=>vo
     
     }
 
-    return <div style={{ backgroundColor: '#FCF5E5' }} >
+    return <div>
         <h5>Click a shape to select it as your profile picture!</h5>
         {image_map.map((avatar: number) =>
         <span onClick={() => update(user, avatar.toString())}>
