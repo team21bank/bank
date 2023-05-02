@@ -13,7 +13,7 @@ export function TeacherNavbar(): JSX.Element {
     return (
       <Container fluid>
           <Navbar bg="light" sticky="top" expand="lg" style={{fontSize: "140%", paddingInline: "3vw"}}>
-            <Container fluid>
+            <Container>
               <Navbar.Brand href="#/teachers/home" style={{fontSize: "140%"}}>Teacher</Navbar.Brand>
               <Nav className='me-auto' >
                 <NavLink href="#/teachers/classes">View classes</NavLink>
