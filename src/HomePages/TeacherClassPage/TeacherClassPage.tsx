@@ -8,6 +8,7 @@ import { StudentList } from './StudentList/StudentList';
 import { AssignQuizzesPage } from './AssignQuizzesPage';
 import { PendingTransactionPage } from '../StudentClassPage/BankerTransactionsModal';
 import { update_bank } from '../../DatabaseFunctions/BankFunctions';
+import { ExportBalances } from './ExportBalances';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
     const bank: Bank = useContext(BankContext).bank;
@@ -38,6 +39,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
                     <Container fluid className="tab-page-container">
                         <StudentList current_bank={bank} />
                         <AddStudentsModal classID={classCode} />
+                        <ExportBalances current_bank={bank}></ExportBalances>
                     </Container>
                 </Tab>
                 <Tab eventKey="Class Quizzes" title="Class Quizzes">
