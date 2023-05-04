@@ -1,15 +1,27 @@
 {
   "files": {
-    "main.css": "/bank/static/css/main.6dca09b8.css",
-    "main.js": "/bank/static/js/main.f0487e09.js",
+    "main.css": "/bank/static/css/main.4d06feb2.css",
+    "main.js": "/bank/static/js/main.0f3ca42d.js",
     "static/js/787.c3d5f9be.chunk.js": "/bank/static/js/787.c3d5f9be.chunk.js",
+    "static/media/SchoolOfAthens.jpg": "/bank/static/media/SchoolOfAthens.326806829d0adda22d5c.jpg",
+    "static/media/back.png": "/bank/static/media/back.b653d95d8ab8aaa3d239.png",
+    "static/media/Hunters.jpg": "/bank/static/media/Hunters.a0afccf422f4560ecb3b.jpg",
+    "static/media/3.png": "/bank/static/media/3.fc6ef46c07355ae86e89.png",
+    "static/media/FeastLeviHouse.jpg": "/bank/static/media/FeastLeviHouse.97342ed1f3ef994070df.jpg",
+    "static/media/MonaLisa.jpg": "/bank/static/media/MonaLisa.3204058bda64c5343149.jpg",
+    "static/media/0.png": "/bank/static/media/0.3e690fa97ec1e63cc44c.png",
+    "static/media/default.png": "/bank/static/media/default.3e690fa97ec1e63cc44c.png",
+    "static/media/2.png": "/bank/static/media/2.dd66615d3cb59f5a7d9a.png",
+    "static/media/4.png": "/bank/static/media/4.9cbc65f6d9af0acc15b7.png",
+    "static/media/1.png": "/bank/static/media/1.6420092f7d2185191b16.png",
+    "static/media/LeoDaVinci.jpg": "/bank/static/media/LeoDaVinci.27a7eda381f1c4ad9bbf.jpg",
     "index.html": "/bank/index.html",
-    "main.6dca09b8.css.map": "/bank/static/css/main.6dca09b8.css.map",
-    "main.f0487e09.js.map": "/bank/static/js/main.f0487e09.js.map",
+    "main.4d06feb2.css.map": "/bank/static/css/main.4d06feb2.css.map",
+    "main.0f3ca42d.js.map": "/bank/static/js/main.0f3ca42d.js.map",
     "787.c3d5f9be.chunk.js.map": "/bank/static/js/787.c3d5f9be.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6dca09b8.css",
-    "static/js/main.f0487e09.js"
+    "static/css/main.4d06feb2.css",
+    "static/js/main.0f3ca42d.js"
   ]
 }
