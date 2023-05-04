@@ -269,7 +269,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
                     <tr data-index={index}>
                         <td id="table-line"><Button style={{ background: 'gray' }} onClick={()=>deleteGroup(village.name)}><BsTrashFill color="red"/></Button></td>
                         <td id="table-line">{village.name}</td>
-                        <td id="table-line">{village.studentList.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
+                        <td id="table-line">{village.studentList?.map((student, id) => (<tr data-index={id}>{student}</tr>))}</td>
                         <td id="table-line"><EditSubgroupsModal code = {classCode} group = {village.name}/></td>
                     </tr>
                 ))}

@@ -26,6 +26,7 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
             dataArr.push(students[i])
         }
     }
+
     function showmodals(){
         setShowModal(true)
         setShowDropDown(true)
@@ -66,6 +67,7 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
             }
         }
         else {
+            //getStudentsInClass();
             let namesarr: string[] = []
             const JValues = Object.values(emails);
             const parsedJValues = JSON.parse(JSON.stringify(JValues))
@@ -172,7 +174,7 @@ export function EditSubgroupsModal({ code, group }: { code: string , group: stri
             const JSonValues3 = Object.values(item3);
             const parsedJSonValues3 = JSON.parse(JSON.stringify(JSonValues3))
             console.log(parsedJSonValues3)
-            var result = Object.keys(parsedJSonValues3[6]).map((key) => [key.toString(),parsedJSonValues3[6][key]]);
+            var result = Object.keys(parsedJSonValues3[7]).map((key) => [key.toString(),parsedJSonValues3[7][key]]);
             result.forEach((object)=>{
                 if(object[1]["name"]===group){
                     setKey(object[0])

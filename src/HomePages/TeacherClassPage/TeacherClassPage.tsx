@@ -45,7 +45,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
                 </Tab>
                 <Tab eventKey="Subgroups/Villages" title="Subgroups/Villages">
                     <Container fluid className="tab-page-container">
-                        <SubgroupsPage classCode={bank.bankId}/>
+                        <SubgroupsPage classCode={classCode}/>
                     </Container>
                 </Tab>
                 <Tab eventKey="Class Quizzes" title="Class Quizzes">
