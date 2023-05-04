@@ -1,12 +1,12 @@
 code {
-    font-family: "appcss", "Papyrus", fantasy, sans-serif;
+    font-family: "appcss", Papyrus, fantasy, sans-serif;
 }
 html {
     height: 100%;
 }
 
 body {
-    font-family: "appcss", "Papyrus", fantasy, sans-serif;
+    font-family: "appcss", Papyrus, fantasy, sans-serif;
 }
 .container-fluid {
     padding-right: 0;
