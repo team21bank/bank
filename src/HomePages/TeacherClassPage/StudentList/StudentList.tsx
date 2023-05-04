@@ -41,9 +41,9 @@ export function StudentList(
     }, [current_bank]);
 
     return (
-        <Container fluid>
+        <Container fluid >
             <h2 className="student-list-header">Students</h2>
-            <Table striped hover bordered className="student-table">
+            <Table style={{ backgroundColor: "#FCF5E5" }} striped hover bordered className="student-table">
                 <thead className="student-table-header">
                     <tr>
                         <th><h3>Username</h3></th>

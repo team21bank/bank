@@ -12,6 +12,7 @@ import { Multiselect } from "multiselect-react-dropdown";
 import { EditSubgroupsModal } from './EditSubgroupsModal';
 import { BsTrashFill } from "react-icons/bs";
 import { DEFAULT_BANK_USER, Role, getTitle } from '../../Interfaces/BankUser';
+import "./TeacherClassPage.css";
 
 
 export function SubgroupsPage({ classCode }: { classCode: string }) {
@@ -243,7 +244,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
         
     }
     return (
-        <div className="teacher-class-page">
+        <div id = "hunterBackdrop" className="teacher-class-page">
             <Modal show={showModal} onHide={hidemodals}>
                 <Modal.Header closeButton><h2>Add Group</h2></Modal.Header>
                 <Modal.Body>
@@ -259,7 +260,7 @@ export function SubgroupsPage({ classCode }: { classCode: string }) {
             <Button onClick={showmodals}>Add Group</Button>
             <br></br>
             <br></br>
-            <table id="table-line" align="center">
+            <table style={{ backgroundColor: "#FCF5E5" }} id="table-line" align="center">
                 <th></th>
                 <th id="th-width">Village name</th>
                 <th id="th-width">Students</th>

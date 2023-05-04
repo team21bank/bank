@@ -21,7 +21,7 @@ export function TeacherClassPage({classCode}:{classCode:string}){
     const [show_edit_modal, set_show_edit_modal] = useState(false);
     
     return (
-        <div className="teacher-class-page">
+        <div id="parchmentBackdrop" className="teacher-class-page">
             <h1
                 style={{backgroundColor: bank.color, paddingBottom: ".5em", paddingTop: ".5em", fontSize: "70px"}}
                 className="class-header"
