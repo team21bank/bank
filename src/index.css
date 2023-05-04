@@ -2,7 +2,7 @@
 
 body {
     margin: 0;
-    font-family: 'MedievalSharp';
+    font-family: Papyrus;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -12,5 +12,5 @@ body {
     monospace;
 }*/
 code {
-    font-family: 'MedievalSharp'
+    font-family: Papyrus;
 }
