@@ -48,7 +48,7 @@ export default function ResetMessage(){
                 var found = false
                 for(let i = 0; i<parsedJSonValues.length;i++)
                 {
-                    if((parsedJSonValues[i]["userObj"]["email"]===email)&&(parsedJSonValues[i]["userObj"]["isTeacher"]===true))
+                    if((parsedJSonValues[i]["userObj"]["email"].toLocaleLowerCase()===email.toLocaleLowerCase())&&(parsedJSonValues[i]["userObj"]["isTeacher"]===true))
                     {
                         sendPasswordResetEmail(auth,email)
                         setShowResults(true);
@@ -58,7 +58,7 @@ export default function ResetMessage(){
                         found=true;
                         console.log(found)
                     }
-                    else if((parsedJSonValues[i]["userObj"]["email"]===email)&&(parsedJSonValues[i]["userObj"]["isTeacher"]!==true))
+                    else if((parsedJSonValues[i]["userObj"]["email"].toLocaleLowerCase()===email.toLocaleLowerCase())&&(parsedJSonValues[i]["userObj"]["isTeacher"]!==true))
                     {   
                         console.log("User is a student! Can't change password");
                         setShowResults(false);
