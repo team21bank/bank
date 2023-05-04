@@ -3,6 +3,10 @@
     height:100%;
 }
 
+.class-header:hover {
+    cursor: pointer;
+}
+
 #parchmentBackdrop {
     background-image: url("../../Images/back.png");
     background-repeat: no-repeat;
