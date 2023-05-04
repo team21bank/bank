@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/bank/static/css/main.4d06feb2.css",
-    "main.js": "/bank/static/js/main.0f3ca42d.js",
+    "main.js": "/bank/static/js/main.fed11fb4.js",
     "static/js/787.c3d5f9be.chunk.js": "/bank/static/js/787.c3d5f9be.chunk.js",
     "static/media/SchoolOfAthens.jpg": "/bank/static/media/SchoolOfAthens.326806829d0adda22d5c.jpg",
     "static/media/back.png": "/bank/static/media/back.b653d95d8ab8aaa3d239.png",
@@ -17,11 +17,11 @@
     "static/media/LeoDaVinci.jpg": "/bank/static/media/LeoDaVinci.27a7eda381f1c4ad9bbf.jpg",
     "index.html": "/bank/index.html",
     "main.4d06feb2.css.map": "/bank/static/css/main.4d06feb2.css.map",
-    "main.0f3ca42d.js.map": "/bank/static/js/main.0f3ca42d.js.map",
+    "main.fed11fb4.js.map": "/bank/static/js/main.fed11fb4.js.map",
     "787.c3d5f9be.chunk.js.map": "/bank/static/js/787.c3d5f9be.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4d06feb2.css",
-    "static/js/main.0f3ca42d.js"
+    "static/js/main.fed11fb4.js"
   ]
 }
