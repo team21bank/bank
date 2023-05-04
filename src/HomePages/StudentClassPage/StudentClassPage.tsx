@@ -10,6 +10,9 @@ import { PendingTransactionPage } from './BankerTransactionsModal';
 import { TransactionModal } from "./TransactionModal";
 import { StudentQuizPage } from '../../Quizzes/StudentQuizPage';
 import { StudentClassHomePage } from './StudentClassHomePage';
+import { ExportBalances } from '../TeacherClassPage/ExportBalances';
+import { StudentList } from '../TeacherClassPage/StudentList/StudentList';
+import { AddStudentsModal } from '../TeacherClassPage/AddStudents/AddStudentsModal';
 
 export function StudentClassPage({classCode}:{classCode:string}){
     
@@ -58,6 +61,16 @@ export function StudentClassPage({classCode}:{classCode:string}){
                         </Container>
                     </Tab>
                 ) : (<></>)}
+                {bank_user.role[0]===Role.Banker ? (
+                    <Tab eventKey="banker" title="Student List">
+                        <Container fluid className="tab-page-container">
+                            <StudentList current_bank={bank} />
+                            <AddStudentsModal classID={classCode} />
+                            <ExportBalances current_bank={bank}></ExportBalances>
+                        </Container>
+                    </Tab>
+                ) : (<></>)}
+
             </Tabs>
         </Container>
     )
