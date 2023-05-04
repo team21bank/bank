@@ -1,11 +1,19 @@
 .teacher-class-page {
     text-align: center;
+    height:100%;
 }
 
-.tab-page-container {
-    padding-top: 4vh;
+#parchmentBackdrop {
+    background-image: url("../../Images/back.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
 }
-
-.class-header:hover {
-    cursor: pointer;
+#hunterBackdrop {
+    background-image: url("../../Images/Hunters.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-attachment: fixed;
+    min-height: 100vh;
 }

@@ -10,10 +10,9 @@ export function TeacherHomePage(){
 
     
     return (
-        <div className="teacher-home">
-            <h2>Hello {current_user.username}</h2>
+        <div id = "feastBackdrop" className="teacher-home">
+            <h2 style={{ backgroundColor: "white" }}>Hello {current_user.username}</h2>
             <br />
-            <div>Classes: </div>
             <ClassList classes={current_user.groups}/>
             <CreateClassModal/>
         </div>
