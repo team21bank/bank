@@ -1,14 +1,14 @@
 
 
 code {
-    font-family: 'MedievalSharp'
+    font-family: Papyrus;
 }
 html {
     height: 100%;
 }
 
 body {
-    font-family: 'MedievalSharp';
+    font-family: Papyrus;
 }
 .container-fluid {
     padding-right: 0;
