@@ -12,6 +12,7 @@
 
 .student-row {
     height: 3em;
+    cursor: pointer;
 }
 
 

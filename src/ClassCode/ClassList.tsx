@@ -6,11 +6,7 @@ import { get_bank } from "../DatabaseFunctions/BankFunctions";
 import { Bank, DEFAULT_BANK, copy_bank } from "../Interfaces/BankObject";
 import "./ClassList.css";
 import { AuthContext } from "../Authentication/auth";
-import { ColorModal } from "../HomePages/TeacherHomePage/ColorModal"
-import Select from 'react-select';
-import { getDatabase, ref, get, update, set, push, remove } from 'firebase/database';
-import { app } from "../firebase";
-import { DEFAULT_AUTH_USER } from '../Interfaces/AuthUser';
+
 
 export function ClassList({ classes }: { classes: string[] }): JSX.Element {
     return (

@@ -9,6 +9,7 @@ import { AssignQuizzesPage } from './AssignQuizzesPage';
 import { PendingTransactionPage } from '../StudentClassPage/BankerTransactionsModal';
 import { update_bank } from '../../DatabaseFunctions/BankFunctions';
 import { ExportBalances } from './ExportBalances';
+import { SubgroupsPage } from './SubgroupsPage';
 
 export function TeacherClassPage({classCode}:{classCode:string}){
     const bank: Bank = useContext(BankContext).bank;
@@ -35,11 +36,16 @@ export function TeacherClassPage({classCode}:{classCode:string}){
                 defaultActiveKey="Students"
                 style={{fontSize: "1.4vw"}}
             >
-                <Tab eventKey="Students" title="Students">
+                <Tab eventKey="Students" title="Students"> 
                     <Container fluid className="tab-page-container">
                         <StudentList current_bank={bank} />
                         <AddStudentsModal classID={classCode} />
                         <ExportBalances current_bank={bank}></ExportBalances>
+                    </Container>
+                </Tab>
+                <Tab eventKey="Subgroups/Villages" title="Subgroups/Villages">
+                    <Container fluid className="tab-page-container">
+                        <SubgroupsPage classCode={classCode}/>
                     </Container>
                 </Tab>
                 <Tab eventKey="Class Quizzes" title="Class Quizzes">
