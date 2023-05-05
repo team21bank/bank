@@ -6,7 +6,7 @@ import { AuthUser, DEFAULT_AUTH_USER } from "../../../Interfaces/AuthUser";
 import { BankUser, MasteryLevel, Role, getTitle } from "../../../Interfaces/BankUser";
 import { delete_bank_users, update_bank_user } from "../../../DatabaseFunctions/BankUserFunctions";
 import { Button, Col, Container, Form, Image, InputGroup, Modal, Overlay, Row, Table, Tooltip } from "react-bootstrap";
-import { BankContext } from "../../../Authentication/auth";
+import { AuthContext, BankContext } from "../../../Authentication/auth";
 import { Icon } from "../../../Avatar/Icon";
 import { update_bank } from "../../../DatabaseFunctions/BankFunctions";
 
@@ -119,6 +119,7 @@ function are_bankusers_equal(a: BankUser, b: BankUser): boolean {
 
 
 function EditBankUserForm({bank_user, set_bank_user, set_show_modal}: {bank_user: BankUser, set_bank_user: (b: BankUser) => void, set_show_modal: (b:boolean)=>void}): JSX.Element {
+    const user = useContext(AuthContext).user;
     return (
         <Container className="edit-form-container">
             {/*alias select form */}
@@ -170,7 +171,12 @@ function EditBankUserForm({bank_user, set_bank_user, set_show_modal}: {bank_user
                 </InputGroup>
             </Row>
             <br/>
-            <Col style={{textAlign: "center"}}><DeleteButton bank_user={bank_user} set_show_modal={set_show_modal}/></Col>
+            {user.isTeacher ? (
+                <Col style={{textAlign: "center"}}><DeleteButton bank_user={bank_user} set_show_modal={set_show_modal}/></Col>
+            ) : (
+                <></>
+            )}
+            
         </Container>
     )
 }

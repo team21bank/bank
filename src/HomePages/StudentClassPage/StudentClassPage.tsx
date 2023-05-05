@@ -62,11 +62,9 @@ export function StudentClassPage({classCode}:{classCode:string}){
                     </Tab>
                 ) : (<></>)}
                 {bank_user.role[0]===Role.Banker ? (
-                    <Tab eventKey="banker" title="Student List">
+                    <Tab eventKey="Student List" title="Student List">
                         <Container fluid className="tab-page-container">
                             <StudentList current_bank={bank} />
-                            <AddStudentsModal classID={classCode} />
-                            <ExportBalances current_bank={bank}></ExportBalances>
                         </Container>
                     </Tab>
                 ) : (<></>)}
