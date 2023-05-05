@@ -9,6 +9,7 @@
 .tab-page-container {
     padding-top: 4vh;
     height:100%;
+    padding-bottom: 200px;
 }
 /*#parchmentBackdrop {
     background-image: url("../../Images/backdrop2.jpg");

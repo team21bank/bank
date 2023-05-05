@@ -32,7 +32,7 @@ export function resolve_nullish_authuser(user: AuthUser): AuthUser {
         username: user.username ?? "",
         id: user.id ?? "",
         avatar: user.avatar ?? "",
-        groups: user.groups ?? [],
+        groups: user.groups!==undefined ? Array.from(new Set(user.groups)) : [], //deduplicates the array. Why doesnt js have a dedup function?
         isTeacher: user.isTeacher ?? false,
         hash: user.hash ?? "",
         quizzes: user.quizzes ?? []

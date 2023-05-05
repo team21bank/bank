@@ -26,7 +26,7 @@ export function UserQuizPage(): JSX.Element {
 
     return (
         <Container fluid className="user-quiz-page">
-            <h1>User quiz page</h1>
+            <h1>Your Quizzes</h1>
             <div className="quiz-list">
                 {quizzes.map((q, index) => <QuizCard key={index} quiz={q} set_quiz={(new_quiz)=>set_quiz_at_index(index, new_quiz)}/>)}
             </div>

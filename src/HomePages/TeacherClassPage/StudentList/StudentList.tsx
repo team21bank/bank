@@ -1,13 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./StudentList.css";
 import { Bank } from "../../../Interfaces/BankObject";
 import { get_auth_users } from "../../../DatabaseFunctions/UserFunctions";
 import { AuthUser, DEFAULT_AUTH_USER } from "../../../Interfaces/AuthUser";
 import { BankUser, MasteryLevel, Role, getTitle } from "../../../Interfaces/BankUser";
 import { delete_bank_users, update_bank_user } from "../../../DatabaseFunctions/BankUserFunctions";
-import { Button, Container, Form, Image, InputGroup, Modal, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Form, Image, InputGroup, Modal, Overlay, Row, Table, Tooltip } from "react-bootstrap";
 import { BankContext } from "../../../Authentication/auth";
 import { Icon } from "../../../Avatar/Icon";
+import { update_bank } from "../../../DatabaseFunctions/BankFunctions";
 
 
 //This file is kind of a mess, sorry everyone
@@ -52,7 +53,7 @@ export function StudentList(
                     </tr>
                 </thead>
                 <tbody>
-                    {studentList.map((user_pair, index) => <StudentRow key={index} user_pair={user_pair}/>)}
+                    {studentList.map((user_pair, index) => <StudentRow key={index} user_pair={user_pair} />)}
                 </tbody>
             </Table>
         </Container>
@@ -90,7 +91,7 @@ function StudentRow({user_pair}: {user_pair: UserPair}): JSX.Element {
             <Modal show={showModal} onHide={hide} size="lg">
                 <Modal.Header closeButton><h1>Editing student {auth_user.username}</h1></Modal.Header>
                 <Modal.Body>
-                    <EditBankUserForm bank_user={new_bank_user} set_bank_user={set_new_bank_user} />
+                    <EditBankUserForm bank_user={new_bank_user} set_bank_user={set_new_bank_user} set_show_modal={setShowModal}/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={hide}>Cancel</Button>
@@ -117,8 +118,7 @@ function are_bankusers_equal(a: BankUser, b: BankUser): boolean {
 }
 
 
-function EditBankUserForm({bank_user, set_bank_user}: {bank_user: BankUser, set_bank_user: (b: BankUser) => void}): JSX.Element {
-
+function EditBankUserForm({bank_user, set_bank_user, set_show_modal}: {bank_user: BankUser, set_bank_user: (b: BankUser) => void, set_show_modal: (b:boolean)=>void}): JSX.Element {
     return (
         <Container className="edit-form-container">
             {/*alias select form */}
@@ -169,6 +169,37 @@ function EditBankUserForm({bank_user, set_bank_user}: {bank_user: BankUser, set_
                     </Form.Select>
                 </InputGroup>
             </Row>
+            <br/>
+            <Col style={{textAlign: "center"}}><DeleteButton bank_user={bank_user} set_show_modal={set_show_modal}/></Col>
         </Container>
+    )
+}
+
+
+function DeleteButton({bank_user, set_show_modal}: {bank_user: BankUser, set_show_modal: (b:boolean)=>void}): JSX.Element {
+    const [show_tooltip, set_show_tooltip] = useState(false);
+    const target = useRef(null);
+
+    const bank = useContext(BankContext).bank;
+
+    function delete_bank_user() {
+        const new_bank = {
+            ...bank,
+            studentList: bank.studentList.filter(u => are_bankusers_equal(u, bank_user) === false)
+        }
+        update_bank(bank.bankId, new_bank).then(() => set_show_modal(false))
+    }
+
+    return (
+        <>
+            <Button variant="danger" ref={target} onClick={()=>set_show_tooltip(true)} onDoubleClick={delete_bank_user}>
+                Delete User
+            </Button>
+            <Overlay target={target.current} show={show_tooltip} placement="right">
+                <Tooltip>
+                    Double click to delete!
+                </Tooltip>
+            </Overlay>
+        </>
     )
 }
