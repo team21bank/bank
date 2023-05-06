@@ -4,6 +4,7 @@ import { AuthContext } from "../../Authentication/auth";
 import { AuthUser, DEFAULT_AUTH_USER } from '../../Interfaces/AuthUser';
 import { create_bank_users } from '../../DatabaseFunctions/BankUserFunctions';
 import { update_auth_user } from '../../DatabaseFunctions/UserFunctions';
+import { get_bank } from '../../DatabaseFunctions/BankFunctions';
 
 export function JoinClassButton(){
     const [showModal, setShowModal] = useState(false);
@@ -25,7 +26,16 @@ export function JoinClassButton(){
         }
 
         try {
-            await create_bank_users(bankCode, user.hash);
+            let bank = await get_bank(bankCode);
+            if(bank===null) {
+                alert("This class does not exist");
+                return;
+            }
+            if(bank?.studentList.find(u=>u.uid===user.hash) !== undefined) {
+                alert("You have already joined this class!");
+                return;
+            }
+            await create_bank_users(bank, user.hash);
             await update_auth_user(user.hash, {...user, groups: [...user.groups, bankCode]});
             setShowModal(false);
             setBankCode("");
@@ -36,7 +46,7 @@ export function JoinClassButton(){
     
     return (
         <div>
-            <Modal show={showModal} onHide={hide}>
+            <Modal show={showModal} onHide={hide} size="lg">
                 <Modal.Header closeButton><h1>Join Class</h1></Modal.Header>
                 <Modal.Body>
                     <InputGroup hasValidation>

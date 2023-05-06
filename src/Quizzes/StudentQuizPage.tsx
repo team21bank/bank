@@ -103,7 +103,7 @@ function TakingQuiz({quiz, close_quiz}: {quiz: Quiz, close_quiz: ()=>void}): JSX
         const money = Math.floor(quiz.money * (answer_arr.length===0 ? 1 : total/answer_arr.length));
         set_total_earned(money);
         
-        submit_quiz(user, bank, user.hash, quiz, answer_arr).then(() => {
+        submit_quiz(user, bank, user.hash, quiz, answer_arr as boolean[]).then(() => {
             set_submitted(true);
         });
     }
@@ -117,7 +117,7 @@ function TakingQuiz({quiz, close_quiz}: {quiz: Quiz, close_quiz: ()=>void}): JSX
     }
 
     //indexes into the options array for each question
-    let [answer_arr, set_answer_arr] = useState<boolean[]>(quiz.questions.map(_=>false));
+    let [answer_arr, set_answer_arr] = useState<(boolean | null)[]>(quiz.questions.map(_=>null));
     function set_answer_at_index(index: number, correct: boolean) {
         set_answer_arr(answer_arr.map((a, ind) => ind===index ? correct : a));
     }
@@ -132,16 +132,20 @@ function TakingQuiz({quiz, close_quiz}: {quiz: Quiz, close_quiz: ()=>void}): JSX
         </Alert>
     ) : (
         <Container fluid className="taking-quiz-container">
-            <h2 style={{textAlign: "center"}}>Taking quiz {quiz.title}</h2>
+            <h2 style={{textAlign: "center"}}>Taking quiz: {quiz.title}</h2>
             <Pagination>
                 {quiz.questions.map((_, index) => <Pagination.Item active={question_index===index} key={index}>{index+1}</Pagination.Item>)}
             </Pagination>
             <DisplayQuestions questions={quiz.questions} set_answer={set_answer_at_index} index={question_index}/>
             <Row style={{marginTop: "2em"}}>
-                <Col><Button size="lg" onClick={decrement}><HiOutlineArrowLeft/>Previous Question</Button></Col>
+                <Col style={{textAlign: "left"}}><Button size="lg" onClick={decrement}><HiOutlineArrowLeft/>Previous Question</Button></Col>
                 <Col style={{textAlign: "right"}}>
                     {question_index>=(quiz.questions.length-1) ? (
-                        <Button variant="success" size="lg" onClick={submit}>Submit<HiCheck/></Button>
+                        answer_arr.includes(null) ? (
+                            <Button variant="danger" disabled={true} size="lg">Answer All Questions First!</Button>
+                        ) : (
+                            <Button variant="success" size="lg" onClick={submit}>Submit<HiCheck/></Button>
+                        )
                     ) : (
                         <Button size="lg" onClick={increment}>Next Question<HiOutlineArrowRight/></Button>
                     )}
