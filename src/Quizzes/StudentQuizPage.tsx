@@ -4,7 +4,7 @@ import { Quiz } from "../Interfaces/Quiz";
 import { get_quizzes } from "../DatabaseFunctions/QuizFunctions";
 import { Alert, Button, Card, Col, Container, Form, Image, Pagination, Row } from "react-bootstrap";
 import "./StudentQuizPage.css";
-import { BankUser, DEFAULT_BANK_USER } from "../Interfaces/BankUser";
+import { BankUser, DEFAULT_BANK_USER, num_allowed_attempts } from "../Interfaces/BankUser";
 import { HiOutlineArrowLeft, HiOutlineArrowRight, HiCheck } from "react-icons/hi";
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
 import { Link } from "react-router-dom";
@@ -12,6 +12,8 @@ import { update_bank_user } from "../DatabaseFunctions/BankUserFunctions";
 import { Bank } from "../Interfaces/BankObject";
 import { push_transaction_to_completed } from "../DatabaseFunctions/BankFunctions";
 import { makeSystemToStudentTransaction } from "../Interfaces/Transaction";
+import { default_quizresult } from "../Interfaces/QuizResult";
+import { AuthUser } from "../Interfaces/AuthUser";
 
 
 //make an import JSON feature
@@ -42,8 +44,8 @@ function QuizList({quizzes, set_selected_quiz}: {quizzes: Quiz[], set_selected_q
     const bank_user = bank.studentList.find(val => val.uid === user.hash) ?? DEFAULT_BANK_USER;
 
     //I know this is stupid, I just dont want to think right now
-    const finished_quizzes: Quiz[] = quizzes.filter(q => bank_user.finishedQuizzes.find(f => f===q.hash) !== undefined);
-    const unfinished_quizzes: Quiz[] = quizzes.filter(q => bank_user.finishedQuizzes.find(f => f===q.hash) === undefined);
+    const finished_quizzes: Quiz[] = quizzes.filter(q => bank_user.finishedQuizzes.find(f => f.quiz===q.hash) !== undefined);
+    const unfinished_quizzes: Quiz[] = quizzes.filter(q => bank_user.finishedQuizzes.find(f => f.quiz===q.hash) === undefined);
 
     return (
         <Container fluid className="quiz-lists-container">
@@ -54,18 +56,35 @@ function QuizList({quizzes, set_selected_quiz}: {quizzes: Quiz[], set_selected_q
                 </Col>
                 <Col className="finished-quiz-container">
                     <h3>Finished Quizzes</h3>
-                    {finished_quizzes.map((q, index) => <FinishedQuizCard quiz={q} key={index}/>)}
+                    {finished_quizzes.map((q, index) => <FinishedQuizCard quiz={q} key={index} select={()=>set_selected_quiz(q)}/>)}
                 </Col>
             </Row>
         </Container>
     )
 }
 
-function FinishedQuizCard({quiz}: {quiz: Quiz}): JSX.Element {
+function FinishedQuizCard({quiz, select}: {quiz: Quiz, select: ()=>void}): JSX.Element {
+    const bank = useContext(BankContext).bank;
+    const user = useContext(AuthContext).user;
+    const bank_user = bank.studentList.find(val => val.uid === user.hash) ?? DEFAULT_BANK_USER;
+
+    const quiz_result = bank_user.finishedQuizzes.find(r => r.quiz === quiz.hash) ?? default_quizresult();
+    const can_take = num_allowed_attempts(bank_user.role[1]) > quiz_result.attempts.length;
+    const attempts_left = num_allowed_attempts(bank_user.role[1]) - quiz_result.attempts.length;
+
     return (
         <Card className="finished-quiz-card">
             <Card.Header><h5>{quiz.title}</h5></Card.Header>
-            <Card.Body>{quiz.description}</Card.Body>
+            <Card.Body>
+                <div>{quiz.description}</div>
+                <div className="num-questions-tag">{quiz.questions.length} questions</div>
+                <div>{attempts_left} attempts remaining</div>
+            </Card.Body>
+            {can_take ? (
+                <Card.Footer>
+                    <Button onClick={select}>Retake Quiz</Button>
+                </Card.Footer>
+            ) : <></> }
         </Card>
     )
 }
@@ -192,20 +211,29 @@ function DisplayQuestions({questions, set_answer, index}: {questions: QuizQuesti
 
 
 function submit_quiz(
-    user: {email: string; username: string; id: string; avatar: string; groups: string[]; isTeacher: boolean; hash: string; quizzes: string[];}, 
+    user: AuthUser, 
     bank: Bank, uid: string, quiz: Quiz, answer_arr: boolean[]): Promise<void> {
     let total = 0;
     answer_arr.forEach(b => {if(b){total+=1}});
 
     //Just scales the amount of money given based off what percentage of answers were correct
-    const money = Math.floor(quiz.money * (answer_arr.length===0 ? 1 : total/answer_arr.length));
+    const money = quiz.money * (answer_arr.length===0 ? 1 : total/answer_arr.length);
 
     const bank_user = bank.studentList.find(val => val.uid === uid);
     if(bank_user===undefined) {return Promise.reject("Error submitting quiz")}
     //Hooked up to transactions in the database; Rounds money to be consistent with what we do when students pay eachother.
     roundTo(Number(money), 2)
     push_transaction_to_completed(bank.bankId, makeSystemToStudentTransaction(user, bank_user, money, "academics", "quizzes", "Earned " + money + " from taking " + quiz.title))
-    return update_bank_user(bank, bank_user.uid, {...bank_user, balance: bank_user.balance+money, finishedQuizzes: [...bank_user.finishedQuizzes, quiz.hash]});
+
+    //Get the quiz result for this quiz, if it doesnt exist then make a new quiz result
+    const result = bank_user.finishedQuizzes.findIndex(r => r.quiz===quiz.hash);
+    if(result===-1) {
+        return update_bank_user(bank, bank_user.uid, {...bank_user, balance: bank_user.balance+money, finishedQuizzes: [...bank_user.finishedQuizzes, {quiz: quiz.hash, attempts: [total]}]});
+    } else {
+        const new_quiz_results = [...bank_user.finishedQuizzes]
+        new_quiz_results.splice(result, 1, {quiz: quiz.hash, attempts: [...bank_user.finishedQuizzes[result].attempts, total]})
+        return update_bank_user(bank, bank_user.uid, {...bank_user, balance: bank_user.balance+money, finishedQuizzes: new_quiz_results})
+    }
 }
 
 //Originally from TransactionModel.tsx

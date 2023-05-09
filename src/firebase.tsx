@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 
-/*
+
 export const firebaseConfig = {
   apiKey: "AIzaSyDtSZmVoz555aVQAwcMIpqswkVMlk_CkfA",
   authDomain: "banking-app-69227.firebaseapp.com",
@@ -13,7 +13,7 @@ export const firebaseConfig = {
   appId: "1:151738051001:web:66b14a4f7fb74e357dae68",
   measurementId: "G-YDVST35J84"
 };
-*/
+
 
 /*
 export const firebaseConfig = {
@@ -28,7 +28,7 @@ export const firebaseConfig = {
 };
 */
 
-
+/*
 export const firebaseConfig = {
   apiKey: "AIzaSyDI-ny6LCkkHdEi64_gzZWL52x_MIWxgb4",
   authDomain: "deployed-banking-application.firebaseapp.com",
@@ -39,7 +39,7 @@ export const firebaseConfig = {
   appId: "1:1039217853491:web:5e816dc45a1da302670f46",
   measurementId: "G-CKMWMFHC94"
 };
-
+*/
 
 
 // Initialize Firebase
