@@ -1,3 +1,4 @@
+import { MasteryLevel } from "./BankUser";
 import { QuizQuestion, resolve_nullish_quizquestion } from "./QuizQuestion"
 
 export interface Quiz{
@@ -13,7 +14,6 @@ export interface Quiz{
 
     hash: string
 }
-
 
 export function default_quiz(): Quiz {
     return {

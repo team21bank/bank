@@ -1,3 +1,5 @@
+import { QuizResult, resolve_nullish_quizresult } from "./QuizResult";
+
 export interface BankUser {
     
     uid: string,
@@ -10,7 +12,7 @@ export interface BankUser {
 
     alias: string,
 
-    finishedQuizzes: string[]
+    finishedQuizzes: QuizResult[]
 }
 
 export function resolve_nullish_bankuser(b: BankUser): BankUser {
@@ -20,7 +22,9 @@ export function resolve_nullish_bankuser(b: BankUser): BankUser {
         balance: b.balance ?? 0,
         role: b.role ?? [Role.None, MasteryLevel.None],
         alias: b.alias ?? "",
-        finishedQuizzes: b.finishedQuizzes ?? []
+        finishedQuizzes: b.finishedQuizzes === undefined ? [] : (
+            b.finishedQuizzes.map(r => resolve_nullish_quizresult(r))
+        )
     }
 }
 
@@ -39,6 +43,20 @@ export enum MasteryLevel {
     Apprentice,
     Journeyman,
     Master
+}
+
+//should definitely make a more robust method of determining the number of quiz attempts that are allowed
+export function num_allowed_attempts(level: MasteryLevel): number {
+    switch(level) {
+        case MasteryLevel.None:
+            return 1
+        case MasteryLevel.Apprentice:
+            return 5
+        case MasteryLevel.Journeyman:
+            return 10
+        case MasteryLevel.Master:
+            return 15
+    }
 }
 
 export const DEFAULT_BANK_USER: BankUser = {uid: "", isBanker: false, balance: 0, role: [Role.None, MasteryLevel.None], alias: "", finishedQuizzes: []};
