@@ -15,7 +15,7 @@ export const firebaseConfig = {
 };
 
 
-/*
+
 export const firebaseConfig = {
   apiKey: "AIzaSyAA0b6LN-jkBbviEcl6GeKAFDPJQ169lcM",
   authDomain: "banking-application-abbda.firebaseapp.com",
@@ -26,7 +26,7 @@ export const firebaseConfig = {
   appId: "1:616492109802:web:7d02eb116a01291807ac93",
   measurementId: "G-EWWD2G1WP9"
 };
-*/
+
 
 /*
 export const firebaseConfig = {
