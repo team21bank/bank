@@ -72,6 +72,7 @@ function EarningsChart() {
   const user = useContext(AuthContext).user;
   const bank = useContext(BankContext).bank;
 
+  //filter for users transactions
   const earnings = bank.completedList[user.hash] ? (bank.completedList as Record<string, Transaction[]>)[user.hash].filter(t => t.receiver_uid === user.hash) : [];
 
   const earnData = {
@@ -112,6 +113,7 @@ function SpendingChart() {
   const user = useContext(AuthContext).user;
   const bank = useContext(BankContext).bank;
 
+  //Filter for user's transactions
   const losses = bank.completedList[user.hash] ? (bank.completedList as Record<string, Transaction[]>)[user.hash].filter(t => t.sender_uid === user.hash) : [];
 
   const spendData = {

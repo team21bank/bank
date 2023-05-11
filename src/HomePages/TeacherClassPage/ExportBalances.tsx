@@ -12,6 +12,7 @@ import exp from "constants";
 
 
 function exportFile(studentsList: UserPair[], current_bank: Bank) {
+    //Write student emails and current balances to csv file and download
     let exportString = "";
     if(studentsList.length > 0){
         exportString += studentsList[0].auth_user.email + "," + studentsList[0].bank_user.balance

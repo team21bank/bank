@@ -21,6 +21,7 @@ export function CreateClassModal(): JSX.Element {
         if(bank_name==="") {return Promise.reject("Bank name cannot be empty")}
         
         while(true) {
+            //Create unique classcode
             let characters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
             let code = ""
             for (var i=0;i<6;i++){

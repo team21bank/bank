@@ -3,8 +3,8 @@ import { Button } from "react-bootstrap";
 //@ts-ignore
 
 export function DownloadTemplate(): JSX.Element {
-
     function exportFile() {
+        //Populate example quiz to csv format and download
         const exportString = `Quiz Name:,Quiz Description:,Money:,Attempts:,,,,,,
         Sample Quiz,This is a sample quiz for testing,500,3,,,,,,
         Name:,Body:,Points,Option1,Option2,Option3,Option4,Option5,Answer,Image URL
