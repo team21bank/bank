@@ -1,11 +1,28 @@
 .home-page {
     text-align: center;
-    background-color: #919191;
+    top: 1000px;
+    background: url("../../Images/SchoolOfAthens.jpg");
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.home-page-contents {
+    position: relative;
+    top: 25vh;
+    height: 50%;
+    width: 30%;
+    left: 35vw;
+
+    text-shadow: 
+    black 0px 0px 1px, 
+    black 0px 2px 1px, 
+    black 2px 0px 1px, 
+    black 2px 2px 1px;
 }
 
 .home-page-header {
-    background-color: #919191;
-    min-height: 50vh;
     display: flex;
     flex-direction: column;
     align-items: center;
