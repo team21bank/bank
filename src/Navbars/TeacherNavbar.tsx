@@ -6,41 +6,11 @@ import "../firebase";
 import "./TeacherNavbar.css";
 import { LogoutButton } from '../Authentication/Logout/Logout';
 import { BankContext } from '../Authentication/auth';
+import { changeFontOfEverything } from '../FontFunctions/ChangeFont';
 
 
 export function TeacherNavbar(): JSX.Element {
     const bank = useContext(BankContext).bank;
-
-  /**Code that can change the font according to the style sheets, disabling the papyrus-styled fonts.*/
-  //@ts-expect-error
-  const globalFontStylesheet = [...document.styleSheets].find((sheet) => 
-  //@ts-expect-error
-  [...sheet.cssRules].reduce((rules: String, curRule: CSSRule) => curRule.style ? rules += curRule.style.cssText : "", "").includes("appcss"));
-  
-  const bodyRule = globalFontStylesheet ? [...globalFontStylesheet.cssRules].find(
-    (r) => r.selectorText === "body"): null;
-    
-  const codeRule = globalFontStylesheet ? [...globalFontStylesheet.cssRules].find(
-    (r) => r.selectorText === "code") : null;
-
-  function enableGlobalFont(): void {
-    if (bodyRule) {
-      bodyRule.style.setProperty("font-family", "\"appcss\", Papyrus, fantasy");
-    }
-    if (codeRule) {
-      codeRule.style.setProperty("font-family", "\"appcss\", Papyrus, fantasy");
-    }
-  }
-  
-  function disableGlobalFont(): void {
-    if (bodyRule) {
-      bodyRule.style.setProperty("font-family", "\"appcss\", Helvetica, sans-serif");
-    }
-    if (codeRule) {
-      codeRule.style.setProperty("font-family", "\"appcss\", Helvetica, sans-serif");
-    }
-  }
-  /**END GLOBAL FONT CODE*/
 
     return (
       <Container fluid>
@@ -54,8 +24,8 @@ export function TeacherNavbar(): JSX.Element {
               </Nav>
               <NavDropdown title="Manage Account" className="justify-content-end">
                   <NavDropdown.Item href="#/editprofile">Edit Profile</NavDropdown.Item>
-                  <NavDropdown.Item style={{fontFamily: "Papyrus, Fantasy, sans-serif"}} onClick={() => enableGlobalFont()}>Select Fancy Font (persists until refresh)</NavDropdown.Item>
-                  <NavDropdown.Item style={{fontFamily: "Helvetica"}} onClick={() => disableGlobalFont()}>Select Plain Font (persists until refresh)</NavDropdown.Item>
+                  <NavDropdown.Item id="fancyFontToggle" style={{fontFamily: "Papyrus, sans-serif"}} onClick={() => changeFontOfEverything("Papyrus, sans-serif")}>Select Fancy Font (persists until refresh)</NavDropdown.Item>
+                  <NavDropdown.Item id="fancyFontToggle" style={{fontFamily: "Helvetica, sans-serif"}} onClick={() => changeFontOfEverything("Helvetica, sans-serif")}>Select Plain Font (persists until refresh)</NavDropdown.Item>
                   <LogoutButton/>
               </NavDropdown>
             </Container>
