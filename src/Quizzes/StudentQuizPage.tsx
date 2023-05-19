@@ -71,9 +71,7 @@ function FinishedQuizCard({quiz, select}: {quiz: Quiz, select: ()=>void}): JSX.E
     const quiz_result = bank_user.finishedQuizzes.find(r => r.quiz === quiz.hash) ?? default_quizresult();
     const can_take = quiz.allowed_attempts[bank_user.role[1]] > quiz_result.attempts.length;
     const attempts_left = quiz.allowed_attempts[bank_user.role[1]] - quiz_result.attempts.length;
-
-    console.log("allowed attempts: ", quiz.allowed_attempts[bank_user.role[1]])
-
+    
     return (
         <Card className="finished-quiz-card">
             <Card.Header><h5>{quiz.title}</h5></Card.Header>
