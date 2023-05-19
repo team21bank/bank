@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/bank/static/css/main.fb283ab2.css",
-    "main.js": "/bank/static/js/main.a1c8dc49.js",
+    "main.css": "/bank/static/css/main.e83f352c.css",
+    "main.js": "/bank/static/js/main.1cc8a5e3.js",
     "static/js/787.c3d5f9be.chunk.js": "/bank/static/js/787.c3d5f9be.chunk.js",
     "static/media/SchoolOfAthens.jpg": "/bank/static/media/SchoolOfAthens.326806829d0adda22d5c.jpg",
     "static/media/back.png": "/bank/static/media/back.b653d95d8ab8aaa3d239.png",
@@ -16,12 +16,12 @@
     "static/media/1.png": "/bank/static/media/1.6420092f7d2185191b16.png",
     "static/media/LeoDaVinci.jpg": "/bank/static/media/LeoDaVinci.27a7eda381f1c4ad9bbf.jpg",
     "index.html": "/bank/index.html",
-    "main.fb283ab2.css.map": "/bank/static/css/main.fb283ab2.css.map",
-    "main.a1c8dc49.js.map": "/bank/static/js/main.a1c8dc49.js.map",
+    "main.e83f352c.css.map": "/bank/static/css/main.e83f352c.css.map",
+    "main.1cc8a5e3.js.map": "/bank/static/js/main.1cc8a5e3.js.map",
     "787.c3d5f9be.chunk.js.map": "/bank/static/js/787.c3d5f9be.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fb283ab2.css",
-    "static/js/main.a1c8dc49.js"
+    "static/css/main.e83f352c.css",
+    "static/js/main.1cc8a5e3.js"
   ]
 }
