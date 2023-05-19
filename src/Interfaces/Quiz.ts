@@ -13,6 +13,8 @@ export interface Quiz{
     questions: QuizQuestion[]; //the actual questions in the quiz
 
     hash: string
+
+    allowed_attempts: [number, number, number, number]
 }
 
 export function default_quiz(): Quiz {
@@ -22,7 +24,8 @@ export function default_quiz(): Quiz {
         description: "",
         money: 0,
         questions: [],
-        hash: ""
+        hash: "",
+        allowed_attempts: [1, 1, 1, 1]
     }
 }
 
@@ -35,6 +38,7 @@ export function resolve_nullish_quiz(quiz: Quiz): Quiz {
         questions: quiz.questions===undefined ? [] : (
             quiz.questions.map((q: QuizQuestion) => resolve_nullish_quizquestion(q))
         ),
-        hash: quiz.hash ?? []
+        hash: quiz.hash ?? [],
+        allowed_attempts: quiz.allowed_attempts ?? [1, 1, 1, 1]
     }
 }

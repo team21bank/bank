@@ -61,14 +61,6 @@ export function StudentClassPage({classCode}:{classCode:string}){
                         </Container>
                     </Tab>
                 ) : (<></>)}
-                {bank_user.role[0]===Role.Banker ? (
-                    <Tab eventKey="Student List" title="Student List">
-                        <Container fluid className="tab-page-container">
-                            <StudentList current_bank={bank} />
-                        </Container>
-                    </Tab>
-                ) : (<></>)}
-
             </Tabs>
         </Container>
     )

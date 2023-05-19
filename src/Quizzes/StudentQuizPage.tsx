@@ -4,7 +4,7 @@ import { Quiz } from "../Interfaces/Quiz";
 import { get_quizzes } from "../DatabaseFunctions/QuizFunctions";
 import { Alert, Button, Card, Col, Container, Form, Image, Pagination, Row } from "react-bootstrap";
 import "./StudentQuizPage.css";
-import { BankUser, DEFAULT_BANK_USER, num_allowed_attempts } from "../Interfaces/BankUser";
+import { BankUser, DEFAULT_BANK_USER } from "../Interfaces/BankUser";
 import { HiOutlineArrowLeft, HiOutlineArrowRight, HiCheck } from "react-icons/hi";
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
 import { Link } from "react-router-dom";
@@ -69,8 +69,10 @@ function FinishedQuizCard({quiz, select}: {quiz: Quiz, select: ()=>void}): JSX.E
     const bank_user = bank.studentList.find(val => val.uid === user.hash) ?? DEFAULT_BANK_USER;
 
     const quiz_result = bank_user.finishedQuizzes.find(r => r.quiz === quiz.hash) ?? default_quizresult();
-    const can_take = num_allowed_attempts(bank_user.role[1]) > quiz_result.attempts.length;
-    const attempts_left = num_allowed_attempts(bank_user.role[1]) - quiz_result.attempts.length;
+    const can_take = quiz.allowed_attempts[bank_user.role[1]] > quiz_result.attempts.length;
+    const attempts_left = quiz.allowed_attempts[bank_user.role[1]] - quiz_result.attempts.length;
+
+    console.log("allowed attempts: ", quiz.allowed_attempts[bank_user.role[1]])
 
     return (
         <Card className="finished-quiz-card">

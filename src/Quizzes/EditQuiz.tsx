@@ -66,7 +66,8 @@ export function EditForm({quiz, set_quiz}: {quiz: Quiz, set_quiz: (q: Quiz) => v
 
     return (
         <Container>
-            <Form>
+            <Form className="form-group"> {/* Form to control quiz name, description, and value */}
+                <h3>Quiz info</h3>
                 <InputGroup size="lg" className="quiz-input-field">
                     <InputGroup.Text className="quiz-input-text">Quiz name</InputGroup.Text>
                     <Form.Control
@@ -95,14 +96,53 @@ export function EditForm({quiz, set_quiz}: {quiz: Quiz, set_quiz: (q: Quiz) => v
                 </InputGroup>
             </Form>
             <br/>
-            <Accordion style={{justifyContent: "center"}}>
-                {quiz.questions.map((question, index) => <QuestionForm key={index} question={question} set_question={(q)=>set_question_at_index(index, q)} index={index}/>)}
-                <Accordion.Item eventKey="add-question-button">
-                    <Row style={{marginInline: "0"}}>
-                        <Button onClick={add_question}>Add question</Button>
-                    </Row>
-                </Accordion.Item>
-            </Accordion>
+            <Form className="form-group"> {/* Form to configure the number of allowed quiz attempts */}
+                <h3>Number of attempts</h3>
+                <InputGroup size="lg" className="quiz-input-field">
+                    <InputGroup.Text className="quiz-input-text">Default</InputGroup.Text>
+                    <Form.Control
+                        type="number"
+                        value={quiz.allowed_attempts[0]}
+                        onChange={e => set_quiz({...quiz, allowed_attempts: [(isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value)), quiz.allowed_attempts[1], quiz.allowed_attempts[2], quiz.allowed_attempts[3]]})}
+                    />
+                </InputGroup>
+                <InputGroup size="lg" className="quiz-input-field">
+                    <InputGroup.Text className="quiz-input-text">Apprentices</InputGroup.Text>
+                    <Form.Control
+                        type="number"
+                        value={quiz.allowed_attempts[1]}
+                        onChange={e => set_quiz({...quiz, allowed_attempts: [quiz.allowed_attempts[0], (isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value)), quiz.allowed_attempts[2], quiz.allowed_attempts[3]]})}
+                    />
+                </InputGroup>
+                <InputGroup size="lg" className="quiz-input-field">
+                    <InputGroup.Text className="quiz-input-text">Journeymen</InputGroup.Text>
+                    <Form.Control
+                        type="number"
+                        value={quiz.allowed_attempts[2]}
+                        onChange={e => set_quiz({...quiz, allowed_attempts: [quiz.allowed_attempts[0], quiz.allowed_attempts[1], (isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value)), quiz.allowed_attempts[3]]})}
+                    />
+                </InputGroup>
+                <InputGroup size="lg" className="quiz-input-field">
+                    <InputGroup.Text className="quiz-input-text">Masters</InputGroup.Text>
+                    <Form.Control
+                        type="number"
+                        value={quiz.allowed_attempts[3]}
+                        onChange={e => set_quiz({...quiz, allowed_attempts: [quiz.allowed_attempts[0], quiz.allowed_attempts[1], quiz.allowed_attempts[2], (isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value))]})}
+                    />
+                </InputGroup>
+            </Form>
+            <br/>
+            <div className="form-group">
+                <h3>Questions</h3>
+                <Accordion style={{justifyContent: "center"}}>
+                    {quiz.questions.map((question, index) => <QuestionForm key={index} question={question} set_question={(q)=>set_question_at_index(index, q)} index={index}/>)}
+                    <Accordion.Item eventKey="add-question-button">
+                        <Row style={{marginInline: "0"}}>
+                            <Button onClick={add_question}>Add question</Button>
+                        </Row>
+                    </Accordion.Item>
+                </Accordion>
+            </div>
         </Container>
     )
 }

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { ref, getDatabase, set } from '@firebase/database';
-import { Quiz } from "../Interfaces/Quiz";  
+import { Quiz, default_quiz } from "../Interfaces/Quiz";  
 import { QuizQuestion } from "../Interfaces/QuizQuestion";
 import { Bank, DEFAULT_BANK } from "../Interfaces/BankObject";
 import { BankContext } from "../Authentication/auth";
@@ -82,12 +82,11 @@ export function ImportQuiz(/*{classCode}: {classCode: string}*/): JSX.Element {
             newSplit = [];
         }
         let newQuiz: Quiz = {
+            ...default_quiz(),
             owner: user.hash,
             title: split[1][0],
             description: split[1][1],
             money: Number(split[1][2]),
-            questions: [],
-            hash: ""
         }
         let questions = split.splice(3).map(function (questionFields: string[]): QuizQuestion {
             let options = [...questionFields].splice(3, questionFields.length-2);

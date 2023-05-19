@@ -6,3 +6,9 @@
 .quiz-input-text {
     width: 180px;
 }
+
+.form-group {
+    background-color: rgb(245, 245, 245);
+    padding: 10px 10px 10px 10px;
+    border-radius: 10px;
+}
