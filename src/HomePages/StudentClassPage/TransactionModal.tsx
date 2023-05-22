@@ -43,7 +43,7 @@ export function TransactionModal() {
     //Push the transaction to the pending list
     function send() {
         if(receiver === null) {return;}
-        let transaction = makeStudentToStudentTransaction(user, bank_user, receiver.auth_user, receiver.bank_user, amount, false, undefined, description);
+        let transaction = makeStudentToStudentTransaction(user, bank_user, receiver.auth_user, receiver.bank_user, amount, false, description, description);
 
         push_transaction_to_pending(bank.bankId, transaction);
 
